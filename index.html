@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Studio ✦</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #080810;
+    --surface: #10101c;
+    --surface2: #16162a;
+    --surface3: #1e1e38;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8e8f0;
+    --text-muted: #6b6b8a;
+    --accent: #7c3aed;
+    --accent2: #ec4899;
+    --accent3: #06b6d4;
+    --accent4: #10b981;
+    --accent5: #f59e0b;
+    --neon: #a855f7;
+    --red: #ef4444;
+    --glow: rgba(124, 58, 237, 0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    animation: drift 20s ease-in-out infinite alternate;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -30%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(236,72,153,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    animation: drift 25s ease-in-out infinite alternate-reverse;
+    z-index: 0;
+  }
+
+  @keyframes drift {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 60px) scale(1.1); }
+  }
+
+  /* Header */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8, 8, 16, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-icon {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 20px var(--glow);
+  }
+
+  .logo span { background: linear-gradient(135deg, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  .header-actions { display: flex; align-items: center; gap: 12px; }
+
+  .date-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(124,58,237,0.5); }
+
+  .btn-ghost {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-ghost:hover { background: var(--surface3); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 16px 32px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tab {
+    padding: 8px 20px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    border-bottom: none;
+  }
+
+  .tab.active {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .tab:not(.active):hover { color: var(--text); }
+
+  /* Main */
+  .main {
+    position: relative;
+    z-index: 1;
+    padding: 24px 32px;
+  }
+
+  /* Stats */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .stat-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    opacity: 0.15;
+    transform: translate(20px, -20px);
+  }
+
+  .stat-card.idea::before { background: var(--accent5); }
+  .stat-card.production::before { background: var(--accent3); }
+  .stat-card.ready::before { background: var(--accent4); }
+  .stat-card.published::before { background: var(--accent); }
+  .stat-card.total::before { background: var(--accent2); }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .stat-num {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-card.idea .stat-num { color: var(--accent5); }
+  .stat-card.production .stat-num { color: var(--accent3); }
+  .stat-card.ready .stat-num { color: var(--accent4); }
+  .stat-card.published .stat-num { color: var(--accent); }
+  .stat-card.total .stat-num { color: var(--accent2); }
+
+  .stat-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* View toggle */
+  .view-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .view-title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  .view-btn {
+    padding: 6px 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    color: var(--text-muted);
+    border: none;
+    background: none;
+    font-family: 'Heebo', sans-serif;
+  }
+  .view-btn.active { background: var(--surface3); color: var(--text); }
+  .view-btn:not(.active):hover { color: var(--text); }
+
+  /* ========== GANTT ========== */
+  .gantt-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .gantt-scroll { overflow-x: auto; }
+
+  .gantt-table {
+    min-width: 100%;
+  }
+
+  .gantt-head {
+    display: grid;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .gantt-head-row {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gantt-title-col {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-left: 1px solid var(--border);
+  }
+
+  .gantt-dates-row {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .gantt-month {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .gantt-month-label {
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .gantt-days {
+    display: flex;
+  }
+
+  .gantt-day {
+    width: 36px;
+    flex-shrink: 0;
+    padding: 6px 4px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-left: 1px solid rgba(255,255,255,0.03);
+    font-weight: 500;
+  }
+
+  .gantt-day.today {
+    background: rgba(124,58,237,0.15);
+    color: var(--neon);
+    font-weight: 700;
+  }
+
+  .gantt-day.weekend { color: rgba(107,107,138,0.5); }
+
+  .gantt-body {}
+
+  .gantt-row {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    min-height: 52px;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .gantt-row:hover { background: rgba(255,255,255,0.02); }
+  .gantt-row:last-child { border-bottom: none; }
+
+  .gantt-item-info {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border-left: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .gantt-item-info:hover .item-title { color: var(--neon); }
+
+  .platform-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .item-title {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.15s;
+  }
+
+  .gantt-timeline {
+    flex: 1;
+    position: relative;
+    height: 52px;
+    display: flex;
+    align-items: center;
+  }
+
+  .gantt-cells {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+  }
+
+  .gantt-cell {
+    width: 36px;
+    flex-shrink: 0;
+    height: 100%;
+    border-left: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .gantt-cell.today-col { background: rgba(124,58,237,0.06); }
+  .gantt-cell.weekend-col { background: rgba(0,0,0,0.1); }
+
+  .gantt-bar-wrap {
+    position: absolute;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.2s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  .gantt-bar-wrap:hover { filter: brightness(1.15); transform: scaleY(1.05); }
+
+  /* Today line */
+  .today-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--neon), transparent);
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .today-line::before {
+    content: 'היום';
+    position: absolute;
+    top: 4px;
+    right: 50%;
+    transform: translateX(50%);
+    background: var(--neon);
+    color: var(--bg);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* ========== KANBAN ========== */
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .kanban-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .kanban-col-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .col-title-wrap { display: flex; align-items: center; gap: 10px; }
+
+  .col-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .col-title {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .col-count {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .kanban-cards {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 100px;
+  }
+
+  .content-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .content-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .content-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 3px;
+    height: 100%;
+    border-radius: 0 14px 14px 0;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .card-menu-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    line-height: 1;
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .card-menu-btn:hover { color: var(--text); }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .platform-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid transparent;
+  }
+
+  .date-tag {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .card-action-btn {
+    flex: 1;
+    padding: 5px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Heebo', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .card-action-btn:hover { background: var(--surface3); color: var(--text); }
+
+  /* ========== MODAL ========== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px;
+    padding: 32px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.2s;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  }
+
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .modal-title {
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .modal-close {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .modal-close:hover { background: var(--surface3); color: var(--text); }
+
+  .form-group { margin-bottom: 18px; }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+  }
+
+  .form-select option { background: var(--surface2); }
+
+  .form-textarea { resize: vertical; min-height: 80px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .platform-picker {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+
+  .platform-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 6px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface2);
+  }
+  .platform-option:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+  .platform-option.selected { border-color: var(--accent); background: rgba(124,58,237,0.12); color: var(--text); }
+  .platform-option .platform-icon { font-size: 20px; }
+
+  .modal-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    justify-content: flex-start;
+  }
+
+  /* Context menu */
+  .ctx-menu {
+    position: fixed;
+    background: var(--surface2);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 6px;
+    z-index: 300;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    min-width: 160px;
+    display: none;
+  }
+  .ctx-menu.open { display: block; }
+
+  .ctx-item {
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  .ctx-item:hover { background: var(--surface3); }
+  .ctx-item.danger { color: var(--red); }
+  .ctx-item.danger:hover { background: rgba(239,68,68,0.1); }
+
+  .ctx-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    gap: 10px;
+    text-align: center;
+  }
+  .empty-state .empty-icon { font-size: 36px; opacity: 0.4; }
+  .empty-state p { font-size: 13px; }
+
+  /* Tab content */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Ideas tab */
+  .ideas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .idea-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .idea-card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+
+  .idea-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .idea-card:hover::after { opacity: 1; }
+
+  .idea-emoji { font-size: 28px; margin-bottom: 12px; }
+  .idea-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .idea-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+  .idea-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .idea-tag {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  /* Analytics tab */
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .analytics-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+  }
+
+  .analytics-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bar-chart { display: flex; flex-direction: column; gap: 12px; }
+
+  .bar-item { display: flex; flex-direction: column; gap: 6px; }
+
+  .bar-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  .bar-label { font-weight: 600; }
+  .bar-val { color: var(--text-muted); font-size: 12px; }
+
+  .bar-track {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Notification */
+  .notification {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 400;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .notification.show { transform: translateX(-50%) translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+    .kanban { grid-template-columns: repeat(2, 1fr); }
+    .analytics-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">✦</div>
+    <span>Content Studio</span>
+  </div>
+  <div class="header-actions">
+    <div class="date-badge" id="currentDate"></div>
+    <button class="btn btn-primary" onclick="openModal()">+ תוכן חדש</button>
+  </div>
+</header>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('board', this)">📋 לוח תוכן</div>
+  <div class="tab" onclick="switchTab('gantt', this)">📅 ציר זמן</div>
+  <div class="tab" onclick="switchTab('ideas', this)">💡 רעיונות</div>
+  <div class="tab" onclick="switchTab('analytics', this)">📊 ניתוח</div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card idea" onclick="filterByStatus('idea')">
+      <div class="stat-label">רעיונות</div>
+      <div class="stat-num" id="stat-idea">0</div>
+      <div class="stat-sub">ממתינים לייצור</div>
+    </div>
+    <div class="stat-card production" onclick="filterByStatus('production')">
+      <div class="stat-label">בייצור</div>
+      <div class="stat-num" id="stat-production">0</div>
+      <div class="stat-sub">עובדים עליהם</div>
+    </div>
+    <div class="stat-card ready" onclick="filterByStatus('ready')">
+      <div class="stat-label">מוכן</div>
+      <div class="stat-num" id="stat-ready">0</div>
+      <div class="stat-sub">מחכים לפרסום</div>
+    </div>
+    <div class="stat-card published" onclick="filterByStatus('published')">
+      <div class="stat-label">פורסם</div>
+      <div class="stat-num" id="stat-published">0</div>
+      <div class="stat-sub">חיים ברשת</div>
+    </div>
+    <div class="stat-card total">
+      <div class="stat-label">סה"כ</div>
+      <div class="stat-num" id="stat-total">0</div>
+      <div class="stat-sub">פיסות תוכן</div>
+    </div>
+  </div>
+
+  <!-- Board Tab -->
+  <div class="tab-content active" id="tab-board">
+    <div class="view-header">
+      <div class="view-title">לוח תוכן</div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <select class="form-select" style="width:auto;padding:6px 12px;font-size:13px;" id="platformFilter" onchange="renderBoard()">
+          <option value="">כל הפלטפורמות</option>
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="youtube">YouTube</option>
+          <option value="twitter">Twitter/X</option>
+          <option value="linkedin">LinkedIn</option>
+        </select>
+      </div>
+    </div>
+    <div class="kanban" id="kanban-board"></div>
+  </div>
+
+  <!-- Gantt Tab -->
+  <div class="tab-content" id="tab-gantt">
+    <div class="view-header">
+      <div class="view-title">ציר זמן — Gantt</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="shiftGantt(-1)">◀ חודש קודם</button>
+        <button class="btn btn-ghost" onclick="shiftGantt(0)">היום</button>
+        <button class="btn btn-ghost" onclick="shiftGantt(1)">חודש הבא ▶</button>
+      </div>
+    </div>
+    <div class="gantt-wrap">
+      <div class="gantt-scroll">
+        <div id="gantt-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ideas Tab -->
+  <div class="tab-content" id="tab-ideas">
+    <div class="view-header">
+      <div class="view-title">בנק רעיונות 💡</div>
+      <button class="btn btn-primary" onclick="openIdeaModal()">+ רעיון חדש</button>
+    </div>
+    <div class="ideas-grid" id="ideas-grid"></div>
+  </div>
+
+  <!-- Analytics Tab -->
+  <div class="tab-content" id="tab-analytics">
+    <div class="view-header">
+      <div class="view-title">ניתוח תוכן 📊</div>
+    </div>
+    <div class="analytics-grid" id="analytics-grid"></div>
+  </div>
+
+</div>
+
+<!-- Add Content Modal -->
+<div class="modal-overlay" id="contentModal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">תוכן חדש ✦</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">כותרת</label>
+      <input class="form-input" id="f-title" placeholder="שם הפוסט / סרטון..." autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">פלטפורמה</label>
+      <div class="platform-picker" id="platformPicker">
+        <div class="platform-option selected" data-platform="instagram" onclick="selectPlatform(this)">
+          <span class="platform-icon">📸</span>
+          Instagram
+        </div>
+        <div class="platform-option" data-platform="tiktok" onclick="selectPlatform(this)">
+          <span class="platform-icon">🎵</span>
+          TikTok
+        </div>
+        <div class="platform-option" data-platform="youtube" onclick="selectPlatform(this)">
+          <span class="platform-icon">▶️</span>
+          YouTube
+        </div>
+        <div class="platform-option" data-platform="twitter" onclick="selectPlatform(this)">
+          <span class="platform-icon">𝕏</span>
+          Twitter
+        </div>
+        <div class="platform-option" data-platform="linkedin" onclick="selectPlatform(this)">
+          <span class="platform-icon">💼</span>
+          LinkedIn
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">תאריך התחלה</label>
+        <input class="form-input" type="date" id="f-start">
+      </div>
+      <div class="form-group">
+        <label class="form-label">תאריך פרסום</label>
+        <input class="form-input" type="date" id="f-end">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">סטטוס</label>
+      <select class="form-select" id="f-status">
+        <option value="idea">💡 רעיון</option>
+        <option value="production">🎬 בייצור</option>
+        <option value="ready">✅ מוכן</option>
+        <option value="published">🚀 פורסם</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">תיאור / הערות</label>
+      <textarea class="form-textarea" id="f-desc" placeholder="נושא, קהל יעד, הוק פתיחה..."></textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="saveContent()">שמור תוכן</button>
+      <button class="btn btn-ghost" onclick="closeModal()">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Idea Modal -->
+<div class="modal-overlay" id="ideaModal" onclick="handleIdeaOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">רעיון חדש 💡</div>
+      <button class="modal-close" onclick="closeIdeaModal()">✕</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">כותרת הרעיון</label>
+      <input class="form-input" id="i-title" placeholder="שם הרעיון..." autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">אמוג'י (אופציונלי)</label>
+      <input class="form-input" id="i-emoji" placeholder="🔥" style="width:80px;text-align:center;font-size:20px;">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">תיאור הרעיון</label>
+      <textarea class="form-textarea" id="i-body" placeholder="ספר על הרעיון, מה הוא כולל, למה זה יעבוד..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">תגיות (מופרדות בפסיקים)</label>
+      <input class="form-input" id="i-tags" placeholder="ויראלי, חינוכי, מוטיבציה...">
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="saveIdea()">שמור רעיון</button>
+      <button class="btn btn-ghost" onclick="closeIdeaModal()">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- Context Menu -->
+<div class="ctx-menu" id="ctxMenu">
+  <div class="ctx-item" onclick="ctxEdit()">✏️ ערוך</div>
+  <div class="ctx-item" onclick="ctxAdvanceStatus()">⏭️ קדם סטטוס</div>
+  <div class="ctx-divider"></div>
+  <div class="ctx-item danger" onclick="ctxDelete()">🗑️ מחק</div>
+</div>
+
+<!-- Notification -->
+<div class="notification" id="notification">
+  <span id="notif-icon">✓</span>
+  <span id="notif-msg">נשמר!</span>
+</div>
+
+<script>
+// ======== DATA ========
+const PLATFORMS = {
+  instagram: { label: 'Instagram', icon: '📸', color: '#ec4899', bg: 'rgba(236,72,153,0.15)', border: 'rgba(236,72,153,0.3)' },
+  tiktok:    { label: 'TikTok',    icon: '🎵', color: '#06b6d4', bg: 'rgba(6,182,212,0.15)', border: 'rgba(6,182,212,0.3)' },
+  youtube:   { label: 'YouTube',   icon: '▶️', color: '#ef4444', bg: 'rgba(239,68,68,0.15)', border: 'rgba(239,68,68,0.3)' },
+  twitter:   { label: 'Twitter/X', icon: '𝕏',  color: '#94a3b8', bg: 'rgba(148,163,184,0.15)', border: 'rgba(148,163,184,0.3)' },
+  linkedin:  { label: 'LinkedIn',  icon: '💼', color: '#3b82f6', bg: 'rgba(59,130,246,0.15)', border: 'rgba(59,130,246,0.3)' },
+};
+
+const STATUSES = {
+  idea:       { label: '💡 רעיון',   color: '#f59e0b', ganttColor: 'linear-gradient(90deg,#f59e0b,#fbbf24)' },
+  production: { label: '🎬 בייצור',  color: '#06b6d4', ganttColor: 'linear-gradient(90deg,#06b6d4,#38bdf8)' },
+  ready:      { label: '✅ מוכן',    color: '#10b981', ganttColor: 'linear-gradient(90deg,#10b981,#34d399)' },
+  published:  { label: '🚀 פורסם',   color: '#a855f7', ganttColor: 'linear-gradient(90deg,#a855f7,#c084fc)' },
+};
+
+let contents = JSON.parse(localStorage.getItem('cs_contents') || '[]');
+let ideas    = JSON.parse(localStorage.getItem('cs_ideas')    || '[]');
+
+let editingId  = null;
+let ctxId      = null;
+let ganttOffset = 0; // months from today
+let statusFilter = null;
+
+// ======== UTILS ========
+function save() {
+  localStorage.setItem('cs_contents', JSON.stringify(contents));
+  localStorage.setItem('cs_ideas', JSON.stringify(ideas));
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+function formatDate(str) {
+  if (!str) return '';
+  const d = new Date(str + 'T12:00:00');
+  return d.toLocaleDateString('he-IL', { day: 'numeric', month: 'short' });
+}
+
+function notify(msg, icon = '✓') {
+  const el = document.getElementById('notification');
+  document.getElementById('notif-msg').textContent = msg;
+  document.getElementById('notif-icon').textContent = icon;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ======== INIT ========
+document.addEventListener('DOMContentLoaded', () => {
+  // Date
+  const d = new Date();
+  document.getElementById('currentDate').textContent =
+    d.toLocaleDateString('he-IL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Default dates in form
+  const today = new Date().toISOString().slice(0,10);
+  const nextWeek = new Date(Date.now() + 7*86400000).toISOString().slice(0,10);
+  document.getElementById('f-start').value = today;
+  document.getElementById('f-end').value = nextWeek;
+
+  // Seed data if empty
+  if (contents.length === 0) seedData();
+
+  renderAll();
+
+  // Close ctx menu on click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#ctxMenu') && !e.target.closest('.card-menu-btn')) {
+      document.getElementById('ctxMenu').classList.remove('open');
+    }
+  });
+});
+
+function seedData() {
+  const today = new Date();
+  const d = (offset, extra=7) => {
+    const s = new Date(today); s.setDate(s.getDate() + offset);
+    const e = new Date(today); e.setDate(e.getDate() + offset + extra);
+    return [s.toISOString().slice(0,10), e.toISOString().slice(0,10)];
+  };
+
+  contents = [
+    { id:uid(), title:'סרטון "5 טיפים לבוקר מנצח"', platform:'youtube', status:'idea', start:d(-5)[0], end:d(-5,14)[1], desc:'תוכן חינוכי על שגרת בוקר' },
+    { id:uid(), title:'ריל — אחרי שנה של יצירה', platform:'instagram', status:'production', start:d(-3)[0], end:d(-3,5)[1], desc:'סיפור אישי על הדרך' },
+    { id:uid(), title:'TikTok טרנד — Challenge', platform:'tiktok', status:'ready', start:d(0)[0], end:d(0,3)[1], desc:'ריל מהיר 15 שניות' },
+    { id:uid(), title:'Thread — איך בנינו 10K עוקבים', platform:'twitter', status:'published', start:d(-10)[0], end:d(-10,1)[1], desc:'פוסט ויראלי' },
+    { id:uid(), title:'פוסט LinkedIn — סיפור הקריירה', platform:'linkedin', status:'idea', start:d(3)[0], end:d(3,7)[1], desc:'תוכן מקצועי' },
+    { id:uid(), title:'סרטון YouTube — מאחורי הקלעים', platform:'youtube', status:'production', start:d(1)[0], end:d(1,10)[1], desc:'vlog שבועי' },
+  ];
+
+  ideas = [
+    { id:uid(), title:'סדרת "יום בחיים"', emoji:'📹', body:'סדרה שבועית שמראה את היום שלי כיוצר תוכן — גיימיפיקציה של השגרה', tags:['ויראלי', 'סדרה', 'אותנטי'] },
+    { id:uid(), title:'אתגר 30 ימים', emoji:'🔥', body:'לצלם ולפרסם תוכן כל יום במשך חודש — ולתעד את הצמיחה', tags:['אתגר', 'צמיחה', 'מוטיבציה'] },
+    { id:uid(), title:'קולאב עם יוצרים', emoji:'🤝', body:'לזהות 5 יוצרים בנישה ולהציע שיתוף פעולה לתוכן משותף', tags:['קולאב', 'נטוורקינג'] },
+  ];
+
+  save();
+}
+
+// ======== RENDER ALL ========
+function renderAll() {
+  updateStats();
+  renderBoard();
+  renderGantt();
+  renderIdeas();
+  renderAnalytics();
+}
+
+// ======== STATS ========
+function updateStats() {
+  const counts = { idea:0, production:0, ready:0, published:0 };
+  contents.forEach(c => { if (counts[c.status] !== undefined) counts[c.status]++; });
+  document.getElementById('stat-idea').textContent = counts.idea;
+  document.getElementById('stat-production').textContent = counts.production;
+  document.getElementById('stat-ready').textContent = counts.ready;
+  document.getElementById('stat-published').textContent = counts.published;
+  document.getElementById('stat-total').textContent = contents.length;
+}
+
+// ======== BOARD ========
+function filterByStatus(s) {
+  statusFilter = statusFilter === s ? null : s;
+  renderBoard();
+  // Flash the stat card
+}
+
+function renderBoard() {
+  const platformF = document.getElementById('platformFilter').value;
+  const filtered = contents.filter(c =>
+    (!platformF || c.platform === platformF) &&
+    (!statusFilter || c.status === statusFilter)
+  );
+
+  const cols = {
+    idea: { items: [], label: '💡 רעיון', color: '#f59e0b' },
+    production: { items: [], label: '🎬 בייצור', color: '#06b6d4' },
+    ready: { items: [], label: '✅ מוכן', color: '#10b981' },
+    published: { items: [], label: '🚀 פורסם', color: '#a855f7' },
+  };
+
+  filtered.forEach(c => { if (cols[c.status]) cols[c.status].items.push(c); });
+
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = Object.entries(cols).map(([key, col]) => `
+    <div class="kanban-col">
+      <div class="kanban-col-header">
+        <div class="col-title-wrap">
+          <div class="col-dot" style="background:${col.color};box-shadow:0 0 8px ${col.color}66;"></div>
+          <div class="col-title">${col.label}</div>
+        </div>
+        <div class="col-count">${col.items.length}</div>
+      </div>
+      <div class="kanban-cards">
+        ${col.items.length === 0 ? `
+          <div class="empty-state">
+            <div class="empty-icon">○</div>
+            <p>אין תוכן כאן עדיין</p>
+          </div>
+        ` : col.items.map(item => renderCard(item)).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderCard(item) {
+  const p = PLATFORMS[item.platform] || PLATFORMS.instagram;
+  return `
+    <div class="content-card" onclick="openEditModal('${item.id}')" style="--card-color:${p.color}">
+      <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:${p.color};border-radius:0 14px 14px 0;opacity:0.7;"></div>
+      <div class="card-top">
+        <div class="card-title">${item.title}</div>
+        <button class="card-menu-btn" onclick="openCtxMenu(event,'${item.id}')">⋯</button>
+      </div>
+      <div class="card-meta">
+        <span class="platform-tag" style="background:${p.bg};border-color:${p.border};color:${p.color};">
+          ${p.icon} ${p.label}
+        </span>
+        ${item.end ? `<span class="date-tag">📅 ${formatDate(item.end)}</span>` : ''}
+      </div>
+      ${item.desc ? `<div class="card-desc">${item.desc.slice(0,80)}${item.desc.length>80?'...':''}</div>` : ''}
+      <div class="card-actions">
+        <button class="card-action-btn" onclick="advanceStatus(event,'${item.id}')">⏭ קדם</button>
+        <button class="card-action-btn" onclick="openEditModal('${item.id}');event.stopPropagation()">✏️ ערוך</button>
+      </div>
+    </div>
+  `;
+}
+
+// ======== GANTT ========
+function shiftGantt(dir) {
+  if (dir === 0) ganttOffset = 0;
+  else ganttOffset += dir;
+  renderGantt();
+}
+
+function renderGantt() {
+  const today = new Date();
+  const baseDate = new Date(today.getFullYear(), today.getMonth() + ganttOffset, 1);
+
+  // Build 2 months of days
+  const days = [];
+  for (let m = 0; m < 2; m++) {
+    const monthStart = new Date(baseDate.getFullYear(), baseDate.getMonth() + m, 1);
+    const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(monthStart.getFullYear(), monthStart.getMonth(), d);
+      days.push({ date, month: m });
+    }
+  }
+
+  const ganttStart = days[0].date;
+  const ganttEnd = days[days.length-1].date;
+
+  // Group days by month
+  const months = [];
+  let curMonth = null;
+  days.forEach(({date}) => {
+    const key = `${date.getFullYear()}-${date.getMonth()}`;
+    if (!curMonth || curMonth.key !== key) {
+      curMonth = { key, label: date.toLocaleDateString('he-IL', { month: 'long', year: 'numeric' }), days: [] };
+      months.push(curMonth);
+    }
+    curMonth.days.push(date);
+  });
+
+  const dayW = 36;
+  const titleW = 220;
+
+  const isToday = (d) => d.toDateString() === today.toDateString();
+  const isWeekend = (d) => d.getDay() === 5 || d.getDay() === 6; // Fri/Sat for Hebrew
+
+  // Today offset in pixels
+  const todayIdx = days.findIndex(({date}) => isToday(date));
+  const todayPx = todayIdx >= 0 ? todayIdx * dayW + dayW/2 : -1;
+
+  // Filter relevant contents
+  const relevant = contents.filter(c => {
+    if (!c.start && !c.end) return false;
+    const s = c.start ? new Date(c.start + 'T12:00:00') : null;
+    const e = c.end   ? new Date(c.end   + 'T12:00:00') : s;
+    return (e >= ganttStart && s <= ganttEnd);
+  });
+
+  const CELL_W = dayW;
+
+  let html = `<div style="display:flex;flex-direction:column;">`;
+
+  // Header row - months
+  html += `<div style="display:flex;position:sticky;top:0;z-index:10;background:var(--surface2);">`;
+  html += `<div style="width:${titleW}px;flex-shrink:0;padding:12px 16px;border-left:1px solid var(--border);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text-muted);display:flex;align-items:center;">תוכן</div>`;
+  html += `<div style="display:flex;flex:1;overflow:hidden;">`;
+  months.forEach(m => {
+    html += `<div style="display:flex;flex-direction:column;flex-shrink:0;width:${m.days.length * CELL_W}px;border-left:1px solid var(--border);">`;
+    html += `<div style="padding:8px 12px;font-size:12px;font-weight:700;color:var(--text-muted);border-bottom:1px solid var(--border);text-align:center;">${m.label}</div>`;
+    html += `<div style="display:flex;">`;
+    m.days.forEach(d => {
+      const cls = isToday(d) ? 'today' : isWeekend(d) ? 'weekend' : '';
+      const dayNum = d.getDate();
+      html += `<div style="width:${CELL_W}px;flex-shrink:0;padding:6px 2px;text-align:center;font-size:11px;font-weight:${isToday(d)?'800':'500'};color:${isToday(d)?'var(--neon)':isWeekend(d)?'rgba(107,107,138,0.4)':'var(--text-muted)'};background:${isToday(d)?'rgba(124,58,237,0.15)':''};">${dayNum}</div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div></div>`;
+
+  // Rows
+  if (relevant.length === 0) {
+    html += `<div style="padding:40px;text-align:center;color:var(--text-muted);">אין תוכן בטווח זמן זה. הוסף תוכן עם תאריכים!</div>`;
+  } else {
+    relevant.forEach(c => {
+      const p = PLATFORMS[c.platform] || PLATFORMS.instagram;
+      const st = STATUSES[c.status] || STATUSES.idea;
+      const startD = c.start ? new Date(c.start + 'T12:00:00') : new Date(c.end + 'T12:00:00');
+      const endD   = c.end   ? new Date(c.end   + 'T12:00:00') : startD;
+
+      const clampedStart = new Date(Math.max(startD, ganttStart));
+      const clampedEnd   = new Date(Math.min(endD, ganttEnd));
+
+      const startIdx = days.findIndex(({date}) => date.toDateString() === clampedStart.toDateString());
+      const endIdx   = days.findIndex(({date}) => date.toDateString() === clampedEnd.toDateString());
+
+      const barLeft  = (startIdx >= 0 ? startIdx : 0) * CELL_W;
+      const barWidth = ((endIdx >= 0 ? endIdx : days.length-1) - (startIdx >= 0 ? startIdx : 0) + 1) * CELL_W - 4;
+
+      html += `<div style="display:flex;border-bottom:1px solid var(--border);align-items:center;min-height:52px;" onmouseenter="this.style.background='rgba(255,255,255,0.02)'" onmouseleave="this.style.background=''">`;
+      // Title col
+      html += `<div style="width:${titleW}px;flex-shrink:0;padding:10px 16px;border-left:1px solid var(--border);display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="openEditModal('${c.id}')">`;
+      html += `<div style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0;"></div>`;
+      html += `<div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>`;
+      html += `</div>`;
+      // Timeline col
+      html += `<div style="flex:1;position:relative;height:52px;display:flex;align-items:center;">`;
+      // Cells background
+      html += `<div style="display:flex;position:absolute;top:0;left:0;right:0;bottom:0;align-items:stretch;">`;
+      days.forEach(({date}) => {
+        html += `<div style="width:${CELL_W}px;flex-shrink:0;border-left:1px solid rgba(255,255,255,0.03);background:${isToday(date)?'rgba(124,58,237,0.06)':isWeekend(date)?'rgba(0,0,0,0.08)':'transparent'};"></div>`;
+      });
+      html += `</div>`;
+      // Today line
+      if (todayPx >= 0) {
+        html += `<div style="position:absolute;top:0;bottom:0;left:${todayPx}px;width:2px;background:linear-gradient(to bottom,var(--neon),transparent);z-index:5;pointer-events:none;"></div>`;
+      }
+      // Bar
+      if (barWidth > 0) {
+        html += `<div onclick="openEditModal('${c.id}')" style="position:absolute;left:${barLeft+2}px;width:${Math.max(barWidth,24)}px;height:30px;border-radius:8px;background:${st.ganttColor};display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,0.3);transition:filter 0.2s;" onmouseenter="this.style.filter='brightness(1.15)'" onmouseleave="this.style.filter=''">`;
+        if (barWidth > 60) html += `${p.icon} ${c.title}`;
+        else if (barWidth > 24) html += p.icon;
+        html += `</div>`;
+      }
+      html += `</div></div>`;
+    });
+  }
+
+  html += `</div>`;
+  document.getElementById('gantt-container').innerHTML = html;
+}
+
+// ======== IDEAS ========
+function renderIdeas() {
+  const grid = document.getElementById('ideas-grid');
+  if (ideas.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;"><div class="empty-state"><div class="empty-icon">💡</div><p>אין רעיונות עדיין — הוסף את הרעיון הראשון שלך!</p></div></div>`;
+    return;
+  }
+  grid.innerHTML = ideas.map(idea => `
+    <div class="idea-card" onclick="editIdea('${idea.id}')">
+      <div class="idea-emoji">${idea.emoji || '💡'}</div>
+      <div class="idea-title">${idea.title}</div>
+      <div class="idea-body">${idea.body || ''}</div>
+      <div class="idea-tags">${(idea.tags||[]).map(t=>`<span class="idea-tag">#${t}</span>`).join('')}</div>
+      <div style="position:absolute;top:14px;left:14px;display:flex;gap:8px;">
+        <button onclick="convertIdeaToContent(event,'${idea.id}')" class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">+ לתוכן</button>
+        <button onclick="deleteIdea(event,'${idea.id}')" class="btn btn-ghost" style="padding:4px 10px;font-size:11px;color:var(--red);">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ======== ANALYTICS ========
+function renderAnalytics() {
+  const byPlatform = {};
+  const byStatus = {};
+  contents.forEach(c => {
+    byPlatform[c.platform] = (byPlatform[c.platform]||0) + 1;
+    byStatus[c.status] = (byStatus[c.status]||0) + 1;
+  });
+
+  const maxP = Math.max(...Object.values(byPlatform), 1);
+  const maxS = Math.max(...Object.values(byStatus), 1);
+
+  // Monthly distribution
+  const byMonth = {};
+  contents.forEach(c => {
+    if (c.end) {
+      const m = c.end.slice(0,7);
+      byMonth[m] = (byMonth[m]||0) + 1;
+    }
+  });
+
+  const sortedMonths = Object.keys(byMonth).sort().slice(-6);
+  const maxM = Math.max(...sortedMonths.map(m=>byMonth[m]), 1);
+
+  document.getElementById('analytics-grid').innerHTML = `
+    <div class="analytics-card">
+      <div class="analytics-title">📱 לפי פלטפורמה</div>
+      <div class="bar-chart">
+        ${Object.entries(byPlatform).map(([p,v]) => {
+          const pl = PLATFORMS[p] || { label:p, color:'#888' };
+          return `
+            <div class="bar-item">
+              <div class="bar-label-row">
+                <span class="bar-label">${pl.icon||''} ${pl.label||p}</span>
+                <span class="bar-val">${v} פיסות</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:${(v/maxP)*100}%;background:${pl.color};box-shadow:0 0 8px ${pl.color}66;"></div>
+              </div>
+            </div>`;
+        }).join('') || '<div style="color:var(--text-muted);font-size:13px;">אין נתונים עדיין</div>'}
+      </div>
+    </div>
+    <div class="analytics-card">
+      <div class="analytics-title">🎯 לפי סטטוס</div>
+      <div class="bar-chart">
+        ${Object.entries(byStatus).map(([s,v]) => {
+          const st = STATUSES[s] || { label:s, color:'#888' };
+          return `
+            <div class="bar-item">
+              <div class="bar-label-row">
+                <span class="bar-label">${st.label}</span>
+                <span class="bar-val">${v}</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:${(v/maxS)*100}%;background:${st.color};box-shadow:0 0 8px ${st.color}66;"></div>
+              </div>
+            </div>`;
+        }).join('') || '<div style="color:var(--text-muted);font-size:13px;">אין נתונים עדיין</div>'}
+      </div>
+    </div>
+    <div class="analytics-card" style="grid-column:1/-1;">
+      <div class="analytics-title">📅 פרסומים לפי חודש</div>
+      <div style="display:flex;gap:12px;align-items:flex-end;height:120px;padding-top:20px;">
+        ${sortedMonths.length === 0 ? '<div style="color:var(--text-muted);font-size:13px;">אין נתונים עדיין</div>' :
+          sortedMonths.map(m => {
+            const v = byMonth[m];
+            const h = (v/maxM)*90;
+            const label = new Date(m+'-01').toLocaleDateString('he-IL',{month:'short',year:'2-digit'});
+            return `
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
+                <div style="font-size:12px;font-weight:700;color:var(--text-muted);">${v}</div>
+                <div style="width:100%;height:${h}px;background:linear-gradient(to top,var(--accent),var(--accent2));border-radius:6px 6px 0 0;min-height:4px;box-shadow:0 0 10px rgba(124,58,237,0.4);transition:height 0.5s;"></div>
+                <div style="font-size:11px;color:var(--text-muted);">${label}</div>
+              </div>`;
+          }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ======== MODAL ========
+let selectedPlatform = 'instagram';
+
+function selectPlatform(el) {
+  document.querySelectorAll('.platform-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPlatform = el.dataset.platform;
+}
+
+function openModal() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'תוכן חדש ✦';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-status').value = 'idea';
+  selectedPlatform = 'instagram';
+  document.querySelectorAll('.platform-option').forEach(o => o.classList.toggle('selected', o.dataset.platform==='instagram'));
+  const today = new Date().toISOString().slice(0,10);
+  const nextWeek = new Date(Date.now() + 7*86400000).toISOString().slice(0,10);
+  document.getElementById('f-start').value = today;
+  document.getElementById('f-end').value = nextWeek;
+  document.getElementById('contentModal').classList.add('open');
+  setTimeout(() => document.getElementById('f-title').focus(), 100);
+}
+
+function openEditModal(id) {
+  const c = contents.find(x=>x.id===id);
+  if (!c) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = 'ערוך תוכן';
+  document.getElementById('f-title').value = c.title;
+  document.getElementById('f-desc').value = c.desc || '';
+  document.getElementById('f-status').value = c.status;
+  document.getElementById('f-start').value = c.start || '';
+  document.getElementById('f-end').value = c.end || '';
+  selectedPlatform = c.platform;
+  document.querySelectorAll('.platform-option').forEach(o => o.classList.toggle('selected', o.dataset.platform===c.platform));
+  document.getElementById('contentModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('contentModal').classList.remove('open');
+  editingId = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('contentModal')) closeModal();
+}
+
+function saveContent() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { document.getElementById('f-title').style.borderColor='var(--red)'; return; }
+  document.getElementById('f-title').style.borderColor='';
+
+  const data = {
+    title,
+    platform: selectedPlatform,
+    status: document.getElementById('f-status').value,
+    start: document.getElementById('f-start').value,
+    end: document.getElementById('f-end').value,
+    desc: document.getElementById('f-desc').value.trim(),
+  };
+
+  if (editingId) {
+    const idx = contents.findIndex(x=>x.id===editingId);
+    if (idx>=0) contents[idx] = { ...contents[idx], ...data };
+    notify('עודכן בהצלחה! ✓');
+  } else {
+    contents.push({ id:uid(), ...data });
+    notify('נוסף בהצלחה! 🚀');
+  }
+
+  save();
+  closeModal();
+  renderAll();
+}
+
+// ======== STATUS ========
+function advanceStatus(e, id) {
+  e.stopPropagation();
+  const order = ['idea','production','ready','published'];
+  const c = contents.find(x=>x.id===id);
+  if (!c) return;
+  const idx = order.indexOf(c.status);
+  if (idx < order.length - 1) {
+    c.status = order[idx+1];
+    save();
+    renderAll();
+    notify(`${STATUSES[c.status].label} ✓`);
+  }
+}
+
+// ======== CTX MENU ========
+function openCtxMenu(e, id) {
+  e.stopPropagation();
+  ctxId = id;
+  const menu = document.getElementById('ctxMenu');
+  menu.style.top = e.clientY + 'px';
+  menu.style.right = (window.innerWidth - e.clientX) + 'px';
+  menu.style.left = 'auto';
+  menu.classList.add('open');
+}
+
+function ctxEdit() {
+  document.getElementById('ctxMenu').classList.remove('open');
+  openEditModal(ctxId);
+}
+
+function ctxAdvanceStatus() {
+  document.getElementById('ctxMenu').classList.remove('open');
+  advanceStatus({ stopPropagation:()=>{} }, ctxId);
+}
+
+function ctxDelete() {
+  document.getElementById('ctxMenu').classList.remove('open');
+  if (!ctxId) return;
+  const c = contents.find(x=>x.id===ctxId);
+  if (c && confirm(`למחוק את "${c.title}"?`)) {
+    contents = contents.filter(x=>x.id!==ctxId);
+    save();
+    renderAll();
+    notify('נמחק', '🗑️');
+  }
+}
+
+// ======== TABS ========
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ======== IDEA MODAL ========
+let editingIdeaId = null;
+
+function openIdeaModal() {
+  editingIdeaId = null;
+  document.getElementById('i-title').value = '';
+  document.getElementById('i-emoji').value = '';
+  document.getElementById('i-body').value = '';
+  document.getElementById('i-tags').value = '';
+  document.getElementById('ideaModal').classList.add('open');
+  setTimeout(() => document.getElementById('i-title').focus(), 100);
+}
+
+function closeIdeaModal() {
+  document.getElementById('ideaModal').classList.remove('open');
+}
+
+function handleIdeaOverlayClick(e) {
+  if (e.target === document.getElementById('ideaModal')) closeIdeaModal();
+}
+
+function saveIdea() {
+  const title = document.getElementById('i-title').value.trim();
+  if (!title) { document.getElementById('i-title').style.borderColor='var(--red)'; return; }
+  document.getElementById('i-title').style.borderColor='';
+
+  const data = {
+    title,
+    emoji: document.getElementById('i-emoji').value.trim() || '💡',
+    body: document.getElementById('i-body').value.trim(),
+    tags: document.getElementById('i-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+  };
+
+  if (editingIdeaId) {
+    const idx = ideas.findIndex(x=>x.id===editingIdeaId);
+    if (idx>=0) ideas[idx] = { ...ideas[idx], ...data };
+  } else {
+    ideas.push({ id:uid(), ...data });
+  }
+
+  save();
+  closeIdeaModal();
+  renderIdeas();
+  notify('רעיון נשמר! 💡');
+}
+
+function editIdea(id) {
+  const idea = ideas.find(x=>x.id===id);
+  if (!idea) return;
+  editingIdeaId = id;
+  document.getElementById('i-title').value = idea.title;
+  document.getElementById('i-emoji').value = idea.emoji || '';
+  document.getElementById('i-body').value = idea.body || '';
+  document.getElementById('i-tags').value = (idea.tags||[]).join(', ');
+  document.getElementById('ideaModal').classList.add('open');
+}
+
+function deleteIdea(e, id) {
+  e.stopPropagation();
+  ideas = ideas.filter(x=>x.id!==id);
+  save();
+  renderIdeas();
+  notify('רעיון נמחק', '🗑️');
+}
+
+function convertIdeaToContent(e, id) {
+  e.stopPropagation();
+  const idea = ideas.find(x=>x.id===id);
+  if (!idea) return;
+  // Pre-fill content modal with idea data
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'המר רעיון לתוכן';
+  document.getElementById('f-title').value = idea.title;
+  document.getElementById('f-desc').value = idea.body || '';
+  document.getElementById('f-status').value = 'idea';
+  selectedPlatform = 'instagram';
+  document.querySelectorAll('.platform-option').forEach(o => o.classList.toggle('selected', o.dataset.platform==='instagram'));
+  const today = new Date().toISOString().slice(0,10);
+  const nextWeek = new Date(Date.now() + 7*86400000).toISOString().slice(0,10);
+  document.getElementById('f-start').value = today;
+  document.getElementById('f-end').value = nextWeek;
+  // Switch to board tab first
+  document.getElementById('contentModal').classList.add('open');
+  notify('מלא את הפרטים ושמור! ✦');
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closeIdeaModal();
+    document.getElementById('ctxMenu').classList.remove('open');
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+    e.preventDefault();
+    openModal();
+  }
+});
+</script>
+</body>
+</html>
