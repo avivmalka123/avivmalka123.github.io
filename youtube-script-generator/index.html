@@ -13,7 +13,7 @@
   --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
   --border:rgba(255,255,255,0.08); --text:#e8e8f0; --muted:#6b6b8a;
   --accent:#7c3aed; --pink:#ec4899; --green:#10b981; --red:#ef4444;
-  --cyan:#06b6d4; --glow:rgba(124,58,237,0.35);
+  --cyan:#06b6d4; --amber:#f59e0b; --glow:rgba(124,58,237,0.35);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;direction:rtl;}
@@ -21,10 +21,12 @@ body::before{content:'';position:fixed;top:-30%;right:-10%;width:600px;height:60
   background:radial-gradient(circle,rgba(124,58,237,0.1) 0%,transparent 65%);
   pointer-events:none;animation:drift 20s ease-in-out infinite alternate;z-index:0;}
 @keyframes drift{0%{transform:translate(0,0)}100%{transform:translate(40px,60px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.4)}50%{box-shadow:0 0 0 8px rgba(124,58,237,0)}}
 
+/* Nav */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;
-  background:rgba(8,8,16,0.9);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
+  background:rgba(8,8,16,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;padding:0 32px;}
 .logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;text-decoration:none;color:var(--text);}
 .logo-dot{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--pink));
@@ -34,134 +36,130 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;
   border-radius:8px;border:1px solid var(--border);transition:all 0.2s;}
 .back:hover{color:var(--text);background:var(--surface2);}
 
-.page{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:96px 24px 80px;}
+/* Page */
+.page{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:94px 24px 80px;}
 
-.page-header{text-align:center;margin-bottom:44px;}
-.page-header h1{font-size:clamp(28px,5vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px;}
+/* Header */
+.ph{text-align:center;margin-bottom:40px;}
+.ph h1{font-size:clamp(26px,5vw,42px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:10px;}
 .gr{font-style:normal;background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.page-header p{font-size:15px;color:var(--muted);line-height:1.6;}
+.ph p{font-size:14px;color:var(--muted);line-height:1.6;}
 
 /* Settings */
-.settings-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:18px;overflow:hidden;}
-.stoggle{width:100%;display:flex;align-items:center;justify-content:space-between;
-  padding:14px 20px;background:none;border:none;color:var(--muted);
-  font-family:'Heebo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-align:right;transition:color 0.2s;}
-.stoggle:hover{color:var(--text);}
-.stoggle .arr{transition:transform 0.25s;font-size:11px;}
-.stoggle.open .arr{transform:rotate(180deg);}
-.sbody{display:none;padding:4px 20px 20px;}
-.sbody.open{display:block;}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.field{display:flex;flex-direction:column;gap:5px;}
-.field.full{grid-column:1/-1;}
-.field label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
-.field input{background:var(--surface2);border:1px solid var(--border);border-radius:9px;
+.sw{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:16px;overflow:hidden;}
+.st{width:100%;display:flex;align-items:center;justify-content:space-between;padding:13px 20px;
+  background:none;border:none;color:var(--muted);font-family:'Heebo',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;text-align:right;transition:color 0.2s;}
+.st:hover{color:var(--text);}
+.st .ar{transition:transform 0.25s;font-size:11px;}
+.st.open .ar{transform:rotate(180deg);}
+.sb{display:none;padding:4px 20px 20px;}
+.sb.open{display:block;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.f{display:flex;flex-direction:column;gap:5px;}
+.f.full{grid-column:1/-1;}
+.f label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+.f input{background:var(--surface2);border:1px solid var(--border);border-radius:9px;
   padding:9px 12px;color:var(--text);font-family:'Heebo',sans-serif;font-size:13px;
   outline:none;transition:border-color 0.2s;width:100%;}
-.field input[type=password]{direction:ltr;text-align:right;}
-.field input:focus{border-color:var(--accent);}
-.field input::placeholder{color:var(--muted);}
-.field-note{font-size:11px;color:var(--muted);margin-top:3px;}
-.field-note a{color:var(--cyan);text-decoration:none;}
-.field-note a:hover{text-decoration:underline;}
-.key-ok{font-size:11px;color:var(--green);}
+.f input[type=password]{direction:ltr;text-align:right;}
+.f input:focus{border-color:var(--accent);}
+.f input::placeholder{color:var(--muted);}
+.fn{font-size:11px;color:var(--muted);margin-top:3px;}
+.fn a{color:var(--cyan);text-decoration:none;}
+.fn a:hover{text-decoration:underline;}
+.chips{display:flex;gap:8px;margin-top:10px;}
+.chip{display:flex;align-items:center;gap:5px;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700;}
+.chip.ok{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);color:#34d399;}
+.chip.no{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;}
 
-/* API keys status bar */
-.keys-status{display:flex;gap:10px;margin-top:12px;}
-.key-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;}
-.key-chip.set{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);color:#34d399;}
-.key-chip.missing{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;}
+/* Drop Zone */
+.dropzone{background:var(--surface);border:2px dashed rgba(168,85,247,0.3);border-radius:20px;
+  padding:48px 24px;text-align:center;margin-bottom:16px;cursor:pointer;
+  transition:all 0.25s;position:relative;}
+.dropzone:hover,.dropzone.drag{border-color:rgba(168,85,247,0.7);background:rgba(124,58,237,0.05);}
+.dropzone.has-file{border-style:solid;border-color:rgba(168,85,247,0.5);background:rgba(124,58,237,0.04);}
+.dz-icon{font-size:42px;margin-bottom:14px;display:block;}
+.dz-title{font-size:17px;font-weight:800;margin-bottom:6px;}
+.dz-sub{font-size:13px;color:var(--muted);}
+.dz-formats{font-size:11px;color:var(--muted);margin-top:8px;}
+.dz-file{display:none;align-items:center;gap:12px;background:var(--surface2);
+  border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-top:16px;text-align:right;}
+.dz-file.show{display:flex;}
+.dz-file-icon{font-size:24px;flex-shrink:0;}
+.dz-file-name{font-size:14px;font-weight:700;flex:1;}
+.dz-file-size{font-size:12px;color:var(--muted);}
+.dz-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;
+  padding:4px;line-height:1;flex-shrink:0;transition:color 0.2s;}
+.dz-remove:hover{color:var(--red);}
+#fileInput{display:none;}
 
-/* URL Box */
-.url-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:20px;margin-bottom:14px;transition:border-color 0.2s,box-shadow 0.2s;}
-.url-box:focus-within{border-color:rgba(168,85,247,0.4);box-shadow:0 0 0 4px rgba(124,58,237,0.08);}
-.url-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
-.url-row{display:flex;gap:10px;}
-.url-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;
-  padding:12px 16px;color:var(--text);font-family:'Heebo',sans-serif;font-size:14px;
-  outline:none;transition:border-color 0.2s;direction:ltr;text-align:left;}
-.url-input:focus{border-color:rgba(168,85,247,0.5);}
-.url-input::placeholder{color:var(--muted);}
-.go-btn{padding:12px 22px;background:linear-gradient(135deg,var(--accent),var(--pink));
-  border:none;border-radius:10px;color:white;font-family:'Heebo',sans-serif;
-  font-size:14px;font-weight:700;cursor:pointer;
-  box-shadow:0 4px 20px rgba(124,58,237,0.4);transition:all 0.2s;
-  white-space:nowrap;display:flex;align-items:center;gap:8px;}
-.go-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,58,237,0.5);}
+/* Upload bar */
+.upload-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-top:12px;display:none;}
+.upload-bar.show{display:block;}
+.upload-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--pink));
+  border-radius:2px;transition:width 0.3s;width:0%;}
+
+/* Go button */
+.go-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--pink));
+  border:none;border-radius:12px;color:white;font-family:'Heebo',sans-serif;
+  font-size:15px;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 24px rgba(124,58,237,0.4);transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;}
+.go-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 32px rgba(124,58,237,0.55);}
 .go-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-@keyframes spin{to{transform:rotate(360deg)}}
 .spin{animation:spin 0.8s linear infinite;display:inline-block;}
 
 /* Progress */
-.progress-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:24px;margin-bottom:14px;display:none;}
-.progress-box.show{display:block;}
-.step-list{display:flex;flex-direction:column;gap:14px;}
-.step{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);transition:color 0.3s;}
+.prog{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:22px 24px;margin-bottom:16px;display:none;}
+.prog.show{display:block;}
+.steps{display:flex;flex-direction:column;gap:14px;}
+.step{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--muted);transition:color 0.3s;}
 .step.active{color:var(--text);}
 .step.done{color:var(--green);}
 .step.err{color:var(--red);}
-.step-ico{width:28px;height:28px;border-radius:50%;background:var(--surface2);
-  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;flex-shrink:0;transition:all 0.3s;}
-.step.active .step-ico{background:var(--accent);border-color:var(--accent);color:white;animation:pulse-ico 1.2s infinite;}
-.step.done  .step-ico{background:var(--green);border-color:var(--green);color:white;}
-.step.err   .step-ico{background:var(--red);border-color:var(--red);color:white;}
-@keyframes pulse-ico{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,0.4)}50%{box-shadow:0 0 0 8px rgba(124,58,237,0)}}
-.step-detail{font-size:12px;color:var(--muted);margin-top:2px;}
-
-/* Timer */
-.timer-row{display:flex;align-items:center;gap:8px;margin-top:14px;
-  padding:10px 14px;background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.15);
-  border-radius:10px;font-size:12px;color:var(--cyan);display:none;}
-.timer-row.show{display:flex;}
-.timer-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse-ico 1.2s infinite;}
+.si{width:28px;height:28px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  flex-shrink:0;transition:all 0.3s;margin-top:1px;}
+.step.active .si{background:var(--accent);border-color:var(--accent);color:white;animation:pulse 1.2s infinite;}
+.step.done .si{background:var(--green);border-color:var(--green);color:white;}
+.step.err .si{background:var(--red);border-color:var(--red);color:white;}
+.step-info{flex:1;}
+.step-label{font-weight:600;}
+.step-detail{font-size:11px;color:var(--muted);margin-top:3px;}
+.timer{display:flex;align-items:center;gap:8px;margin-top:14px;padding:9px 14px;
+  background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.15);border-radius:9px;
+  font-size:12px;color:var(--cyan);display:none;}
+.timer.show{display:flex;}
+.tdot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 1.2s infinite;}
 
 /* Error */
-.err-box{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);
+.errb{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);
   border-radius:12px;padding:14px 16px;font-size:13px;color:#fca5a5;line-height:1.6;
-  margin-bottom:12px;display:none;}
-.err-box.show{display:block;}
-
-/* Manual */
-.manual-box{background:var(--surface);border:1px solid rgba(245,158,11,0.25);
-  border-radius:16px;padding:20px;margin-bottom:12px;display:none;}
-.manual-box.show{display:block;}
-.manual-box label{font-size:12px;font-weight:700;color:#f59e0b;text-transform:uppercase;
-  letter-spacing:0.5px;display:flex;align-items:center;gap:6px;margin-bottom:12px;}
-.manual-box textarea{width:100%;background:var(--surface2);border:1px solid var(--border);
-  border-radius:10px;padding:12px;color:var(--text);font-family:'Heebo',sans-serif;
-  font-size:13px;outline:none;resize:vertical;min-height:100px;direction:rtl;
-  transition:border-color 0.2s;}
-.manual-box textarea:focus{border-color:var(--accent);}
-.manual-btn{margin-top:10px;width:100%;padding:11px;
-  background:linear-gradient(135deg,var(--accent),var(--pink));
-  border:none;border-radius:10px;color:white;font-family:'Heebo',sans-serif;
-  font-size:14px;font-weight:700;cursor:pointer;transition:opacity 0.2s;}
-.manual-btn:hover{opacity:0.9;}
+  margin-bottom:14px;display:none;}
+.errb.show{display:block;}
 
 /* Output */
-.output-box{background:var(--surface);border:1px solid rgba(16,185,129,0.25);
-  border-radius:16px;overflow:hidden;margin-bottom:12px;display:none;
-  box-shadow:0 0 40px rgba(16,185,129,0.06);}
-.output-box.show{display:block;}
-.output-header{padding:16px 20px;border-bottom:1px solid var(--border);
+.outbox{background:var(--surface);border:1px solid rgba(16,185,129,0.3);border-radius:16px;
+  overflow:hidden;margin-bottom:16px;display:none;box-shadow:0 0 40px rgba(16,185,129,0.06);}
+.outbox.show{display:block;}
+.outh{padding:16px 20px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.output-title{font-size:14px;font-weight:800;}
-.output-meta{font-size:11px;color:var(--muted);}
-.output-actions{display:flex;gap:8px;flex-shrink:0;}
-.abtn{padding:7px 14px;border-radius:8px;border:none;font-family:'Heebo',sans-serif;
+.out-title{font-size:14px;font-weight:800;}
+.out-meta{font-size:11px;color:var(--muted);}
+.out-actions{display:flex;gap:8px;flex-shrink:0;}
+.ab{padding:7px 14px;border-radius:8px;border:none;font-family:'Heebo',sans-serif;
   font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
-.abtn-copy{background:var(--surface2);border:1px solid var(--border);color:var(--text);}
-.abtn-copy:hover{background:var(--surface3);}
-.abtn-pdf{background:linear-gradient(135deg,#10b981,#059669);color:white;}
-.abtn-pdf:hover{transform:translateY(-1px);}
-.output-script{padding:24px;font-size:14px;line-height:1.85;white-space:pre-wrap;
+.ab-copy{background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+.ab-copy:hover{background:var(--surface3);}
+.ab-pdf{background:linear-gradient(135deg,#10b981,#059669);color:white;}
+.ab-pdf:hover{transform:translateY(-1px);}
+.outscript{padding:24px;font-size:14px;line-height:1.85;white-space:pre-wrap;
   direction:rtl;max-height:620px;overflow-y:auto;}
-.output-script::-webkit-scrollbar{width:4px;}
-.output-script::-webkit-scrollbar-track{background:transparent;}
-.output-script::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px;}
+.outscript::-webkit-scrollbar{width:4px;}
+.outscript::-webkit-scrollbar-track{background:transparent;}
+.outscript::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px;}
 .slabel{display:block;font-size:11px;font-weight:800;color:var(--accent);
   text-transform:uppercase;letter-spacing:1px;margin:20px 0 6px;padding:4px 10px;
   background:rgba(124,58,237,0.1);border-right:3px solid var(--accent);border-radius:0 6px 6px 0;}
@@ -173,8 +171,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;
   transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
   box-shadow:0 8px 32px rgba(0,0,0,0.5);white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
-.toast.t-ok{border-color:rgba(16,185,129,0.4);color:#34d399;}
-.toast.t-err{border-color:rgba(239,68,68,0.4);color:#f87171;}
+.toast.ok{border-color:rgba(16,185,129,0.4);color:#34d399;}
+.toast.er{border-color:rgba(239,68,68,0.4);color:#f87171;}
 
 #pdfArea{position:fixed;top:-9999px;right:-9999px;width:820px;background:white;
   color:#111;font-family:Arial,sans-serif;direction:rtl;text-align:right;padding:52px;}
@@ -189,129 +187,124 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;
 
 <div class="page">
 
-  <div class="page-header">
-    <h1>🎬 <em class="gr">Script Generator</em></h1>
-    <p>מדביק לינק יוטיוב → מאזין לאודיו → מתמלל → כותב סקריפט בעברית גבוהה</p>
+  <div class="ph">
+    <h1>🎙️ <em class="gr">Script Generator</em></h1>
+    <p>מעלה קובץ אודיו → מתמלל עם AssemblyAI → כותב סקריפט בעברית גבוהה עם Claude</p>
   </div>
 
   <!-- Settings -->
-  <div class="settings-wrap">
-    <button class="stoggle" id="stoggle" onclick="toggleSettings()">
+  <div class="sw">
+    <button class="st" id="stBtn" onclick="toggleSettings()">
       <span>⚙️ &nbsp;הגדרות — API Keys + פרופיל</span>
-      <span class="arr">▼</span>
+      <span class="ar">▼</span>
     </button>
-    <div class="sbody" id="sbody">
-      <div class="fields">
-
-        <div class="field">
-          <label>AssemblyAI Key <span style="color:var(--red)">*</span> — לתמלול אודיו</label>
-          <input type="password" id="aaiKey" placeholder="מפתח AssemblyAI..." oninput="saveSettings()">
-          <span class="field-note">
-            קבל מפתח חינמי (כולל $50 קרדיט) ←
-            <a href="https://www.assemblyai.com/" target="_blank">assemblyai.com</a>
-          </span>
+    <div class="sb" id="stBody">
+      <div class="fg">
+        <div class="f">
+          <label>AssemblyAI Key * — לתמלול</label>
+          <input type="password" id="aaiKey" placeholder="מפתח AssemblyAI..." oninput="save()">
+          <span class="fn">הרשמה חינמית ← <a href="https://www.assemblyai.com/" target="_blank">assemblyai.com</a> ($50 קרדיט)</span>
         </div>
-
-        <div class="field">
-          <label>Claude Key <span style="color:var(--red)">*</span> — לכתיבת סקריפט</label>
-          <input type="password" id="claudeKey" placeholder="sk-ant-api03-..." oninput="saveSettings()">
-          <span class="field-note">
-            קבל מפתח ←
-            <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a>
-          </span>
+        <div class="f">
+          <label>Claude Key * — לסקריפט</label>
+          <input type="password" id="clKey" placeholder="sk-ant-api03-..." oninput="save()">
+          <span class="fn">← <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></span>
         </div>
-
-        <div class="field">
+        <div class="f">
           <label>השם / המותג שלך</label>
-          <input type="text" id="userName" placeholder="Aviv Malka" oninput="saveSettings()">
+          <input type="text" id="uName" placeholder="Aviv Malka" oninput="save()">
         </div>
-
-        <div class="field">
+        <div class="f">
           <label>תחום האיקומרס</label>
-          <input type="text" id="userNiche" placeholder="דרופשיפינג, אמזון FBA..." oninput="saveSettings()">
+          <input type="text" id="uNiche" placeholder="דרופשיפינג, אמזון FBA..." oninput="save()">
         </div>
-
-        <div class="field full">
+        <div class="f full">
           <label>קהל יעד / סגנון</label>
-          <input type="text" id="userAudience" placeholder="יזמים 20-35, TikTok + Shopify, סגנון ישיר ואמיתי..." oninput="saveSettings()">
+          <input type="text" id="uAud" placeholder="יזמים 20-35, TikTok + Shopify, ישיר ואמיתי..." oninput="save()">
         </div>
-
       </div>
-      <div class="keys-status">
-        <div class="key-chip" id="chipAAI"><span>●</span> AssemblyAI</div>
-        <div class="key-chip" id="chipClaude"><span>●</span> Claude</div>
+      <div class="chips">
+        <div class="chip" id="chipA">● AssemblyAI</div>
+        <div class="chip" id="chipC">● Claude</div>
       </div>
     </div>
   </div>
 
-  <!-- URL Input -->
-  <div class="url-box">
-    <div class="url-label">לינק לסרטון יוטיוב</div>
-    <div class="url-row">
-      <input type="text" class="url-input" id="urlInput"
-        placeholder="https://www.youtube.com/watch?v=..."
-        onkeydown="if(event.key==='Enter') startProcess()">
-      <button class="go-btn" id="goBtn" onclick="startProcess()">
-        <span id="goBtnIcon">✨</span>
-        <span id="goBtnText">צור סקריפט</span>
-      </button>
+  <!-- Drop Zone -->
+  <div class="dropzone" id="dropzone"
+    onclick="document.getElementById('fileInput').click()"
+    ondragover="onDragOver(event)"
+    ondragleave="onDragLeave(event)"
+    ondrop="onDrop(event)">
+    <span class="dz-icon" id="dzIcon">🎵</span>
+    <div class="dz-title" id="dzTitle">גרור קובץ אודיו לכאן</div>
+    <div class="dz-sub" id="dzSub">או לחץ לבחירת קובץ</div>
+    <div class="dz-formats">MP3 · MP4 · WAV · M4A · AAC · OGG · WEBM</div>
+    <div class="dz-file" id="dzFile">
+      <span class="dz-file-icon">🎵</span>
+      <div>
+        <div class="dz-file-name" id="dzFileName"></div>
+        <div class="dz-file-size" id="dzFileSize"></div>
+      </div>
+      <button class="dz-remove" onclick="removeFile(event)">✕</button>
     </div>
+    <div class="upload-bar" id="uploadBar"><div class="upload-fill" id="uploadFill"></div></div>
   </div>
+  <input type="file" id="fileInput" accept="audio/*,video/mp4,video/webm" onchange="onFileSelect(event)">
+
+  <!-- Go -->
+  <button class="go-btn" id="goBtn" onclick="startProcess()">
+    <span id="goBtnIcon">✨</span>
+    <span id="goBtnText">תמלל וצור סקריפט</span>
+  </button>
 
   <!-- Progress -->
-  <div class="progress-box" id="progressBox">
-    <div class="step-list">
+  <div class="prog" id="prog">
+    <div class="steps">
       <div class="step" id="s0">
-        <div class="step-ico" id="s0i">1</div>
-        <div>
-          <div>שליפת קובץ האודיו מיוטיוב</div>
+        <div class="si" id="s0i">1</div>
+        <div class="step-info">
+          <div class="step-label">העלאת הקובץ ל-AssemblyAI</div>
           <div class="step-detail" id="s0d"></div>
         </div>
       </div>
       <div class="step" id="s1">
-        <div class="step-ico" id="s1i">2</div>
-        <div>
-          <div>תמלול אודיו עם AssemblyAI</div>
-          <div class="step-detail" id="s1d">מאזין לסרטון ומתמלל...</div>
+        <div class="si" id="s1i">2</div>
+        <div class="step-info">
+          <div class="step-label">תמלול — מאזין לאודיו</div>
+          <div class="step-detail" id="s1d">ממתין...</div>
         </div>
       </div>
       <div class="step" id="s2">
-        <div class="step-ico" id="s2i">3</div>
-        <div>
-          <div>כתיבת סקריפט עם Claude</div>
+        <div class="si" id="s2i">3</div>
+        <div class="step-info">
+          <div class="step-label">כתיבת סקריפט עם Claude</div>
           <div class="step-detail" id="s2d"></div>
         </div>
       </div>
     </div>
-    <div class="timer-row" id="timerRow">
-      <div class="timer-dot"></div>
-      <span id="timerText">ממתין לתמלול... <span id="timerCount">0</span> שניות</span>
+    <div class="timer" id="timer">
+      <div class="tdot"></div>
+      <span>מתמלל... <span id="timerN">0</span> שניות</span>
     </div>
   </div>
 
   <!-- Error -->
-  <div class="err-box" id="errBox"></div>
-
-  <!-- Manual Fallback -->
-  <div class="manual-box" id="manualBox">
-    <label>⚠️ לא הצלחנו לשלוף — הדבק תמלול ידנית</label>
-    <textarea id="manualText" placeholder="הדבק כאן את תוכן / תמלול הסרטון..."></textarea>
-    <button class="manual-btn" onclick="runManual()">✨ יצור סקריפט מהטקסט</button>
-  </div>
+  <div class="errb" id="errb"></div>
 
   <!-- Output -->
-  <div class="output-box" id="outputBox">
-    <div class="output-header">
+  <div class="outbox" id="outbox">
+    <div class="outh">
       <div>
-        <div class="output-title" id="outTitle">הסקריפט מוכן ✓</div>
-        <div class="output-meta" id="outMeta"></div>
+        <div class="out-title" id="outTitle">הסקריפט מוכן ✓</div>
+        <div class="out-meta"  id="outMeta"></div>
       </div>
-      <div class="output-actions">
-        <button class="abtn abtn-copy" onclick="copyScript()">📋 העתק</button>
-        <button class="abtn abtn-pdf"  onclick="dlPDF()">📄 PDF</button>
+      <div class="out-actions">
+        <button class="ab ab-copy" onclick="copyScript()">📋 העתק</button>
+        <button class="ab ab-pdf"  onclick="dlPDF()">📄 PDF</button>
       </div>
     </div>
-    <div class="output-script" id="outScript"></div>
+    <div class="outscript" id="outScript"></div>
   </div>
 
 </div>
@@ -321,229 +314,231 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;
 
 <script>
 // ── State ──
-let S = { aaiKey:'', claudeKey:'', userName:'', userNiche:'', userAudience:'' };
-let vidTitle = '', transcript = '', script = '', wc = 0;
-let timerInterval = null, timerSec = 0;
+let S = { aaiKey:'', clKey:'', uName:'', uNiche:'', uAud:'' };
+let selectedFile = null;
+let transcript = '', script = '', wc = 0;
+let timerIv = null, timerN = 0;
 
 // ── Init ──
 loadSettings();
 
 // ── Settings ──
-function saveSettings() {
-  S.aaiKey      = v('aaiKey');
-  S.claudeKey   = v('claudeKey');
-  S.userName    = v('userName');
-  S.userNiche   = v('userNiche');
-  S.userAudience= v('userAudience');
-  localStorage.setItem('sg3', JSON.stringify(S));
-  updateChips();
+function save() {
+  S.aaiKey = g('aaiKey'); S.clKey  = g('clKey');
+  S.uName  = g('uName');  S.uNiche = g('uNiche'); S.uAud = g('uAud');
+  localStorage.setItem('sg4', JSON.stringify(S));
+  refreshChips();
 }
 function loadSettings() {
   try {
-    const s = JSON.parse(localStorage.getItem('sg3')||'{}');
-    Object.assign(S, s);
-    if(s.aaiKey)       document.getElementById('aaiKey').value       = s.aaiKey;
-    if(s.claudeKey)    document.getElementById('claudeKey').value    = s.claudeKey;
-    if(s.userName)     document.getElementById('userName').value     = s.userName;
-    if(s.userNiche)    document.getElementById('userNiche').value    = s.userNiche;
-    if(s.userAudience) document.getElementById('userAudience').value = s.userAudience;
+    const d = JSON.parse(localStorage.getItem('sg4')||'{}');
+    Object.assign(S, d);
+    ['aaiKey','clKey','uName','uNiche','uAud'].forEach(id => {
+      if(d[id]) document.getElementById(id).value = d[id];
+    });
   } catch(e) {}
-  updateChips();
+  refreshChips();
 }
-function updateChips() {
-  chip('chipAAI',    !!S.aaiKey);
-  chip('chipClaude', !!S.claudeKey);
+function refreshChips() {
+  setChip('chipA', !!S.aaiKey);
+  setChip('chipC', !!S.clKey);
 }
-function chip(id, ok) {
+function setChip(id, ok) {
   const el = document.getElementById(id);
-  el.className = 'key-chip ' + (ok ? 'set' : 'missing');
-  el.querySelector('span').textContent = ok ? '✓' : '✗';
+  el.className = 'chip ' + (ok ? 'ok' : 'no');
+  el.querySelector ? null : null;
+  el.innerHTML = (ok ? '✓ ' : '✗ ') + el.innerHTML.replace(/^[✓✗] /,'');
 }
 function toggleSettings() {
-  const b = document.getElementById('sbody'), btn = document.getElementById('stoggle');
-  const o = b.classList.toggle('open');
-  btn.classList.toggle('open', o);
+  const b = document.getElementById('stBody'), btn = document.getElementById('stBtn');
+  btn.classList.toggle('open', b.classList.toggle('open'));
 }
 function openSettings() {
-  document.getElementById('sbody').classList.add('open');
-  document.getElementById('stoggle').classList.add('open');
+  document.getElementById('stBody').classList.add('open');
+  document.getElementById('stBtn').classList.add('open');
 }
 
-// ── Steps ──
+// ── File handling ──
+function onFileSelect(e) {
+  const f = e.target.files[0];
+  if (f) setFile(f);
+}
+function onDragOver(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.add('drag');
+}
+function onDragLeave(e) {
+  document.getElementById('dropzone').classList.remove('drag');
+}
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f) setFile(f);
+}
+function setFile(f) {
+  selectedFile = f;
+  document.getElementById('dzFileName').textContent = f.name;
+  document.getElementById('dzFileSize').textContent = formatSize(f.size);
+  document.getElementById('dzFile').classList.add('show');
+  document.getElementById('dzIcon').textContent = '✅';
+  document.getElementById('dzTitle').textContent = 'קובץ נבחר';
+  document.getElementById('dzSub').textContent   = 'לחץ "תמלל וצור סקריפט" כדי להתחיל';
+  document.getElementById('dropzone').classList.add('has-file');
+}
+function removeFile(e) {
+  e.stopPropagation();
+  selectedFile = null;
+  document.getElementById('dzFile').classList.remove('show');
+  document.getElementById('dzIcon').textContent  = '🎵';
+  document.getElementById('dzTitle').textContent = 'גרור קובץ אודיו לכאן';
+  document.getElementById('dzSub').textContent   = 'או לחץ לבחירת קובץ';
+  document.getElementById('dropzone').classList.remove('has-file');
+  document.getElementById('fileInput').value = '';
+  document.getElementById('uploadBar').classList.remove('show');
+}
+function formatSize(b) {
+  if (b > 1048576) return (b/1048576).toFixed(1) + ' MB';
+  return (b/1024).toFixed(0) + ' KB';
+}
+
+// ── Steps UI ──
 function setStep(i, state, detail) {
-  const el = document.getElementById('s'+i), ico = document.getElementById('s'+i+'i'), det = document.getElementById('s'+i+'d');
+  const el = document.getElementById('s'+i);
+  const ic = document.getElementById('s'+i+'i');
+  const dt = document.getElementById('s'+i+'d');
   el.className = 'step ' + state;
-  ico.innerHTML = state==='done' ? '✓' : state==='err' ? '✗' : i+1;
-  if(det && detail !== undefined) det.textContent = detail;
+  ic.textContent = state==='done' ? '✓' : state==='err' ? '✗' : i+1;
+  if (dt && detail !== undefined) dt.textContent = detail;
 }
-function resetAll() {
+function resetSteps() {
   [0,1,2].forEach(i => setStep(i,'',''));
-  document.getElementById('timerRow').classList.remove('show');
-  clearInterval(timerInterval);
+  stopTimer();
 }
 
-// ── Video ID ──
-function extractId(url) {
-  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-  return m ? m[1] : null;
+// ── Timer ──
+function startTimer() {
+  timerN = 0;
+  document.getElementById('timer').classList.add('show');
+  timerIv = setInterval(() => {
+    timerN++;
+    document.getElementById('timerN').textContent = timerN;
+    setStep(1, 'active', `מתמלל... (${timerN} שניות)`);
+  }, 1000);
+}
+function stopTimer() {
+  clearInterval(timerIv);
+  document.getElementById('timer').classList.remove('show');
 }
 
-// ── STEP 1: Get Audio URL ──
-// Strategy: try Invidious (public YT proxy, no key needed) → then Piped → fail
-async function getAudioUrl(videoId) {
+// ── Upload to AssemblyAI ──
+async function uploadFile(file, apiKey) {
+  // Show upload bar
+  const bar  = document.getElementById('uploadBar');
+  const fill = document.getElementById('uploadFill');
+  bar.classList.add('show');
 
-  // ── Method A: Invidious instances ──
-  // Invidious is an open-source YT frontend with CORS-friendly API.
-  // ?local=true returns proxy URLs served through Invidious itself —
-  // accessible from any IP including AssemblyAI's servers.
-  const INVIDIOUS = [
-    'https://invidious.io.lol',
-    'https://inv.tux.pizza',
-    'https://invidious.nerdvpn.de',
-    'https://invidious.privacydev.net',
-    'https://yt.cdaut.de',
-    'https://invidious.drgns.space',
-  ];
-  for (const base of INVIDIOUS) {
-    try {
-      const res = await fetch(
-        `${base}/api/v1/videos/${videoId}?local=true&fields=title,adaptiveFormats`,
-        { headers:{'Accept':'application/json'}, signal: AbortSignal.timeout(9000) }
-      );
-      if (!res.ok) continue;
-      const data = await res.json();
-      if (data.error) continue;
-      const title = data.title || '';
-      const fmts  = (data.adaptiveFormats || [])
-        .filter(f => f.type?.includes('audio/') && f.url)
-        .sort((a,b) => (b.bitrate||0)-(a.bitrate||0));
-      if (fmts.length > 0) {
-        console.log('Got audio via Invidious:', base);
-        return { audioUrl: fmts[0].url, title };
-      }
-    } catch(e) { continue; }
+  // Read file as ArrayBuffer
+  const buf = await file.arrayBuffer();
+
+  // Simulate progress while uploading (real XHR progress is complex with fetch)
+  let prog = 0;
+  const progIv = setInterval(() => {
+    prog = Math.min(prog + 8, 90);
+    fill.style.width = prog + '%';
+  }, 200);
+
+  const res = await fetch('https://api.assemblyai.com/v2/upload', {
+    method: 'POST',
+    headers: {
+      'Authorization': apiKey,
+      'Content-Type': file.type || 'audio/mpeg',
+    },
+    body: buf
+  });
+
+  clearInterval(progIv);
+  fill.style.width = '100%';
+  setTimeout(() => bar.classList.remove('show'), 600);
+
+  if (!res.ok) {
+    const e = await res.json().catch(()=>({}));
+    throw new Error(e?.error || `Upload failed (${res.status})`);
   }
-
-  // ── Method B: Piped instances ──
-  const PIPED = [
-    'https://pipedapi.kavin.rocks',
-    'https://piped-api.garudalinux.org',
-    'https://api.piped.projectsegfau.lt',
-  ];
-  for (const base of PIPED) {
-    try {
-      const res = await fetch(`${base}/streams/${videoId}`, {
-        headers:{'Accept':'application/json'}, signal: AbortSignal.timeout(9000)
-      });
-      if (!res.ok) continue;
-      const data = await res.json();
-      const streams = (data.audioStreams||[]).sort((a,b)=>(b.bitrate||0)-(a.bitrate||0));
-      if (streams.length > 0) {
-        console.log('Got audio via Piped:', base);
-        return { audioUrl: streams[0].url, title: data.title||'' };
-      }
-    } catch(e) { continue; }
-  }
-
-  return null;
+  const { upload_url } = await res.json();
+  return upload_url;
 }
 
-// ── STEP 2: Transcribe with AssemblyAI ──
-async function transcribeAudio(audioUrl, apiKey) {
-  // Submit job
-  const submitRes = await fetch('https://api.assemblyai.com/v2/transcript', {
+// ── Transcribe with AssemblyAI ──
+async function transcribeUrl(uploadUrl, apiKey) {
+  const sub = await fetch('https://api.assemblyai.com/v2/transcript', {
     method: 'POST',
     headers: { 'Authorization': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      audio_url: audioUrl,
+      audio_url: uploadUrl,
       language_detection: true,
       punctuate: true,
       format_text: true
     })
   });
-  if (!submitRes.ok) {
-    const e = await submitRes.json().catch(()=>({}));
-    throw new Error(e?.error || `AssemblyAI Error ${submitRes.status}`);
+  if (!sub.ok) {
+    const e = await sub.json().catch(()=>({}));
+    throw new Error(e?.error || `Transcription submit failed (${sub.status})`);
   }
-  const { id } = await submitRes.json();
+  const { id } = await sub.json();
 
-  // Poll with timer
   startTimer();
   let attempts = 0;
   while (true) {
     await sleep(4000);
     attempts++;
-    const pollRes = await fetch(`https://api.assemblyai.com/v2/transcript/${id}`, {
+    const poll = await fetch(`https://api.assemblyai.com/v2/transcript/${id}`, {
       headers: { 'Authorization': apiKey }
     });
-    const data = await pollRes.json();
-    setStep(1, 'active', `מתמלל... (${Math.round(timerSec)} שניות)`);
-    if (data.status === 'completed') {
-      stopTimer();
-      return data.text || '';
-    }
-    if (data.status === 'error') {
-      stopTimer();
-      throw new Error(data.error || 'שגיאת תמלול');
-    }
-    if (attempts > 120) { stopTimer(); throw new Error('תמלול לוקח יותר מדי זמן'); }
+    const d = await poll.json();
+    if (d.status === 'completed') { stopTimer(); return d.text || ''; }
+    if (d.status === 'error')     { stopTimer(); throw new Error(d.error || 'שגיאת תמלול'); }
+    if (attempts > 150)           { stopTimer(); throw new Error('התמלול לוקח יותר מדי זמן — נסה שוב'); }
   }
 }
 
-function startTimer() {
-  timerSec = 0;
-  document.getElementById('timerRow').classList.add('show');
-  timerInterval = setInterval(() => {
-    timerSec++;
-    document.getElementById('timerCount').textContent = timerSec;
-  }, 1000);
-}
-function stopTimer() {
-  clearInterval(timerInterval);
-  document.getElementById('timerRow').classList.remove('show');
-}
-
-// ── STEP 3: Generate Script with Claude ──
-async function generateScript(text, title, wc) {
-  if (!S.claudeKey) throw new Error('נדרש Claude API Key');
-  const name     = S.userName     || 'היוצר';
-  const niche    = S.userNiche    || 'איקומרס';
-  const audience = S.userAudience || '';
+// ── Generate Script with Claude ──
+async function generateScript(text, wc) {
+  if (!S.clKey) throw new Error('נדרש Claude API Key');
+  const name  = S.uName  || 'היוצר';
+  const niche = S.uNiche || 'איקומרס';
+  const aud   = S.uAud   || '';
 
   const prompt = `אתה מומחה לכתיבת סקריפטים לסרטוני יוטיוב — עברית גבוהה, אמיתית, דיבורית.
 
-**הסרטון המקורי:**
-כותרת: ${title || 'לא ידועה'}
-אורך: ~${wc} מילים
-
-**תמלול אודיו:**
+**תמלול הסרטון:**
 """
 ${text.slice(0, 7500)}${text.length > 7500 ? '\n[...]' : ''}
 """
 
 **פרטי היוצר:**
-שם: ${name} | תחום: ${niche}${audience ? ` | קהל: ${audience}` : ''}
+שם: ${name} | תחום: ${niche}${aud ? ` | קהל: ${aud}` : ''}
 
 **הנחיות:**
 - כתוב סקריפט חדש לחלוטין — לא תרגום, לא פרפרזה
 - אותו נושא ומבנה, מנקודת המבט של ${name} בעולם ה${niche}
-- אורך זהה לסרטון המקורי: ~${wc} מילים
-- עברית דיבורית גבוהה, כאילו מדבר מול מצלמה
+- אורך זהה: ~${wc} מילים
+- עברית דיבורית גבוהה, כאילו ${name} מדבר מול מצלמה
 - מבנה: הוק → פתיחה → גוף → סיכום + CTA
 
-**פורמט (השתמש בדיוק בתגים):**
+**פורמט:**
 
 [HOOK]
-(30 שניות ראשונות)
+(30 שניות ראשונות — משפט שגורם להמשיך לצפות)
 
 [INTRO]
-(הצגה + הבטחה לצופה)
+(הצגה קצרה + הבטחה מה הצופה יקבל)
 
 [BODY]
 (גוף הסרטון, פסקאות ממוספרות)
 
 [OUTRO]
-(סיכום + קריאה לפעולה)
+(סיכום + קריאה לפעולה — מנוי, תגובה, לינק)
 
 [TITLE]
 כותרת מוצעת לסרטון
@@ -554,205 +549,155 @@ ${text.slice(0, 7500)}${text.length > 7500 ? '\n[...]' : ''}
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': S.claudeKey,
+      'x-api-key': S.clKey,
       'anthropic-version': '2023-06-01',
       'anthropic-dangerous-direct-browser-access': 'true'
     },
-    body: JSON.stringify({ model: 'claude-opus-4-6', max_tokens: 8192, messages: [{ role:'user', content:prompt }] })
+    body: JSON.stringify({ model:'claude-opus-4-6', max_tokens:8192, messages:[{role:'user',content:prompt}] })
   });
   if (!res.ok) {
-    let msg = `Claude Error ${res.status}`;
-    try { const e = await res.json(); msg = e?.error?.message || msg; } catch(e) {}
-    throw new Error(msg);
+    let m = `Claude Error ${res.status}`;
+    try { m = (await res.json())?.error?.message || m; } catch(e) {}
+    throw new Error(m);
   }
   return (await res.json()).content[0].text;
 }
 
-// ── Main Flow ──
+// ── Main ──
 async function startProcess() {
-  const url = v('urlInput').trim();
-  if (!url) { showToast('הדבק לינק יוטיוב', 't-err'); return; }
-  const videoId = extractId(url);
-  if (!videoId) { showToast('לינק לא תקין', 't-err'); return; }
-
-  if (!S.aaiKey || !S.claudeKey) {
-    showToast('נדרשים שני המפתחות — פתח הגדרות', 't-err');
+  if (!selectedFile) { showToast('בחר קובץ אודיו תחילה', 'er'); return; }
+  if (!S.aaiKey || !S.clKey) {
+    showToast('נדרשים שני ה-API Keys בהגדרות', 'er');
     openSettings(); return;
   }
 
-  // Reset
-  hide('errBox'); hide('manualBox'); hide('outputBox');
-  show('progressBox');
+  hide('errb'); hide('outbox');
+  show('prog');
   setBtn(true, '<span class="spin">⏳</span>', 'עובד...');
-  resetAll();
-  vidTitle = ''; transcript = ''; script = ''; wc = 0;
+  resetSteps();
+  transcript = ''; script = ''; wc = 0;
 
-  // ── Step 1: Get audio ──
+  // Step 1 — Upload
   setStep(0, 'active', '');
-  let audioData;
+  let uploadUrl;
   try {
-    audioData = await getAudioUrl(videoId);
+    uploadUrl = await uploadFile(selectedFile, S.aaiKey);
+    setStep(0, 'done', formatSize(selectedFile.size) + ' הועלה בהצלחה');
   } catch(e) {
     setStep(0, 'err');
-    showError(`שגיאה בשליפת אודיו: ${e.message}`);
-    showManual();
+    showErr(`שגיאת העלאה: ${e.message}`);
     setBtn(false); return;
   }
 
-  if (!audioData) {
-    setStep(0, 'err');
-    showError('לא הצלחנו לשלוף את האודיו מיוטיוב (ניסינו 9 שרתים). ייתכן שהסרטון מוגבל לגיל / פרטי / אזורי. ניתן להדביק את תמלול הסרטון ידנית למטה.');
-    showManual();
-    setBtn(false); return;
-  }
-
-  vidTitle = audioData.title;
-  setStep(0, 'done', audioData.title ? `"${audioData.title.slice(0,50)}"` : '');
-
-  // ── Step 2: Transcribe ──
+  // Step 2 — Transcribe
   setStep(1, 'active', 'שולח ל-AssemblyAI...');
   try {
-    transcript = await transcribeAudio(audioData.audioUrl, S.aaiKey);
+    transcript = await transcribeUrl(uploadUrl, S.aaiKey);
     wc = transcript.split(/\s+/).filter(w=>w).length;
     setStep(1, 'done', `${wc.toLocaleString()} מילים בתמלול`);
   } catch(e) {
     setStep(1, 'err');
-    showError(`שגיאת תמלול: ${e.message}`);
-    showManual();
+    showErr(`שגיאת תמלול: ${e.message}`);
     setBtn(false); return;
   }
 
-  // ── Step 3: Generate ──
+  // Step 3 — Script
   setStep(2, 'active', '');
   try {
-    script = await generateScript(transcript, vidTitle, wc);
+    script = await generateScript(transcript, wc);
     setStep(2, 'done', '');
     showOutput();
-    showToast('✓ הסקריפט מוכן!', 't-ok');
+    showToast('✓ הסקריפט מוכן!', 'ok');
   } catch(e) {
     setStep(2, 'err');
-    showError(`שגיאת Claude: ${e.message}`);
-  }
-
-  setBtn(false);
-}
-
-// ── Manual ──
-async function runManual() {
-  const text = document.getElementById('manualText').value.trim();
-  if (!text) { showToast('הדבק תמלול תחילה', 't-err'); return; }
-  if (!S.claudeKey) { showToast('נדרש Claude API Key', 't-err'); openSettings(); return; }
-
-  transcript = text;
-  wc = text.split(/\s+/).filter(w=>w).length;
-
-  hide('errBox'); hide('manualBox');
-  show('progressBox');
-  resetAll();
-  setStep(0,'done',''); setStep(1,'done',`${wc.toLocaleString()} מילים`);
-  setStep(2,'active','');
-  setBtn(true,'<span class="spin">⏳</span>','עובד...');
-
-  try {
-    script = await generateScript(text, vidTitle||'סרטון', wc);
-    setStep(2,'done','');
-    showOutput();
-    showToast('✓ הסקריפט מוכן!', 't-ok');
-  } catch(e) {
-    setStep(2,'err');
-    showError(`שגיאה: ${e.message}`);
+    showErr(`שגיאת Claude: ${e.message}`);
   }
   setBtn(false);
 }
 
 // ── Output ──
 function showOutput() {
-  document.getElementById('outTitle').textContent = vidTitle || 'הסקריפט מוכן ✓';
-  document.getElementById('outMeta').textContent  = `~${wc.toLocaleString()} מילים בתמלול המקורי`;
-  document.getElementById('outScript').innerHTML  = formatScript(script);
-  show('outputBox');
-  document.getElementById('outputBox').scrollIntoView({ behavior:'smooth', block:'start' });
+  document.getElementById('outTitle').textContent = 'הסקריפט מוכן ✓';
+  document.getElementById('outMeta').textContent  = `~${wc.toLocaleString()} מילים בתמלול`;
+  document.getElementById('outScript').innerHTML  = fmtScript(script);
+  show('outbox');
+  document.getElementById('outbox').scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-function formatScript(s) {
+function fmtScript(s) {
   return s
     .replace(/\[HOOK\]/g,  '<span class="slabel">🎣 הוק — 30 שניות ראשונות</span>')
     .replace(/\[INTRO\]/g, '<span class="slabel">👋 פתיחה</span>')
     .replace(/\[BODY\]/g,  '<span class="slabel">📝 גוף הסרטון</span>')
     .replace(/\[OUTRO\]/g, '<span class="slabel">🚀 סיכום וקריאה לפעולה</span>')
     .replace(/\[TITLE\]/g, '<span class="slabel">📌 כותרת מוצעת</span>')
-    .replace(/\n/g, '<br>');
+    .replace(/\n/g,'<br>');
 }
-
 function copyScript() {
   if (!script) return;
   navigator.clipboard.writeText(script)
-    .then(()=>showToast('✓ הועתק','t-ok'))
-    .catch(()=>showToast('לא ניתן להעתיק','t-err'));
+    .then(()=>showToast('✓ הועתק','ok')).catch(()=>showToast('לא ניתן','er'));
 }
-
 async function dlPDF() {
   if (!script) return;
-  showToast('⏳ יוצר PDF...','t-ok');
+  showToast('⏳ יוצר PDF...','ok');
   try {
     const clean = script
-      .replace(/\[HOOK\]/g, '\n━━━ 🎣 הוק ━━━\n')
-      .replace(/\[INTRO\]/g,'\n━━━ 👋 פתיחה ━━━\n')
-      .replace(/\[BODY\]/g, '\n━━━ 📝 גוף הסרטון ━━━\n')
-      .replace(/\[OUTRO\]/g,'\n━━━ 🚀 סיכום וCTA ━━━\n')
-      .replace(/\[TITLE\]/g,'\n━━━ 📌 כותרת מוצעת ━━━\n');
-    const el = document.getElementById('pdfArea');
-    el.innerHTML = `
+      .replace(/\[HOOK\]/g,  '\n━━━ 🎣 הוק ━━━\n')
+      .replace(/\[INTRO\]/g, '\n━━━ 👋 פתיחה ━━━\n')
+      .replace(/\[BODY\]/g,  '\n━━━ 📝 גוף הסרטון ━━━\n')
+      .replace(/\[OUTRO\]/g, '\n━━━ 🚀 סיכום וCTA ━━━\n')
+      .replace(/\[TITLE\]/g, '\n━━━ 📌 כותרת מוצעת ━━━\n');
+    document.getElementById('pdfArea').innerHTML = `
       <div style="border-bottom:3px solid #7c3aed;padding-bottom:20px;margin-bottom:28px;">
         <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
           SCRIPT GENERATOR · ${new Date().toLocaleDateString('he-IL')}</div>
-        <h1 style="font-size:24px;font-weight:900;color:#111;line-height:1.2;">${esc(vidTitle||'הסקריפט שלי')}</h1>
-        <div style="font-size:12px;color:#666;margin-top:6px;">${esc(S.userName||'')} · ~${wc.toLocaleString()} מילים</div>
+        <h1 style="font-size:22px;font-weight:900;color:#111;line-height:1.2;">
+          ${esc(selectedFile?.name || 'הסקריפט שלי')}</h1>
+        <div style="font-size:12px;color:#666;margin-top:6px;">
+          ${esc(S.uName||'')} · ~${wc.toLocaleString()} מילים</div>
       </div>
       <div style="font-size:13px;line-height:1.85;white-space:pre-wrap;color:#111;">${esc(clean)}</div>`;
     const {jsPDF} = window.jspdf;
-    const canvas = await html2canvas(el,{scale:1.5,backgroundColor:'#fff',logging:false});
-    const doc = new jsPDF('p','mm','a4');
-    const m=12, pw=210-m*2, pxpm=canvas.width/pw, phPx=(297-m*2)*pxpm;
+    const canvas = await html2canvas(document.getElementById('pdfArea'),{scale:1.5,backgroundColor:'#fff',logging:false});
+    const doc=new jsPDF('p','mm','a4');
+    const m=12,pw=210-m*2,pxpm=canvas.width/pw,phPx=(297-m*2)*pxpm;
     const pages=Math.ceil(canvas.height/phPx);
     for(let p=0;p<pages;p++){
       if(p>0) doc.addPage();
-      const sy=p*phPx, sh=Math.min(phPx,canvas.height-sy);
+      const sy=p*phPx,sh=Math.min(phPx,canvas.height-sy);
       const tmp=document.createElement('canvas');
-      tmp.width=canvas.width; tmp.height=sh;
+      tmp.width=canvas.width;tmp.height=sh;
       tmp.getContext('2d').drawImage(canvas,0,sy,canvas.width,sh,0,0,canvas.width,sh);
       doc.addImage(tmp.toDataURL('image/jpeg',0.92),'JPEG',m,m,pw,sh/pxpm);
     }
-    const fname=(vidTitle||'script').replace(/[^\w\u0590-\u05FF\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60);
+    const fname=(selectedFile?.name||'script').replace(/\.[^.]+$/,'').replace(/[^\w\u0590-\u05FF\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60);
     doc.save(`${fname}.pdf`);
-    showToast(`✓ "${fname}.pdf" הורד`,'t-ok');
+    showToast(`✓ "${fname}.pdf" הורד`,'ok');
   } catch(e) {
     const a=document.createElement('a');
     a.href=URL.createObjectURL(new Blob([script],{type:'text/plain;charset=utf-8'}));
-    a.download='script.txt'; a.click();
-    showToast('הורד כטקסט','t-ok');
+    a.download='script.txt';a.click();
+    showToast('הורד כטקסט','ok');
   }
 }
 
 // ── Helpers ──
-function v(id) { return document.getElementById(id).value.trim(); }
-function show(id) { document.getElementById(id).classList.add('show'); }
-function hide(id) { document.getElementById(id).classList.remove('show'); }
-function showError(msg) { const el=document.getElementById('errBox'); el.textContent=msg; el.classList.add('show'); }
-function showManual()   { document.getElementById('manualBox').classList.add('show'); }
-function setBtn(dis, icon='✨', text='צור סקריפט') {
-  document.getElementById('goBtn').disabled=dis;
+function g(id)   { return document.getElementById(id).value.trim(); }
+function show(id){ document.getElementById(id).classList.add('show'); }
+function hide(id){ document.getElementById(id).classList.remove('show'); }
+function showErr(m){ const e=document.getElementById('errb');e.textContent=m;e.classList.add('show'); }
+function setBtn(d,icon='✨',txt='תמלל וצור סקריפט'){
+  document.getElementById('goBtn').disabled=d;
   document.getElementById('goBtnIcon').innerHTML=icon;
-  document.getElementById('goBtnText').textContent=text;
+  document.getElementById('goBtnText').textContent=txt;
 }
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 let toastT;
-function showToast(msg,cls='t-ok'){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.className=`toast ${cls} show`;
-  clearTimeout(toastT);
-  toastT=setTimeout(()=>el.classList.remove('show'),3800);
+function showToast(m,c='ok'){
+  const e=document.getElementById('toast');
+  e.textContent=m;e.className=`toast ${c} show`;
+  clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),3800);
 }
 </script>
 </body>
