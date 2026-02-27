@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 Script Generator ✦</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
+  --border:rgba(255,255,255,0.07); --text:#e8e8f0; --text-muted:#6b6b8a;
+  --accent:#7c3aed; --accent2:#ec4899; --accent3:#06b6d4; --accent4:#10b981;
+  --accent5:#f59e0b; --neon:#a855f7; --red:#ef4444; --glow:rgba(124,58,237,0.4);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;overflow-x:hidden;direction:rtl;}
+
+body::before{content:'';position:fixed;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(124,58,237,0.12) 0%,transparent 70%);pointer-events:none;animation:drift 20s ease-in-out infinite alternate;z-index:0;}
+body::after{content:'';position:fixed;bottom:-30%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(236,72,153,0.08) 0%,transparent 70%);pointer-events:none;animation:drift 25s ease-in-out infinite alternate-reverse;z-index:0;}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,60px) scale(1.1)}}
+
+/* Header */
+.header{position:sticky;top:0;z-index:100;background:rgba(8,8,16,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:-0.5px;}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px var(--glow);}
+.logo-text{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;border:none;cursor:pointer;font-family:'Heebo',sans-serif;font-size:14px;font-weight:600;transition:all 0.2s;white-space:nowrap;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;box-shadow:0 4px 20px rgba(124,58,237,0.4);}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,58,237,0.5);}
+.btn-primary:disabled{opacity:0.45;cursor:not-allowed;}
+.btn-ghost{background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+.btn-ghost:hover{background:var(--surface3);}
+.btn-success{background:linear-gradient(135deg,#10b981,#059669);color:white;}
+.btn-success:hover{transform:translateY(-1px);}
+.btn-cyan{background:linear-gradient(135deg,#06b6d4,#0891b2);color:white;}
+.btn-cyan:hover{transform:translateY(-1px);}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:8px;}
+
+/* Main */
+.main{position:relative;z-index:1;padding:24px 28px;max-width:1500px;margin:0 auto;}
+
+/* Settings */
+.settings-panel{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:24px;}
+.settings-header{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.settings-header:hover{background:rgba(255,255,255,0.02);}
+.settings-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;}
+.settings-arrow{transition:transform 0.3s;font-size:12px;color:var(--text-muted);}
+.settings-arrow.open{transform:rotate(180deg);}
+.settings-body{padding:0 24px 24px;display:none;}
+.settings-body.open{display:block;}
+.fields-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;}
+.field-group{display:flex;flex-direction:column;gap:6px;}
+.field-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;}
+.field-input{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Heebo',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;direction:rtl;width:100%;}
+.field-input:focus{border-color:var(--accent);}
+.field-input::placeholder{color:var(--text-muted);}
+textarea.field-input{resize:vertical;min-height:72px;}
+.field-input[type=password]{direction:ltr;text-align:right;}
+
+/* Process Bar */
+.process-bar{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.pb-title{font-size:17px;font-weight:800;margin-bottom:4px;}
+.pb-sub{font-size:12px;color:var(--text-muted);max-width:480px;line-height:1.5;}
+.stats-row{display:flex;gap:24px;flex-shrink:0;}
+.stat{text-align:center;}
+.stat-num{font-size:26px;font-weight:900;line-height:1;}
+.stat-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+
+/* Section title */
+.sec-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-title small{font-size:12px;font-weight:400;color:var(--text-muted);}
+
+/* Cards Grid */
+.cards-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px;}
+@media(max-width:1200px){.cards-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:780px){.cards-grid{grid-template-columns:repeat(2,1fr);}}
+
+.video-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all 0.3s;display:flex;flex-direction:column;}
+.video-card.processing{border-color:rgba(124,58,237,0.5);box-shadow:0 0 28px rgba(124,58,237,0.12);}
+.video-card.done{border-color:rgba(16,185,129,0.4);box-shadow:0 0 28px rgba(16,185,129,0.08);}
+.video-card.error-state{border-color:rgba(239,68,68,0.4);box-shadow:0 0 28px rgba(239,68,68,0.08);}
+
+/* Thumbnail */
+.thumb-wrap{width:100%;aspect-ratio:16/9;background:var(--surface2);position:relative;overflow:hidden;flex-shrink:0;}
+.thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.thumb-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--surface3);}
+.card-num{position:absolute;top:8px;right:8px;width:26px;height:26px;background:rgba(8,8,16,0.75);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text-muted);border:1px solid var(--border);}
+
+/* Card Body */
+.card-body{padding:14px;flex:1;display:flex;flex-direction:column;gap:10px;}
+
+.url-wrap{position:relative;}
+.url-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:8px 32px 8px 10px;color:var(--text);font-family:'Heebo',sans-serif;font-size:11px;outline:none;transition:border-color 0.2s;direction:ltr;text-align:left;}
+.url-input:focus{border-color:var(--accent);}
+.url-input::placeholder{color:var(--text-muted);font-size:10px;}
+.url-clear{position:absolute;left:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:13px;line-height:1;}
+.url-clear:hover{color:var(--text);}
+
+.vid-title{font-size:11px;font-weight:600;color:var(--text);line-height:1.35;direction:ltr;text-align:left;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:30px;}
+
+/* Status */
+.status-row{display:flex;align-items:center;gap:6px;}
+.s-dot{width:7px;height:7px;border-radius:50%;background:var(--surface3);flex-shrink:0;}
+.s-dot.active{background:var(--accent);animation:pulse-dot 1s infinite;}
+.s-dot.done{background:var(--accent4);}
+.s-dot.error{background:var(--red);}
+.s-text{font-size:11px;color:var(--text-muted);}
+.wc{font-size:10px;background:var(--surface3);border-radius:5px;padding:1px 7px;color:var(--text-muted);margin-right:auto;}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
+
+/* Steps */
+.steps{display:flex;flex-direction:column;gap:5px;}
+.step{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--text-muted);}
+.step-icon{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;background:var(--surface3);}
+.step.s-done .step-icon{background:var(--accent4);color:white;}
+.step.s-active .step-icon{background:var(--accent);color:white;animation:pulse-dot 1s infinite;}
+.step.s-err .step-icon{background:var(--red);color:white;}
+.step.s-done span,.step.s-active span{color:var(--text);}
+
+/* Error box */
+.err-box{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:9px;padding:9px 11px;font-size:10px;color:#fca5a5;line-height:1.5;direction:rtl;}
+
+/* Script preview */
+.script-preview{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:10px 12px;font-size:10px;line-height:1.65;max-height:160px;overflow-y:auto;white-space:pre-wrap;direction:rtl;flex:1;}
+.script-preview::-webkit-scrollbar{width:3px;}
+.script-preview::-webkit-scrollbar-track{background:transparent;}
+.script-preview::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px;}
+
+/* Card actions */
+.card-actions{display:flex;gap:6px;}
+.card-actions .btn{flex:1;justify-content:center;font-size:10px;padding:6px 8px;}
+
+/* Manual area */
+.manual-area{display:none;}
+.manual-area.show{display:flex;flex-direction:column;gap:6px;}
+.manual-area textarea{font-size:10px;min-height:56px;}
+.manual-area .btn{font-size:10px;padding:6px;justify-content:center;}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 20px;font-size:13px;font-weight:600;z-index:9999;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 32px rgba(0,0,0,0.6);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.t-success{border-color:rgba(16,185,129,0.5);color:var(--accent4);}
+.toast.t-error{border-color:rgba(239,68,68,0.5);color:#f87171;}
+.toast.t-info{border-color:rgba(6,182,212,0.5);color:var(--accent3);}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.82);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fade-in 0.2s ease;}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:760px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;animation:slide-up 0.25s ease;}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes slide-up{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-shrink:0;}
+.modal-title{font-size:16px;font-weight:800;line-height:1.3;}
+.modal-sub{font-size:12px;color:var(--text-muted);margin-top:4px;}
+.modal-body{padding:24px;overflow-y:auto;flex:1;}
+.modal-body pre{white-space:pre-wrap;line-height:1.8;font-size:14px;font-family:'Heebo',sans-serif;direction:rtl;}
+.modal-actions{display:flex;gap:8px;flex-shrink:0;}
+
+/* PDF render (hidden) */
+#pdfRender{position:fixed;top:-9999px;right:-9999px;width:850px;background:white;color:#111;font-family:'Arial',sans-serif;direction:rtl;text-align:right;padding:48px;}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">🎬</div>
+    <span class="logo-text">Script Generator</span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <button class="btn btn-ghost" onclick="toggleSettings()">⚙️ הגדרות</button>
+    <button class="btn btn-primary" id="processAllBtn" onclick="processAll()">✨ עבד הכל</button>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Settings -->
+  <div class="settings-panel">
+    <div class="settings-header" onclick="toggleSettings()">
+      <div class="settings-title">
+        <span>⚙️</span>
+        <span>הגדרות ופרופיל</span>
+        <span id="settingsStatus" style="font-size:11px;color:var(--accent4);font-weight:400;"></span>
+      </div>
+      <span class="settings-arrow" id="settingsArrow">▼</span>
+    </div>
+    <div class="settings-body" id="settingsBody">
+      <div class="fields-grid">
+        <div class="field-group">
+          <label class="field-label">Claude API Key *</label>
+          <input type="password" class="field-input" id="claudeKey" placeholder="sk-ant-api03-..." oninput="saveSettings()" autocomplete="off">
+        </div>
+        <div class="field-group">
+          <label class="field-label">השם / המותג שלך</label>
+          <input type="text" class="field-input" id="userName" placeholder="למשל: Aviv Malka" oninput="saveSettings()">
+        </div>
+        <div class="field-group">
+          <label class="field-label">תחום האיקומרס שלך</label>
+          <input type="text" class="field-input" id="userNiche" placeholder="דרופשיפינג, מוצרי ספורט, אמזון FBA..." oninput="saveSettings()">
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">הקשר נוסף (קהל יעד, סגנון, פלטפורמות)</label>
+        <textarea class="field-input" id="userContext" placeholder="למשל: הקהל שלי הוא יזמים בתחילת הדרך בגיל 20-35. אני עובד בעיקר עם Shopify ו-TikTok Ads. הסגנון שלי ישיר, אמיתי, בלי חרטא..." oninput="saveSettings()"></textarea>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
+        <span>📁</span><span>קבצי PDF מורדים אוטומטית לתיקיית ההורדות</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Process Bar -->
+  <div class="process-bar">
+    <div>
+      <div class="pb-title">יצירת סקריפטים מסרטוני יוטיוב</div>
+      <div class="pb-sub">הכנס עד 5 לינקים של יוטיוב → הכלי ישלוף את התמלול, יחבר לעולם האיקומרס שלך, ויכתוב סקריפט מוכן להקלטה בעברית גבוהה</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num" id="statPending" style="color:var(--text-muted)">0</div>
+        <div class="stat-label">ממתינים</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statProcessing" style="color:var(--accent)">0</div>
+        <div class="stat-label">בעיבוד</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statDone" style="color:var(--accent4)">0</div>
+        <div class="stat-label">מוכנים</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="sec-title">🎥 5 סרטונים במקביל <small>הדבק לינקים ולחץ "עבד הכל"</small></div>
+  <div class="cards-grid" id="cardsGrid"></div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- PDF Render (hidden) -->
+<div id="pdfRender"></div>
+
+<script>
+// ─────────── STATE ───────────
+const state = {
+  cards: Array.from({length:5},(_,i)=>({
+    id:i, url:'', videoId:'', title:'', transcript:'',
+    wordCount:0, script:'', status:'idle', error:'', thumbnail:''
+  })),
+  settings: { claudeKey:'', userName:'', userNiche:'', userContext:'' }
+};
+
+// ─────────── INIT ───────────
+document.addEventListener('DOMContentLoaded',()=>{
+  loadSettings();
+  renderAllCards();
+  updateStats();
+});
+
+// ─────────── SETTINGS ───────────
+function saveSettings(){
+  state.settings.claudeKey   = document.getElementById('claudeKey').value.trim();
+  state.settings.userName    = document.getElementById('userName').value.trim();
+  state.settings.userNiche   = document.getElementById('userNiche').value.trim();
+  state.settings.userContext = document.getElementById('userContext').value.trim();
+  localStorage.setItem('sg_settings', JSON.stringify(state.settings));
+  document.getElementById('settingsStatus').textContent =
+    state.settings.claudeKey ? '✓ API Key מוגדר' : '';
+}
+
+function loadSettings(){
+  try{
+    const s = JSON.parse(localStorage.getItem('sg_settings')||'{}');
+    Object.assign(state.settings, s);
+    document.getElementById('claudeKey').value   = s.claudeKey   ||'';
+    document.getElementById('userName').value    = s.userName    ||'';
+    document.getElementById('userNiche').value   = s.userNiche   ||'';
+    document.getElementById('userContext').value = s.userContext ||'';
+    document.getElementById('settingsStatus').textContent =
+      s.claudeKey ? '✓ API Key מוגדר' : '';
+  }catch(e){}
+}
+
+let settingsOpen = false;
+function toggleSettings(){
+  settingsOpen = !settingsOpen;
+  document.getElementById('settingsBody').classList.toggle('open', settingsOpen);
+  document.getElementById('settingsArrow').classList.toggle('open', settingsOpen);
+}
+
+// ─────────── RENDER ───────────
+function renderAllCards(){
+  document.getElementById('cardsGrid').innerHTML =
+    state.cards.map(renderCard).join('');
+}
+
+function refreshCard(i){
+  const el = document.querySelector(`[data-card="${i}"]`);
+  if(el) el.outerHTML = renderCard(state.cards[i]);
+}
+
+function renderCard(card){
+  const i = card.id;
+  const statusMap = {idle:'ממתין',fetching:'שולף מידע...',transcribing:'מחלץ תמלול...',generating:'כותב סקריפט...',done:'מוכן ✓',error:'שגיאה'};
+  const dotMap    = {idle:'',fetching:'active',transcribing:'active',generating:'active',done:'done',error:'error'};
+  const cardMap   = {idle:'',fetching:'processing',transcribing:'processing',generating:'processing',done:'done',error:'error-state'};
+
+  const isActive   = ['fetching','transcribing','generating'].includes(card.status);
+  const isDone     = card.status === 'done';
+  const isError    = card.status === 'error';
+  const isIdle     = card.status === 'idle';
+
+  // Steps
+  const stepLabels = ['שליפת מידע','חילוץ תמלול','כתיבת סקריפט'];
+  const stepPhases = ['fetching','transcribing','generating'];
+  const curStep    = stepPhases.indexOf(card.status);
+
+  const stepsHtml = isActive ? `<div class="steps">${stepPhases.map((ph,si)=>{
+    let cls = si < curStep ? 's-done' : si === curStep ? 's-active' : '';
+    if(isError && si <= curStep) cls = 's-err';
+    const ico = cls==='s-done' ? '✓' : cls==='s-err' ? '✗' : si+1;
+    return `<div class="step ${cls}"><div class="step-icon">${ico}</div><span>${stepLabels[si]}</span></div>`;
+  }).join('')}</div>` : '';
+
+  const thumb = card.thumbnail
+    ? `<img src="${card.thumbnail}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`+
+      `<div class="thumb-placeholder" style="display:none">▶</div>`
+    : `<div class="thumb-placeholder">▶</div>`;
+
+  const actionsBtns = isDone ? `
+    <div class="card-actions">
+      <button class="btn btn-success" onclick="downloadPDF(${i})">📄 PDF</button>
+      <button class="btn btn-cyan"    onclick="copyScript(${i})">📋 העתק</button>
+      <button class="btn btn-ghost"   onclick="showModal(${i})">👁 צפה</button>
+    </div>` : '';
+
+  const scriptPreview = isDone && card.script ? `
+    <div class="script-preview">${esc(card.script.slice(0,280))}${card.script.length>280?'...':''}</div>` : '';
+
+  const errorBox = isError ? `
+    <div class="err-box">${esc(card.error)}</div>
+    <div class="manual-area show">
+      <label style="font-size:10px;color:var(--text-muted)">או הדבק תמלול ידנית:</label>
+      <textarea class="field-input" id="manual-${i}" placeholder="הדבק כאן את תוכן/תמלול הסרטון..." oninput="state.cards[${i}].transcript=this.value;state.cards[${i}].wordCount=this.value.split(/\\s+/).filter(w=>w).length"></textarea>
+      <button class="btn btn-primary" onclick="processManual(${i})">✨ יצור סקריפט</button>
+    </div>` : '';
+
+  const processBtn = isIdle && card.videoId ? `
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="processCard(${i})">▶ עבד סרטון זה</button>` : '';
+
+  return `<div class="video-card ${cardMap[card.status]}" data-card="${i}">
+  <div class="thumb-wrap">
+    ${thumb}
+    <div class="card-num">${i+1}</div>
+  </div>
+  <div class="card-body">
+    <div class="url-wrap">
+      <input type="text" class="url-input" placeholder="הדבק לינק יוטיוב..."
+        value="${esc(card.url)}"
+        oninput="onUrlChange(${i},this.value)"
+        onpaste="setTimeout(()=>onUrlChange(${i},this.value),50)">
+      ${card.url?`<button class="url-clear" onclick="clearCard(${i})">✕</button>`:''}
+    </div>
+    ${card.title?`<div class="vid-title" title="${esc(card.title)}">${esc(card.title)}</div>`:''}
+    <div class="status-row">
+      <div class="s-dot ${dotMap[card.status]}"></div>
+      <span class="s-text">${statusMap[card.status]}</span>
+      ${card.wordCount?`<span class="wc">~${card.wordCount.toLocaleString()} מילים</span>`:''}
+    </div>
+    ${stepsHtml}
+    ${errorBox}
+    ${scriptPreview}
+    ${actionsBtns}
+    ${processBtn}
+  </div>
+</div>`;
+}
+
+// ─────────── STATS ───────────
+function updateStats(){
+  const cs = state.cards;
+  const withUrl    = cs.filter(c=>c.url).length;
+  const processing = cs.filter(c=>['fetching','transcribing','generating'].includes(c.status)).length;
+  const done       = cs.filter(c=>c.status==='done').length;
+  document.getElementById('statPending').textContent    = Math.max(0,withUrl-processing-done);
+  document.getElementById('statProcessing').textContent = processing;
+  document.getElementById('statDone').textContent       = done;
+}
+
+// ─────────── URL HANDLING ───────────
+function extractVideoId(url){
+  if(!url) return null;
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if(m) return m[1];
+  if(/^[a-zA-Z0-9_-]{11}$/.test(url.trim())) return url.trim();
+  return null;
+}
+
+function onUrlChange(i, url){
+  state.cards[i].url = url.trim();
+  const vid = extractVideoId(url.trim());
+  if(vid && vid !== state.cards[i].videoId){
+    state.cards[i].videoId  = vid;
+    state.cards[i].thumbnail = `https://img.youtube.com/vi/${vid}/mqdefault.jpg`;
+    state.cards[i].status   = 'idle';
+    state.cards[i].title    = '';
+    state.cards[i].script   = '';
+    state.cards[i].error    = '';
+  } else if(!vid){
+    state.cards[i].videoId  = '';
+    state.cards[i].thumbnail = '';
+  }
+  refreshCard(i);
+  updateStats();
+}
+
+function clearCard(i){
+  state.cards[i] = {id:i,url:'',videoId:'',title:'',transcript:'',wordCount:0,script:'',status:'idle',error:'',thumbnail:''};
+  refreshCard(i);
+  updateStats();
+}
+
+// ─────────── TRANSCRIPT FETCH ───────────
+async function fetchTranscript(videoId){
+  const PROXY = 'https://corsproxy.io/?';
+
+  // Primary: get YT page HTML → extract caption track URL from ytInitialPlayerResponse
+  try{
+    const pageRes = await fetch(PROXY + encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`),
+      {headers:{'Accept-Language':'en-US,en;q=0.9'}});
+    const html = await pageRes.text();
+
+    // Extract ytInitialPlayerResponse JSON (greedy but safe enough)
+    const jsonStart = html.indexOf('ytInitialPlayerResponse=');
+    if(jsonStart !== -1){
+      const sliced = html.slice(jsonStart + 'ytInitialPlayerResponse='.length);
+      // Find end of the JSON object (stops at the first </script> or ;\n)
+      let depth=0, end=0, inStr=false, esc=false;
+      for(let ci=0;ci<sliced.length;ci++){
+        const ch=sliced[ci];
+        if(esc){esc=false;continue;}
+        if(ch==='\\' && inStr){esc=true;continue;}
+        if(ch==='"' && !esc) inStr=!inStr;
+        if(!inStr){if(ch==='{')depth++;else if(ch==='}'){depth--;if(depth===0){end=ci+1;break;}}}
+      }
+      if(end>0){
+        let pr;
+        try{pr=JSON.parse(sliced.slice(0,end));}catch(e){}
+        if(pr){
+          const videoTitle = pr?.videoDetails?.title||'';
+          const tracks = pr?.captions?.playerCaptionsTracklistRenderer?.captionTracks;
+          if(tracks && tracks.length>0){
+            // Prefer Hebrew, then English, then first
+            const track = tracks.find(t=>['iw','he'].includes(t.languageCode))
+                       || tracks.find(t=>t.languageCode?.startsWith('en'))
+                       || tracks[0];
+            const capUrl = track.baseUrl + '&fmt=json3';
+            const capRes = await fetch(PROXY + encodeURIComponent(capUrl));
+            if(capRes.ok){
+              const capData = await capRes.json();
+              const text = (capData.events||[])
+                .filter(e=>e.segs)
+                .map(e=>e.segs.map(s=>s.utf8||'').join(''))
+                .join(' ').replace(/\s+/g,' ').trim();
+              if(text.length>80) return {text, title:videoTitle, lang:track.languageCode};
+            }
+          }
+        }
+      }
+    }
+  }catch(e){console.warn('Primary transcript method failed:',e);}
+
+  // Fallback: direct timedtext API
+  for(const lang of ['iw','he','en','en-US']){
+    try{
+      const url = `https://www.youtube.com/api/timedtext?v=${videoId}&lang=${lang}&fmt=json3`;
+      const res = await fetch(PROXY + encodeURIComponent(url));
+      if(res.ok){
+        const d = await res.json();
+        const text = (d.events||[]).filter(e=>e.segs)
+          .map(e=>e.segs.map(s=>s.utf8||'').join('')).join(' ').replace(/\s+/g,' ').trim();
+        if(text.length>80) return {text, title:'', lang};
+      }
+    }catch(e){}
+  }
+
+  return null;
+}
+
+// ─────────── CLAUDE API ───────────
+async function generateScript(transcript, videoTitle, wordCount, settings){
+  const {claudeKey, userName, userNiche, userContext} = settings;
+  if(!claudeKey) throw new Error('נדרש Claude API Key — הגדר בהגדרות למעלה');
+
+  const name    = userName    || 'היוצר';
+  const niche   = userNiche   || 'איקומרס ומסחר אלקטרוני';
+  const context = userContext || '';
+
+  const prompt = `אתה מומחה לכתיבת סקריפטים לסרטוני יוטיוב בעברית. המשימה שלך היא לכתוב סקריפט שנשמע אמיתי, מעניין ואישי — כאילו ${name} מדבר מניסיון אמיתי שלו.
+
+**נתוני הסרטון המקורי:**
+כותרת: ${videoTitle||'(לא ידועה)'}
+אורך משוער: ~${wordCount} מילים
+
+**תמלול הסרטון המקורי:**
+"""
+${transcript.slice(0,7000)}${transcript.length>7000?'\n[...המשך הסרטון...]':''}
+"""
+
+**פרטי היוצר:**
+שם/מותג: ${name}
+תחום: ${niche}
+${context?`הקשר: ${context}`:''}
+
+**הנחיות לכתיבה:**
+1. נתח את הנושא המרכזי, הרעיון/ערך המרכזי, ומבנה הסרטון
+2. כתוב סקריפט חדש לחלוטין — לא תרגום, לא עיבוד — נושא זהה בגרסת ${name}
+3. חבר את הנושא לעולם ה${niche} ולחוויה האישית של ${name}
+4. אורך: ~${wordCount} מילים — **חשוב מאוד לשמור על האורך**
+5. עברית גבוהה, אמיתית, דיבורית — לא ניסוח ספרותי, לא מיוחד מדי
+6. שמור על אותו מבנה נרטיבי: הוק → בעיה → פתרון → דוגמאות → סיכום
+
+**פורמט חובה (השתמש בדיוק בתגים האלה):**
+
+[TITLE]
+כותרת מוצעת לסרטון (מושכת, עם מספר או הבטחה)
+
+[HOOK]
+(30 שניות ראשונות — משפט פתיחה שגורם להמשיך לצפות)
+
+[INTRO]
+(הצגה עצמית קצרה ומה הצופה יקבל מהסרטון)
+
+[BODY]
+(גוף הסרטון — פסקאות ממוספרות, כל נקודה שלמה בפני עצמה)
+
+[OUTRO]
+(סיכום + קריאה לפעולה — מנוי, תגובה, לינק בביו)
+
+[HASHTAGS]
+5-8 האשטאגים מומלצים בעברית ובאנגלית
+
+כתוב את הסקריפט בלבד, ללא הסברים לפני או אחרי.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':claudeKey,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-opus-4-6',
+      max_tokens:8192,
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+
+  if(!res.ok){
+    let msg = `API Error ${res.status}`;
+    try{const e=await res.json();msg=e?.error?.message||msg;}catch(e){}
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+// ─────────── PROCESS ───────────
+async function processCard(i){
+  const card = state.cards[i];
+  if(!card.videoId) return;
+  if(!state.settings.claudeKey){
+    showToast('⚠️ נדרש Claude API Key','t-error');
+    if(!settingsOpen) toggleSettings();
+    return;
+  }
+
+  // Reset
+  card.error=''; card.script=''; card.transcript=''; card.wordCount=0;
+
+  // Step 1: Fetch
+  card.status='fetching';
+  refreshCard(i); updateStats();
+
+  let result;
+  try{result = await fetchTranscript(card.videoId);}
+  catch(e){
+    card.status='error';
+    card.error=`שגיאה בשליפה מיוטיוב: ${e.message}. ניתן להדביק תמלול ידנית למטה.`;
+    refreshCard(i); updateStats(); return;
+  }
+
+  if(!result){
+    card.status='error';
+    card.error='לא נמצאו כתוביות לסרטון זה (ייתכן שהכתוביות מושבתות). הדבק את התמלול ידנית.';
+    refreshCard(i); updateStats(); return;
+  }
+
+  card.transcript = result.text;
+  if(result.title) card.title = result.title;
+  card.wordCount  = result.text.split(/\s+/).filter(w=>w.length>0).length;
+
+  // Step 2: Transcribing (brief visual step)
+  card.status='transcribing';
+  refreshCard(i);
+  await sleep(400);
+
+  // Step 3: Generate
+  card.status='generating';
+  refreshCard(i);
+
+  try{
+    card.script = await generateScript(card.transcript, card.title, card.wordCount, state.settings);
+    card.status='done';
+    showToast(`✓ סקריפט ${i+1} מוכן!`,'t-success');
+  }catch(e){
+    card.status='error';
+    card.error=`שגיאה ביצירת סקריפט: ${e.message}`;
+  }
+
+  refreshCard(i); updateStats();
+}
+
+async function processManual(i){
+  const card = state.cards[i];
+  if(!card.transcript){showToast('הדבק תמלול תחילה','t-error');return;}
+  if(!state.settings.claudeKey){showToast('נדרש Claude API Key','t-error');return;}
+
+  card.status='generating'; card.error='';
+  refreshCard(i); updateStats();
+
+  try{
+    card.script = await generateScript(card.transcript, card.title||'סרטון', card.wordCount, state.settings);
+    card.status='done';
+    showToast(`✓ סקריפט ${i+1} מוכן!`,'t-success');
+  }catch(e){
+    card.status='error';
+    card.error=`שגיאה: ${e.message}`;
+  }
+  refreshCard(i); updateStats();
+}
+
+async function processAll(){
+  const toProcess = state.cards.filter(c=>
+    c.videoId && !['fetching','transcribing','generating','done'].includes(c.status)
+  );
+  if(toProcess.length===0){
+    showToast('הכנס לינקים של יוטיוב תחילה','t-error'); return;
+  }
+  if(!state.settings.claudeKey){
+    showToast('⚠️ נדרש Claude API Key בהגדרות','t-error');
+    if(!settingsOpen) toggleSettings(); return;
+  }
+  // Process in parallel
+  await Promise.all(toProcess.map(c=>processCard(c.id)));
+}
+
+// ─────────── PDF ───────────
+async function downloadPDF(i){
+  const card = state.cards[i];
+  if(!card.script) return;
+  showToast('⏳ יוצר קובץ PDF...','t-info');
+
+  try{
+    const formatted = formatScript(card.script);
+    const render = document.getElementById('pdfRender');
+    render.innerHTML = `
+      <div style="border-bottom:3px solid #7c3aed;padding-bottom:24px;margin-bottom:32px;">
+        <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">SCRIPT GENERATOR · ${new Date().toLocaleDateString('he-IL')}</div>
+        <h1 style="font-size:26px;font-weight:900;color:#111;line-height:1.2;">${esc(card.title||`סקריפט ${i+1}`)}</h1>
+        <div style="font-size:13px;color:#666;margin-top:8px;">
+          ${state.settings.userName||''} · ${state.settings.userNiche||'איקומרס'} · ~${(card.wordCount||0).toLocaleString()} מילים
+        </div>
+      </div>
+      <div style="font-size:13px;line-height:1.9;white-space:pre-wrap;color:#1a1a1a;">${esc(formatted)}</div>
+      <div style="margin-top:48px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#aaa;text-align:center;">
+        נוצר על ידי Script Generator
+      </div>`;
+
+    const {jsPDF} = window.jspdf;
+    const canvas = await html2canvas(render,{scale:1.6,useCORS:true,backgroundColor:'#ffffff',logging:false});
+    const doc = new jsPDF('p','mm','a4');
+    const pageW=210, pageH=297, m=12;
+    const imgW = pageW - m*2;
+    const pxPerMm = canvas.width / imgW;
+    const pageHeightPx = (pageH - m*2) * pxPerMm;
+    const totalPages = Math.ceil(canvas.height / pageHeightPx);
+
+    for(let p=0;p<totalPages;p++){
+      if(p>0) doc.addPage();
+      const sy = p * pageHeightPx;
+      const sh = Math.min(pageHeightPx, canvas.height - sy);
+      const tmp = document.createElement('canvas');
+      tmp.width = canvas.width; tmp.height = sh;
+      tmp.getContext('2d').drawImage(canvas,0,sy,canvas.width,sh,0,0,canvas.width,sh);
+      doc.addImage(tmp.toDataURL('image/jpeg',0.92),'JPEG',m,m,imgW,sh/pxPerMm);
+    }
+
+    const fname = sanitizeFilename(card.title||`script-${i+1}`);
+    doc.save(`${fname}.pdf`);
+    showToast(`✓ "${fname}.pdf" הורד`,'t-success');
+  }catch(e){
+    console.error(e);
+    showToast('שגיאה ב-PDF — מוריד כטקסט','t-error');
+    downloadTxt(i);
+  }
+}
+
+function downloadTxt(i){
+  const card = state.cards[i];
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([card.script],{type:'text/plain;charset=utf-8'}));
+  a.download = sanitizeFilename(card.title||`script-${i+1}`) + '.txt';
+  a.click();
+}
+
+function formatScript(s){
+  return s
+    .replace(/\[TITLE\]/g,    '───── 📌 כותרת מוצעת ─────')
+    .replace(/\[HOOK\]/g,     '───── 🎣 הוק (30 שניות ראשונות) ─────')
+    .replace(/\[INTRO\]/g,    '───── 👋 פתיחה ─────')
+    .replace(/\[BODY\]/g,     '───── 📝 גוף הסרטון ─────')
+    .replace(/\[OUTRO\]/g,    '───── 🚀 סיכום וקריאה לפעולה ─────')
+    .replace(/\[HASHTAGS\]/g, '───── #️⃣ האשטאגים ─────');
+}
+
+// ─────────── COPY ───────────
+function copyScript(i){
+  const card = state.cards[i];
+  if(!card.script) return;
+  navigator.clipboard.writeText(card.script)
+    .then(()=>showToast('✓ הסקריפט הועתק','t-success'))
+    .catch(()=>showToast('לא ניתן להעתיק','t-error'));
+}
+
+// ─────────── MODAL ───────────
+function showModal(i){
+  const card = state.cards[i];
+  if(!card.script) return;
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">${esc(card.title||`סקריפט ${i+1}`)}</div>
+          <div class="modal-sub">~${(card.wordCount||0).toLocaleString()} מילים · ${state.settings.userName||''}</div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-success btn-sm" onclick="downloadPDF(${i})">📄 PDF</button>
+          <button class="btn btn-cyan btn-sm"    onclick="copyScript(${i})">📋 העתק</button>
+          <button class="btn btn-ghost btn-sm"   onclick="this.closest('.modal-overlay').remove()">✕</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <pre>${esc(formatScript(card.script))}</pre>
+      </div>
+    </div>`;
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove();});
+  document.body.appendChild(overlay);
+}
+
+// ─────────── HELPERS ───────────
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function sanitizeFilename(s){ return String(s).replace(/[^\w\u0590-\u05FF\s.-]/g,'').trim().replace(/\s+/g,'-').slice(0,80)||'script'; }
+
+let toastTimer;
+function showToast(msg, cls='t-success'){
+  const t = document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${cls} show`;
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3800);
+}
+</script>
+</body>
+</html>

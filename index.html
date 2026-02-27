@@ -3,1492 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Content Studio ✦</title>
+<title>Aviv Malka ✦ Projects</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
 
-  :root {
-    --bg: #080810;
-    --surface: #10101c;
-    --surface2: #16162a;
-    --surface3: #1e1e38;
-    --border: rgba(255,255,255,0.07);
-    --text: #e8e8f0;
-    --text-muted: #6b6b8a;
-    --accent: #7c3aed;
-    --accent2: #ec4899;
-    --accent3: #06b6d4;
-    --accent4: #10b981;
-    --accent5: #f59e0b;
-    --neon: #a855f7;
-    --red: #ef4444;
-    --glow: rgba(124,58,237,0.4);
-  }
+:root {
+  --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
+  --border:rgba(255,255,255,0.07); --text:#e8e8f0; --text-muted:#6b6b8a;
+  --accent:#7c3aed; --accent2:#ec4899; --accent3:#06b6d4; --accent4:#10b981;
+  --accent5:#f59e0b; --glow:rgba(124,58,237,0.35);
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'Heebo', sans-serif; min-height: 100vh; overflow-x: hidden; }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-  body::before { content:''; position:fixed; top:-50%; right:-20%; width:600px; height:600px; background:radial-gradient(circle,rgba(124,58,237,0.12) 0%,transparent 70%); pointer-events:none; animation:drift 20s ease-in-out infinite alternate; z-index:0; }
-  body::after  { content:''; position:fixed; bottom:-30%; left:-10%;  width:500px; height:500px; background:radial-gradient(circle,rgba(236,72,153,0.08) 0%,transparent 70%); pointer-events:none; animation:drift 25s ease-in-out infinite alternate-reverse; z-index:0; }
-  @keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,60px) scale(1.1)} }
+body::before{content:'';position:fixed;top:-40%;right:-15%;width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,0.11) 0%,transparent 65%);pointer-events:none;animation:drift 22s ease-in-out infinite alternate;z-index:0;}
+body::after{content:'';position:fixed;bottom:-35%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(236,72,153,0.07) 0%,transparent 65%);pointer-events:none;animation:drift 28s ease-in-out infinite alternate-reverse;z-index:0;}
+@keyframes drift{0%{transform:translate(0,0)}100%{transform:translate(50px,70px)}}
 
-  /* ── Header ── */
-  .header { position:sticky; top:0; z-index:100; background:rgba(8,8,16,0.88); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 28px; display:flex; align-items:center; justify-content:space-between; height:64px; }
-  .logo { display:flex; align-items:center; gap:12px; font-size:20px; font-weight:800; letter-spacing:-0.5px; }
-  .logo-icon { width:38px; height:38px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 0 20px var(--glow); }
-  .logo span { background:linear-gradient(135deg,#a855f7,#ec4899); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-  .header-actions { display:flex; align-items:center; gap:10px; }
-  .date-badge { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:6px 14px; font-size:13px; color:var(--text-muted); }
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;background:rgba(8,8,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 36px;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;text-decoration:none;color:var(--text);}
+.nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 18px var(--glow);}
+.nav-logo span{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:6px;}
+.nav-link{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all 0.2s;}
+.nav-link:hover{color:var(--text);background:var(--surface2);}
 
-  .btn { display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:10px; border:none; cursor:pointer; font-family:'Heebo',sans-serif; font-size:14px; font-weight:600; transition:all 0.2s; white-space:nowrap; }
-  .btn-primary { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; box-shadow:0 4px 20px rgba(124,58,237,0.4); }
-  .btn-primary:hover { transform:translateY(-1px); box-shadow:0 6px 28px rgba(124,58,237,0.5); }
-  .btn-ghost { background:var(--surface2); border:1px solid var(--border); color:var(--text); }
-  .btn-ghost:hover { background:var(--surface3); }
-  .btn-icon { width:38px; height:38px; padding:0; justify-content:center; font-size:18px; background:var(--surface2); border:1px solid var(--border); border-radius:10px; color:var(--text); position:relative; }
-  .btn-icon:hover { background:var(--surface3); }
+.hero{position:relative;z-index:1;padding:140px 36px 80px;text-align:center;max-width:800px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid rgba(168,85,247,0.3);border-radius:100px;padding:7px 18px;font-size:12px;font-weight:700;color:#a855f7;margin-bottom:28px;}
+.hero-badge::before{content:'';width:7px;height:7px;background:#a855f7;border-radius:50%;animation:pdot 2s infinite;}
+@keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(168,85,247,0.4)}50%{box-shadow:0 0 0 8px rgba(168,85,247,0)}}
+h1{font-size:clamp(36px,6vw,62px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px;}
+.gr{background:linear-gradient(135deg,#a855f7 0%,#ec4899 50%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:17px;color:var(--text-muted);line-height:1.6;max-width:500px;margin:0 auto 40px;}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;font-size:15px;font-weight:700;color:white;text-decoration:none;box-shadow:0 6px 30px rgba(124,58,237,0.45);transition:all 0.2s;}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(124,58,237,0.55);}
 
-  .notif-badge { position:absolute; top:-4px; left:-4px; width:16px; height:16px; background:var(--accent2); border-radius:50%; font-size:9px; font-weight:800; color:white; display:flex; align-items:center; justify-content:center; border:2px solid var(--bg); display:none; }
-  .notif-badge.show { display:flex; }
+.stats-bar{position:relative;z-index:1;display:flex;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;max-width:560px;margin:0 auto 80px;border:1px solid var(--border);}
+.stat-cell{flex:1;background:var(--surface);padding:20px;text-align:center;}
+.s-num{font-size:28px;font-weight:900;background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.s-lbl{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;}
 
-  /* ── Tabs ── */
-  .tabs { display:flex; gap:4px; padding:16px 28px 0; position:relative; z-index:1; }
-  .tab { padding:8px 20px; border-radius:10px 10px 0 0; cursor:pointer; font-size:14px; font-weight:600; transition:all 0.2s; color:var(--text-muted); border:1px solid transparent; border-bottom:none; }
-  .tab.active { background:var(--surface); color:var(--text); border-color:var(--border); }
-  .tab:not(.active):hover { color:var(--text); }
+.section{position:relative;z-index:1;padding:0 36px 100px;max-width:1300px;margin:0 auto;}
+.sec-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:28px;}
+.sec-t{font-size:22px;font-weight:800;}
+.sec-s{font-size:13px;color:var(--text-muted);}
 
-  /* ── Main ── */
-  .main { position:relative; z-index:1; padding:24px 28px; }
-  .tab-content { display:none; }
-  .tab-content.active { display:block; }
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;}
 
-  /* ── Stats ── */
-  .stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:28px; }
-  .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; position:relative; overflow:hidden; cursor:pointer; transition:all 0.2s; }
-  .stat-card:hover { border-color:rgba(255,255,255,0.15); transform:translateY(-2px); }
-  .stat-card::before { content:''; position:absolute; top:0; right:0; width:80px; height:80px; border-radius:50%; opacity:0.15; transform:translate(20px,-20px); }
-  .stat-card.idea::before      { background:var(--accent5); }
-  .stat-card.production::before{ background:var(--accent3); }
-  .stat-card.ready::before     { background:var(--accent4); }
-  .stat-card.published::before { background:var(--accent);  }
-  .stat-card.total::before     { background:var(--accent2); }
-  .stat-label { font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; }
-  .stat-num   { font-size:36px; font-weight:900; line-height:1; margin-bottom:6px; }
-  .stat-card.idea       .stat-num { color:var(--accent5); }
-  .stat-card.production .stat-num { color:var(--accent3); }
-  .stat-card.ready      .stat-num { color:var(--accent4); }
-  .stat-card.published  .stat-num { color:var(--accent);  }
-  .stat-card.total      .stat-num { color:var(--accent2); }
-  .stat-sub { font-size:12px; color:var(--text-muted); }
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;text-decoration:none;color:var(--text);transition:all 0.3s;display:flex;flex-direction:column;position:relative;}
+.card:hover{transform:translateY(-4px);border-color:rgba(168,85,247,0.35);box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 40px rgba(124,58,237,0.08);}
+.card.soon{opacity:0.5;cursor:default;pointer-events:none;}
+.card-top{padding:24px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.ci{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:0.3px;}
+.b-live{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25);}
+.b-new{background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25);}
+.b-soon{background:rgba(107,107,138,0.1);color:var(--text-muted);border:1px solid var(--border);}
+.card-mid{padding:16px 24px 0;}
+.c-name{font-size:18px;font-weight:800;margin-bottom:7px;}
+.c-desc{font-size:13px;color:var(--text-muted);line-height:1.6;}
+.c-tags{display:flex;flex-wrap:wrap;gap:6px;padding:14px 24px 0;}
+.tag{font-size:11px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 9px;color:var(--text-muted);}
+.card-ft{padding:18px 24px 22px;display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.c-link{font-size:12px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:5px;}
+.arr{transition:transform 0.2s;}
+.card:hover .arr{transform:translateX(-4px);}
+.c-url{font-size:10px;color:var(--text-muted);direction:ltr;}
 
-  /* ── View header ── */
-  .view-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
-  .view-title  { font-size:18px; font-weight:700; }
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 36px;display:flex;align-items:center;justify-content:space-between;}
+.fl{font-size:14px;font-weight:800;}
+.fl span{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.fgh{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);text-decoration:none;padding:6px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;transition:all 0.2s;}
+.fgh:hover{color:var(--text);}
 
-  /* ── Kanban ── */
-  .kanban { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  .kanban-col { background:var(--surface); border:1px solid var(--border); border-radius:20px; overflow:hidden; }
-  .kanban-col-header { padding:16px 20px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
-  .col-title-wrap { display:flex; align-items:center; gap:10px; }
-  .col-dot   { width:10px; height:10px; border-radius:50%; }
-  .col-title { font-size:14px; font-weight:700; }
-  .col-count { background:var(--surface3); border:1px solid var(--border); border-radius:6px; padding:2px 8px; font-size:12px; font-weight:700; color:var(--text-muted); }
-  .kanban-cards { padding:12px; display:flex; flex-direction:column; gap:10px; min-height:100px; }
-  .empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:36px 20px; color:var(--text-muted); gap:10px; text-align:center; }
-  .empty-state .empty-icon { font-size:32px; opacity:0.35; }
-  .empty-state p { font-size:13px; }
-
-  /* ── Cards ── */
-  .content-card { background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:14px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; }
-  .content-card:hover { border-color:rgba(255,255,255,0.15); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.3); }
-  .card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:10px; }
-  .card-title { font-size:14px; font-weight:700; line-height:1.4; }
-  .card-menu-btn { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px; padding:0; line-height:1; flex-shrink:0; transition:color 0.15s; }
-  .card-menu-btn:hover { color:var(--text); }
-  .card-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .platform-tag { display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:700; border:1px solid transparent; }
-  .date-tag { font-size:11px; color:var(--text-muted); display:flex; align-items:center; gap:4px; }
-  .card-desc { font-size:12px; color:var(--text-muted); margin-top:8px; line-height:1.5; }
-  .card-actions { display:flex; gap:6px; margin-top:12px; }
-  .card-action-btn { flex:1; padding:5px 3px; border-radius:7px; border:1px solid var(--border); background:none; color:var(--text-muted); cursor:pointer; font-family:'Heebo',sans-serif; font-size:11px; font-weight:600; transition:all 0.15s; text-align:center; }
-  .card-action-btn:hover { background:var(--surface3); color:var(--text); }
-  .card-action-btn.wand { border-color:rgba(168,85,247,0.35); color:var(--neon); }
-  .card-action-btn.wand:hover { background:rgba(168,85,247,0.12); }
-
-  /* ── Gantt ── */
-  .gantt-wrap { background:var(--surface); border:1px solid var(--border); border-radius:20px; overflow:hidden; }
-  .gantt-scroll { overflow-x:auto; }
-
-  /* ── Ideas ── */
-  .ideas-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
-  .idea-card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:20px; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; }
-  .idea-card:hover { border-color:rgba(255,255,255,0.15); transform:translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,0.3); }
-  .idea-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); opacity:0; transition:opacity 0.2s; }
-  .idea-card:hover::after { opacity:1; }
-  .idea-emoji { font-size:28px; margin-bottom:12px; }
-  .idea-title { font-size:16px; font-weight:700; margin-bottom:8px; }
-  .idea-body  { font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:14px; }
-  .idea-tags  { display:flex; flex-wrap:wrap; gap:6px; }
-  .idea-tag   { padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; background:var(--surface2); border:1px solid var(--border); color:var(--text-muted); }
-
-  /* ── Creator Search ── */
-  .creator-section { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; margin-bottom:24px; }
-  .creator-section-title { font-size:16px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
-  .creator-search-row { display:flex; gap:10px; align-items:center; }
-  .creator-input { flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-family:'Heebo',sans-serif; font-size:14px; outline:none; transition:border-color 0.15s; }
-  .creator-input:focus { border-color:var(--accent3); box-shadow:0 0 0 3px rgba(6,182,212,0.15); }
-  .creator-results { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin-top:16px; }
-
-  /* ── Analytics ── */
-  .analytics-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
-  .analytics-card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; }
-  .analytics-title { font-size:15px; font-weight:700; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
-  .bar-chart { display:flex; flex-direction:column; gap:12px; }
-  .bar-item  { display:flex; flex-direction:column; gap:6px; }
-  .bar-label-row { display:flex; justify-content:space-between; align-items:center; font-size:13px; }
-  .bar-label { font-weight:600; }
-  .bar-val   { color:var(--text-muted); font-size:12px; }
-  .bar-track { height:8px; background:var(--surface2); border-radius:100px; overflow:hidden; }
-  .bar-fill  { height:100%; border-radius:100px; transition:width 0.8s cubic-bezier(0.4,0,0.2,1); }
-
-  /* ── Modal base ── */
-  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); z-index:200; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.2s; }
-  .modal-overlay.open { opacity:1; pointer-events:all; }
-  .modal { background:var(--surface); border:1px solid rgba(255,255,255,0.12); border-radius:24px; padding:32px; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; position:relative; transform:scale(0.95) translateY(10px); transition:transform 0.2s; box-shadow:0 40px 80px rgba(0,0,0,0.5); }
-  .modal-overlay.open .modal { transform:scale(1) translateY(0); }
-  .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
-  .modal-title  { font-size:20px; font-weight:800; }
-  .modal-close  { background:var(--surface2); border:1px solid var(--border); border-radius:8px; width:32px; height:32px; cursor:pointer; color:var(--text-muted); font-size:16px; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
-  .modal-close:hover { background:var(--surface3); color:var(--text); }
-  .modal-footer { display:flex; gap:10px; margin-top:24px; }
-
-  /* ── Form ── */
-  .form-group  { margin-bottom:18px; }
-  .form-label  { display:block; font-size:13px; font-weight:700; color:var(--text-muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.4px; }
-  .form-input, .form-select, .form-textarea { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-family:'Heebo',sans-serif; font-size:14px; outline:none; transition:border-color 0.15s; }
-  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(124,58,237,0.15); }
-  .form-select option { background:var(--surface2); }
-  .form-textarea { resize:vertical; min-height:80px; }
-  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .form-help { font-size:11px; color:var(--text-muted); margin-top:6px; line-height:1.5; }
-  .form-help a { color:var(--accent3); text-decoration:none; }
-  .form-help a:hover { text-decoration:underline; }
-
-  .platform-picker { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
-  .platform-option { display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 6px; border-radius:10px; border:1px solid var(--border); cursor:pointer; transition:all 0.15s; font-size:11px; font-weight:600; color:var(--text-muted); background:var(--surface2); }
-  .platform-option:hover { border-color:rgba(255,255,255,0.2); color:var(--text); }
-  .platform-option.selected { border-color:var(--accent); background:rgba(124,58,237,0.12); color:var(--text); }
-  .platform-option .platform-icon { font-size:20px; }
-
-  /* ── Settings modal ── */
-  .settings-tabs { display:flex; gap:4px; background:var(--surface2); border-radius:12px; padding:4px; margin-bottom:24px; }
-  .stab { flex:1; padding:8px; border-radius:9px; text-align:center; cursor:pointer; font-size:13px; font-weight:600; color:var(--text-muted); transition:all 0.15s; border:none; background:none; font-family:'Heebo',sans-serif; }
-  .stab.active { background:var(--surface3); color:var(--text); }
-  .stab-content { display:none; }
-  .stab-content.active { display:block; }
-  .settings-section-title { font-size:13px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px; margin-top:20px; }
-  .settings-section-title:first-child { margin-top:0; }
-  .api-key-input { font-family:monospace; letter-spacing:1px; }
-  .notif-toggle-row { display:flex; align-items:center; justify-content:space-between; background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:12px; }
-  .notif-toggle-label { font-size:14px; font-weight:600; }
-  .notif-toggle-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
-  .toggle { width:44px; height:24px; background:var(--surface3); border-radius:100px; position:relative; cursor:pointer; transition:background 0.2s; flex-shrink:0; }
-  .toggle.on { background:var(--accent4); }
-  .toggle::after { content:''; position:absolute; top:3px; right:3px; width:18px; height:18px; background:white; border-radius:50%; transition:transform 0.2s; }
-  .toggle.on::after { transform:translateX(-20px); }
-
-  /* ── Script modal ── */
-  .script-modal .modal { max-width:680px; }
-  .script-platform-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; margin-top:6px; }
-  .script-body { display:flex; flex-direction:column; gap:14px; margin-top:20px; }
-  .script-section { background:var(--surface2); border:1px solid var(--border); border-radius:14px; padding:16px; }
-  .script-section-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:8px; }
-  .script-section-content { font-size:14px; line-height:1.75; white-space:pre-wrap; }
-  .script-copy-bar { display:flex; gap:10px; margin-top:20px; align-items:center; }
-  .script-char-count { font-size:12px; color:var(--text-muted); flex:1; }
-
-  /* ── Loading ── */
-  .loading-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; gap:16px; }
-  .spinner { width:36px; height:36px; border:3px solid rgba(168,85,247,0.2); border-top-color:var(--neon); border-radius:50%; animation:spin 0.7s linear infinite; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  .loading-text { font-size:14px; color:var(--text-muted); font-weight:600; animation:pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
-
-  /* ── AI glow button ── */
-  .btn-ai { background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2)); border:1px solid rgba(168,85,247,0.4); color:var(--neon); }
-  .btn-ai:hover { background:linear-gradient(135deg,rgba(168,85,247,0.3),rgba(236,72,153,0.3)); border-color:var(--neon); box-shadow:0 0 20px rgba(168,85,247,0.3); }
-
-  /* ── Context menu ── */
-  .ctx-menu { position:fixed; background:var(--surface2); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:6px; z-index:300; box-shadow:0 20px 40px rgba(0,0,0,0.4); min-width:160px; display:none; }
-  .ctx-menu.open { display:block; }
-  .ctx-item { padding:8px 14px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.15s; display:flex; align-items:center; gap:10px; color:var(--text); }
-  .ctx-item:hover { background:var(--surface3); }
-  .ctx-item.danger { color:var(--red); }
-  .ctx-item.danger:hover { background:rgba(239,68,68,0.1); }
-  .ctx-divider { height:1px; background:var(--border); margin:4px 0; }
-
-  /* ── Notification toast ── */
-  .notification { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface2); border:1px solid rgba(255,255,255,0.12); border-radius:12px; padding:12px 20px; font-size:14px; font-weight:600; z-index:400; transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 16px 40px rgba(0,0,0,0.4); display:flex; align-items:center; gap:10px; }
-  .notification.show { transform:translateX(-50%) translateY(0); }
-
-  /* ── Error ── */
-  .error-box { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:12px; padding:14px 16px; font-size:13px; color:#fca5a5; display:flex; gap:10px; align-items:flex-start; line-height:1.5; }
-
-  /* ── Scrollbar ── */
-  ::-webkit-scrollbar { width:6px; height:6px; }
-  ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:3px; }
-  ::-webkit-scrollbar-thumb:hover { background:rgba(255,255,255,0.2); }
-
-  @media(max-width:1100px) {
-    .stats-row { grid-template-columns:repeat(3,1fr); }
-    .kanban { grid-template-columns:repeat(2,1fr); }
-    .analytics-grid { grid-template-columns:1fr; }
-  }
+@media(max-width:600px){
+  nav{padding:0 18px;} .hero{padding:100px 18px 60px;} .section{padding:0 18px 80px;}
+  .grid{grid-template-columns:1fr;} footer{flex-direction:column;gap:12px;text-align:center;}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════ HEADER ═══════════════════ -->
-<header class="header">
-  <div class="logo">
-    <div class="logo-icon">✦</div>
-    <span>Content Studio</span>
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-icon">✦</div>
+    <span>Aviv Malka</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#projects">פרויקטים</a>
+    <a class="nav-link" href="https://github.com/avivmalka123" target="_blank">GitHub ↗</a>
   </div>
-  <div class="header-actions">
-    <div class="date-badge" id="currentDate"></div>
-    <button class="btn btn-ai" onclick="openAIIdeasModal()">✨ AI Ideas</button>
-    <button class="btn-icon btn" id="notifBtn" onclick="openSettings('notif')" title="התראות">
-      🔔
-      <span class="notif-badge" id="notifBadge">!</span>
-    </button>
-    <button class="btn-icon btn" onclick="openSettings('ai')" title="הגדרות">⚙️</button>
-    <button class="btn btn-primary" onclick="openModal()">+ תוכן חדש</button>
-  </div>
-</header>
+</nav>
 
-<!-- ═══════════════════ TABS ═══════════════════ -->
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('board',this)">📋 לוח תוכן</div>
-  <div class="tab" onclick="switchTab('gantt',this)">📅 ציר זמן</div>
-  <div class="tab" onclick="switchTab('ideas',this)">💡 רעיונות</div>
-  <div class="tab" onclick="switchTab('analytics',this)">📊 ניתוח</div>
+<div class="hero">
+  <div class="hero-badge">🚀 כלים חיים באינטרנט</div>
+  <h1>כלים שבניתי<br><span class="gr">לעולם האיקומרס</span></h1>
+  <p class="hero-sub">כל הכלים שאני משתמש בהם — לניהול תוכן, יצירת סקריפטים ועוד — זמינים כאן בחינם.</p>
+  <a href="#projects" class="hero-cta">🔍 כל הפרויקטים</a>
 </div>
 
-<!-- ═══════════════════ MAIN ═══════════════════ -->
-<div class="main">
-
-  <!-- Stats -->
-  <div class="stats-row">
-    <div class="stat-card idea"       onclick="filterByStatus('idea')">      <div class="stat-label">רעיונות</div>    <div class="stat-num" id="stat-idea">0</div>      <div class="stat-sub">ממתינים לייצור</div></div>
-    <div class="stat-card production" onclick="filterByStatus('production')"><div class="stat-label">בייצור</div>     <div class="stat-num" id="stat-production">0</div><div class="stat-sub">עובדים עליהם</div></div>
-    <div class="stat-card ready"      onclick="filterByStatus('ready')">     <div class="stat-label">מוכן</div>      <div class="stat-num" id="stat-ready">0</div>     <div class="stat-sub">מחכים לפרסום</div></div>
-    <div class="stat-card published"  onclick="filterByStatus('published')"> <div class="stat-label">פורסם</div>     <div class="stat-num" id="stat-published">0</div>  <div class="stat-sub">חיים ברשת</div></div>
-    <div class="stat-card total">                                             <div class="stat-label">סה"כ</div>      <div class="stat-num" id="stat-total">0</div>      <div class="stat-sub">פיסות תוכן</div></div>
-  </div>
-
-  <!-- ── TAB: Board ── -->
-  <div class="tab-content active" id="tab-board">
-    <div class="view-header">
-      <div class="view-title">לוח תוכן</div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-        <select class="form-select" style="width:auto;padding:6px 12px;font-size:13px;" id="platformFilter" onchange="renderBoard()">
-          <option value="">כל הפלטפורמות</option>
-          <option value="instagram">Instagram</option>
-          <option value="tiktok">TikTok</option>
-          <option value="youtube">YouTube</option>
-          <option value="twitter">Twitter/X</option>
-          <option value="linkedin">LinkedIn</option>
-        </select>
-      </div>
-    </div>
-    <div class="kanban" id="kanban-board"></div>
-  </div>
-
-  <!-- ── TAB: Gantt ── -->
-  <div class="tab-content" id="tab-gantt">
-    <div class="view-header">
-      <div class="view-title">ציר זמן — Gantt</div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-ghost" onclick="shiftGantt(-1)">◀ חודש קודם</button>
-        <button class="btn btn-ghost" onclick="shiftGantt(0)">היום</button>
-        <button class="btn btn-ghost" onclick="shiftGantt(1)">חודש הבא ▶</button>
-      </div>
-    </div>
-    <div class="gantt-wrap"><div class="gantt-scroll"><div id="gantt-container"></div></div></div>
-  </div>
-
-  <!-- ── TAB: Ideas ── -->
-  <div class="tab-content" id="tab-ideas">
-    <!-- Creator Inspiration -->
-    <div class="creator-section">
-      <div class="creator-section-title">🔍 השראה מיוצרים</div>
-      <div class="creator-search-row">
-        <input class="creator-input" id="creatorInput" placeholder="שם יוצר תוכן... (למשל: MrBeast, קשת 12, Gary Vee)" onkeydown="if(event.key==='Enter')searchCreator()">
-        <button class="btn btn-ai" onclick="searchCreator()" id="creatorBtn">🔍 חפש וצור רעיונות</button>
-      </div>
-      <div class="creator-results" id="creatorResults"></div>
-    </div>
-
-    <!-- Ideas -->
-    <div class="view-header">
-      <div class="view-title">בנק רעיונות 💡</div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-ai" onclick="openAIIdeasModal()">✨ צור רעיונות עם AI</button>
-        <button class="btn btn-primary" onclick="openIdeaModal()">+ רעיון חדש</button>
-      </div>
-    </div>
-    <div class="ideas-grid" id="ideas-grid"></div>
-  </div>
-
-  <!-- ── TAB: Analytics ── -->
-  <div class="tab-content" id="tab-analytics">
-    <div class="view-header"><div class="view-title">ניתוח תוכן 📊</div></div>
-    <div class="analytics-grid" id="analytics-grid"></div>
-  </div>
-
+<div class="stats-bar">
+  <div class="stat-cell"><div class="s-num">2</div><div class="s-lbl">כלים חיים</div></div>
+  <div class="stat-cell"><div class="s-num">100%</div><div class="s-lbl">חינמי</div></div>
+  <div class="stat-cell"><div class="s-num">∞</div><div class="s-lbl">בדרך</div></div>
 </div>
 
-<!-- ═══════════════════ MODAL: Content ═══════════════════ -->
-<div class="modal-overlay" id="contentModal" onclick="handleOverlayClick(event,'contentModal',closeModal)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modalTitle">תוכן חדש ✦</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">כותרת</label>
-      <input class="form-input" id="f-title" placeholder="שם הפוסט / סרטון..." autocomplete="off">
-    </div>
-    <div class="form-group">
-      <label class="form-label">פלטפורמה</label>
-      <div class="platform-picker" id="platformPicker">
-        <div class="platform-option selected" data-platform="instagram" onclick="selectPlatform(this)"><span class="platform-icon">📸</span>Instagram</div>
-        <div class="platform-option" data-platform="tiktok"    onclick="selectPlatform(this)"><span class="platform-icon">🎵</span>TikTok</div>
-        <div class="platform-option" data-platform="youtube"   onclick="selectPlatform(this)"><span class="platform-icon">▶️</span>YouTube</div>
-        <div class="platform-option" data-platform="twitter"   onclick="selectPlatform(this)"><span class="platform-icon">𝕏</span>Twitter</div>
-        <div class="platform-option" data-platform="linkedin"  onclick="selectPlatform(this)"><span class="platform-icon">💼</span>LinkedIn</div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">תאריך התחלה</label><input class="form-input" type="date" id="f-start"></div>
-      <div class="form-group"><label class="form-label">תאריך פרסום</label><input class="form-input" type="date" id="f-end"></div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">סטטוס</label>
-      <select class="form-select" id="f-status">
-        <option value="idea">💡 רעיון</option>
-        <option value="production">🎬 בייצור</option>
-        <option value="ready">✅ מוכן</option>
-        <option value="published">🚀 פורסם</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">תיאור / הערות</label>
-      <textarea class="form-textarea" id="f-desc" placeholder="נושא, קהל יעד, הוק פתיחה..."></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="saveContent()">שמור תוכן</button>
-      <button class="btn btn-ghost"   onclick="closeModal()">ביטול</button>
-    </div>
+<div class="section" id="projects">
+  <div class="sec-hd">
+    <div class="sec-t">הפרויקטים</div>
+    <div class="sec-s">לחץ על כרטיס כדי לפתוח</div>
   </div>
-</div>
+  <div class="grid">
 
-<!-- ═══════════════════ MODAL: Idea ═══════════════════ -->
-<div class="modal-overlay" id="ideaModal" onclick="handleOverlayClick(event,'ideaModal',closeIdeaModal)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">רעיון חדש 💡</div>
-      <button class="modal-close" onclick="closeIdeaModal()">✕</button>
-    </div>
-    <div class="form-group"><label class="form-label">כותרת הרעיון</label><input class="form-input" id="i-title" placeholder="שם הרעיון..." autocomplete="off"></div>
-    <div class="form-group"><label class="form-label">אמוג'י</label><input class="form-input" id="i-emoji" placeholder="💡" style="width:80px;text-align:center;font-size:20px;"></div>
-    <div class="form-group"><label class="form-label">תיאור</label><textarea class="form-textarea" id="i-body" placeholder="ספר על הרעיון..."></textarea></div>
-    <div class="form-group"><label class="form-label">תגיות (מופרדות בפסיקים)</label><input class="form-input" id="i-tags" placeholder="ויראלי, חינוכי, מוטיבציה..."></div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="saveIdea()">שמור רעיון</button>
-      <button class="btn btn-ghost"   onclick="closeIdeaModal()">ביטול</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════ MODAL: AI Ideas ═══════════════════ -->
-<div class="modal-overlay" id="aiIdeasModal" onclick="handleOverlayClick(event,'aiIdeasModal',closeAIIdeasModal)">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">✨ יצירת רעיונות עם AI</div>
-      <button class="modal-close" onclick="closeAIIdeasModal()">✕</button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">הנישה שלך</label>
-      <input class="form-input" id="ai-niche" placeholder="למשל: כושר ובריאות, פיננסים, בישול, טכנולוגיה..." autocomplete="off">
-      <div class="form-help">מה הנישה / תחום התוכן שלך? ככל שתהיה ספציפי יותר, הרעיונות יהיו טובים יותר.</div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">פלטפורמה (אופציונלי)</label>
-      <select class="form-select" id="ai-platform">
-        <option value="">כל הפלטפורמות</option>
-        <option value="Instagram Reels">Instagram Reels</option>
-        <option value="TikTok">TikTok</option>
-        <option value="YouTube">YouTube</option>
-        <option value="Twitter/X">Twitter/X</option>
-        <option value="LinkedIn">LinkedIn</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">כמה רעיונות?</label>
-      <select class="form-select" id="ai-count">
-        <option value="5">5 רעיונות</option>
-        <option value="10" selected>10 רעיונות</option>
-        <option value="15">15 רעיונות</option>
-      </select>
-    </div>
-    <div id="aiIdeasResult"></div>
-    <div class="modal-footer">
-      <button class="btn btn-primary btn-ai" id="aiGenerateBtn" onclick="runAIIdeas()">✨ צור רעיונות</button>
-      <button class="btn btn-ghost" onclick="closeAIIdeasModal()">ביטול</button>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════ MODAL: Script ═══════════════════ -->
-<div class="modal-overlay script-modal" id="scriptModal" onclick="handleOverlayClick(event,'scriptModal',closeScriptModal)">
-  <div class="modal" style="max-width:680px;">
-    <div class="modal-header">
-      <div>
-        <div class="modal-title" id="scriptTitle">🪄 סקריפט</div>
-        <div id="scriptPlatformBadge" style="margin-top:6px;"></div>
-      </div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn btn-ghost" onclick="copyScript()" id="copyScriptBtn" style="display:none;">📋 העתק</button>
-        <button class="modal-close" onclick="closeScriptModal()">✕</button>
-      </div>
-    </div>
-    <div id="scriptContent"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════ MODAL: Settings ═══════════════════ -->
-<div class="modal-overlay" id="settingsModal" onclick="handleOverlayClick(event,'settingsModal',closeSettings)">
-  <div class="modal" style="max-width:560px;">
-    <div class="modal-header">
-      <div class="modal-title">⚙️ הגדרות</div>
-      <button class="modal-close" onclick="closeSettings()">✕</button>
-    </div>
-
-    <div class="settings-tabs">
-      <button class="stab active" id="stab-ai"     onclick="switchStab('ai',this)">🤖 AI</button>
-      <button class="stab"        id="stab-notif"  onclick="switchStab('notif',this)">🔔 התראות</button>
-      <button class="stab"        id="stab-creator" onclick="switchStab('creator',this)">🔍 יוצרים</button>
-    </div>
-
-    <!-- AI Tab -->
-    <div class="stab-content active" id="sc-ai">
-      <div class="settings-section-title">מפתח Claude API</div>
-      <div class="form-group">
-        <label class="form-label">API Key</label>
-        <input class="form-input api-key-input" id="s-claude-key" type="password" placeholder="sk-ant-api...">
-        <div class="form-help">
-          קבל מפתח בחינם ב: <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a> — נדרש לכל פיצ'רי ה-AI
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">הנישה שלך (ברירת מחדל)</label>
-        <input class="form-input" id="s-niche" placeholder="למשל: כושר ובריאות, ביזנס, קריאייטיב...">
-      </div>
-    </div>
-
-    <!-- Notifications Tab -->
-    <div class="stab-content" id="sc-notif">
-      <div class="settings-section-title">התראה יומית בשעה 9:00</div>
-
-      <div class="notif-toggle-row">
-        <div>
-          <div class="notif-toggle-label">🌐 התראת דפדפן</div>
-          <div class="notif-toggle-sub">מופיעה כשהאתר פתוח בדפדפן</div>
-        </div>
-        <div class="toggle" id="browserNotifToggle" onclick="toggleBrowserNotif(this)"></div>
-      </div>
-
-      <div class="settings-section-title">📱 ntfy.sh — הודעה לנייד (חינם)</div>
-      <div class="form-group">
-        <label class="form-label">Topic שלך ב-ntfy</label>
-        <input class="form-input" id="s-ntfy" placeholder="content-studio-aviv123">
-        <div class="form-help">
-          1. הורד <a href="https://ntfy.sh/" target="_blank">ntfy app</a> לנייד<br>
-          2. הירשם ל-topic שתבחר (כל שם ייחודי)<br>
-          3. הדבק אותו כאן — תקבל הודעה כל בוקר ב-9:00
-        </div>
-      </div>
-
-      <div class="settings-section-title">💬 WhatsApp (CallMeBot)</div>
-      <div class="form-group">
-        <label class="form-label">מספר טלפון</label>
-        <input class="form-input" id="s-wb-phone" placeholder="972501234567" style="direction:ltr;">
-        <div class="form-help">פורמט בינלאומי ללא + (למשל: 972501234567)</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">CallMeBot API Key</label>
-        <input class="form-input api-key-input" id="s-wb-key" placeholder="1234567">
-        <div class="form-help">
-          לקבל מפתח: שלח "I allow callmebot to send me messages" ל-<strong>+34 644 59 56 09</strong> בוואצאפ — תקבל API key בהודעה חזרה
-        </div>
-      </div>
-
-      <button class="btn btn-ghost" style="width:100%;margin-top:8px;" onclick="testNotifications()">🧪 שלח הודעת בדיקה</button>
-    </div>
-
-    <!-- Creator Tab -->
-    <div class="stab-content" id="sc-creator">
-      <div class="settings-section-title">YouTube Data API (אופציונלי)</div>
-      <div class="form-group">
-        <label class="form-label">YouTube API Key</label>
-        <input class="form-input api-key-input" id="s-yt-key" type="password" placeholder="AIza...">
-        <div class="form-help">
-          אם תוסיף מפתח, החיפוש יציג סרטונים אמיתיים של היוצר.<br>
-          ללא מפתח — ה-AI ישתמש בידע שלו על היוצר. שני האופציות עובדות!<br>
-          <a href="https://console.cloud.google.com/" target="_blank">console.cloud.google.com</a> → Enable YouTube Data API v3 (חינם עד 100 חיפושים/יום)
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="saveSettings()">שמור הגדרות</button>
-      <button class="btn btn-ghost" onclick="closeSettings()">ביטול</button>
-    </div>
-  </div>
-</div>
-
-<!-- Context Menu -->
-<div class="ctx-menu" id="ctxMenu">
-  <div class="ctx-item" onclick="ctxEdit()">✏️ ערוך</div>
-  <div class="ctx-item" onclick="ctxWand()">🪄 סקריפט</div>
-  <div class="ctx-item" onclick="ctxAdvanceStatus()">⏭️ קדם סטטוס</div>
-  <div class="ctx-divider"></div>
-  <div class="ctx-item danger" onclick="ctxDelete()">🗑️ מחק</div>
-</div>
-
-<!-- Notification Toast -->
-<div class="notification" id="notification">
-  <span id="notif-icon">✓</span>
-  <span id="notif-msg">נשמר!</span>
-</div>
-
-<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
-<script>
-// ═══════════════ CONSTANTS ═══════════════
-const PLATFORMS = {
-  instagram:{ label:'Instagram', icon:'📸', color:'#ec4899', bg:'rgba(236,72,153,0.15)', border:'rgba(236,72,153,0.3)' },
-  tiktok:   { label:'TikTok',    icon:'🎵', color:'#06b6d4', bg:'rgba(6,182,212,0.15)',  border:'rgba(6,182,212,0.3)'  },
-  youtube:  { label:'YouTube',   icon:'▶️', color:'#ef4444', bg:'rgba(239,68,68,0.15)',  border:'rgba(239,68,68,0.3)'  },
-  twitter:  { label:'Twitter/X', icon:'𝕏',  color:'#94a3b8', bg:'rgba(148,163,184,0.15)',border:'rgba(148,163,184,0.3)'},
-  linkedin: { label:'LinkedIn',  icon:'💼', color:'#3b82f6', bg:'rgba(59,130,246,0.15)', border:'rgba(59,130,246,0.3)' },
-};
-const STATUSES = {
-  idea:       { label:'💡 רעיון',  color:'#f59e0b', ganttColor:'linear-gradient(90deg,#f59e0b,#fbbf24)' },
-  production: { label:'🎬 בייצור', color:'#06b6d4', ganttColor:'linear-gradient(90deg,#06b6d4,#38bdf8)' },
-  ready:      { label:'✅ מוכן',   color:'#10b981', ganttColor:'linear-gradient(90deg,#10b981,#34d399)' },
-  published:  { label:'🚀 פורסם',  color:'#a855f7', ganttColor:'linear-gradient(90deg,#a855f7,#c084fc)' },
-};
-
-// ═══════════════ DATA ═══════════════
-let contents = JSON.parse(localStorage.getItem('cs_contents') || '[]');
-let ideas    = JSON.parse(localStorage.getItem('cs_ideas')    || '[]');
-let editingId     = null;
-let editingIdeaId = null;
-let ctxId         = null;
-let ganttOffset   = 0;
-let statusFilter  = null;
-let generatedScript = '';
-
-function save() {
-  localStorage.setItem('cs_contents', JSON.stringify(contents));
-  localStorage.setItem('cs_ideas',    JSON.stringify(ideas));
-}
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
-function formatDate(s) { if(!s) return ''; return new Date(s+'T12:00:00').toLocaleDateString('he-IL',{day:'numeric',month:'short'}); }
-function notify(msg,icon='✓') {
-  const el = document.getElementById('notification');
-  document.getElementById('notif-msg').textContent = msg;
-  document.getElementById('notif-icon').textContent = icon;
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'),2800);
-}
-
-// ═══════════════ SETTINGS ═══════════════
-function gs(k)    { return localStorage.getItem('cs_'+k)||''; }
-function ss(k,v)  { localStorage.setItem('cs_'+k,v); }
-
-function openSettings(tab='ai') {
-  document.getElementById('s-claude-key').value = gs('claude_key');
-  document.getElementById('s-niche').value      = gs('niche');
-  document.getElementById('s-ntfy').value       = gs('ntfy_topic');
-  document.getElementById('s-wb-phone').value   = gs('wb_phone');
-  document.getElementById('s-wb-key').value     = gs('wb_key');
-  document.getElementById('s-yt-key').value     = gs('yt_key');
-  // Browser notif toggle
-  const tog = document.getElementById('browserNotifToggle');
-  tog.classList.toggle('on', gs('browser_notif')==='1' && Notification.permission==='granted');
-  switchStab(tab, document.getElementById('stab-'+tab));
-  document.getElementById('settingsModal').classList.add('open');
-}
-function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
-function saveSettings() {
-  ss('claude_key', document.getElementById('s-claude-key').value.trim());
-  ss('niche',      document.getElementById('s-niche').value.trim());
-  ss('ntfy_topic', document.getElementById('s-ntfy').value.trim());
-  ss('wb_phone',   document.getElementById('s-wb-phone').value.trim());
-  ss('wb_key',     document.getElementById('s-wb-key').value.trim());
-  ss('yt_key',     document.getElementById('s-yt-key').value.trim());
-  closeSettings();
-  notify('הגדרות נשמרו ✓');
-  initNotifications();
-}
-
-function switchStab(name, el) {
-  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.stab-content').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('sc-'+name).classList.add('active');
-}
-
-async function toggleBrowserNotif(el) {
-  if (el.classList.contains('on')) {
-    el.classList.remove('on');
-    ss('browser_notif','0');
-  } else {
-    const perm = await Notification.requestPermission();
-    if (perm==='granted') { el.classList.add('on'); ss('browser_notif','1'); notify('התראות הופעלו ✓','🔔'); }
-    else notify('לא ניתן לקבל הרשאה — אשר בדפדפן','⚠️');
-  }
-}
-
-// ═══════════════ CLAUDE API ═══════════════
-async function callClaude(userPrompt, systemPrompt='', maxTokens=1500) {
-  const key = gs('claude_key');
-  if (!key) { openSettings('ai'); throw new Error('נדרש מפתח Claude API — הוסף בהגדרות ⚙️'); }
-
-  const body = { model:'claude-haiku-4-5-20251001', max_tokens:maxTokens, messages:[{role:'user',content:userPrompt}] };
-  if (systemPrompt) body.system = systemPrompt;
-
-  const resp = await fetch('https://api.anthropic.com/v1/messages', {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key': key,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
-    body: JSON.stringify(body)
-  });
-
-  if (!resp.ok) {
-    const err = await resp.json().catch(()=>({}));
-    throw new Error(err.error?.message || `שגיאת API: ${resp.status}`);
-  }
-  const data = await resp.json();
-  return data.content[0].text;
-}
-
-// ═══════════════ AI IDEAS ═══════════════
-function openAIIdeasModal() {
-  document.getElementById('ai-niche').value = gs('niche') || '';
-  document.getElementById('aiIdeasResult').innerHTML = '';
-  document.getElementById('aiIdeasModal').classList.add('open');
-  setTimeout(()=>document.getElementById('ai-niche').focus(),100);
-}
-function closeAIIdeasModal() { document.getElementById('aiIdeasModal').classList.remove('open'); }
-
-async function runAIIdeas() {
-  const niche   = document.getElementById('ai-niche').value.trim();
-  const platform= document.getElementById('ai-platform').value;
-  const count   = document.getElementById('ai-count').value;
-  if (!niche) { document.getElementById('ai-niche').style.borderColor='var(--red)'; return; }
-  document.getElementById('ai-niche').style.borderColor='';
-
-  const btn = document.getElementById('aiGenerateBtn');
-  btn.disabled=true; btn.textContent='⏳ יוצר...';
-  document.getElementById('aiIdeasResult').innerHTML = loadingHTML('AI יוצר רעיונות...');
-
-  const sys = `אתה אסטרטג תוכן מוביל בישראל. אתה מייצר רעיונות תוכן ויראליים, קריאייטיביים ומעשיים שמתאימים לרשתות החברתיות.`;
-  const prompt = `צור ${count} רעיונות תוכן ייחודיים ל${platform ? 'פלטפורמת '+platform : 'רשתות החברתיות'} בנישת "${niche}".
-
-כל רעיון בפורמט הבא (שורה אחת):
-EMOJI | כותרת הרעיון | תיאור קצר (2 משפטים) | תגית1,תגית2,תגית3
-
-לדוגמה:
-🔥 | כותרת מדליקה | תיאור קצר של הרעיון. למה זה יעבוד. | ויראלי,חינוכי,מוטיבציה
-
-ייצר ${count} שורות כאלה. כתוב בעברית. הרעיונות צריכים להיות מגוונים, קריאייטיביים ובעלי פוטנציאל ויראלי.`;
-
-  try {
-    const text = await callClaude(prompt, sys, 2000);
-    const parsed = parseAIIdeas(text);
-    renderAIIdeasResult(parsed);
-    ss('niche', niche);
-  } catch(e) {
-    document.getElementById('aiIdeasResult').innerHTML = errorHTML(e.message);
-  } finally {
-    btn.disabled=false; btn.textContent='✨ צור רעיונות';
-  }
-}
-
-function parseAIIdeas(text) {
-  const lines = text.split('\n').filter(l=>l.includes('|'));
-  return lines.map(l=>{
-    const parts = l.split('|').map(p=>p.trim());
-    return { emoji:parts[0]||'💡', title:parts[1]||'', body:parts[2]||'', tags:(parts[3]||'').split(',').map(t=>t.trim()).filter(Boolean) };
-  }).filter(i=>i.title);
-}
-
-function renderAIIdeasResult(items) {
-  if (!items.length) { document.getElementById('aiIdeasResult').innerHTML = errorHTML('לא הצלחתי לפרסר את התשובה — נסה שוב'); return; }
-  document.getElementById('aiIdeasResult').innerHTML = `
-    <div style="margin-top:20px;margin-bottom:12px;font-size:13px;color:var(--text-muted);font-weight:600;">✨ ${items.length} רעיונות נוצרו — בחר מה לשמור:</div>
-    <div style="display:flex;flex-direction:column;gap:8px;max-height:340px;overflow-y:auto;">
-      ${items.map((item,i)=>`
-        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;">
-          <span style="font-size:20px;flex-shrink:0;">${item.emoji}</span>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:14px;font-weight:700;margin-bottom:4px;">${item.title}</div>
-            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">${item.body}</div>
-            ${item.tags.length?`<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;">${item.tags.map(t=>`<span class="idea-tag">#${t}</span>`).join('')}</div>`:''}
-          </div>
-          <button class="btn btn-primary" style="padding:5px 12px;font-size:12px;flex-shrink:0;" onclick="saveAIIdea(${i})">+ שמור</button>
-        </div>
-      `).join('')}
-    </div>
-  `;
-  window._aiIdeasBuffer = items;
-}
-
-function saveAIIdea(idx) {
-  const item = window._aiIdeasBuffer?.[idx];
-  if (!item) return;
-  ideas.push({ id:uid(), title:item.title, emoji:item.emoji, body:item.body, tags:item.tags });
-  save();
-  renderIdeas();
-  notify('רעיון נשמר! 💡','💡');
-  // Grey out the button
-  const btns = document.querySelectorAll('#aiIdeasResult button');
-  if (btns[idx]) { btns[idx].textContent='✓'; btns[idx].disabled=true; btns[idx].style.background='var(--accent4)'; }
-}
-
-// ═══════════════ CREATOR INSPIRATION ═══════════════
-async function searchCreator() {
-  const name = document.getElementById('creatorInput').value.trim();
-  if (!name) return;
-  const btn = document.getElementById('creatorBtn');
-  btn.disabled=true; btn.textContent='⏳ מחפש...';
-  document.getElementById('creatorResults').innerHTML = loadingHTML('מנתח את הסגנון של '+name+'...');
-
-  try {
-    let videosContext = '';
-    const ytKey = gs('yt_key');
-    if (ytKey) {
-      try {
-        const ytData = await fetchYouTubeVideos(name, ytKey);
-        if (ytData?.length) {
-          videosContext = `\n\nסרטונים אמיתיים שלהם:\n${ytData.slice(0,8).map((t,i)=>`${i+1}. ${t}`).join('\n')}`;
-        }
-      } catch(e) { /* fallback to knowledge */ }
-    }
-
-    const niche = gs('niche') || 'תוכן כללי';
-    const sys = `אתה אסטרטג תוכן מוביל. אתה מכיר את כל יוצרי התוכן הגדולים בעולם ובישראל.`;
-    const prompt = `יוצר התוכן שמחפשים: "${name}"${videosContext}
-
-על בסיס הסגנון, הנושאים והקהל של ${name}, צור 6 רעיונות תוכן מקוריים שמתאימים ליוצר שעובד בנישת "${niche}".
-
-הרעיונות צריכים להיות בהשראת הסגנון של ${name} אך מקוריים לחלוטין.
-
-פורמט (שורה אחת לרעיון):
-EMOJI | כותרת | תיאור קצר | תגית1,תגית2
-
-כתוב בעברית.`;
-
-    const text = await callClaude(prompt, sys, 1500);
-    const items = parseAIIdeas(text);
-    renderCreatorResults(items, name);
-  } catch(e) {
-    document.getElementById('creatorResults').innerHTML = errorHTML(e.message);
-  } finally {
-    btn.disabled=false; btn.textContent='🔍 חפש וצור רעיונות';
-  }
-}
-
-async function fetchYouTubeVideos(query, apiKey) {
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=8&key=${apiKey}`;
-  const resp = await fetch(url);
-  if (!resp.ok) return null;
-  const data = await resp.json();
-  return data.items?.map(i=>i.snippet.title)||[];
-}
-
-function renderCreatorResults(items, creatorName) {
-  if (!items.length) { document.getElementById('creatorResults').innerHTML = errorHTML('לא נמצאו תוצאות'); return; }
-  document.getElementById('creatorResults').innerHTML = `
-    <div style="grid-column:1/-1;font-size:13px;color:var(--text-muted);font-weight:600;margin-bottom:4px;">💡 ${items.length} רעיונות בהשראת ${creatorName}</div>
-    ${items.map((item,i)=>`
-      <div class="idea-card" style="padding:14px;" onclick="void(0)">
-        <div class="idea-emoji" style="font-size:22px;margin-bottom:8px;">${item.emoji}</div>
-        <div class="idea-title" style="font-size:14px;">${item.title}</div>
-        <div class="idea-body" style="font-size:12px;">${item.body}</div>
-        <div class="idea-tags">${(item.tags||[]).map(t=>`<span class="idea-tag">#${t}</span>`).join('')}</div>
-        <button class="btn btn-primary" style="width:100%;margin-top:12px;padding:6px;font-size:12px;" onclick="saveCreatorIdea(${i},'${creatorName.replace(/'/g,"\\'")}')">+ שמור לרעיונות</button>
-      </div>
-    `).join('')}
-  `;
-  window._creatorIdeasBuffer = items;
-}
-
-function saveCreatorIdea(idx, creator) {
-  const item = window._creatorIdeasBuffer?.[idx];
-  if (!item) return;
-  ideas.push({ id:uid(), title:item.title, emoji:item.emoji, body:`בהשראת ${creator}: ${item.body}`, tags:[...item.tags, 'בהשראת-'+creator.replace(/\s/g,'-')] });
-  save();
-  renderIdeas();
-  notify('רעיון נשמר! 💡','💡');
-}
-
-// ═══════════════ 🪄 SCRIPT GENERATION ═══════════════
-async function openScriptModal(e, id) {
-  e && e.stopPropagation();
-  const c = contents.find(x=>x.id===id);
-  if (!c) return;
-
-  const p = PLATFORMS[c.platform] || PLATFORMS.instagram;
-  document.getElementById('scriptTitle').textContent = `🪄 ${c.title}`;
-  document.getElementById('scriptPlatformBadge').innerHTML = `
-    <span class="script-platform-badge" style="background:${p.bg};color:${p.color};border:1px solid ${p.border};">
-      ${p.icon} ${p.label}
-    </span>`;
-  document.getElementById('copyScriptBtn').style.display='none';
-  document.getElementById('scriptContent').innerHTML = loadingHTML('כותב סקריפט מותאם ל-'+p.label+'...');
-  document.getElementById('scriptModal').classList.add('open');
-  generatedScript = '';
-
-  try {
-    const script = await generateScript(c);
-    generatedScript = script;
-    document.getElementById('scriptContent').innerHTML = renderScriptHTML(script, c.platform);
-    document.getElementById('copyScriptBtn').style.display='flex';
-  } catch(e) {
-    document.getElementById('scriptContent').innerHTML = errorHTML(e.message);
-  }
-}
-
-function closeScriptModal() { document.getElementById('scriptModal').classList.remove('open'); }
-
-async function generateScript(c) {
-  const sys = `אתה כותב תסריטים מקצועי לתוכן ברשתות החברתיות. אתה כותב בעברית, בסגנון שובה לב, ממוקד, ומותאם לפלטפורמה.`;
-  const platform = c.platform;
-  const title = c.title;
-  const desc = c.desc || '';
-
-  let prompt;
-  if (platform==='youtube') {
-    prompt = `כתוב סקריפט מלא לסרטון YouTube באורך ~10 דקות.
-כותרת: ${title}
-תיאור: ${desc}
-
-פורמט:
-🎬 HOOK (0-30 שניות):
-[טקסט ה-hook]
-
-📍 INTRO (30 שניות-1 דקה):
-[מבוא + מה הצופה ילמד]
-
-📚 פרק 1 - [שם] (דקות 1-3):
-[תוכן]
-
-📚 פרק 2 - [שם] (דקות 3-5):
-[תוכן]
-
-📚 פרק 3 - [שם] (דקות 5-7):
-[תוכן]
-
-📚 פרק 4 - [שם] (דקות 7-9):
-[תוכן]
-
-🎯 OUTRO (דקות 9-10):
-[סיכום + call to action + subscribe]
-
-כתוב בעברית. כל פרק צריך להיות מפורט ומלא.`;
-  } else if (platform==='linkedin') {
-    prompt = `כתוב פוסט מקצועי ל-LinkedIn.
-נושא: ${title}
-תיאור: ${desc}
-
-פורמט:
-🪝 HOOK (שורה ראשונה - חייבת לבלוט):
-[hook חזק]
-
-💡 BODY:
-[תוכן הפוסט - 150-250 מילים, עם רווחים בין פסקאות, bullets אם צריך]
-
-🎯 CTA:
-[call to action]
-
-#HASHTAGS:
-[5-8 hashtags רלוונטיים]
-
-כתוב בעברית. סגנון מקצועי אך אנושי.`;
-  } else if (platform==='twitter') {
-    prompt = `כתוב thread ל-Twitter/X.
-נושא: ${title}
-תיאור: ${desc}
-
-פורמט - Thread של 6-8 ציוצים:
-🧵 ציוץ 1 (hook):
-[280 תווים מקסימום]
-
-2/ ציוץ 2:
-[תוכן]
-
-3/ ציוץ 3:
-[תוכן]
-
-[המשך עד 6-8 ציוצים]
-
-🎯 ציוץ אחרון (CTA):
-[RT/Follow/reply]
-
-כתוב בעברית.`;
-  } else {
-    // Instagram/TikTok - Reels script
-    const platName = platform==='instagram' ? 'Instagram Reels' : 'TikTok';
-    prompt = `כתוב סקריפט מלא ל-${platName} — סרטון ורטיקלי באורך 40-60 שניות.
-כותרת: ${title}
-תיאור: ${desc}
-
-פורמט:
-🎬 HOOK (שניות 0-3) - חייב לעצור גלילה:
-[טקסט ה-hook — מה אומרים/עושים ב-3 שניות הראשונות]
-
-📍 INTRO (שניות 3-8):
-[הצגה קצרה מאוד]
-
-💡 CONTENT (שניות 8-50):
-[התוכן העיקרי — שלוש נקודות עיקריות, כל אחת 10-15 שניות]
-
-🎯 CTA (שניות 50-60):
-[call to action — follow/share/comment]
-
-📝 CAPTION לפוסט:
-[כיתוב מלא לפוסט כולל emojis ו-hashtags]
-
-כתוב בעברית. הסקריפט צריך להיות קצב גבוה ומרתק.`;
-  }
-
-  return await callClaude(prompt, sys, 2500);
-}
-
-function renderScriptHTML(text, platform) {
-  // Parse sections from the script
-  const sectionEmojis = { '🎬':'hook', '📍':'intro', '📚':'section', '💡':'content', '🎯':'cta', '📝':'caption', '🧵':'tweet', '#':'hashtags' };
-
-  // Split by numbered sections or emoji headers
-  const lines = text.split('\n');
-  let sections = [];
-  let current = null;
-
-  lines.forEach(line => {
-    const trimmed = line.trim();
-    if (!trimmed) { if(current) current.content += '\n'; return; }
-
-    // Check if it's a section header (starts with emoji or is all-caps heading)
-    const firstChar = trimmed[0];
-    const isHeader = Object.keys(sectionEmojis).some(e=>trimmed.startsWith(e)) ||
-      (trimmed.endsWith(':') && trimmed.length < 60 && !trimmed.includes('['));
-
-    if (isHeader && trimmed.includes(':')) {
-      if (current && current.content.trim()) sections.push(current);
-      current = { label: trimmed.replace(':','').trim(), content:'' };
-    } else {
-      if (!current) current = { label:'', content:'' };
-      current.content += (current.content ? '\n' : '') + line;
-    }
-  });
-  if (current && current.content.trim()) sections.push(current);
-
-  if (!sections.length) {
-    return `<div class="script-body"><div class="script-section"><div class="script-section-content">${text}</div></div></div>`;
-  }
-
-  return `<div class="script-body">
-    ${sections.map(s=>`
-      <div class="script-section">
-        ${s.label?`<div class="script-section-label">${s.label}</div>`:''}
-        <div class="script-section-content">${s.content.trim().replace(/\n/g,'<br>')}</div>
-      </div>
-    `).join('')}
-  </div>`;
-}
-
-function copyScript() {
-  if (!generatedScript) return;
-  navigator.clipboard.writeText(generatedScript).then(()=>notify('הסקריפט הועתק ✓','📋'));
-}
-
-// ═══════════════ NOTIFICATIONS ═══════════════
-let notifTimer = null;
-
-function initNotifications() {
-  clearTimeout(notifTimer);
-  if (gs('browser_notif')!=='1') return;
-
-  const now = new Date();
-  const target = new Date(now);
-  target.setHours(9,0,0,0);
-
-  const lastSent = gs('notif_last_sent');
-  const today = now.toDateString();
-
-  // If it's past 9AM and haven't sent today
-  if (now >= target && lastSent !== today) {
-    sendDailyReminder();
-    return;
-  }
-
-  // Schedule for next 9AM
-  const nextTarget = now >= target ? new Date(target.getTime() + 86400000) : target;
-  const delay = nextTarget - now;
-  notifTimer = setTimeout(()=>{ sendDailyReminder(); initNotifications(); }, delay);
-}
-
-async function sendDailyReminder() {
-  const today = new Date().toDateString();
-  ss('notif_last_sent', today);
-
-  const msg = buildReminderMessage();
-
-  // Browser notification
-  if (Notification.permission==='granted' && gs('browser_notif')==='1') {
-    new Notification('Content Studio ✦ — בוקר טוב!', { body: msg, icon:'https://avivmalka123.github.io/content-studio/favicon.ico' });
-  }
-
-  // ntfy.sh
-  const ntfyTopic = gs('ntfy_topic');
-  if (ntfyTopic) {
-    fetch(`https://ntfy.sh/${ntfyTopic}`, {
-      method:'POST',
-      headers:{ 'Title':'Content Studio ✦ — בוקר טוב!', 'Tags':'spiral_notepad,calendar', 'Priority':'high' },
-      body: msg
-    }).catch(()=>{});
-  }
-
-  // WhatsApp CallMeBot
-  const phone = gs('wb_phone');
-  const wbKey = gs('wb_key');
-  if (phone && wbKey) {
-    const encoded = encodeURIComponent(msg);
-    fetch(`https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encoded}&apikey=${wbKey}`).catch(()=>{});
-  }
-}
-
-function buildReminderMessage() {
-  const todayStr = new Date().toISOString().slice(0,10);
-  const toPublish = contents.filter(c=>c.end===todayStr);
-  const inProd    = contents.filter(c=>c.status==='production');
-  const ready     = contents.filter(c=>c.status==='ready');
-
-  let msg = '☀️ Content Studio — בוקר טוב!\n\n';
-  if (toPublish.length) msg += `📅 לפרסום היום (${toPublish.length}):\n${toPublish.map(c=>`• ${c.title}`).join('\n')}\n\n`;
-  if (inProd.length)    msg += `🎬 בייצור (${inProd.length}):\n${inProd.slice(0,3).map(c=>`• ${c.title}`).join('\n')}\n\n`;
-  if (ready.length)     msg += `✅ מוכן לפרסום (${ready.length}):\n${ready.slice(0,3).map(c=>`• ${c.title}`).join('\n')}\n\n`;
-  if (!toPublish.length && !inProd.length && !ready.length) msg += 'אין פריטים מתוזמנים להיום — צור תוכן חדש! 🚀';
-  return msg.trim();
-}
-
-async function testNotifications() {
-  notify('שולח הודעת בדיקה...','⏳');
-  const origDate = gs('notif_last_sent');
-  ss('notif_last_sent',''); // reset so it sends
-  await sendDailyReminder();
-  ss('notif_last_sent', origDate); // restore
-  setTimeout(()=>notify('הודעת בדיקה נשלחה ✓','✅'),500);
-}
-
-// ═══════════════ HELPERS ═══════════════
-function loadingHTML(text='טוען...') {
-  return `<div class="loading-wrap"><div class="spinner"></div><div class="loading-text">${text}</div></div>`;
-}
-function errorHTML(msg) {
-  return `<div class="error-box" style="margin-top:16px;">⚠️ <span>${msg}</span></div>`;
-}
-function handleOverlayClick(e, id, fn) { if(e.target===document.getElementById(id)) fn(); }
-
-// ═══════════════ INIT ═══════════════
-document.addEventListener('DOMContentLoaded', ()=>{
-  const d = new Date();
-  document.getElementById('currentDate').textContent = d.toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  const today = new Date().toISOString().slice(0,10);
-  const nextWeek = new Date(Date.now()+7*86400000).toISOString().slice(0,10);
-  document.getElementById('f-start').value = today;
-  document.getElementById('f-end').value   = nextWeek;
-
-  if (contents.length===0) seedData();
-
-  // Show API key hint if not set
-  if (!gs('claude_key')) {
-    document.getElementById('notifBadge').classList.add('show');
-  }
-
-  initNotifications();
-  renderAll();
-
-  document.addEventListener('click', e=>{
-    if (!e.target.closest('#ctxMenu') && !e.target.closest('.card-menu-btn'))
-      document.getElementById('ctxMenu').classList.remove('open');
-  });
-
-  document.addEventListener('keydown', e=>{
-    if (e.key==='Escape') { closeModal(); closeIdeaModal(); closeScriptModal(); closeSettings(); closeAIIdeasModal(); document.getElementById('ctxMenu').classList.remove('open'); }
-    if ((e.metaKey||e.ctrlKey) && e.key==='n') { e.preventDefault(); openModal(); }
-  });
-});
-
-function seedData() {
-  const d = (off,extra=7)=>{
-    const s=new Date(); s.setDate(s.getDate()+off);
-    const e=new Date(); e.setDate(e.getDate()+off+extra);
-    return [s.toISOString().slice(0,10), e.toISOString().slice(0,10)];
-  };
-  contents = [
-    {id:uid(),title:'סרטון "5 טיפים לבוקר מנצח"',  platform:'youtube',   status:'idea',       start:d(-5)[0], end:d(-5,14)[1],desc:'תוכן חינוכי על שגרת בוקר'},
-    {id:uid(),title:'ריל — אחרי שנה של יצירה',      platform:'instagram', status:'production', start:d(-3)[0], end:d(-3,5)[1], desc:'סיפור אישי על הדרך'},
-    {id:uid(),title:'TikTok טרנד — Challenge',       platform:'tiktok',    status:'ready',      start:d(0)[0],  end:d(0,3)[1],  desc:'ריל מהיר 15 שניות'},
-    {id:uid(),title:'Thread — איך בנינו 10K עוקבים',platform:'twitter',   status:'published',  start:d(-10)[0],end:d(-10,1)[1],desc:'פוסט ויראלי'},
-    {id:uid(),title:'פוסט LinkedIn — סיפור הקריירה',platform:'linkedin',  status:'idea',       start:d(3)[0],  end:d(3,7)[1],  desc:'תוכן מקצועי'},
-    {id:uid(),title:'YouTube — מאחורי הקלעים',       platform:'youtube',   status:'production', start:d(1)[0],  end:d(1,10)[1], desc:'vlog שבועי'},
-  ];
-  ideas = [
-    {id:uid(),title:'סדרת "יום בחיים"',   emoji:'📹',body:'סדרה שבועית שמראה את היום שלי כיוצר תוכן',tags:['ויראלי','סדרה','אותנטי']},
-    {id:uid(),title:'אתגר 30 ימים',        emoji:'🔥',body:'לצלם ולפרסם תוכן כל יום במשך חודש ולתעד צמיחה',tags:['אתגר','צמיחה']},
-    {id:uid(),title:'קולאב עם יוצרים',    emoji:'🤝',body:'לזהות 5 יוצרים בנישה ולהציע שיתוף פעולה',tags:['קולאב','נטוורקינג']},
-  ];
-  save();
-}
-
-// ═══════════════ RENDER ALL ═══════════════
-function renderAll() { updateStats(); renderBoard(); renderGantt(); renderIdeas(); renderAnalytics(); }
-
-function updateStats() {
-  const c={idea:0,production:0,ready:0,published:0};
-  contents.forEach(x=>{if(c[x.status]!==undefined)c[x.status]++;});
-  document.getElementById('stat-idea').textContent       = c.idea;
-  document.getElementById('stat-production').textContent = c.production;
-  document.getElementById('stat-ready').textContent      = c.ready;
-  document.getElementById('stat-published').textContent  = c.published;
-  document.getElementById('stat-total').textContent      = contents.length;
-}
-
-// ═══════════════ BOARD ═══════════════
-function filterByStatus(s) { statusFilter = statusFilter===s ? null : s; renderBoard(); }
-
-function renderBoard() {
-  const pf = document.getElementById('platformFilter').value;
-  const filtered = contents.filter(c=>(!pf||c.platform===pf)&&(!statusFilter||c.status===statusFilter));
-  const cols = {
-    idea:       {items:[],label:'💡 רעיון',  color:'#f59e0b'},
-    production: {items:[],label:'🎬 בייצור', color:'#06b6d4'},
-    ready:      {items:[],label:'✅ מוכן',   color:'#10b981'},
-    published:  {items:[],label:'🚀 פורסם',  color:'#a855f7'},
-  };
-  filtered.forEach(c=>{if(cols[c.status])cols[c.status].items.push(c);});
-  document.getElementById('kanban-board').innerHTML = Object.entries(cols).map(([key,col])=>`
-    <div class="kanban-col">
-      <div class="kanban-col-header">
-        <div class="col-title-wrap">
-          <div class="col-dot" style="background:${col.color};box-shadow:0 0 8px ${col.color}66;"></div>
-          <div class="col-title">${col.label}</div>
-        </div>
-        <div class="col-count">${col.items.length}</div>
-      </div>
-      <div class="kanban-cards">
-        ${col.items.length===0
-          ? '<div class="empty-state"><div class="empty-icon">○</div><p>אין תוכן כאן עדיין</p></div>'
-          : col.items.map(renderCard).join('')}
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderCard(item) {
-  const p = PLATFORMS[item.platform]||PLATFORMS.instagram;
-  return `
-    <div class="content-card" onclick="openEditModal('${item.id}')">
-      <div style="position:absolute;top:0;right:0;width:3px;height:100%;background:${p.color};border-radius:0 14px 14px 0;opacity:0.7;"></div>
+    <a class="card" href="/content-studio/">
       <div class="card-top">
-        <div class="card-title">${item.title}</div>
-        <button class="card-menu-btn" onclick="openCtxMenu(event,'${item.id}')">⋯</button>
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.2));">🎯</div>
+        <span class="badge b-live">● LIVE</span>
       </div>
-      <div class="card-meta">
-        <span class="platform-tag" style="background:${p.bg};border-color:${p.border};color:${p.color};">${p.icon} ${p.label}</span>
-        ${item.end?`<span class="date-tag">📅 ${formatDate(item.end)}</span>`:''}
+      <div class="card-mid">
+        <div class="c-name">Content Studio</div>
+        <div class="c-desc">לוח ניהול תוכן מלא עם Gantt ו-Kanban. תכנן, עקוב ופרסם תוכן לכל הפלטפורמות ממקום אחד.</div>
       </div>
-      ${item.desc?`<div class="card-desc">${item.desc.slice(0,80)}${item.desc.length>80?'...':''}</div>`:''}
-      <div class="card-actions">
-        <button class="card-action-btn" onclick="advanceStatus(event,'${item.id}')">⏭ קדם</button>
-        <button class="card-action-btn" onclick="openEditModal('${item.id}');event.stopPropagation()">✏️ ערוך</button>
-        <button class="card-action-btn wand" onclick="openScriptModal(event,'${item.id}')">🪄 סקריפט</button>
+      <div class="c-tags">
+        <span class="tag">ניהול תוכן</span><span class="tag">Gantt</span><span class="tag">Kanban</span><span class="tag">AI Ideas</span>
       </div>
-    </div>`;
-}
+      <div class="card-ft">
+        <div class="c-link">פתח כלי <span class="arr">←</span></div>
+        <div class="c-url">avivmalka123.github.io/content-studio</div>
+      </div>
+    </a>
 
-// ═══════════════ GANTT ═══════════════
-function shiftGantt(dir) { ganttOffset = dir===0 ? 0 : ganttOffset+dir; renderGantt(); }
-
-function renderGantt() {
-  const today = new Date();
-  const base  = new Date(today.getFullYear(), today.getMonth()+ganttOffset, 1);
-  const days  = [];
-  for (let m=0;m<2;m++) {
-    const ms = new Date(base.getFullYear(), base.getMonth()+m, 1);
-    const dm = new Date(ms.getFullYear(), ms.getMonth()+1, 0).getDate();
-    for (let d=1;d<=dm;d++) days.push(new Date(ms.getFullYear(), ms.getMonth(), d));
-  }
-  const gStart=days[0], gEnd=days[days.length-1];
-  const months=[]; let cur=null;
-  days.forEach(d=>{
-    const key=`${d.getFullYear()}-${d.getMonth()}`;
-    if(!cur||cur.key!==key){cur={key,label:d.toLocaleDateString('he-IL',{month:'long',year:'numeric'}),days:[]};months.push(cur);}
-    cur.days.push(d);
-  });
-  const W=36, TW=220;
-  const isToday=d=>d.toDateString()===today.toDateString();
-  const isWE=d=>d.getDay()===5||d.getDay()===6;
-  const todayIdx=days.findIndex(d=>isToday(d));
-  const todayPx=todayIdx>=0?todayIdx*W+W/2:-1;
-  const relevant=contents.filter(c=>{
-    if(!c.start&&!c.end) return false;
-    const s=c.start?new Date(c.start+'T12:00:00'):null;
-    const e=c.end?new Date(c.end+'T12:00:00'):s;
-    return (e>=gStart&&s<=gEnd);
-  });
-  let html=`<div style="display:flex;flex-direction:column;">`;
-  // Header
-  html+=`<div style="display:flex;position:sticky;top:0;z-index:10;background:var(--surface2);">
-    <div style="width:${TW}px;flex-shrink:0;padding:12px 16px;border-left:1px solid var(--border);border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--text-muted);display:flex;align-items:center;">תוכן</div>
-    <div style="display:flex;flex:1;overflow:hidden;">`;
-  months.forEach(m=>{
-    html+=`<div style="flex-shrink:0;width:${m.days.length*W}px;border-left:1px solid var(--border);">
-      <div style="padding:8px 12px;font-size:12px;font-weight:700;color:var(--text-muted);border-bottom:1px solid var(--border);text-align:center;">${m.label}</div>
-      <div style="display:flex;">`;
-    m.days.forEach(d=>{html+=`<div style="width:${W}px;flex-shrink:0;padding:6px 2px;text-align:center;font-size:11px;font-weight:${isToday(d)?'800':'500'};color:${isToday(d)?'var(--neon)':isWE(d)?'rgba(107,107,138,0.4)':'var(--text-muted)'};background:${isToday(d)?'rgba(124,58,237,0.15)':''};">${d.getDate()}</div>`;});
-    html+=`</div></div>`;
-  });
-  html+=`</div></div>`;
-  // Rows
-  if (!relevant.length) {
-    html+=`<div style="padding:40px;text-align:center;color:var(--text-muted);">אין תוכן בטווח זמן זה. הוסף תוכן עם תאריכים!</div>`;
-  } else {
-    relevant.forEach(c=>{
-      const p=PLATFORMS[c.platform]||PLATFORMS.instagram;
-      const st=STATUSES[c.status]||STATUSES.idea;
-      const sD=c.start?new Date(c.start+'T12:00:00'):new Date(c.end+'T12:00:00');
-      const eD=c.end?new Date(c.end+'T12:00:00'):sD;
-      const cs=new Date(Math.max(sD,gStart)); const ce=new Date(Math.min(eD,gEnd));
-      const si=days.findIndex(d=>d.toDateString()===cs.toDateString());
-      const ei=days.findIndex(d=>d.toDateString()===ce.toDateString());
-      const bl=(si>=0?si:0)*W; const bw=((ei>=0?ei:days.length-1)-(si>=0?si:0)+1)*W-4;
-      html+=`<div style="display:flex;border-bottom:1px solid var(--border);align-items:center;min-height:52px;" onmouseenter="this.style.background='rgba(255,255,255,0.02)'" onmouseleave="this.style.background=''">
-        <div style="width:${TW}px;flex-shrink:0;padding:10px 16px;border-left:1px solid var(--border);display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="openEditModal('${c.id}')">
-          <div style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0;"></div>
-          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
-        </div>
-        <div style="flex:1;position:relative;height:52px;display:flex;align-items:center;">
-          <div style="display:flex;position:absolute;top:0;left:0;right:0;bottom:0;">`;
-      days.forEach(d=>{html+=`<div style="width:${W}px;flex-shrink:0;border-left:1px solid rgba(255,255,255,0.03);background:${isToday(d)?'rgba(124,58,237,0.06)':isWE(d)?'rgba(0,0,0,0.08)':'transparent'};"></div>`;});
-      html+=`</div>`;
-      if(todayPx>=0) html+=`<div style="position:absolute;top:0;bottom:0;left:${todayPx}px;width:2px;background:linear-gradient(to bottom,var(--neon),transparent);z-index:5;pointer-events:none;"></div>`;
-      if(bw>0) html+=`<div onclick="openEditModal('${c.id}')" style="position:absolute;left:${bl+2}px;width:${Math.max(bw,24)}px;height:30px;border-radius:8px;background:${st.ganttColor};display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:700;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,0.3);transition:filter 0.2s;" onmouseenter="this.style.filter='brightness(1.15)'" onmouseleave="this.style.filter=''">${bw>60?p.icon+' '+c.title:bw>24?p.icon:''}</div>`;
-      html+=`</div></div>`;
-    });
-  }
-  html+=`</div>`;
-  document.getElementById('gantt-container').innerHTML = html;
-}
-
-// ═══════════════ IDEAS ═══════════════
-function renderIdeas() {
-  const grid = document.getElementById('ideas-grid');
-  if (!ideas.length) { grid.innerHTML=`<div style="grid-column:1/-1;"><div class="empty-state"><div class="empty-icon">💡</div><p>אין רעיונות עדיין — לחץ על "צור רעיונות עם AI" 🚀</p></div></div>`; return; }
-  grid.innerHTML = ideas.map(idea=>`
-    <div class="idea-card">
-      <div style="position:absolute;top:14px;left:14px;display:flex;gap:6px;">
-        <button onclick="editIdea('${idea.id}')" class="btn btn-ghost" style="padding:4px 8px;font-size:11px;">✏️</button>
-        <button onclick="deleteIdea(event,'${idea.id}')" class="btn btn-ghost" style="padding:4px 8px;font-size:11px;color:var(--red);">✕</button>
+    <a class="card" href="/youtube-script-generator/">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">🎬</div>
+        <span class="badge b-new">✦ NEW</span>
       </div>
-      <div onclick="convertIdeaToContent('${idea.id}')" style="cursor:pointer;">
-        <div class="idea-emoji">${idea.emoji||'💡'}</div>
-        <div class="idea-title">${idea.title}</div>
-        <div class="idea-body">${idea.body||''}</div>
-        <div class="idea-tags">${(idea.tags||[]).map(t=>`<span class="idea-tag">#${t}</span>`).join('')}</div>
+      <div class="card-mid">
+        <div class="c-name">Script Generator</div>
+        <div class="c-desc">מדביק לינק יוטיוב → שולף תמלול → מייצר סקריפט מלא בעברית גבוהה מותאם לאיקומרס שלך. 5 במקביל.</div>
       </div>
-      <button onclick="convertIdeaToContent('${idea.id}')" class="btn btn-primary" style="width:100%;margin-top:14px;padding:7px;font-size:12px;">+ הוסף ללוח תוכן</button>
-    </div>
-  `).join('');
-}
+      <div class="c-tags">
+        <span class="tag">YouTube</span><span class="tag">AI Script</span><span class="tag">5 במקביל</span><span class="tag">PDF</span>
+      </div>
+      <div class="card-ft">
+        <div class="c-link">פתח כלי <span class="arr">←</span></div>
+        <div class="c-url">avivmalka123.github.io/youtube-script-generator</div>
+      </div>
+    </a>
 
-// ═══════════════ ANALYTICS ═══════════════
-function renderAnalytics() {
-  const byP={}, byS={}, byM={};
-  contents.forEach(c=>{
-    byP[c.platform]=(byP[c.platform]||0)+1;
-    byS[c.status]=(byS[c.status]||0)+1;
-    if(c.end){const m=c.end.slice(0,7);byM[m]=(byM[m]||0)+1;}
-  });
-  const maxP=Math.max(...Object.values(byP),1);
-  const maxS=Math.max(...Object.values(byS),1);
-  const sm=Object.keys(byM).sort().slice(-6);
-  const maxM=Math.max(...sm.map(m=>byM[m]),1);
-  document.getElementById('analytics-grid').innerHTML=`
-    <div class="analytics-card">
-      <div class="analytics-title">📱 לפי פלטפורמה</div>
-      <div class="bar-chart">
-        ${Object.entries(byP).map(([p,v])=>{const pl=PLATFORMS[p]||{label:p,color:'#888',icon:''};return`
-          <div class="bar-item">
-            <div class="bar-label-row"><span class="bar-label">${pl.icon} ${pl.label}</span><span class="bar-val">${v}</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:${(v/maxP)*100}%;background:${pl.color};box-shadow:0 0 8px ${pl.color}66;"></div></div>
-          </div>`;}).join('')||'<div style="color:var(--text-muted);font-size:13px;">אין נתונים</div>'}
+    <div class="card soon">
+      <div class="card-top">
+        <div class="ci" style="background:var(--surface2);">🔜</div>
+        <span class="badge b-soon">בקרוב</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">הפרויקט הבא</div>
+        <div class="c-desc">כל פרויקט חדש שמתווסף כאן עולה אוטומטית לאוויר עם כתובת URL משלו.</div>
+      </div>
+      <div class="card-ft">
+        <div class="c-link" style="color:var(--text-muted);">בקרוב</div>
       </div>
     </div>
-    <div class="analytics-card">
-      <div class="analytics-title">🎯 לפי סטטוס</div>
-      <div class="bar-chart">
-        ${Object.entries(byS).map(([s,v])=>{const st=STATUSES[s]||{label:s,color:'#888'};return`
-          <div class="bar-item">
-            <div class="bar-label-row"><span class="bar-label">${st.label}</span><span class="bar-val">${v}</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:${(v/maxS)*100}%;background:${st.color};box-shadow:0 0 8px ${st.color}66;"></div></div>
-          </div>`;}).join('')||'<div style="color:var(--text-muted);font-size:13px;">אין נתונים</div>'}
-      </div>
-    </div>
-    <div class="analytics-card" style="grid-column:1/-1;">
-      <div class="analytics-title">📅 פרסומים לפי חודש</div>
-      <div style="display:flex;gap:12px;align-items:flex-end;height:120px;padding-top:20px;">
-        ${!sm.length?'<div style="color:var(--text-muted);font-size:13px;">אין נתונים עדיין</div>':sm.map(m=>{
-          const v=byM[m], h=(v/maxM)*90;
-          const label=new Date(m+'-01').toLocaleDateString('he-IL',{month:'short',year:'2-digit'});
-          return`<div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;">
-            <div style="font-size:12px;font-weight:700;color:var(--text-muted);">${v}</div>
-            <div style="width:100%;height:${h}px;background:linear-gradient(to top,var(--accent),var(--accent2));border-radius:6px 6px 0 0;min-height:4px;box-shadow:0 0 10px rgba(124,58,237,0.4);transition:height 0.5s;"></div>
-            <div style="font-size:11px;color:var(--text-muted);">${label}</div>
-          </div>`;}).join('')}
-      </div>
-    </div>`;
-}
 
-// ═══════════════ CONTENT MODAL ═══════════════
-let selectedPlatform='instagram';
-function selectPlatform(el) {
-  document.querySelectorAll('.platform-option').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected'); selectedPlatform=el.dataset.platform;
-}
-function openModal() {
-  editingId=null;
-  document.getElementById('modalTitle').textContent='תוכן חדש ✦';
-  document.getElementById('f-title').value=''; document.getElementById('f-desc').value='';
-  document.getElementById('f-status').value='idea'; selectedPlatform='instagram';
-  document.querySelectorAll('.platform-option').forEach(o=>o.classList.toggle('selected',o.dataset.platform==='instagram'));
-  const t=new Date().toISOString().slice(0,10), nw=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
-  document.getElementById('f-start').value=t; document.getElementById('f-end').value=nw;
-  document.getElementById('contentModal').classList.add('open');
-  setTimeout(()=>document.getElementById('f-title').focus(),100);
-}
-function openEditModal(id) {
-  const c=contents.find(x=>x.id===id); if(!c) return;
-  editingId=id;
-  document.getElementById('modalTitle').textContent='ערוך תוכן';
-  document.getElementById('f-title').value=c.title; document.getElementById('f-desc').value=c.desc||'';
-  document.getElementById('f-status').value=c.status; document.getElementById('f-start').value=c.start||''; document.getElementById('f-end').value=c.end||'';
-  selectedPlatform=c.platform;
-  document.querySelectorAll('.platform-option').forEach(o=>o.classList.toggle('selected',o.dataset.platform===c.platform));
-  document.getElementById('contentModal').classList.add('open');
-}
-function closeModal() { document.getElementById('contentModal').classList.remove('open'); editingId=null; }
-function saveContent() {
-  const title=document.getElementById('f-title').value.trim();
-  if(!title){document.getElementById('f-title').style.borderColor='var(--red)';return;}
-  document.getElementById('f-title').style.borderColor='';
-  const data={title,platform:selectedPlatform,status:document.getElementById('f-status').value,start:document.getElementById('f-start').value,end:document.getElementById('f-end').value,desc:document.getElementById('f-desc').value.trim()};
-  if(editingId){const i=contents.findIndex(x=>x.id===editingId);if(i>=0)contents[i]={...contents[i],...data};notify('עודכן ✓');}
-  else{contents.push({id:uid(),...data});notify('נוסף! 🚀','🚀');}
-  save(); closeModal(); renderAll();
-}
+  </div>
+</div>
 
-// ═══════════════ STATUS ═══════════════
-function advanceStatus(e,id) {
-  e.stopPropagation();
-  const order=['idea','production','ready','published'];
-  const c=contents.find(x=>x.id===id); if(!c) return;
-  const i=order.indexOf(c.status);
-  if(i<order.length-1){c.status=order[i+1];save();renderAll();notify(`${STATUSES[c.status].label} ✓`);}
-}
+<footer>
+  <div class="fl"><span>Aviv Malka</span> · Projects Hub</div>
+  <p style="font-size:12px;color:var(--text-muted);">avivmalka123.github.io</p>
+  <a class="fgh" href="https://github.com/avivmalka123" target="_blank">⚡ GitHub</a>
+</footer>
 
-// ═══════════════ CTX MENU ═══════════════
-function openCtxMenu(e,id) {
-  e.stopPropagation(); ctxId=id;
-  const m=document.getElementById('ctxMenu');
-  m.style.top=e.clientY+'px'; m.style.right=(window.innerWidth-e.clientX)+'px'; m.style.left='auto';
-  m.classList.add('open');
-}
-function ctxEdit()          { document.getElementById('ctxMenu').classList.remove('open'); openEditModal(ctxId); }
-function ctxWand()          { document.getElementById('ctxMenu').classList.remove('open'); openScriptModal(null,ctxId); }
-function ctxAdvanceStatus() { document.getElementById('ctxMenu').classList.remove('open'); advanceStatus({stopPropagation:()=>{}},ctxId); }
-function ctxDelete() {
-  document.getElementById('ctxMenu').classList.remove('open');
-  const c=contents.find(x=>x.id===ctxId);
-  if(c&&confirm(`למחוק את "${c.title}"?`)){contents=contents.filter(x=>x.id!==ctxId);save();renderAll();notify('נמחק','🗑️');}
-}
-
-// ═══════════════ IDEA MODAL ═══════════════
-function openIdeaModal() {
-  editingIdeaId=null;
-  ['i-title','i-emoji','i-body','i-tags'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('ideaModal').classList.add('open');
-  setTimeout(()=>document.getElementById('i-title').focus(),100);
-}
-function closeIdeaModal() { document.getElementById('ideaModal').classList.remove('open'); }
-function saveIdea() {
-  const title=document.getElementById('i-title').value.trim();
-  if(!title){document.getElementById('i-title').style.borderColor='var(--red)';return;}
-  document.getElementById('i-title').style.borderColor='';
-  const data={title,emoji:document.getElementById('i-emoji').value.trim()||'💡',body:document.getElementById('i-body').value.trim(),tags:document.getElementById('i-tags').value.split(',').map(t=>t.trim()).filter(Boolean)};
-  if(editingIdeaId){const i=ideas.findIndex(x=>x.id===editingIdeaId);if(i>=0)ideas[i]={...ideas[i],...data};}
-  else ideas.push({id:uid(),...data});
-  save(); closeIdeaModal(); renderIdeas(); notify('רעיון נשמר! 💡','💡');
-}
-function editIdea(id) {
-  const idea=ideas.find(x=>x.id===id); if(!idea) return;
-  editingIdeaId=id;
-  document.getElementById('i-title').value=idea.title; document.getElementById('i-emoji').value=idea.emoji||'';
-  document.getElementById('i-body').value=idea.body||''; document.getElementById('i-tags').value=(idea.tags||[]).join(', ');
-  document.getElementById('ideaModal').classList.add('open');
-}
-function deleteIdea(e,id) {
-  e.stopPropagation(); ideas=ideas.filter(x=>x.id!==id); save(); renderIdeas(); notify('נמחק','🗑️');
-}
-function convertIdeaToContent(id) {
-  const idea=ideas.find(x=>x.id===id); if(!idea) return;
-  editingId=null;
-  document.getElementById('modalTitle').textContent='המר רעיון לתוכן';
-  document.getElementById('f-title').value=idea.title; document.getElementById('f-desc').value=idea.body||'';
-  document.getElementById('f-status').value='idea'; selectedPlatform='instagram';
-  document.querySelectorAll('.platform-option').forEach(o=>o.classList.toggle('selected',o.dataset.platform==='instagram'));
-  const t=new Date().toISOString().slice(0,10), nw=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
-  document.getElementById('f-start').value=t; document.getElementById('f-end').value=nw;
-  document.getElementById('contentModal').classList.add('open');
-}
-
-// ═══════════════ TABS ═══════════════
-function switchTab(name,el) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active'); document.getElementById('tab-'+name).classList.add('active');
-}
-</script>
 </body>
 </html>
