@@ -388,28 +388,63 @@ function extractId(url) {
   return m ? m[1] : null;
 }
 
-// ── STEP 1: Get Audio URL from YouTube via Piped ──
+// ── STEP 1: Get Audio URL ──
+// Strategy: try Invidious (public YT proxy, no key needed) → then Piped → fail
 async function getAudioUrl(videoId) {
-  const INSTANCES = [
-    'https://pipedapi.kavin.rocks',
-    'https://piped-api.garudalinux.org',
-    'https://api.piped.projectsegfau.lt',
-    'https://piped.video/api'
+
+  // ── Method A: Invidious instances ──
+  // Invidious is an open-source YT frontend with CORS-friendly API.
+  // ?local=true returns proxy URLs served through Invidious itself —
+  // accessible from any IP including AssemblyAI's servers.
+  const INVIDIOUS = [
+    'https://invidious.io.lol',
+    'https://inv.tux.pizza',
+    'https://invidious.nerdvpn.de',
+    'https://invidious.privacydev.net',
+    'https://yt.cdaut.de',
+    'https://invidious.drgns.space',
   ];
-  for (const base of INSTANCES) {
+  for (const base of INVIDIOUS) {
     try {
-      const res = await fetch(`${base}/streams/${videoId}`, {
-        headers: { 'Accept': 'application/json' },
-        signal: AbortSignal.timeout(8000)
-      });
+      const res = await fetch(
+        `${base}/api/v1/videos/${videoId}?local=true&fields=title,adaptiveFormats`,
+        { headers:{'Accept':'application/json'}, signal: AbortSignal.timeout(9000) }
+      );
       if (!res.ok) continue;
       const data = await res.json();
-      const streams = (data.audioStreams || []).sort((a,b) => (b.bitrate||0)-(a.bitrate||0));
-      if (streams.length > 0) {
-        return { audioUrl: streams[0].url, title: data.title || '' };
+      if (data.error) continue;
+      const title = data.title || '';
+      const fmts  = (data.adaptiveFormats || [])
+        .filter(f => f.type?.includes('audio/') && f.url)
+        .sort((a,b) => (b.bitrate||0)-(a.bitrate||0));
+      if (fmts.length > 0) {
+        console.log('Got audio via Invidious:', base);
+        return { audioUrl: fmts[0].url, title };
       }
     } catch(e) { continue; }
   }
+
+  // ── Method B: Piped instances ──
+  const PIPED = [
+    'https://pipedapi.kavin.rocks',
+    'https://piped-api.garudalinux.org',
+    'https://api.piped.projectsegfau.lt',
+  ];
+  for (const base of PIPED) {
+    try {
+      const res = await fetch(`${base}/streams/${videoId}`, {
+        headers:{'Accept':'application/json'}, signal: AbortSignal.timeout(9000)
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const streams = (data.audioStreams||[]).sort((a,b)=>(b.bitrate||0)-(a.bitrate||0));
+      if (streams.length > 0) {
+        console.log('Got audio via Piped:', base);
+        return { audioUrl: streams[0].url, title: data.title||'' };
+      }
+    } catch(e) { continue; }
+  }
+
   return null;
 }
 
@@ -566,7 +601,7 @@ async function startProcess() {
 
   if (!audioData) {
     setStep(0, 'err');
-    showError('לא הצלחנו לשלוף את האודיו מיוטיוב. ייתכן שהסרטון מוגבל.');
+    showError('לא הצלחנו לשלוף את האודיו מיוטיוב (ניסינו 9 שרתים). ייתכן שהסרטון מוגבל לגיל / פרטי / אזורי. ניתן להדביק את תמלול הסרטון ידנית למטה.');
     showManual();
     setBtn(false); return;
   }
