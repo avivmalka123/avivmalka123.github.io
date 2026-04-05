@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process Monitor · Aviv Malka</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
+  --border:rgba(255,255,255,0.07); --text:#e8e8f0; --text-muted:#6b6b8a;
+  --accent:#7c3aed; --accent2:#ec4899; --accent3:#06b6d4; --accent4:#10b981;
+  --accent5:#f59e0b; --glow:rgba(124,58,237,0.35);
+  --green:#10b981; --yellow:#f59e0b; --red:#ef4444; --blue:#06b6d4;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+body::before{content:'';position:fixed;top:-40%;right:-15%;width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,0.11) 0%,transparent 65%);pointer-events:none;z-index:0;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;background:rgba(8,8,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;text-decoration:none;color:var(--text);}
+.nav-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 0 18px var(--glow);}
+.nav-logo span{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-back{font-size:12px;font-weight:600;color:var(--text-muted);text-decoration:none;padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;}
+
+.page{padding:80px 16px 40px;max-width:700px;margin:0 auto;position:relative;z-index:1;}
+
+/* Header */
+.page-header{margin-bottom:20px;}
+.page-title{font-size:22px;font-weight:900;display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--text-muted);}
+
+/* Refresh bar */
+.refresh-bar{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin-bottom:16px;}
+.refresh-left{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.4)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+.pulse-dot.idle{background:var(--text-muted);animation:none;}
+#last-updated{font-size:11px;color:var(--text-muted);}
+.refresh-btn{font-size:11px;font-weight:700;color:var(--accent);background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);border-radius:6px;padding:4px 10px;cursor:pointer;transition:all 0.2s;}
+.refresh-btn:hover{background:rgba(124,58,237,0.2);}
+
+/* Status card */
+.status-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden;}
+.status-card.running{border-color:rgba(6,182,212,0.3);box-shadow:0 0 20px rgba(6,182,212,0.05);}
+.status-card.done{border-color:rgba(16,185,129,0.3);box-shadow:0 0 20px rgba(16,185,129,0.05);}
+.status-card.error{border-color:rgba(239,68,68,0.3);box-shadow:0 0 20px rgba(239,68,68,0.05);}
+.status-card.idle{border-color:var(--border);}
+
+.status-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.status-title{font-size:16px;font-weight:800;flex:1;}
+.status-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:0.5px;flex-shrink:0;white-space:nowrap;}
+.badge-running{background:rgba(6,182,212,0.12);color:var(--blue);border:1px solid rgba(6,182,212,0.3);}
+.badge-done{background:rgba(16,185,129,0.12);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.badge-error{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.3);}
+.badge-idle{background:rgba(107,107,138,0.1);color:var(--text-muted);border:1px solid var(--border);}
+
+.status-meta{font-size:11px;color:var(--text-muted);display:flex;gap:14px;flex-wrap:wrap;}
+
+/* Progress shimmer for running */
+.shimmer{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);background-size:200% 100%;animation:shimmer 1.8s infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Steps */
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:8px;}
+.steps-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.step-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);}
+.step-item:last-child{border-bottom:none;}
+.step-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;}
+.si-done{background:rgba(16,185,129,0.15);color:var(--green);}
+.si-running{background:rgba(6,182,212,0.15);color:var(--blue);animation:spin 1.5s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.si-pending{background:rgba(107,107,138,0.1);color:var(--text-muted);}
+.si-error{background:rgba(239,68,68,0.12);color:var(--red);}
+.step-text{flex:1;}
+.step-name{font-size:13px;font-weight:600;line-height:1.4;}
+.step-detail{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.step-time{font-size:10px;color:var(--text-muted);flex-shrink:0;margin-top:3px;}
+
+/* Output */
+.output-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.output-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);}
+.output-title{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.output-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+.output-body{padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a8b0c8;line-height:1.7;white-space:pre-wrap;word-break:break-all;max-height:280px;overflow-y:auto;}
+.output-body::-webkit-scrollbar{width:4px;}
+.output-body::-webkit-scrollbar-track{background:transparent;}
+.output-body::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px;}
+
+/* Files changed */
+.files-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.file-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);font-size:12px;}
+.file-item:last-child{border-bottom:none;}
+.file-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0;}
+.fb-add{background:rgba(16,185,129,0.12);color:var(--green);}
+.fb-mod{background:rgba(245,158,11,0.12);color:var(--yellow);}
+.fb-del{background:rgba(239,68,68,0.12);color:var(--red);}
+.file-path{font-family:'JetBrains Mono',monospace;color:var(--text-muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* Empty state */
+.empty{text-align:center;padding:40px 20px;color:var(--text-muted);}
+.empty-icon{font-size:32px;margin-bottom:10px;}
+.empty-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.empty-sub{font-size:13px;line-height:1.5;}
+.empty code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--surface2);padding:2px 6px;border-radius:4px;color:var(--accent3);}
+
+/* Setup section */
+.setup-card{background:var(--surface2);border:1px solid rgba(124,58,237,0.2);border-radius:16px;padding:16px;margin-bottom:14px;}
+.setup-title{font-size:13px;font-weight:700;color:#a855f7;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.setup-step{display:flex;gap:10px;margin-bottom:10px;font-size:12px;color:var(--text-muted);line-height:1.6;}
+.setup-num{width:20px;height:20px;border-radius:50%;background:rgba(124,58,237,0.2);color:#a855f7;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.setup-step code{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--surface3);padding:2px 6px;border-radius:4px;color:var(--accent3);}
+
+@media(max-width:400px){
+  .status-top{flex-direction:column;}
+  .status-meta{flex-direction:column;gap:4px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-icon">✦</div>
+    <span>Aviv Malka</span>
+  </a>
+  <div class="nav-right">
+    <a class="nav-back" href="/">← Back</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">🖥️ Process Monitor</div>
+    <div class="page-sub">Live view of your Mac's Claude Code session</div>
+  </div>
+
+  <div class="refresh-bar">
+    <div class="refresh-left">
+      <div class="pulse-dot idle" id="pulse"></div>
+      <span id="refresh-status">Auto-refresh every 15s</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span id="last-updated">Never updated</span>
+      <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div id="main-content">
+    <div class="empty">
+      <div class="empty-icon">⏳</div>
+      <div class="empty-title">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA_URL = '/monitor-data.json';
+let countdown = 15;
+let timer;
+
+function timeAgo(iso) {
+  if (!iso) return 'never';
+  const diff = Math.floor((Date.now() - new Date(iso)) / 1000);
+  if (diff < 5) return 'just now';
+  if (diff < 60) return diff + 's ago';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  return Math.floor(diff/3600) + 'h ago';
+}
+
+function formatTime(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+function statusBadge(s) {
+  const map = {
+    running: ['badge-running','⟳ RUNNING'],
+    done:    ['badge-done','✓ DONE'],
+    error:   ['badge-error','✕ ERROR'],
+    idle:    ['badge-idle','○ IDLE'],
+  };
+  const [cls, label] = map[s] || map.idle;
+  return `<span class="status-badge ${cls}">${label}</span>`;
+}
+
+function stepIcon(s) {
+  if (s === 'done') return '<div class="step-icon si-done">✓</div>';
+  if (s === 'running') return '<div class="step-icon si-running">◌</div>';
+  if (s === 'error') return '<div class="step-icon si-error">✕</div>';
+  return '<div class="step-icon si-pending">·</div>';
+}
+
+function fileBadge(type) {
+  if (type === 'added') return '<span class="file-badge fb-add">ADD</span>';
+  if (type === 'deleted') return '<span class="file-badge fb-del">DEL</span>';
+  return '<span class="file-badge fb-mod">MOD</span>';
+}
+
+function renderData(data) {
+  const s = data.session || {};
+  const steps = data.steps || [];
+  const output = data.output || '';
+  const files = data.files_changed || [];
+  const isIdle = !s.status || s.status === 'idle';
+
+  let html = '';
+
+  // Status card
+  html += `<div class="status-card ${s.status || 'idle'}">
+    <div class="status-top">
+      <div class="status-title">${s.title || 'No active session'}</div>
+      ${statusBadge(s.status || 'idle')}
+    </div>
+    <div class="status-meta">
+      ${s.started_at ? `<span>Started: ${formatTime(s.started_at)}</span>` : ''}
+      ${s.updated_at ? `<span>Updated: ${formatTime(s.updated_at)}</span>` : ''}
+    </div>
+    ${s.status === 'running' ? '<div class="shimmer"></div>' : ''}
+  </div>`;
+
+  if (isIdle && steps.length === 0 && !output) {
+    html += `<div class="empty">
+      <div class="empty-icon">📡</div>
+      <div class="empty-title">Waiting for your Mac</div>
+      <div class="empty-sub">Run the <code>mac-monitor.py</code> script on your Mac to start sending updates here.</div>
+    </div>`;
+    html += setupGuide();
+  } else {
+    // Steps
+    if (steps.length > 0) {
+      html += `<div class="section-label">Steps</div><div class="steps-card">`;
+      steps.forEach(step => {
+        html += `<div class="step-item">
+          ${stepIcon(step.status)}
+          <div class="step-text">
+            <div class="step-name">${escHtml(step.name)}</div>
+            ${step.detail ? `<div class="step-detail">${escHtml(step.detail)}</div>` : ''}
+          </div>
+          ${step.time ? `<div class="step-time">${formatTime(step.time)}</div>` : ''}
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+    // Output
+    if (output) {
+      html += `<div class="output-card">
+        <div class="output-header">
+          <div class="output-title"><div class="output-dot"></div> Output</div>
+        </div>
+        <div class="output-body" id="output-body">${escHtml(output)}</div>
+      </div>`;
+    }
+
+    // Files
+    if (files.length > 0) {
+      html += `<div class="section-label">Files Changed</div><div class="files-card">`;
+      files.forEach(f => {
+        const type = typeof f === 'string' ? 'modified' : (f.type || 'modified');
+        const path = typeof f === 'string' ? f : f.path;
+        html += `<div class="file-item">${fileBadge(type)}<div class="file-path">${escHtml(path)}</div></div>`;
+      });
+      html += `</div>`;
+    }
+  }
+
+  document.getElementById('main-content').innerHTML = html;
+
+  // Auto-scroll output to bottom
+  const ob = document.getElementById('output-body');
+  if (ob) ob.scrollTop = ob.scrollHeight;
+}
+
+function setupGuide() {
+  return `<div class="setup-card">
+    <div class="setup-title">⚡ How to set up on your Mac</div>
+    <div class="setup-step"><div class="setup-num">1</div><div>Download <code>mac-monitor.py</code> from the repo root and put it anywhere on your Mac.</div></div>
+    <div class="setup-step"><div class="setup-num">2</div><div>Create a GitHub Personal Access Token (PAT) with <code>repo</code> scope at github.com/settings/tokens</div></div>
+    <div class="setup-step"><div class="setup-num">3</div><div>Run: <code>python3 mac-monitor.py --token YOUR_TOKEN</code></div></div>
+    <div class="setup-step"><div class="setup-num">4</div><div>From your Mac's Claude Code session, call <code>push_status()</code> to send updates here.</div></div>
+  </div>`;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function loadData() {
+  const pulse = document.getElementById('pulse');
+  const lastUp = document.getElementById('last-updated');
+  try {
+    const r = await fetch(DATA_URL + '?t=' + Date.now());
+    if (!r.ok) throw new Error('fetch failed');
+    const data = await r.json();
+    renderData(data);
+    const upd = data.session?.updated_at;
+    lastUp.textContent = upd ? 'Updated ' + timeAgo(upd) : 'Never updated';
+    const isRunning = data.session?.status === 'running';
+    pulse.className = 'pulse-dot' + (isRunning ? '' : ' idle');
+  } catch(e) {
+    lastUp.textContent = 'Failed to load';
+  }
+}
+
+function startTimer() {
+  clearInterval(timer);
+  countdown = 15;
+  const statusEl = document.getElementById('refresh-status');
+  timer = setInterval(() => {
+    countdown--;
+    statusEl.textContent = `Auto-refresh in ${countdown}s`;
+    if (countdown <= 0) {
+      loadData();
+      countdown = 15;
+      statusEl.textContent = 'Auto-refresh every 15s';
+    }
+  }, 1000);
+}
+
+loadData();
+startTimer();
+</script>
+</body>
+</html>
