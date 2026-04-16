@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills Dashboard ✦ Aviv Malka</title>
+<meta name="description" content="כל הסקילים של Claude Code שלי במקום אחד — התקן בלחיצה אחת.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --bg:#0b0e13; --bg2:#10141c;
+  --surface:#151a23; --surface2:#1b2230; --surface3:#232c3d;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+  --text:#eef0f5; --text-muted:#8a94a8; --text-dim:#5d6578;
+  --accent:#f59e0b; --accent2:#fb923c; --accent3:#fbbf24;
+  --accent-soft:rgba(245,158,11,0.12); --accent-brd:rgba(245,158,11,0.35);
+  --glow:rgba(245,158,11,0.25);
+  --ok:#10b981;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+body::before{content:'';position:fixed;top:-40%;right:-15%;width:700px;height:700px;background:radial-gradient(circle,rgba(245,158,11,0.09) 0%,transparent 65%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;bottom:-35%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(251,146,60,0.06) 0%,transparent 65%);pointer-events:none;z-index:0;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;background:rgba(11,14,19,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;text-decoration:none;color:var(--text);}
+.nav-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;color:#0b0e13;box-shadow:0 0 18px var(--glow);}
+.nav-links{display:flex;gap:6px;align-items:center;}
+.nav-link{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all 0.2s;}
+.nav-link:hover{color:var(--text);background:var(--surface2);}
+.nav-link.active{color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-brd);}
+
+.hero{position:relative;z-index:1;padding:110px 30px 30px;text-align:center;max-width:900px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--accent-brd);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:700;color:var(--accent);margin-bottom:22px;}
+.hero-badge::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pdot 2s infinite;}
+@keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.4)}50%{box-shadow:0 0 0 8px rgba(245,158,11,0)}}
+
+h1{font-size:clamp(34px,5.5vw,58px);font-weight:900;line-height:1.1;letter-spacing:-1.2px;margin-bottom:16px;}
+.gr{background:linear-gradient(135deg,#fbbf24 0%,#f59e0b 50%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:16px;color:var(--text-muted);line-height:1.6;max-width:560px;margin:0 auto 22px;}
+.hero-meta{display:inline-flex;gap:10px;align-items:center;color:var(--text-dim);font-size:13px;font-weight:600;}
+.hero-meta .dot{width:4px;height:4px;background:var(--text-dim);border-radius:50%;}
+.hero-meta b{color:var(--text);font-weight:800;}
+
+.controls{position:relative;z-index:1;max-width:1300px;margin:0 auto;padding:10px 30px 0;}
+.search-wrap{position:relative;max-width:720px;margin:0 auto 18px;}
+.search{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:16px 52px 16px 18px;font-family:inherit;font-size:15px;color:var(--text);outline:none;transition:all 0.2s;}
+.search:focus{border-color:var(--accent-brd);box-shadow:0 0 0 4px var(--accent-soft);}
+.search::placeholder{color:var(--text-dim);}
+.search-ico{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--text-dim);font-size:16px;pointer-events:none;}
+
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:18px;}
+.chip{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--text-muted);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.chip:hover{color:var(--text);border-color:var(--border2);}
+.chip .cc{font-size:11px;opacity:0.7;font-weight:700;}
+.chip.active{background:var(--accent);color:#0b0e13;border-color:var(--accent);}
+.chip.active .cc{opacity:0.8;}
+
+.divider{position:relative;z-index:1;max-width:1300px;margin:8px auto 0;padding:0 30px;display:flex;align-items:center;gap:14px;}
+.divider hr{flex:1;border:none;border-top:1px solid var(--border);}
+.divider-t{font-size:12px;color:var(--text-dim);font-weight:600;}
+
+.copy-all-row{position:relative;z-index:1;max-width:1300px;margin:18px auto 4px;padding:0 30px;}
+.copy-all{background:transparent;border:1px solid var(--accent-brd);color:var(--accent);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;font-family:inherit;}
+.copy-all:hover{background:var(--accent-soft);}
+
+.section{position:relative;z-index:1;padding:22px 30px 80px;max-width:1300px;margin:0 auto;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;}
+
+.card{background:linear-gradient(180deg,var(--surface) 0%,var(--bg2) 100%);border:1px solid var(--border);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all 0.25s;position:relative;min-height:220px;}
+.card:hover{transform:translateY(-3px);border-color:var(--accent-brd);box-shadow:0 16px 50px rgba(0,0,0,0.45),0 0 30px rgba(245,158,11,0.06);}
+.card-hd{display:flex;align-items:flex-start;gap:12px;}
+.card-ic{width:42px;height:42px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.card-ttl{font-size:16px;font-weight:800;color:var(--text);line-height:1.3;flex:1;}
+.card-desc{font-size:13.5px;color:var(--text-muted);line-height:1.6;flex:1;}
+.card-meta{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--text-dim);font-weight:600;padding-top:4px;}
+.card-tag{display:inline-flex;align-items:center;gap:5px;}
+.card-tag .bullet{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.card-actions{display:flex;gap:8px;align-items:stretch;}
+.btn-copy{flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0b0e13;border:none;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;font-family:inherit;}
+.btn-copy:hover{filter:brightness(1.08);box-shadow:0 6px 20px rgba(245,158,11,0.3);}
+.btn-copy.copied{background:var(--ok);color:#fff;}
+.btn-ext{width:42px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:all 0.2s;font-family:inherit;text-decoration:none;}
+.btn-ext:hover{color:var(--accent);border-color:var(--accent-brd);}
+
+.empty{text-align:center;padding:60px 20px;color:var(--text-dim);font-size:14px;}
+
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:22px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.fl{font-size:13px;font-weight:700;color:var(--text-muted);}
+.fl span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ok);color:#fff;padding:11px 20px;border-radius:100px;font-size:13px;font-weight:700;opacity:0;transition:all 0.25s;z-index:200;box-shadow:0 10px 30px rgba(16,185,129,0.35);pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(max-width:600px){
+  nav{padding:0 16px;} .hero{padding:90px 18px 20px;} .section{padding:20px 18px 60px;}
+  .controls,.divider,.copy-all-row{padding:0 18px;}
+  .grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;text-align:center;padding:22px 18px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-icon">✦</div>
+    <span>Aviv Malka</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="/">ראשי</a>
+    <a class="nav-link active" href="/skills/">Skills</a>
+    <a class="nav-link" href="https://github.com/avivmalka123" target="_blank">GitHub ↗</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">⚡ Claude Code Skills</div>
+  <h1>כל ה-<span class="gr">Skills</span>.<br>במקום אחד.</h1>
+  <p class="hero-sub">הסקילים שלי ל-Claude Code — מוכנים להתקנה בלחיצה אחת.</p>
+  <div class="hero-meta">
+    <span><b id="count-skills">0</b> סקילים</span>
+    <span class="dot"></span>
+    <span><b id="count-cats">0</b> קטגוריות</span>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input id="search" class="search" type="text" placeholder="חיפוש סקיל..." autocomplete="off">
+    <span class="search-ico">🔍</span>
+  </div>
+  <div class="chips" id="chips"></div>
+</div>
+
+<div class="divider">
+  <hr>
+  <span class="divider-t" id="filter-summary">הכל</span>
+  <hr>
+</div>
+
+<div class="copy-all-row">
+  <button class="copy-all" id="copy-all" title="העתק את פקודת ההתקנה של כל הסקילים המוצגים">
+    📋 <span>העתק פקודות התקנה</span>
+  </button>
+</div>
+
+<div class="section">
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none;">לא נמצאו סקילים תואמים.</div>
+</div>
+
+<footer>
+  <div class="fl"><span>Aviv Malka</span> · Skills Dashboard</div>
+  <p style="font-size:12px;color:var(--text-dim);">Claude Code · avivmalka123.github.io/skills</p>
+</footer>
+
+<div class="toast" id="toast">הועתק ללוח</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   SKILLS LIST
+   הוספת סקיל חדש: הוסף אובייקט למערך SKILLS למטה.
+   שדות: id, name, desc, category, icon, date, install, url (לא חובה)
+   ───────────────────────────────────────────────────────────── */
+const SKILLS = [
+  {
+    id: "update-config",
+    name: "update-config",
+    desc: "הגדרות ה-harness של Claude Code דרך settings.json — הוספת permissions, env vars, התקנה וטיפול ב-hooks, התנהגויות אוטומטיות (לדוגמה: \"כל פעם שקורה X\") והעברת הגדרות בין project/user settings.",
+    category: "הגדרות & תצורה",
+    icon: "⚙️",
+    date: "אפריל 2026",
+    install: "/update-config"
+  },
+  {
+    id: "keybindings-help",
+    name: "keybindings-help",
+    desc: "התאמה אישית של קיצורי מקלדת ב-Claude Code — rebind של מקשים, הוספת chord bindings ושינוי קובץ ~/.claude/keybindings.json.",
+    category: "הגדרות & תצורה",
+    icon: "⌨️",
+    date: "אפריל 2026",
+    install: "/keybindings-help"
+  },
+  {
+    id: "less-permission-prompts",
+    name: "less-permission-prompts",
+    desc: "סורק את ה-transcripts שלך, מזהה פקודות Bash ו-MCP נפוצות לקריאה בלבד ומוסיף allowlist מתועדף ל-.claude/settings.json כדי להפחית permission prompts.",
+    category: "הגדרות & תצורה",
+    icon: "🔓",
+    date: "אפריל 2026",
+    install: "/less-permission-prompts"
+  },
+  {
+    id: "simplify",
+    name: "simplify",
+    desc: "סוקר את הקוד שהשתנה — בודק שימוש חוזר (reuse), איכות ויעילות ואז מתקן את הבעיות שנמצאו. שומר על הקוד נקי ופשוט.",
+    category: "איכות קוד",
+    icon: "✨",
+    date: "אפריל 2026",
+    install: "/simplify"
+  },
+  {
+    id: "review",
+    name: "review",
+    desc: "סקירת Pull Request — ניתוח השינויים, זיהוי בעיות לוגיות, סגנון, וקצוות שלא כוסו. מחזיר דוח סקירה מובנה.",
+    category: "איכות קוד",
+    icon: "🔍",
+    date: "אפריל 2026",
+    install: "/review"
+  },
+  {
+    id: "security-review",
+    name: "security-review",
+    desc: "סקירת אבטחה מלאה של השינויים שבתהליך ב-branch הנוכחי — מחפש פרצות (OWASP Top 10), secrets, input validation ועוד.",
+    category: "איכות קוד",
+    icon: "🛡️",
+    date: "אפריל 2026",
+    install: "/security-review"
+  },
+  {
+    id: "claude-api",
+    name: "claude-api",
+    desc: "בנייה, דיבוג ואופטימיזציה של אפליקציות Claude API / Anthropic SDK — כולל prompt caching, thinking, tool use, citations, ומיגרציה בין גרסאות מודלים (4.5 → 4.6 → 4.7).",
+    category: "פיתוח API",
+    icon: "🤖",
+    date: "אפריל 2026",
+    install: "/claude-api"
+  },
+  {
+    id: "loop",
+    name: "loop",
+    desc: "הרצת פרומפט או slash command באופן חוזר במרווחי זמן קבועים (ברירת מחדל: כל 10 דק'). שימושי ל-polling של סטטוסים, ניטור deploys, או babysit-prs.",
+    category: "אוטומציה",
+    icon: "🔁",
+    date: "אפריל 2026",
+    install: "/loop 10m /your-command"
+  },
+  {
+    id: "session-start-hook",
+    name: "session-start-hook",
+    desc: "בניית ופיתוח startup hooks ל-Claude Code on the Web — הגדרת רפו להרצת טסטים ו-linters בזמן web sessions.",
+    category: "אוטומציה",
+    icon: "🪝",
+    date: "אפריל 2026",
+    install: "/session-start-hook"
+  },
+  {
+    id: "init",
+    name: "init",
+    desc: "יצירה אוטומטית של קובץ CLAUDE.md חדש עם תיעוד מלא של ה-codebase — מבנה, כלים, פקודות build ו-test, קונבנציות.",
+    category: "תיעוד",
+    icon: "📘",
+    date: "אפריל 2026",
+    install: "/init"
+  },
+];
+
+/* ─────────────────────────────────────────────────────────────
+   RENDER LOGIC
+   ───────────────────────────────────────────────────────────── */
+const CATEGORY_ICONS = {
+  "SEO": "🔍", "וידאו": "🎬", "אסטרטגיה": "♟️", "עיצוב": "🎨",
+  "קופירייטינג": "✍️", "CRO": "📈", "תוכן": "📝", "Next.js & React": "⚛️",
+  "AI": "🤖", "אוטומציה": "🔁", "אנליטיקס": "📊", "איקומרס": "🛒",
+  "פיתוח": "💻", "הגדרות & תצורה": "⚙️", "איכות קוד": "✨",
+  "פיתוח API": "🤖", "תיעוד": "📘"
+};
+
+const elGrid = document.getElementById('grid');
+const elChips = document.getElementById('chips');
+const elSearch = document.getElementById('search');
+const elEmpty = document.getElementById('empty');
+const elCountS = document.getElementById('count-skills');
+const elCountC = document.getElementById('count-cats');
+const elSummary = document.getElementById('filter-summary');
+const elToast = document.getElementById('toast');
+
+let state = { q: '', cat: 'ALL' };
+
+function categories(){
+  const m = new Map();
+  SKILLS.forEach(s => m.set(s.category, (m.get(s.category)||0)+1));
+  return [...m.entries()].sort((a,b)=>b[1]-a[1]);
+}
+
+function renderChips(){
+  const cats = categories();
+  const total = SKILLS.length;
+  elChips.innerHTML = '';
+  const all = mkChip('ALL','הכל',total,'✦');
+  elChips.appendChild(all);
+  cats.forEach(([name,count])=>{
+    elChips.appendChild(mkChip(name,name,count,CATEGORY_ICONS[name]||'•'));
+  });
+}
+function mkChip(key,label,count,icon){
+  const b = document.createElement('button');
+  b.className = 'chip' + (state.cat===key ? ' active' : '');
+  b.innerHTML = `<span>${icon}</span><span>${label}</span><span class="cc">${count}</span>`;
+  b.onclick = ()=>{ state.cat = key; render(); };
+  return b;
+}
+
+function filtered(){
+  const q = state.q.trim().toLowerCase();
+  return SKILLS.filter(s=>{
+    if(state.cat!=='ALL' && s.category!==state.cat) return false;
+    if(!q) return true;
+    return (s.name+' '+s.desc+' '+s.category).toLowerCase().includes(q);
+  });
+}
+
+function renderCards(){
+  const list = filtered();
+  elGrid.innerHTML = '';
+  if(!list.length){
+    elEmpty.style.display = SKILLS.length ? 'block' : 'block';
+    elEmpty.textContent = SKILLS.length
+      ? 'לא נמצאו סקילים תואמים.'
+      : 'עדיין לא נוספו סקילים. סקילים חדשים יתווספו כאן אוטומטית.';
+    return;
+  }
+  elEmpty.style.display = 'none';
+  list.forEach(s=>elGrid.appendChild(renderCard(s)));
+}
+
+function renderCard(s){
+  const c = document.createElement('div');
+  c.className = 'card';
+  c.innerHTML = `
+    <div class="card-hd">
+      <div class="card-ic">${s.icon || CATEGORY_ICONS[s.category] || '✦'}</div>
+      <div class="card-ttl">${escapeHtml(s.name)}</div>
+    </div>
+    <div class="card-desc">${escapeHtml(s.desc||'')}</div>
+    <div class="card-meta">
+      <span class="card-tag"><span class="bullet"></span>${escapeHtml(s.category||'כללי')}</span>
+      <span>${escapeHtml(s.date||'')}</span>
+    </div>
+    <div class="card-actions">
+      <button class="btn-copy" data-install="${escapeHtml(s.install||s.name)}">
+        📋 <span>העתק פקודת התקנה</span>
+      </button>
+      ${s.url ? `<a class="btn-ext" href="${escapeHtml(s.url)}" target="_blank" title="פתח מקור">↗</a>` : ''}
+    </div>
+  `;
+  c.querySelector('.btn-copy').onclick = (e)=>{
+    const btn = e.currentTarget;
+    copy(btn.dataset.install);
+    btn.classList.add('copied');
+    btn.querySelector('span').textContent = 'הועתק ✓';
+    setTimeout(()=>{
+      btn.classList.remove('copied');
+      btn.querySelector('span').textContent = 'העתק פקודת התקנה';
+    }, 1600);
+  };
+  return c;
+}
+
+function render(){
+  renderChips();
+  renderCards();
+  elCountS.textContent = SKILLS.length;
+  elCountC.textContent = new Set(SKILLS.map(s=>s.category)).size;
+  elSummary.textContent = state.cat==='ALL'
+    ? `כל ה-${SKILLS.length} הסקילים`
+    : `קטגוריה: ${state.cat}`;
+}
+
+function copy(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast('הועתק ללוח'));
+  } else {
+    const t = document.createElement('textarea');
+    t.value = text; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); t.remove();
+    toast('הועתק ללוח');
+  }
+}
+
+function toast(msg){
+  elToast.textContent = msg;
+  elToast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>elToast.classList.remove('show'), 1600);
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+elSearch.addEventListener('input', e=>{ state.q = e.target.value; renderCards(); });
+
+document.getElementById('copy-all').onclick = ()=>{
+  const list = filtered();
+  if(!list.length) return toast('אין מה להעתיק');
+  const text = list.map(s=>s.install||s.name).join('\n');
+  copy(text);
+  toast(`הועתקו ${list.length} פקודות`);
+};
+
+render();
+</script>
+
+</body>
+</html>
