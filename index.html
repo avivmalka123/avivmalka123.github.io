@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aviv Malka ✦ Projects</title>
+<title>Aviv Malka ✦ Dashboard</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -11,7 +11,7 @@
   --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
   --border:rgba(255,255,255,0.07); --text:#e8e8f0; --text-muted:#6b6b8a;
   --accent:#7c3aed; --accent2:#ec4899; --accent3:#06b6d4; --accent4:#10b981;
-  --accent5:#f59e0b; --glow:rgba(124,58,237,0.35);
+  --accent5:#f59e0b; --accent6:#ef4444; --glow:rgba(124,58,237,0.35);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -22,65 +22,80 @@ body::before{content:'';position:fixed;top:-40%;right:-15%;width:700px;height:70
 body::after{content:'';position:fixed;bottom:-35%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(236,72,153,0.07) 0%,transparent 65%);pointer-events:none;animation:drift 28s ease-in-out infinite alternate-reverse;z-index:0;}
 @keyframes drift{0%{transform:translate(0,0)}100%{transform:translate(50px,70px)}}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;background:rgba(8,8,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 36px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;background:rgba(8,8,16,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 36px;}
 .nav-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;text-decoration:none;color:var(--text);}
-.nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 18px var(--glow);}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 18px var(--glow);}
 .nav-logo span{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-links{display:flex;gap:6px;}
-.nav-link{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all 0.2s;}
+.nav-links{display:flex;gap:4px;align-items:center;}
+.nav-link{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all 0.2s;}
 .nav-link:hover{color:var(--text);background:var(--surface2);}
+.nav-link.active{color:#a855f7;background:rgba(168,85,247,0.1);}
 
-.hero{position:relative;z-index:1;padding:140px 36px 80px;text-align:center;max-width:800px;margin:0 auto;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid rgba(168,85,247,0.3);border-radius:100px;padding:7px 18px;font-size:12px;font-weight:700;color:#a855f7;margin-bottom:28px;}
+.hero{position:relative;z-index:1;padding:120px 36px 50px;text-align:center;max-width:900px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid rgba(168,85,247,0.3);border-radius:100px;padding:7px 18px;font-size:12px;font-weight:700;color:#a855f7;margin-bottom:24px;}
 .hero-badge::before{content:'';width:7px;height:7px;background:#a855f7;border-radius:50%;animation:pdot 2s infinite;}
 @keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(168,85,247,0.4)}50%{box-shadow:0 0 0 8px rgba(168,85,247,0)}}
-h1{font-size:clamp(36px,6vw,62px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px;}
+h1{font-size:clamp(36px,6vw,58px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:18px;}
 .gr{background:linear-gradient(135deg,#a855f7 0%,#ec4899 50%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-sub{font-size:17px;color:var(--text-muted);line-height:1.6;max-width:500px;margin:0 auto 40px;}
-.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;font-size:15px;font-weight:700;color:white;text-decoration:none;box-shadow:0 6px 30px rgba(124,58,237,0.45);transition:all 0.2s;}
-.hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(124,58,237,0.55);}
+.hero-sub{font-size:16px;color:var(--text-muted);line-height:1.6;max-width:560px;margin:0 auto 32px;}
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.2s;}
+.hero-cta.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;box-shadow:0 6px 30px rgba(124,58,237,0.45);}
+.hero-cta.primary:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(124,58,237,0.55);}
+.hero-cta.ghost{background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+.hero-cta.ghost:hover{border-color:rgba(168,85,247,0.3);}
 
-.stats-bar{position:relative;z-index:1;display:flex;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;max-width:560px;margin:0 auto 80px;border:1px solid var(--border);}
-.stat-cell{flex:1;background:var(--surface);padding:20px;text-align:center;}
+.stats-bar{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:16px;overflow:hidden;max-width:720px;margin:0 auto 70px;border:1px solid var(--border);}
+.stat-cell{background:var(--surface);padding:22px 12px;text-align:center;}
 .s-num{font-size:28px;font-weight:900;background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .s-lbl{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;}
 
-.section{position:relative;z-index:1;padding:0 36px 100px;max-width:1300px;margin:0 auto;}
-.sec-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:28px;}
-.sec-t{font-size:22px;font-weight:800;}
-.sec-s{font-size:13px;color:var(--text-muted);}
+.filter-bar{position:relative;z-index:1;max-width:1300px;margin:0 auto 30px;padding:0 36px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.fbtn{padding:9px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;transition:all 0.2s;font-family:inherit;}
+.fbtn:hover{color:var(--text);border-color:rgba(168,85,247,0.3);}
+.fbtn.active{background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.2));color:#fff;border-color:rgba(168,85,247,0.5);}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;}
+.section{position:relative;z-index:1;padding:0 36px 80px;max-width:1300px;margin:0 auto;}
+.sec-hd{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+.sec-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.sec-t{font-size:22px;font-weight:800;}
+.sec-s{font-size:13px;color:var(--text-muted);margin-right:auto;}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;text-decoration:none;color:var(--text);transition:all 0.3s;display:flex;flex-direction:column;position:relative;}
 .card:hover{transform:translateY(-4px);border-color:rgba(168,85,247,0.35);box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 40px rgba(124,58,237,0.08);}
-.card.soon{opacity:0.5;cursor:default;pointer-events:none;}
-.card-top{padding:24px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;}
-.ci{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.card.soon{opacity:0.55;cursor:default;pointer-events:none;}
+.card-top{padding:22px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.ci{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
 .badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:0.3px;}
 .b-live{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25);}
 .b-new{background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25);}
+.b-beta{background:rgba(6,182,212,0.12);color:#06b6d4;border:1px solid rgba(6,182,212,0.25);}
 .b-soon{background:rgba(107,107,138,0.1);color:var(--text-muted);border:1px solid var(--border);}
-.card-mid{padding:16px 24px 0;}
-.c-name{font-size:18px;font-weight:800;margin-bottom:7px;}
+.b-vip{background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(236,72,153,0.15));color:#f59e0b;border:1px solid rgba(245,158,11,0.3);}
+.card-mid{padding:14px 22px 0;}
+.c-name{font-size:17px;font-weight:800;margin-bottom:6px;}
 .c-desc{font-size:13px;color:var(--text-muted);line-height:1.6;}
-.c-tags{display:flex;flex-wrap:wrap;gap:6px;padding:14px 24px 0;}
+.c-tags{display:flex;flex-wrap:wrap;gap:6px;padding:12px 22px 0;}
 .tag{font-size:11px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 9px;color:var(--text-muted);}
-.card-ft{padding:18px 24px 22px;display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.card-ft{padding:16px 22px 20px;display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
 .c-link{font-size:12px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:5px;}
-.arr{transition:transform 0.2s;}
+.c-link.ext{color:var(--accent3);}
+.arr{transition:transform 0.2s;display:inline-block;}
 .card:hover .arr{transform:translateX(-4px);}
-.c-url{font-size:10px;color:var(--text-muted);direction:ltr;}
+.c-url{font-size:10px;color:var(--text-muted);direction:ltr;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 36px;display:flex;align-items:center;justify-content:space-between;}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .fl{font-size:14px;font-weight:800;}
 .fl span{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.fgh{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);text-decoration:none;padding:6px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;transition:all 0.2s;}
-.fgh:hover{color:var(--text);}
+.fgh{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);text-decoration:none;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;transition:all 0.2s;}
+.fgh:hover{color:var(--text);border-color:rgba(168,85,247,0.3);}
 
 @media(max-width:600px){
-  nav{padding:0 18px;} .hero{padding:100px 18px 60px;} .section{padding:0 18px 80px;}
-  .grid{grid-template-columns:1fr;} footer{flex-direction:column;gap:12px;text-align:center;}
+  nav{padding:0 18px;} .hero{padding:100px 18px 40px;} .section{padding:0 18px 60px;}
+  .grid{grid-template-columns:1fr;} footer{flex-direction:column;text-align:center;}
+  .stats-bar{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -92,32 +107,48 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28
     <span>Aviv Malka</span>
   </a>
   <div class="nav-links">
-    <a class="nav-link" href="#projects">פרויקטים</a>
+    <a class="nav-link active" href="#all">הכל</a>
+    <a class="nav-link" href="#content">תוכן</a>
+    <a class="nav-link" href="#marketing">שיווק</a>
+    <a class="nav-link" href="#students">תלמידים</a>
     <a class="nav-link" href="https://github.com/avivmalka123" target="_blank">GitHub ↗</a>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hero-badge">🚀 כלים חיים באינטרנט</div>
-  <h1>כלים שבניתי<br><span class="gr">לעולם האיקומרס</span></h1>
-  <p class="hero-sub">כל הכלים שאני משתמש בהם — לניהול תוכן, יצירת סקריפטים ועוד — זמינים כאן בחינם.</p>
-  <a href="#projects" class="hero-cta">🔍 כל הפרויקטים</a>
+  <div class="hero-badge">🚀 Dashboard מרכזי · כל הכלים במקום אחד</div>
+  <h1>כל הכלים שבניתי<br><span class="gr">במקום אחד</span></h1>
+  <p class="hero-sub">Dashboard מרכזי לכל הפרויקטים שלי — שיווק, תוכן, מועדון VIP לתלמידים, ניהול קמפיינים בפייסבוק, סקריפטים ליוטיוב ועוד. הכל זמין בלחיצה אחת.</p>
+  <div class="hero-ctas">
+    <a href="#all" class="hero-cta primary">🔍 גלה את הכלים</a>
+    <a href="https://github.com/avivmalka123" target="_blank" class="hero-cta ghost">⚡ GitHub</a>
+  </div>
 </div>
 
 <div class="stats-bar">
-  <div class="stat-cell"><div class="s-num">2</div><div class="s-lbl">כלים חיים</div></div>
+  <div class="stat-cell"><div class="s-num">7</div><div class="s-lbl">כלים פעילים</div></div>
+  <div class="stat-cell"><div class="s-num">4</div><div class="s-lbl">קטגוריות</div></div>
   <div class="stat-cell"><div class="s-num">100%</div><div class="s-lbl">חינמי</div></div>
-  <div class="stat-cell"><div class="s-num">∞</div><div class="s-lbl">בדרך</div></div>
+  <div class="stat-cell"><div class="s-num">∞</div><div class="s-lbl">בפיתוח</div></div>
 </div>
 
-<div class="section" id="projects">
+<div class="filter-bar">
+  <button class="fbtn active" data-filter="all">✦ הכל</button>
+  <button class="fbtn" data-filter="content">🎯 תוכן</button>
+  <button class="fbtn" data-filter="marketing">📈 שיווק</button>
+  <button class="fbtn" data-filter="students">🎓 תלמידים</button>
+  <button class="fbtn" data-filter="sales">💰 מכירות</button>
+</div>
+
+<div class="section" id="content">
   <div class="sec-hd">
-    <div class="sec-t">הפרויקטים</div>
-    <div class="sec-s">לחץ על כרטיס כדי לפתוח</div>
+    <div class="sec-icon" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.2));">🎯</div>
+    <div class="sec-t">תוכן ויצירה</div>
+    <div class="sec-s">כלים ליצירת תוכן, סקריפטים וניהול פרסום</div>
   </div>
   <div class="grid">
 
-    <a class="card" href="/content-studio/">
+    <a class="card" data-cat="content" href="/content-studio/">
       <div class="card-top">
         <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.2));">🎯</div>
         <span class="badge b-live">● LIVE</span>
@@ -127,15 +158,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28
         <div class="c-desc">לוח ניהול תוכן מלא עם Gantt ו-Kanban. תכנן, עקוב ופרסם תוכן לכל הפלטפורמות ממקום אחד.</div>
       </div>
       <div class="c-tags">
-        <span class="tag">ניהול תוכן</span><span class="tag">Gantt</span><span class="tag">Kanban</span><span class="tag">AI Ideas</span>
+        <span class="tag">Gantt</span><span class="tag">Kanban</span><span class="tag">AI Ideas</span><span class="tag">WhatsApp</span>
       </div>
       <div class="card-ft">
         <div class="c-link">פתח כלי <span class="arr">←</span></div>
-        <div class="c-url">avivmalka123.github.io/content-studio</div>
+        <div class="c-url">/content-studio</div>
       </div>
     </a>
 
-    <a class="card" href="/youtube-script-generator/">
+    <a class="card" data-cat="content" href="/youtube-script-generator/">
       <div class="card-top">
         <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">🎬</div>
         <span class="badge b-new">✦ NEW</span>
@@ -145,22 +176,72 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28
         <div class="c-desc">מדביק לינק יוטיוב → שולף תמלול → מייצר סקריפט מלא בעברית גבוהה מותאם לאיקומרס שלך. 5 במקביל.</div>
       </div>
       <div class="c-tags">
-        <span class="tag">YouTube</span><span class="tag">AI Script</span><span class="tag">5 במקביל</span><span class="tag">PDF</span>
+        <span class="tag">YouTube</span><span class="tag">AI Script</span><span class="tag">תמלול</span><span class="tag">PDF</span>
       </div>
       <div class="card-ft">
         <div class="c-link">פתח כלי <span class="arr">←</span></div>
-        <div class="c-url">avivmalka123.github.io/youtube-script-generator</div>
+        <div class="c-url">/youtube-script-generator</div>
       </div>
     </a>
 
-    <div class="card soon">
+    <a class="card" data-cat="content" href="https://avivmalka123.github.io/carousel-aviv-king/" target="_blank">
       <div class="card-top">
-        <div class="ci" style="background:var(--surface2);">🔜</div>
-        <span class="badge b-soon">בקרוב</span>
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(245,158,11,0.2));">🎨</div>
+        <span class="badge b-beta">⚡ BETA</span>
       </div>
       <div class="card-mid">
-        <div class="c-name">הפרויקט הבא</div>
-        <div class="c-desc">כל פרויקט חדש שמתווסף כאן עולה אוטומטית לאוויר עם כתובת URL משלו.</div>
+        <div class="c-name">Carousel Generator</div>
+        <div class="c-desc">מחולל קרוסלות אינסטגרם בעברית — יוצר עיצובים מקצועיים לפוסטים, Claude Code Skill מלא.</div>
+      </div>
+      <div class="c-tags">
+        <span class="tag">Instagram</span><span class="tag">עברית</span><span class="tag">Python</span><span class="tag">Claude Skill</span>
+      </div>
+      <div class="card-ft">
+        <div class="c-link">פתח כלי <span class="arr">←</span></div>
+        <div class="c-url">carousel-aviv-king</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="section" id="marketing">
+  <div class="sec-hd">
+    <div class="sec-icon" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">📈</div>
+    <div class="sec-t">שיווק ואנליטיקס</div>
+    <div class="sec-s">מעקב אחרי מתחרים, קמפיינים אורגניים וממומנים</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" data-cat="marketing" href="https://avivmalka123.github.io/marketing-dashboard/" target="_blank">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(124,58,237,0.2));">📊</div>
+        <span class="badge b-live">● LIVE</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Marketing Dashboard</div>
+        <div class="c-desc">Dashboard לניהול שיווק אורגני מלא — מעקב יוטיוב של מתחרים, ניתוח AI בעברית (Claude), מחולל בלוג SEO, אנליטיקס אינסטגרם ו-Kanban לרעיונות.</div>
+      </div>
+      <div class="c-tags">
+        <span class="tag">YouTube Tracking</span><span class="tag">Claude AI</span><span class="tag">Next.js</span><span class="tag">SEO</span>
+      </div>
+      <div class="card-ft">
+        <div class="c-link">פתח כלי <span class="arr">←</span></div>
+        <div class="c-url">marketing-dashboard</div>
+      </div>
+    </a>
+
+    <div class="card soon" data-cat="marketing">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(6,182,212,0.2));">📱</div>
+        <span class="badge b-soon">בפיתוח</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Facebook Ads Manager</div>
+        <div class="c-desc">תוכנה לניהול קמפיינים ממומנים בפייסבוק — מותאמת לתלמידים, עם מעקב ROI, A/B Testing ודוחות אוטומטיים.</div>
+      </div>
+      <div class="c-tags">
+        <span class="tag">Facebook Ads</span><span class="tag">ROI</span><span class="tag">תלמידים</span>
       </div>
       <div class="card-ft">
         <div class="c-link" style="color:var(--text-muted);">בקרוב</div>
@@ -170,11 +251,131 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28
   </div>
 </div>
 
+<div class="section" id="students">
+  <div class="sec-hd">
+    <div class="sec-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(236,72,153,0.2));">🎓</div>
+    <div class="sec-t">מועדון התלמידים</div>
+    <div class="sec-s">כלים בלעדיים לתלמידי הקורס</div>
+  </div>
+  <div class="grid">
+
+    <div class="card soon" data-cat="students">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(236,72,153,0.2));">👑</div>
+        <span class="badge b-vip">★ VIP</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">VIP Club Dashboard</div>
+        <div class="c-desc">Dashboard ומועדון VIP לכל התלמידים שלי — גישה לכלים בלעדיים, חומרי הדרכה, קהילה ואפשרות להתייעץ ישירות.</div>
+      </div>
+      <div class="c-tags">
+        <span class="tag">VIP</span><span class="tag">קהילה</span><span class="tag">קורסים</span><span class="tag">Private</span>
+      </div>
+      <div class="card-ft">
+        <div class="c-link" style="color:var(--text-muted);">בפיתוח</div>
+      </div>
+    </div>
+
+    <a class="card" data-cat="students" href="https://avivmalka123.github.io/quiz-ecom/" target="_blank">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2));">🎯</div>
+        <span class="badge b-new">✦ NEW</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Quiz E-commerce</div>
+        <div class="c-desc">חידון אינטראקטיבי לבדיקת ידע איקומרס — מיועד לתלמידים חדשים במסלול, עם משוב מותאם אישית.</div>
+      </div>
+      <div class="c-tags">
+        <span class="tag">חידון</span><span class="tag">תלמידים</span><span class="tag">E-commerce</span>
+      </div>
+      <div class="card-ft">
+        <div class="c-link">פתח כלי <span class="arr">←</span></div>
+        <div class="c-url">quiz-ecom</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="section" id="sales">
+  <div class="sec-hd">
+    <div class="sec-icon" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">💰</div>
+    <div class="sec-t">מכירות ודוחות</div>
+    <div class="sec-s">ניתוח נתוני מכירות ודוחות ביצועים</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" data-cat="sales" href="https://avivmalka123.github.io/sales-analyzer/" target="_blank">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2));">📊</div>
+        <span class="badge b-live">● LIVE</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Sales Analyzer</div>
+        <div class="c-desc">מנתח נתוני מכירות — העלה קובץ CSV וקבל תובנות מיידיות על ביצועי המוצרים, מגמות ונקודות לשיפור.</div>
+      </div>
+      <div class="c-tags">
+        <span class="tag">CSV</span><span class="tag">אנליטיקס</span><span class="tag">מכירות</span>
+      </div>
+      <div class="card-ft">
+        <div class="c-link">פתח כלי <span class="arr">←</span></div>
+        <div class="c-url">sales-analyzer</div>
+      </div>
+    </a>
+
+    <a class="card" data-cat="sales" href="https://avivmalka123.github.io/yardan-sales-report/" target="_blank">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">📈</div>
+        <span class="badge b-live">● LIVE</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Yardan Sales Report</div>
+        <div class="c-desc">דוח מכירות מפורט עם גרפים ומדדים מרכזיים. תצוגה ויזואלית נקייה של ביצועי העסק.</div>
+      </div>
+      <div class="c-tags">
+        <span class="tag">דוחות</span><span class="tag">גרפים</span><span class="tag">KPI</span>
+      </div>
+      <div class="card-ft">
+        <div class="c-link">פתח כלי <span class="arr">←</span></div>
+        <div class="c-url">yardan-sales-report</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
 <footer>
-  <div class="fl"><span>Aviv Malka</span> · Projects Hub</div>
+  <div class="fl"><span>Aviv Malka</span> · Dashboard</div>
   <p style="font-size:12px;color:var(--text-muted);">avivmalka123.github.io</p>
   <a class="fgh" href="https://github.com/avivmalka123" target="_blank">⚡ GitHub</a>
 </footer>
+
+<script>
+const buttons = document.querySelectorAll('.fbtn');
+const cards = document.querySelectorAll('.card');
+const sections = document.querySelectorAll('.section');
+
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+
+    if (filter === 'all') {
+      sections.forEach(s => s.style.display = 'block');
+      cards.forEach(c => c.style.display = 'flex');
+    } else {
+      sections.forEach(s => {
+        const hasMatch = s.querySelector(`[data-cat="${filter}"]`);
+        s.style.display = hasMatch ? 'block' : 'none';
+      });
+      cards.forEach(c => {
+        c.style.display = c.dataset.cat === filter ? 'flex' : 'none';
+      });
+    }
+  });
+});
+</script>
 
 </body>
 </html>
