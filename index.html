@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aviv Malka ✦ Projects</title>
+<title>Aviv Malka ✦ Tools Dashboard</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -11,7 +11,7 @@
   --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
   --border:rgba(255,255,255,0.07); --text:#e8e8f0; --text-muted:#6b6b8a;
   --accent:#7c3aed; --accent2:#ec4899; --accent3:#06b6d4; --accent4:#10b981;
-  --accent5:#f59e0b; --glow:rgba(124,58,237,0.35);
+  --accent5:#f59e0b; --accent6:#ef4444; --glow:rgba(124,58,237,0.35);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -26,51 +26,67 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;background:rgba(
 .nav-logo{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;text-decoration:none;color:var(--text);}
 .nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 18px var(--glow);}
 .nav-logo span{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-links{display:flex;gap:6px;}
-.nav-link{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all 0.2s;}
-.nav-link:hover{color:var(--text);background:var(--surface2);}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap;}
+.nav-link{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-muted);text-decoration:none;transition:all 0.2s;white-space:nowrap;}
+.nav-link:hover,.nav-link.active{color:var(--text);background:var(--surface2);}
 
-.hero{position:relative;z-index:1;padding:140px 36px 80px;text-align:center;max-width:800px;margin:0 auto;}
+.hero{position:relative;z-index:1;padding:140px 36px 60px;text-align:center;max-width:800px;margin:0 auto;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid rgba(168,85,247,0.3);border-radius:100px;padding:7px 18px;font-size:12px;font-weight:700;color:#a855f7;margin-bottom:28px;}
 .hero-badge::before{content:'';width:7px;height:7px;background:#a855f7;border-radius:50%;animation:pdot 2s infinite;}
 @keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(168,85,247,0.4)}50%{box-shadow:0 0 0 8px rgba(168,85,247,0)}}
 h1{font-size:clamp(36px,6vw,62px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px;}
 .gr{background:linear-gradient(135deg,#a855f7 0%,#ec4899 50%,#f59e0b 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-sub{font-size:17px;color:var(--text-muted);line-height:1.6;max-width:500px;margin:0 auto 40px;}
-.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:13px 28px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;font-size:15px;font-weight:700;color:white;text-decoration:none;box-shadow:0 6px 30px rgba(124,58,237,0.45);transition:all 0.2s;}
-.hero-cta:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(124,58,237,0.55);}
+.hero-sub{font-size:17px;color:var(--text-muted);line-height:1.6;max-width:560px;margin:0 auto 40px;}
 
-.stats-bar{position:relative;z-index:1;display:flex;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;max-width:560px;margin:0 auto 80px;border:1px solid var(--border);}
+/* Search */
+.search-wrap{position:relative;z-index:1;max-width:500px;margin:0 auto 30px;padding:0 36px;}
+.search-box{width:100%;padding:14px 20px 14px 44px;background:var(--surface);border:1px solid var(--border);border-radius:14px;font-family:'Heebo',sans-serif;font-size:15px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.search-box::placeholder{color:var(--text-muted);}
+.search-box:focus{border-color:rgba(168,85,247,0.5);}
+.search-icon{position:absolute;right:56px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--text-muted);pointer-events:none;}
+
+/* Filter tabs */
+.filter-bar{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:900px;margin:0 auto 50px;padding:0 36px;}
+.filter-btn{padding:8px 18px;border-radius:100px;font-size:12px;font-weight:700;font-family:'Heebo',sans-serif;background:var(--surface);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.filter-btn:hover{color:var(--text);border-color:rgba(168,85,247,0.3);}
+.filter-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border-color:transparent;}
+.filter-count{font-size:10px;background:rgba(255,255,255,0.15);padding:1px 6px;border-radius:100px;margin-right:6px;}
+
+.stats-bar{position:relative;z-index:1;display:flex;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;max-width:700px;margin:0 auto 80px;border:1px solid var(--border);}
 .stat-cell{flex:1;background:var(--surface);padding:20px;text-align:center;}
 .s-num{font-size:28px;font-weight:900;background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .s-lbl{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;}
 
-.section{position:relative;z-index:1;padding:0 36px 100px;max-width:1300px;margin:0 auto;}
+.section{position:relative;z-index:1;padding:0 36px 80px;max-width:1300px;margin:0 auto;}
 .sec-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:28px;}
 .sec-t{font-size:22px;font-weight:800;}
+.sec-icon{font-size:24px;}
 .sec-s{font-size:13px;color:var(--text-muted);}
+.sec-count{font-size:12px;font-weight:700;background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:100px;color:var(--text-muted);}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;text-decoration:none;color:var(--text);transition:all 0.3s;display:flex;flex-direction:column;position:relative;}
 .card:hover{transform:translateY(-4px);border-color:rgba(168,85,247,0.35);box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 40px rgba(124,58,237,0.08);}
-.card.soon{opacity:0.5;cursor:default;pointer-events:none;}
-.card-top{padding:24px 24px 0;display:flex;align-items:flex-start;justify-content:space-between;}
-.ci{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.card.hidden{display:none;}
+.card-top{padding:22px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;}
+.ci{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:100px;letter-spacing:0.3px;}
 .b-live{background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.25);}
-.b-new{background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25);}
-.b-soon{background:rgba(107,107,138,0.1);color:var(--text-muted);border:1px solid var(--border);}
-.card-mid{padding:16px 24px 0;}
-.c-name{font-size:18px;font-weight:800;margin-bottom:7px;}
-.c-desc{font-size:13px;color:var(--text-muted);line-height:1.6;}
-.c-tags{display:flex;flex-wrap:wrap;gap:6px;padding:14px 24px 0;}
-.tag{font-size:11px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 9px;color:var(--text-muted);}
-.card-ft{padding:18px 24px 22px;display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.b-app{background:rgba(6,182,212,0.12);color:#06b6d4;border:1px solid rgba(6,182,212,0.25);}
+.b-skill{background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25);}
+.b-repo{background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.25);}
+.b-guide{background:rgba(236,72,153,0.12);color:#ec4899;border:1px solid rgba(236,72,153,0.25);}
+.card-mid{padding:14px 22px 0;}
+.c-name{font-size:17px;font-weight:800;margin-bottom:5px;}
+.c-desc{font-size:12.5px;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.c-tags{display:flex;flex-wrap:wrap;gap:5px;padding:12px 22px 0;}
+.tag{font-size:10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--text-muted);}
+.card-ft{padding:16px 22px 20px;display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
 .c-link{font-size:12px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:5px;}
 .arr{transition:transform 0.2s;}
 .card:hover .arr{transform:translateX(-4px);}
-.c-url{font-size:10px;color:var(--text-muted);direction:ltr;}
+.c-url{font-size:10px;color:var(--text-muted);direction:ltr;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
 footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 36px;display:flex;align-items:center;justify-content:space-between;}
 .fl{font-size:14px;font-weight:800;}
@@ -79,8 +95,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28
 .fgh:hover{color:var(--text);}
 
 @media(max-width:600px){
-  nav{padding:0 18px;} .hero{padding:100px 18px 60px;} .section{padding:0 18px 80px;}
+  nav{padding:0 18px;} .hero{padding:100px 18px 50px;} .section{padding:0 18px 60px;}
   .grid{grid-template-columns:1fr;} footer{flex-direction:column;gap:12px;text-align:center;}
+  .search-wrap{padding:0 18px;} .filter-bar{padding:0 18px;}
+  .nav-links{display:none;}
 }
 </style>
 </head>
@@ -92,32 +110,60 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28
     <span>Aviv Malka</span>
   </a>
   <div class="nav-links">
-    <a class="nav-link" href="#projects">פרויקטים</a>
+    <a class="nav-link" href="#live-tools">כלים חיים</a>
+    <a class="nav-link" href="#dashboards">דשבורדים</a>
+    <a class="nav-link" href="#carousels">קרוסלות</a>
+    <a class="nav-link" href="#ads-tools">פרסום</a>
+    <a class="nav-link" href="#seo-tools">SEO</a>
+    <a class="nav-link" href="#content-tools">תוכן</a>
+    <a class="nav-link" href="#dev-tools">פיתוח</a>
     <a class="nav-link" href="https://github.com/avivmalka123" target="_blank">GitHub ↗</a>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hero-badge">🚀 כלים חיים באינטרנט</div>
-  <h1>כלים שבניתי<br><span class="gr">לעולם האיקומרס</span></h1>
-  <p class="hero-sub">כל הכלים שאני משתמש בהם — לניהול תוכן, יצירת סקריפטים ועוד — זמינים כאן בחינם.</p>
-  <a href="#projects" class="hero-cta">🔍 כל הפרויקטים</a>
+  <div class="hero-badge">כל הכלים במקום אחד</div>
+  <h1>ארגז הכלים<br><span class="gr">של אביב מלכה</span></h1>
+  <p class="hero-sub">כל הכלים, הסקילים, הדשבורדים והפרויקטים שבניתי לאורך הדרך - מאוגדים בדשבורד אחד עם גישה ישירה.</p>
+</div>
+
+<div class="search-wrap">
+  <span class="search-icon">🔍</span>
+  <input class="search-box" type="text" id="search" placeholder="חפש כלי..." autocomplete="off">
+</div>
+
+<div class="filter-bar" id="filters">
+  <button class="filter-btn active" data-filter="all">הכל <span class="filter-count" id="count-all"></span></button>
+  <button class="filter-btn" data-filter="live">כלים חיים</button>
+  <button class="filter-btn" data-filter="dashboard">דשבורדים</button>
+  <button class="filter-btn" data-filter="carousel">קרוסלות</button>
+  <button class="filter-btn" data-filter="ads">פרסום</button>
+  <button class="filter-btn" data-filter="seo">SEO</button>
+  <button class="filter-btn" data-filter="content">תוכן ושיווק</button>
+  <button class="filter-btn" data-filter="ecom">איקומרס</button>
+  <button class="filter-btn" data-filter="dev">פיתוח</button>
+  <button class="filter-btn" data-filter="leads">לידים</button>
+  <button class="filter-btn" data-filter="cro">CRO</button>
+  <button class="filter-btn" data-filter="security">אבטחה</button>
 </div>
 
 <div class="stats-bar">
+  <div class="stat-cell"><div class="s-num" id="total-count">0</div><div class="s-lbl">כלים</div></div>
   <div class="stat-cell"><div class="s-num">2</div><div class="s-lbl">כלים חיים</div></div>
-  <div class="stat-cell"><div class="s-num">100%</div><div class="s-lbl">חינמי</div></div>
-  <div class="stat-cell"><div class="s-num">∞</div><div class="s-lbl">בדרך</div></div>
+  <div class="stat-cell"><div class="s-num">80+</div><div class="s-lbl">Claude Skills</div></div>
+  <div class="stat-cell"><div class="s-num">11</div><div class="s-lbl">GitHub Repos</div></div>
 </div>
 
-<div class="section" id="projects">
+<!-- LIVE TOOLS -->
+<div class="section" id="live-tools">
   <div class="sec-hd">
-    <div class="sec-t">הפרויקטים</div>
-    <div class="sec-s">לחץ על כרטיס כדי לפתוח</div>
+    <span class="sec-icon">🟢</span>
+    <div class="sec-t">כלים חיים</div>
+    <div class="sec-s">כלים פעילים באינטרנט - לחץ ותשתמש</div>
   </div>
   <div class="grid">
 
-    <a class="card" href="/content-studio/">
+    <a class="card" href="https://avivmalka123.github.io/content-studio/" target="_blank" data-cat="live dashboard content" data-name="Content Studio לוח ניהול תוכן Gantt Kanban">
       <div class="card-top">
         <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.2));">🎯</div>
         <span class="badge b-live">● LIVE</span>
@@ -126,55 +172,1486 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28
         <div class="c-name">Content Studio</div>
         <div class="c-desc">לוח ניהול תוכן מלא עם Gantt ו-Kanban. תכנן, עקוב ופרסם תוכן לכל הפלטפורמות ממקום אחד.</div>
       </div>
-      <div class="c-tags">
-        <span class="tag">ניהול תוכן</span><span class="tag">Gantt</span><span class="tag">Kanban</span><span class="tag">AI Ideas</span>
-      </div>
+      <div class="c-tags"><span class="tag">ניהול תוכן</span><span class="tag">Gantt</span><span class="tag">Kanban</span><span class="tag">AI Ideas</span></div>
       <div class="card-ft">
         <div class="c-link">פתח כלי <span class="arr">←</span></div>
         <div class="c-url">avivmalka123.github.io/content-studio</div>
       </div>
     </a>
 
-    <a class="card" href="/youtube-script-generator/">
+    <a class="card" href="https://avivmalka123.github.io/youtube-script-generator/" target="_blank" data-cat="live content" data-name="Script Generator תמלול יוטיוב סקריפט YouTube">
       <div class="card-top">
         <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">🎬</div>
-        <span class="badge b-new">✦ NEW</span>
+        <span class="badge b-live">● LIVE</span>
       </div>
       <div class="card-mid">
-        <div class="c-name">Script Generator</div>
-        <div class="c-desc">מדביק לינק יוטיוב → שולף תמלול → מייצר סקריפט מלא בעברית גבוהה מותאם לאיקומרס שלך. 5 במקביל.</div>
+        <div class="c-name">YouTube Script Generator</div>
+        <div class="c-desc">מדביק לינק יוטיוב - שולף תמלול - מייצר סקריפט מלא בעברית גבוהה מותאם לאיקומרס שלך. 5 במקביל.</div>
       </div>
-      <div class="c-tags">
-        <span class="tag">YouTube</span><span class="tag">AI Script</span><span class="tag">5 במקביל</span><span class="tag">PDF</span>
-      </div>
+      <div class="c-tags"><span class="tag">YouTube</span><span class="tag">AI Script</span><span class="tag">תמלול</span><span class="tag">PDF</span></div>
       <div class="card-ft">
         <div class="c-link">פתח כלי <span class="arr">←</span></div>
         <div class="c-url">avivmalka123.github.io/youtube-script-generator</div>
       </div>
     </a>
 
-    <div class="card soon">
+  </div>
+</div>
+
+<!-- DASHBOARDS -->
+<div class="section" id="dashboards">
+  <div class="sec-hd">
+    <span class="sec-icon">📊</span>
+    <div class="sec-t">דשבורדים ואפליקציות</div>
+    <div class="sec-s">אפליקציות מלאות שבניתי</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/avivmalka123/marketing-dashboard" target="_blank" data-cat="dashboard content seo" data-name="Marketing Dashboard דשבורד שיווק YouTube tracking SEO blog">
       <div class="card-top">
-        <div class="ci" style="background:var(--surface2);">🔜</div>
-        <span class="badge b-soon">בקרוב</span>
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2));">📈</div>
+        <span class="badge b-app">APP</span>
       </div>
       <div class="card-mid">
-        <div class="c-name">הפרויקט הבא</div>
-        <div class="c-desc">כל פרויקט חדש שמתווסף כאן עולה אוטומטית לאוויר עם כתובת URL משלו.</div>
+        <div class="c-name">Marketing Dashboard</div>
+        <div class="c-desc">דשבורד שיווק אורגני מלא - מעקב מתחרים ביוטיוב, ניתוח AI בעברית, מחולל בלוג SEO, אנליטיקס אינסטגרם, Kanban רעיונות.</div>
       </div>
+      <div class="c-tags"><span class="tag">Next.js 14</span><span class="tag">Prisma</span><span class="tag">YouTube Tracking</span><span class="tag">SEO Blog</span></div>
       <div class="card-ft">
-        <div class="c-link" style="color:var(--text-muted);">בקרוב</div>
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/marketing-dashboard</div>
       </div>
-    </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/content-dashboard" target="_blank" data-cat="dashboard content" data-name="Content Dashboard דשבורד תוכן">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(6,182,212,0.2));">📋</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Content Dashboard</div>
+        <div class="c-desc">דשבורד ניהול תוכן - מעקב, תכנון ופרסום תכנים לפלטפורמות שונות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">ניהול תוכן</span><span class="tag">Dashboard</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/content-dashboard</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/sales-analyzer" target="_blank" data-cat="dashboard ecom" data-name="Sales Analyzer ניתוח מכירות שיחות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">💰</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Sales Analyzer</div>
+        <div class="c-desc">כלי לניתוח שיחות מכירה - תמלול, דוחות, ניתוח ביצועים ופידבק AI.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Sales</span><span class="tag">AI Analysis</span><span class="tag">Reports</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/sales-analyzer</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/yardan-sales-report" target="_blank" data-cat="dashboard ecom" data-name="Yardan Sales Report דוח מכירות ירדן">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(16,185,129,0.2));">📄</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Yardan Sales Report</div>
+        <div class="c-desc">מחולל דוחות מכירות אוטומטי - ניתוח נתונים והפקת דוחות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Reports</span><span class="tag">Sales</span><span class="tag">Analytics</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/yardan-sales-report</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/quiz-ecom" target="_blank" data-cat="dashboard ecom" data-name="Quiz Ecom קוויז איקומרס חנות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(124,58,237,0.2));">🧠</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Quiz Ecom</div>
+        <div class="c-desc">כלי קוויז לאיקומרס - יצירת שאלונים חכמים ללקוחות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Quiz</span><span class="tag">E-commerce</span><span class="tag">Lead Gen</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/quiz-ecom</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/toddly-replica" target="_blank" data-cat="dashboard dev" data-name="Toddly Replica שכפול אתר">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">🌐</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Toddly Replica</div>
+        <div class="c-desc">שכפול ובנייה מחדש של אתר Toddly - דוגמה לפיתוח מהיר.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Web Dev</span><span class="tag">Landing Page</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/toddly-replica</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- CAROUSELS -->
+<div class="section" id="carousels">
+  <div class="sec-hd">
+    <span class="sec-icon">🎠</span>
+    <div class="sec-t">קרוסלות אינסטגרם</div>
+    <div class="sec-s">מערכות אוטומטיות ליצירת קרוסלות</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/carousel-machine" target="_blank" data-cat="carousel content" data-name="Carousel Machine מכונת קרוסלות אינסטגרם אוטומטי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(245,158,11,0.2));">🎠</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Carousel Machine v1</div>
+        <div class="c-desc">פייפליין אוטומטי ליצירת קרוסלות - סקרייפינג טרנדים מיוטיוב/טוויטר/רדיט, קופי בעברית, יצירת תמונות עם Gemini, דחיפה ל-Airtable.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Instagram</span><span class="tag">Gemini</span><span class="tag">Airtable</span><span class="tag">Auto</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/carousel-machine</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/carousel-aviv-king" target="_blank" data-cat="carousel content" data-name="Carousel Aviv King קרוסלה אביב עברית Marketing Harry">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2));">👑</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Carousel Aviv King</div>
+        <div class="c-desc">מחולל קרוסלות עברית בסגנון Marketing Harry - נושא, קופי לאישור, תמונות שקופיות עם Gemini, שמירה לדסקטופ.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Hebrew</span><span class="tag">Gemini</span><span class="tag">Marketing Harry</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/carousel-aviv-king</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/carousel-assets" target="_blank" data-cat="carousel" data-name="Carousel Assets תמונות אסטים קרוסלה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(236,72,153,0.2));">🖼️</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Carousel Assets</div>
+        <div class="c-desc">ריפו אסטים לקרוסלות - תמונות, רקעים ואלמנטים גרפיים.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Assets</span><span class="tag">Images</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/carousel-assets</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/avivmalka123/carousel-images" target="_blank" data-cat="carousel" data-name="Carousel Images תמונות שקופיות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">📸</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Carousel Images</div>
+        <div class="c-desc">ריפו תמונות שקופיות שנוצרו - ארכיון קרוסלות מוכנות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Images</span><span class="tag">Slides</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/avivmalka123/carousel-images</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ADS & PAID MEDIA -->
+<div class="section" id="ads-tools">
+  <div class="sec-hd">
+    <span class="sec-icon">📢</span>
+    <div class="sec-t">פרסום ומדיה</div>
+    <div class="sec-s">Claude Code Skills לניהול פרסום</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Audit אודיט פרסום מלא Google Meta">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">🔍</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Ads Audit (Full)</div>
+        <div class="c-desc">אודיט פרסום מלא מרובה פלטפורמות - Google, Meta, LinkedIn, TikTok, Microsoft. 250+ בדיקות עם ציון בריאות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Google</span><span class="tag">Meta</span><span class="tag">LinkedIn</span><span class="tag">TikTok</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Google PPC Search PMax Performance Max">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(66,133,244,0.2),rgba(52,168,83,0.2));">🔵</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Google Ads Deep Analysis</div>
+        <div class="c-desc">80 בדיקות ל-Google Ads - Search, PMax, Display, YouTube, Demand Gen. מעקב המרות, בזבוז, מבנה חשבון, מילות מפתח.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Google Ads</span><span class="tag">PMax</span><span class="tag">80 Checks</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Meta Facebook Instagram Advantage+ Pixel CAPI">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(24,119,242,0.2),rgba(236,72,153,0.2));">🟦</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Meta Ads Deep Analysis</div>
+        <div class="c-desc">50 בדיקות ל-Meta Ads - Pixel/CAPI, קריאייטיב, מבנה חשבון, קהלי יעד. כולל Advantage+ assessment.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Facebook</span><span class="tag">Instagram</span><span class="tag">Advantage+</span><span class="tag">50 Checks</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads TikTok Shop Spark Smart+ Creative">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(0,0,0,0.2),rgba(239,68,68,0.2));">🎵</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">TikTok Ads Analysis</div>
+        <div class="c-desc">28 בדיקות - איכות קריאייטיב, tracking, bidding, מבנה קמפיינים, TikTok Shop. דגש על creative-first.</div>
+      </div>
+      <div class="c-tags"><span class="tag">TikTok</span><span class="tag">Spark Ads</span><span class="tag">Smart+</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads YouTube Video Shorts Demand Gen CTV">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">▶️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">YouTube Ads Analysis</div>
+        <div class="c-desc">ניתוח קמפיינים, איכות קריאייטיב, קהלי יעד ומדידה. Skippable, Bumper, Shorts, Demand Gen, CTV.</div>
+      </div>
+      <div class="c-tags"><span class="tag">YouTube</span><span class="tag">Video Ads</span><span class="tag">Shorts</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads LinkedIn B2B ABM Thought Leader Lead Gen">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(10,102,194,0.2),rgba(6,182,212,0.2));">💼</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">LinkedIn Ads Analysis</div>
+        <div class="c-desc">27 בדיקות B2B - setup טכני, קהלי יעד, קריאייטיב, Lead Gen Forms, bidding. כולל ABM ו-Thought Leader Ads.</div>
+      </div>
+      <div class="c-tags"><span class="tag">LinkedIn</span><span class="tag">B2B</span><span class="tag">ABM</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Apple Search ASA App Store">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(107,107,138,0.2),rgba(6,182,212,0.2));">🍎</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Apple Ads Analysis</div>
+        <div class="c-desc">ניתוח Apple Search Ads - מבנה קמפיינים, bid health, Custom Product Pages, MMP attribution, budget pacing.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Apple</span><span class="tag">App Store</span><span class="tag">ASA</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Microsoft Bing Copilot PPC">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(0,120,215,0.2),rgba(16,185,129,0.2));">🟩</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Microsoft Ads Analysis</div>
+        <div class="c-desc">24 בדיקות - Search, PMax, Audience Network, Copilot. Google import validation ותכונות ייחודיות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Bing</span><span class="tag">Microsoft</span><span class="tag">Copilot</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Budget Bidding תקציב הצעות מחיר">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">💵</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Ads Budget & Bidding</div>
+        <div class="c-desc">הקצאת תקציב, אסטרטגיות bidding, 70/20/10 rule, 3x Kill Rule, 20% scaling rule.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Budget</span><span class="tag">Bidding</span><span class="tag">Scaling</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Creative קריאייטיב פורמטים עייפות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(168,85,247,0.2));">🎨</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Ads Creative Audit</div>
+        <div class="c-desc">אודיט איכות קריאייטיב - ad copy, וידאו, תמונה, גיוון פורמטים, זיהוי עייפות קריאייטיב.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Creative</span><span class="tag">Fatigue</span><span class="tag">Formats</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads DNA Brand מיתוג זיהוי ויזואלי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2));">🧬</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Brand DNA Extractor</div>
+        <div class="c-desc">סורק אתר ומחלץ זהות ויזואלית, טון דיבור, פלטת צבעים, טיפוגרפיה וסגנון תמונות. מוציא brand-profile.json.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Brand</span><span class="tag">Visual ID</span><span class="tag">Colors</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Create Campaign Brief קמפיין בריף">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">📝</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Campaign Brief Generator</div>
+        <div class="c-desc">מייצר קונספט קמפיין, עמודי מסר, ובריף קופי. קורא brand-profile.json ותוצאות אודיט.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Campaign</span><span class="tag">Brief</span><span class="tag">Messaging</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Generate AI Images תמונות מודעות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.2));">🖼️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">AI Ad Image Generator</div>
+        <div class="c-desc">מייצר תמונות מודעות AI לכל הפלטפורמות באמצעות banana-claude. קורא campaign-brief ו-brand-profile.</div>
+      </div>
+      <div class="c-tags"><span class="tag">AI Images</span><span class="tag">Banana</span><span class="tag">Multi-Platform</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Photoshoot Product Photography צילום מוצר">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2));">📷</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">AI Product Photoshoot</div>
+        <div class="c-desc">לוקח תמונת מוצר ומייצר 5 סגנונות צילום מקצועיים: Studio, Floating, Ingredient, In Use, Lifestyle.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Photography</span><span class="tag">Product</span><span class="tag">5 Styles</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Math PPC Calculator CPA ROAS מחשבון">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(16,185,129,0.2));">🧮</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">PPC Math Calculator</div>
+        <div class="c-desc">מחשבון PPC - CPA, ROAS, CPL, break-even, impression share, budget forecasting, LTV:CAC.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Calculator</span><span class="tag">ROAS</span><span class="tag">CPA</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Competitor Intelligence מתחרים מודיעין">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(168,85,247,0.2));">🕵️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Competitor Ad Intelligence</div>
+        <div class="c-desc">ניתוח מודעות מתחרים - קופי, אסטרטגיית קריאייטיב, מילות מפתח, הערכת הוצאות, זיהוי פערים.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Competitor</span><span class="tag">Intelligence</span><span class="tag">Spy</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads A/B Test ניסוי בדיקה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">🧪</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">A/B Test Designer</div>
+        <div class="c-desc">תכנון ניסויים A/B - framework השערות, מחשבון statistical significance, הגדרת ניסויים לכל פלטפורמה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">A/B Test</span><span class="tag">Experiments</span><span class="tag">Stats</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads" data-name="Ads Plan Strategy תכנון אסטרטגיה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.2));">📋</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Ad Strategy Planner</div>
+        <div class="c-desc">תכנון פרסום אסטרטגי - בחירת פלטפורמות, ארכיטקטורת קמפיינים, תקציב, קריאייטיב, מפת דרכים.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Strategy</span><span class="tag">Planning</span><span class="tag">Roadmap</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads cro" data-name="Ads Landing Page Post-Click Experience דף נחיתה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">🎯</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Landing Page Audit</div>
+        <div class="c-desc">הערכת איכות דפי נחיתה - התאמת מסר, מהירות, חוויית מובייל, אותות אמון, אופטימיזציית טופס.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Landing Page</span><span class="tag">CRO</span><span class="tag">Speed</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ads ecom" data-name="Auto Product Test Facebook Ads מוצר בדיקה אוטומטי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(124,58,237,0.2));">🚀</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Auto Product Test</div>
+        <div class="c-desc">פייפליין אוטומטי לבדיקת מוצרים - URL מוצר, סקרייפינג, קופי + קריאייטיבים, יצירת קמפיין, בדיקה ב-$20/יום.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Auto</span><span class="tag">Product Test</span><span class="tag">$20/day</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- SEO -->
+<div class="section" id="seo-tools">
+  <div class="sec-hd">
+    <span class="sec-icon">🔎</span>
+    <div class="sec-t">SEO</div>
+    <div class="sec-s">כלי SEO מקיפים</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Audit Full אודיט מלא 500 דפים">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2));">🔍</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">SEO Full Audit</div>
+        <div class="c-desc">אודיט SEO מלא עם 6 סאב-אייג'נטים. סריקת עד 500 דפים, זיהוי סוג עסק, ציון בריאות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">500 Pages</span><span class="tag">6 Agents</span><span class="tag">Health Score</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Technical טכני crawl Core Web Vitals robots">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">⚙️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Technical SEO Audit</div>
+        <div class="c-desc">8 קטגוריות: crawlability, indexability, אבטחה, URL, מובייל, Core Web Vitals, structured data, JS rendering.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Technical</span><span class="tag">CWV</span><span class="tag">Crawl</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo content" data-name="SEO Content Quality E-E-A-T תוכן איכות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2));">📝</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Content & E-E-A-T Analysis</div>
+        <div class="c-desc">ניתוח איכות תוכן עם AI citation readiness. בדיקת E-E-A-T, readability, thin content.</div>
+      </div>
+      <div class="c-tags"><span class="tag">E-E-A-T</span><span class="tag">Content Quality</span><span class="tag">AI Ready</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Schema Structured Data JSON-LD Rich Results">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">🏷️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Schema Markup Generator</div>
+        <div class="c-desc">זיהוי, ולידציה ויצירת Schema.org structured data. JSON-LD, rich results, FAQ, product schema.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Schema</span><span class="tag">JSON-LD</span><span class="tag">Rich Results</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Page Single Deep Analysis דף בודד ניתוח">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(6,182,212,0.2));">📄</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Single Page SEO Analysis</div>
+        <div class="c-desc">ניתוח עומק לדף בודד - on-page, תוכן, meta tags, schema, תמונות, ביצועים.</div>
+      </div>
+      <div class="c-tags"><span class="tag">On-Page</span><span class="tag">Deep Analysis</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO GEO AI Overviews ChatGPT Perplexity">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(245,158,11,0.2));">🤖</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">AI SEO / GEO</div>
+        <div class="c-desc">אופטימיזציה ל-AI Search - AI Overviews, ChatGPT, Perplexity. ציון citability, llms.txt compliance.</div>
+      </div>
+      <div class="c-tags"><span class="tag">AI Overviews</span><span class="tag">GEO</span><span class="tag">Citability</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Sitemap XML יצירה ולידציה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">🗺️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Sitemap Generator</div>
+        <div class="c-desc">ניתוח XML sitemaps קיימים או יצירת חדשים עם תבניות תעשייתיות. ולידציה ובדיקת מבנה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Sitemap</span><span class="tag">XML</span><span class="tag">Validation</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Programmatic Pages at Scale תבניות דפים">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(16,185,129,0.2));">📊</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Programmatic SEO</div>
+        <div class="c-desc">תכנון SEO programmatic - template engines, URL patterns, internal linking, thin content safeguards.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Programmatic</span><span class="tag">Templates</span><span class="tag">Scale</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Images Alt Text תמונות אלט">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">🖼️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Image SEO Optimizer</div>
+        <div class="c-desc">אופטימיזציית תמונות - alt text, גדלי קבצים, פורמטים, responsive, lazy loading, CLS.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Images</span><span class="tag">Alt Text</span><span class="tag">Performance</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo" data-name="SEO Hreflang International Multi-Language בינלאומי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(168,85,247,0.2));">🌍</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Hreflang / International SEO</div>
+        <div class="c-desc">אודיט, ולידציה ויצירת hreflang. זיהוי טעויות נפוצות, בדיקת language/region codes.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Hreflang</span><span class="tag">i18n</span><span class="tag">Multi-Language</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="seo content" data-name="SEO Competitor Pages X vs Y Alternatives דף השוואה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(6,182,212,0.2));">⚔️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Competitor / VS Pages</div>
+        <div class="c-desc">דפי השוואה SEO - X vs Y, alternatives, feature matrices, schema markup, אופטימיזציית המרות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">VS Pages</span><span class="tag">Alternatives</span><span class="tag">Comparison</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- CONTENT & MARKETING -->
+<div class="section" id="content-tools">
+  <div class="sec-hd">
+    <span class="sec-icon">✍️</span>
+    <div class="sec-t">תוכן ושיווק</div>
+    <div class="sec-s">כלי כתיבה, שיווק ותוכן</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Copywriting כתיבה שיווקית קופי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(245,158,11,0.2));">✏️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Copywriting</div>
+        <div class="c-desc">כתיבה שיווקית - homepage, landing pages, pricing, feature pages. כותרות, גוף טקסט, CTA.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Copy</span><span class="tag">Headlines</span><span class="tag">CTA</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Ad Creative Headlines Descriptions מודעות וריאציות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(245,158,11,0.2));">📣</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Ad Copy Generator</div>
+        <div class="c-desc">מחולל וריאציות קופי למודעות - headlines, descriptions, primary text, RSA. בדיקת תווים אוטומטית.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Ad Copy</span><span class="tag">RSA</span><span class="tag">Variations</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Cold Email אימייל קר B2B SDR">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">📧</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Cold Email Writer</div>
+        <div class="c-desc">כתיבת אימיילים קרים B2B - subject lines, opening, body, CTA, personalization, follow-up sequences.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Cold Email</span><span class="tag">B2B</span><span class="tag">Sequences</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Email Sequence Drip Campaign אימייל סדרה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(236,72,153,0.2));">📬</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Email Sequence Builder</div>
+        <div class="c-desc">בניית סדרות אימייל - nurture, welcome, onboarding, re-engagement. אוטומציה מלאה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Drip</span><span class="tag">Nurture</span><span class="tag">Automation</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Social Content LinkedIn Twitter Instagram TikTok">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(239,68,68,0.2));">📱</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Social Content Creator</div>
+        <div class="c-desc">יצירת תוכן לרשתות חברתיות - LinkedIn, Twitter/X, Instagram, TikTok. לוח שנה, תזמון, אופטימיזציה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Social</span><span class="tag">Multi-Platform</span><span class="tag">Calendar</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Reels Instagram Viral Hook Hebrew ריילס וירלי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(168,85,247,0.2));">🎬</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Reels Script Generator</div>
+        <div class="c-desc">מבנה תוכן ויראלי לריילס בעברית - HOOK/BODY/CTA. תבניות וירליות לסטוריז ו-TikTok.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Reels</span><span class="tag">Hebrew</span><span class="tag">Viral</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Storytelling נרטיב סיפור מסע לקוח">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(124,58,237,0.2));">📖</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Storytelling Engine</div>
+        <div class="c-desc">כתיבת תוכן נרטיבי - סקריפטים, case studies, השקות, קופי עם קשת סיפורית.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Story</span><span class="tag">Narrative</span><span class="tag">Scripts</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Humanizer AI Writing Detection הסרת AI כתיבה טבעית">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2));">🤝</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">AI Humanizer</div>
+        <div class="c-desc">הסרת סימני כתיבת AI - מזהה ומתקן דפוסים כמו שפה מנופחת, promotional, סיכומים שטחיים.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Humanize</span><span class="tag">Natural</span><span class="tag">Anti-AI</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Marketing Ideas Growth 139 רעיונות שיווק צמיחה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">💡</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">139 Marketing Ideas</div>
+        <div class="c-desc">139 רעיונות שיווק מוכחים ל-SaaS ומוצרים דיגיטליים. אסטרטגיות, טקטיקות וטיפים לצמיחה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Ideas</span><span class="tag">Growth</span><span class="tag">139 Tactics</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Marketing Psychology Mental Models Bias פסיכולוגיה שיווקית">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2));">🧠</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Marketing Psychology</div>
+        <div class="c-desc">עקרונות פסיכולוגיים, מודלים מנטליים, הטיות קוגניטיביות לשיווק. מדע התנהגותי ליצירת שכנוע.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Psychology</span><span class="tag">Bias</span><span class="tag">Persuasion</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Launch Strategy Product Hunt Go-To-Market השקה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(16,185,129,0.2));">🚀</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Launch Strategy</div>
+        <div class="c-desc">תכנון השקת מוצר - Product Hunt, phased launches, channels, waitlist, early access.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Launch</span><span class="tag">GTM</span><span class="tag">Product Hunt</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Content Strategy תכנון תוכן אסטרטגיה נושאים">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(124,58,237,0.2));">🗂️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Content Strategy</div>
+        <div class="c-desc">אסטרטגיית תוכן - topic clusters, בלוג, תכנון נושאים, calendar, כתיבת תוכן.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Strategy</span><span class="tag">Topics</span><span class="tag">Calendar</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="content" data-name="Last 30 Days Research Reddit Twitter YouTube מחקר 30 יום">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">🔬</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Last 30 Days Research</div>
+        <div class="c-desc">מנוע מחקר עומק - 10+ מקורות (Reddit, X, YouTube, TikTok, HN, Polymarket). סינתזת AI עם ציטוטים.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Research</span><span class="tag">10+ Sources</span><span class="tag">AI Synthesis</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/content-ideas-skill" target="_blank" data-cat="content" data-name="Content Ideas Trending 100 רעיונות תוכן טרנדים">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(6,182,212,0.2));">💭</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">100 Content Ideas Generator</div>
+        <div class="c-desc">100 רעיונות טרנדיים לסרטונים קצרים (20 רעיונות x 5 hooks בעברית) מ-Reddit, Twitter/X, GitHub.</div>
+      </div>
+      <div class="c-tags"><span class="tag">100 Ideas</span><span class="tag">Hebrew Hooks</span><span class="tag">Trending</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/content-ideas-skill</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- CRO -->
+<div class="section" id="cro-tools">
+  <div class="sec-hd">
+    <span class="sec-icon">📈</span>
+    <div class="sec-t">CRO - אופטימיזציית המרות</div>
+    <div class="sec-s">כלי Conversion Rate Optimization</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Page CRO Conversion Rate דף המרות אופטימיזציה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">📊</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Page CRO</div>
+        <div class="c-desc">אופטימיזציית המרות לדפים - homepage, landing, pricing, feature, blog.</div>
+      </div>
+      <div class="c-tags"><span class="tag">CRO</span><span class="tag">Conversion</span><span class="tag">Pages</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Signup Flow Registration הרשמה פנל">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(16,185,129,0.2));">📝</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Signup Flow CRO</div>
+        <div class="c-desc">אופטימיזציית תהליך הרשמה - registration, trial activation, הורדת friction.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Signup</span><span class="tag">Registration</span><span class="tag">Friction</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Onboarding Activation aha moment אונבורדינג">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(168,85,247,0.2));">🎉</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Onboarding CRO</div>
+        <div class="c-desc">אופטימיזציית אונבורדינג - activation rate, first-run, empty states, aha moment.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Onboarding</span><span class="tag">Activation</span><span class="tag">First-Run</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Paywall Upgrade Upsell Feature Gate פייוול שדרוג">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">💎</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Paywall & Upgrade CRO</div>
+        <div class="c-desc">אופטימיזציית paywall, מסכי שדרוג, upsell modals, feature gates, המרת free ל-paid.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Paywall</span><span class="tag">Upsell</span><span class="tag">Freemium</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Form Optimization Lead Capture טופס אופטימיזציה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(124,58,237,0.2));">📋</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Form CRO</div>
+        <div class="c-desc">אופטימיזציית טפסים - lead capture, contact, demo request, checkout. הפחתת friction.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Forms</span><span class="tag">Lead Capture</span><span class="tag">Friction</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Popup Modal Exit Intent Banner פופאפ מודל">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(236,72,153,0.2));">🪟</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Popup CRO</div>
+        <div class="c-desc">אופטימיזציית פופאפים - exit intent, modals, slide-ins, banners, email popups.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Popup</span><span class="tag">Exit Intent</span><span class="tag">Modal</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Churn Prevention Cancel Save Offer נטישה שימור">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(16,185,129,0.2));">🔄</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Churn Prevention</div>
+        <div class="c-desc">מניעת נטישה - cancel flows, save offers, dunning, win-back, retention, failed payment recovery.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Churn</span><span class="tag">Retention</span><span class="tag">Win-Back</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Pricing Strategy Tiers Freemium תמחור אסטרטגיה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(124,58,237,0.2));">💰</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Pricing Strategy</div>
+        <div class="c-desc">אסטרטגיית תמחור - tiers, freemium, free trial, packaging, Van Westendorp, willingness to pay.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Pricing</span><span class="tag">Tiers</span><span class="tag">Packaging</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="cro" data-name="Referral Program Affiliate Ambassador הפניות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(16,185,129,0.2));">🤝</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Referral Program</div>
+        <div class="c-desc">תכנון תוכניות הפניות - affiliate, ambassador, viral loops, refer a friend, partner programs.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Referral</span><span class="tag">Affiliate</span><span class="tag">Viral</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ECOM & LEADS -->
+<div class="section" id="ecom-tools">
+  <div class="sec-hd">
+    <span class="sec-icon">🛒</span>
+    <div class="sec-t">איקומרס ולידים</div>
+    <div class="sec-s">כלי מכירות, לידים וניהול לקוחות</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/scrape-leads-israel" target="_blank" data-cat="leads ecom" data-name="Scrape Leads Israel סקרייפינג לידים ישראל Google Maps">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">🇮🇱</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Scrape Leads Israel</div>
+        <div class="c-desc">סקרייפינג לידים ישראליים מ-Google Maps, סיווג LLM, העשרת אימיילים, שמירה ל-Google Sheets.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Israel</span><span class="tag">Google Maps</span><span class="tag">LLM</span><span class="tag">Sheets</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/scrape-leads-israel</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="leads ecom" data-name="Scrape Leads Global Apify סקרייפינג לידים עולמי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">🌍</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Scrape Leads Global</div>
+        <div class="c-desc">סקרייפינג לידים עולמי עם Apify, סיווג LLM, העשרת אימיילים, שמירה ל-Google Sheets.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Global</span><span class="tag">Apify</span><span class="tag">LLM</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ecom" data-name="Sales Enablement Pitch Deck One-Pager מצגת מכירות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(239,68,68,0.2));">📊</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Sales Enablement</div>
+        <div class="c-desc">יצירת חומרי מכירות - pitch decks, one-pagers, objection handling, demo scripts, ROI calculators.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Sales</span><span class="tag">Pitch Deck</span><span class="tag">One-Pager</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ecom" data-name="RevOps Lead Scoring Routing CRM Pipeline">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(16,185,129,0.2));">⚙️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">RevOps</div>
+        <div class="c-desc">ניהול revenue operations - lead scoring, routing, MQL/SQL, pipeline stages, CRM automation.</div>
+      </div>
+      <div class="c-tags"><span class="tag">RevOps</span><span class="tag">Lead Scoring</span><span class="tag">CRM</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ecom" data-name="Analytics Tracking GA4 GTM Event Tracking מעקב">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(6,182,212,0.2));">📉</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Analytics & Tracking</div>
+        <div class="c-desc">הטמעת אנליטיקס - GA4, GTM, conversion tracking, event tracking, UTM parameters.</div>
+      </div>
+      <div class="c-tags"><span class="tag">GA4</span><span class="tag">GTM</span><span class="tag">Events</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="ecom" data-name="Firecrawl Scrape Website Extract Data סקרייפינג">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">🔥</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Firecrawl Scraper</div>
+        <div class="c-desc">סקרייפינג, crawling וחילוץ מידע מכל אתר. Screenshots, structured data, full page content.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Scraping</span><span class="tag">Crawl</span><span class="tag">Extract</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- DEV TOOLS -->
+<div class="section" id="dev-tools">
+  <div class="sec-hd">
+    <span class="sec-icon">🛠️</span>
+    <div class="sec-t">פיתוח ובנייה</div>
+    <div class="sec-s">כלי פיתוח, דפי נחיתה, וידאו ואבטחה</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Landing Page Builder Hebrew RTL WordPress דף נחיתה בונה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.2));">🏗️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Landing Page Builder</div>
+        <div class="c-desc">בניית דפי נחיתה עברית RTL - שכפול עיצוב מכל אתר, HTML+CSS+JS קובץ אחד, מוכן ל-WordPress.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Hebrew</span><span class="tag">RTL</span><span class="tag">WordPress</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Hebrew PDF Guide Lead Magnet מדריך PDF עברית">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(245,158,11,0.2));">📕</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Hebrew PDF Guide Generator</div>
+        <div class="c-desc">מחולל מדריכי PDF A4 בעברית - lead magnets, setup guides, דפי נחיתה + מסירת אימייל + Airtable.</div>
+      </div>
+      <div class="c-tags"><span class="tag">PDF</span><span class="tag">Hebrew</span><span class="tag">Lead Magnet</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/video-creator-skill" target="_blank" data-cat="dev content" data-name="Video Creator 3D Animation MP4 וידאו אנימציה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(168,85,247,0.2));">🎥</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">3D Video Creator</div>
+        <div class="c-desc">יוצר סרטוני אנימציה תלת-ממד קצרים (3 שניות) ב-1080x1920, 30fps. סצנות חמודות עם צורות ותנועה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">3D</span><span class="tag">MP4</span><span class="tag">1080x1920</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/video-creator-skill</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="HeyGen AI Avatar Video אווטר וידאו">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(16,185,129,0.2));">🤖</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">HeyGen Video Creator</div>
+        <div class="c-desc">יצירת וידאו AI עם אווטרים - Video Agent, v2/video/generate, transparent WebM, captions.</div>
+      </div>
+      <div class="c-tags"><span class="tag">HeyGen</span><span class="tag">AI Avatar</span><span class="tag">Video</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Remotion React Video יצירת וידאו ריאקט">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(6,182,212,0.2));">🎞️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Remotion (Video in React)</div>
+        <div class="c-desc">Best practices ליצירת וידאו ב-React עם Remotion. קומפוננטים, אנימציות, rendering.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Remotion</span><span class="tag">React</span><span class="tag">Video</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Spline 3D Integration Web תלת ממד אינטראקטיבי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.2));">🎨</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Spline 3D Integration</div>
+        <div class="c-desc">הטמעת סצנות 3D אינטראקטיביות מ-Spline.design - React, Next.js, vanilla JS, events, camera.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Spline</span><span class="tag">3D</span><span class="tag">Interactive</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Cardcom Payment iframe Checkout תשלום">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(245,158,11,0.2));">💳</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Cardcom Payment Integration</div>
+        <div class="c-desc">אינטגרציית תשלומים Cardcom - iframe, webhooks, recurring charges, Next.js.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Cardcom</span><span class="tag">Payments</span><span class="tag">Next.js</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Meta WhatsApp Verification Tech Provider מטא ווטסאפ">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(37,211,102,0.2),rgba(24,119,242,0.2));">📲</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Meta/WhatsApp Verification</div>
+        <div class="c-desc">הגדרת Tech Provider - Facebook App, WhatsApp Cloud API, webhooks, Embedded Signup, App Review.</div>
+      </div>
+      <div class="c-tags"><span class="tag">WhatsApp</span><span class="tag">Meta</span><span class="tag">API</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Cookies Consent Banner GDPR Privacy עוגיות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(236,72,153,0.2));">🍪</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Cookie Consent</div>
+        <div class="c-desc">הוספת cookie consent, banner, GDPR/privacy compliance, ניהול העדפות עוגיות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Cookies</span><span class="tag">GDPR</span><span class="tag">Privacy</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Israeli Legal Compliance Privacy Terms חוקי ישראלי פרטיות">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(16,185,129,0.2));">⚖️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Israeli Legal Compliance</div>
+        <div class="c-desc">דפי חוקיות - מדיניות פרטיות, תנאי שימוש, נגישות, עוגיות, ביטול. תואם חוק ישראלי.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Legal</span><span class="tag">Israel</span><span class="tag">Privacy</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-skill-cyber" target="_blank" data-cat="security dev" data-name="Cyber Security Audit אבטחה סייבר">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(168,85,247,0.2));">🔒</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Cybersecurity Audit</div>
+        <div class="c-desc">אודיט אבטחה 68 סעיפים - auth, API, payments, Socket.io, Israeli compliance, OWASP.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Security</span><span class="tag">68 Checks</span><span class="tag">OWASP</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/claude-skill-cyber</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-skill-security-audit" target="_blank" data-cat="security dev" data-name="Security Audit 360 OWASP Top 10 14 Attack Surfaces">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">🛡️</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Security Audit 360</div>
+        <div class="c-desc">אודיט אבטחה 360 מעלות - 14 משטחי תקיפה, OWASP Top 10+, ניתוח מקיף.</div>
+      </div>
+      <div class="c-tags"><span class="tag">360 Audit</span><span class="tag">14 Surfaces</span><span class="tag">OWASP</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/claude-skill-security-audit</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="UI UX Pro Design 67 Styles React Next Tailwind עיצוב">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(124,58,237,0.2));">🎨</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">UI/UX Pro Max</div>
+        <div class="c-desc">67 סגנונות עיצוב, 96 פלטות צבעים, 57 זוגות פונטים, 13 stacks (React, Next.js, Vue, Svelte, Flutter).</div>
+      </div>
+      <div class="c-tags"><span class="tag">67 Styles</span><span class="tag">96 Palettes</span><span class="tag">13 Stacks</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Gmail Organizer Labels Cleanup ג'ימייל ארגון">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2));">📧</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Gmail Organizer</div>
+        <div class="c-desc">ארגון Gmail אוטומטי - סריקה, סיווג, תיוג, ארכוב הודעות לתיקיות מסודרות.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Gmail</span><span class="tag">Labels</span><span class="tag">Auto</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-skill-ceo-advisor" target="_blank" data-cat="dev" data-name="CEO Advisor Strategy Board Governance אסטרטגי">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(124,58,237,0.2));">👔</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">CEO Advisor</div>
+        <div class="c-desc">ייעוץ אסטרטגי - strategy analyzer, financial modeling, board governance, investor relations.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Strategy</span><span class="tag">Finance</span><span class="tag">Board</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/claude-skill-ceo-advisor</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Project Proposal Figma Estimate Quote הצעת מחיר">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(16,185,129,0.2));">💼</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Project Proposal Generator</div>
+        <div class="c-desc">הצעות מחיר מ-Figma screenshots - ניתוח scope, תמחור, יצירת PDF מקצועי בעברית.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Proposal</span><span class="tag">Figma</span><span class="tag">PDF</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Company PDF Workshop Curriculum סדנה PDF חברה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(236,72,153,0.2));">📄</div>
+        <span class="badge b-skill">SKILL</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Company Workshop PDF</div>
+        <div class="c-desc">מחולל PDF curriculum ממותג לסדנאות Claude Code - 5 עמודים A4, מותאם אישית לכל חברה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Workshop</span><span class="tag">PDF</span><span class="tag">Branded</span></div>
+      <div class="card-ft"><div class="c-link">GitHub <span class="arr">←</span></div></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- GUIDES & COLLECTIONS -->
+<div class="section" id="guides">
+  <div class="sec-hd">
+    <span class="sec-icon">📚</span>
+    <div class="sec-t">אוספים ומדריכים</div>
+    <div class="sec-s">ריפוז מרכזיים וחבילות כלים</div>
+  </div>
+  <div class="grid">
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-skills" target="_blank" data-cat="dev" data-name="Claude Code Skills 80+ Collection אוסף סקילים">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(168,85,247,0.3),rgba(236,72,153,0.3));">⚡</div>
+        <span class="badge b-guide">80+ SKILLS</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Claude Code Skills Collection</div>
+        <div class="c-desc">80+ סקילים ל-Claude Code - SEO, שיווק, פיתוח, עיצוב, וידאו, CRO ועוד. מוכנים להתקנה.</div>
+      </div>
+      <div class="c-tags"><span class="tag">80+ Skills</span><span class="tag">All Categories</span><span class="tag">Ready to Install</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/claude-code-skills</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-creators-skills" target="_blank" data-cat="content dev" data-name="Claude Creators Skills 8 Content Creator יוצרי תוכן">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(245,158,11,0.2));">🎨</div>
+        <span class="badge b-guide">8 SKILLS</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Claude Creators Skills</div>
+        <div class="c-desc">8 סקילים ליוצרי תוכן - scriptwriting, visual storytelling, brand voice, repurposing, audience research.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Creators</span><span class="tag">8 Skills</span><span class="tag">Content</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/claude-creators-skills</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claude-code-mvp-guide" target="_blank" data-cat="dev" data-name="Claude Code MVP Guide Trip Planner מדריך בנייה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(6,182,212,0.2));">📖</div>
+        <span class="badge b-guide">GUIDE</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Claude Code MVP Guide</div>
+        <div class="c-desc">מדריך בניית MVP עם Claude Code ב-2 שעות - step-by-step, prompts מדויקים, ניתוח skills/MCPs, חסכון בקרדיטים.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Guide</span><span class="tag">MVP</span><span class="tag">2 Hours</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/claude-code-mvp-guide</div>
+      </div>
+    </a>
+
+    <a class="card" href="https://github.com/peleg-jpg/claudecodelandingpage" target="_blank" data-cat="dev" data-name="Claude Code Landing Page דף נחיתה">
+      <div class="card-top">
+        <div class="ci" style="background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(16,185,129,0.2));">🌐</div>
+        <span class="badge b-repo">REPO</span>
+      </div>
+      <div class="card-mid">
+        <div class="c-name">Claude Code Landing Page</div>
+        <div class="c-desc">דף נחיתה ל-Claude Code - עיצוב מודרני ומקצועי.</div>
+      </div>
+      <div class="c-tags"><span class="tag">Landing Page</span><span class="tag">Claude Code</span></div>
+      <div class="card-ft">
+        <div class="c-link">GitHub <span class="arr">←</span></div>
+        <div class="c-url">github.com/peleg-jpg/claudecodelandingpage</div>
+      </div>
+    </a>
 
   </div>
 </div>
 
 <footer>
-  <div class="fl"><span>Aviv Malka</span> · Projects Hub</div>
+  <div class="fl"><span>Aviv Malka</span> · Tools Dashboard</div>
   <p style="font-size:12px;color:var(--text-muted);">avivmalka123.github.io</p>
   <a class="fgh" href="https://github.com/avivmalka123" target="_blank">⚡ GitHub</a>
 </footer>
+
+<script>
+// Count cards
+const allCards = document.querySelectorAll('.card');
+document.getElementById('total-count').textContent = allCards.length;
+document.getElementById('count-all').textContent = allCards.length;
+
+// Search
+const searchBox = document.getElementById('search');
+searchBox.addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  allCards.forEach(card => {
+    const name = (card.dataset.name || '').toLowerCase();
+    const desc = (card.querySelector('.c-desc')?.textContent || '').toLowerCase();
+    card.classList.toggle('hidden', q && !name.includes(q) && !desc.includes(q));
+  });
+});
+
+// Filter
+const filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', function() {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    allCards.forEach(card => {
+      if (filter === 'all') {
+        card.classList.remove('hidden');
+      } else {
+        const cats = (card.dataset.cat || '').split(' ');
+        card.classList.toggle('hidden', !cats.includes(filter));
+      }
+    });
+  });
+});
+</script>
 
 </body>
 </html>
