@@ -47,8 +47,24 @@ h1{font-size:clamp(32px,5.5vw,56px);font-weight:900;line-height:1.1;letter-spaci
 .gr{background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 50%,var(--amber) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .hero p{font-size:16px;color:var(--text2);line-height:1.6;max-width:480px;margin:0 auto;}
 
+/* Vision Section */
+.vision{position:relative;z-index:1;max-width:1200px;margin:16px auto 24px;padding:0 32px;}
+.vision-card{position:relative;border-radius:28px;overflow:hidden;box-shadow:var(--shadow-md);aspect-ratio:16/7;background:linear-gradient(135deg,#1f2150 0%,#3b1f5e 50%,#7d2c5b 100%);min-height:280px;}
+.vision-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;}
+.vision-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,15,40,0.20) 0%,rgba(15,15,40,0.05) 40%,rgba(15,15,40,0.65) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:32px;color:#fff;}
+.vision-chip{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;background:rgba(255,255,255,0.18);backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,0.28);padding:8px 16px;border-radius:100px;font-size:11px;font-weight:800;letter-spacing:0.5px;margin-bottom:14px;text-shadow:0 2px 12px rgba(0,0,0,0.3);}
+.vision-chip .vc-dot{width:6px;height:6px;background:linear-gradient(135deg,#fef3c7,#f59e0b);border-radius:50%;box-shadow:0 0 10px rgba(245,158,11,0.6);}
+.vision-headline{font-size:clamp(28px,4vw,46px);font-weight:900;letter-spacing:-1.2px;line-height:1.05;margin-bottom:8px;text-shadow:0 4px 24px rgba(0,0,0,0.5);}
+.vision-headline span{background:linear-gradient(135deg,#fef3c7 0%,#fbbf24 50%,#f472b6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.vision-sub{font-size:14px;font-weight:600;opacity:0.95;max-width:560px;line-height:1.55;text-shadow:0 2px 12px rgba(0,0,0,0.4);}
+.vision-countdown{position:absolute;top:24px;left:24px;background:rgba(255,255,255,0.15);backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.30);border-radius:18px;padding:14px 20px;text-align:center;min-width:120px;}
+.cd-num{font-size:34px;font-weight:900;letter-spacing:-1.5px;background:linear-gradient(135deg,#fff,#fef3c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.cd-label{font-size:10px;font-weight:800;opacity:0.92;letter-spacing:0.6px;margin-top:4px;}
+.cd-target{font-size:9px;font-weight:700;opacity:0.75;margin-top:2px;letter-spacing:0.3px;}
+.vision-placeholder{position:absolute;top:50%;right:50%;transform:translate(50%,-50%);font-size:64px;opacity:0.4;}
+
 /* Morning Dashboard */
-.morning{position:relative;z-index:1;max-width:1200px;margin:24px auto 32px;padding:0 32px;}
+.morning{position:relative;z-index:1;max-width:1200px;margin:0 auto 24px;padding:0 32px;}
 .morning-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:28px 28px 24px;box-shadow:var(--shadow-md);}
 .morning-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;}
 .morning-titlewrap{display:flex;align-items:center;gap:14px;}
@@ -65,17 +81,50 @@ h1{font-size:clamp(32px,5.5vw,56px);font-weight:900;line-height:1.1;letter-spaci
 @keyframes spin{to{transform:rotate(-360deg);}}
 .last-update{font-size:11px;color:var(--text3);font-weight:600;}
 
-.morning-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
-.kpi{background:linear-gradient(180deg,#fafaff 0%,#ffffff 100%);border:1px solid var(--border);border-radius:14px;padding:16px 16px 14px;transition:all 0.25s;position:relative;overflow:hidden;}
-.kpi:hover{transform:translateY(-2px);border-color:rgba(168,85,247,0.25);box-shadow:0 8px 24px rgba(15,15,40,0.06);}
-.kpi-label{font-size:11px;color:var(--text3);font-weight:700;line-height:1.4;margin-bottom:8px;min-height:32px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.kpi-value{font-size:22px;font-weight:900;letter-spacing:-0.5px;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.kpi-value.percent{background:linear-gradient(135deg,var(--green),#0ea271);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.kpi-value.warn{background:linear-gradient(135deg,var(--amber),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.kpi-stripe{position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,var(--purple),var(--pink));opacity:0.5;}
+/* Primary KPIs (top 3, big) */
+.primary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px;}
+.kpi-primary{position:relative;background:linear-gradient(160deg,#faf5ff 0%,#fff 50%,#fdf2f8 100%);border:1px solid rgba(168,85,247,0.18);border-radius:18px;padding:20px 22px 22px;overflow:hidden;transition:all 0.3s;}
+.kpi-primary::before{content:'';position:absolute;top:0;right:0;left:0;height:4px;background:linear-gradient(90deg,var(--purple),var(--pink));}
+.kpi-primary:hover{transform:translateY(-3px);border-color:rgba(168,85,247,0.40);box-shadow:0 16px 36px rgba(168,85,247,0.12);}
+.kpi-primary .kpi-rank{display:inline-block;font-size:10px;font-weight:900;color:var(--purple);background:rgba(168,85,247,0.10);padding:4px 10px;border-radius:100px;letter-spacing:0.6px;margin-bottom:10px;}
+.kpi-primary .kpi-label{font-size:13px;color:var(--text2);font-weight:700;line-height:1.55;margin-bottom:14px;}
+.kpi-primary .kpi-value{font-size:30px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi-primary .kpi-value.percent{background:linear-gradient(135deg,var(--green),#0a8054);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi-primary .kpi-value.warn{background:linear-gradient(135deg,var(--amber),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* Secondary KPIs (rest, compact) */
+.secondary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.kpi-secondary{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;transition:all 0.25s;position:relative;overflow:hidden;}
+.kpi-secondary::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,var(--purple),var(--pink));opacity:0.45;}
+.kpi-secondary:hover{transform:translateY(-2px);border-color:rgba(168,85,247,0.25);box-shadow:0 8px 24px rgba(15,15,40,0.06);}
+.kpi-secondary .kpi-label{font-size:11px;color:var(--text3);font-weight:700;line-height:1.45;margin-bottom:8px;}
+.kpi-secondary .kpi-value{font-size:19px;font-weight:900;letter-spacing:-0.5px;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi-secondary .kpi-value.percent{background:linear-gradient(135deg,var(--green),#0a8054);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi-secondary .kpi-value.warn{background:linear-gradient(135deg,var(--amber),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
 .morning-loading{padding:32px;text-align:center;color:var(--text3);font-size:13px;font-weight:600;}
 .morning-error{padding:18px;border-radius:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.20);color:var(--red);font-size:12px;font-weight:600;text-align:center;}
+
+/* Pareto Section */
+.pareto{position:relative;z-index:1;max-width:1200px;margin:0 auto 32px;padding:0 32px;}
+.pareto-card{position:relative;background:linear-gradient(160deg,#fff 0%,#fefcff 100%);border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:var(--shadow-md);overflow:hidden;}
+.pareto-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--purple),var(--pink),var(--amber));}
+.pareto-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+.pareto-icon{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 8px 20px rgba(168,85,247,0.30);}
+.pareto-title{font-size:19px;font-weight:900;letter-spacing:-0.4px;}
+.pareto-title span{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.pareto-sub{font-size:12px;color:var(--text3);font-weight:600;margin-top:3px;}
+
+.pareto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.pareto-item{position:relative;background:var(--surface);border:2px solid transparent;background-image:linear-gradient(var(--surface),var(--surface)),linear-gradient(135deg,rgba(168,85,247,0.5),rgba(236,72,153,0.5));background-origin:border-box;background-clip:padding-box,border-box;border-radius:16px;padding:24px 20px 20px;transition:all 0.3s;}
+.pareto-item:hover{transform:translateY(-3px);background-image:linear-gradient(var(--surface),var(--surface)),linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 16px 36px rgba(168,85,247,0.15);}
+.pareto-item .pi-num{position:absolute;top:-12px;right:18px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:11px;font-weight:900;padding:5px 11px;border-radius:100px;letter-spacing:0.6px;box-shadow:0 6px 14px rgba(168,85,247,0.35);}
+.pareto-item .pi-icon{font-size:30px;margin-bottom:10px;}
+.pareto-item .pi-name{font-size:18px;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px;}
+.pareto-item .pi-action{font-size:12.5px;color:var(--text2);line-height:1.6;font-weight:600;}
+
+.pareto-mantra{margin-top:22px;padding:16px 20px;font-size:14px;font-weight:800;color:var(--purple);background:linear-gradient(90deg,rgba(168,85,247,0.06),rgba(236,72,153,0.06));border:1px dashed rgba(168,85,247,0.28);border-radius:14px;text-align:center;letter-spacing:0.2px;line-height:1.6;}
+.pareto-mantra strong{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
 
 /* Stats */
 .stats{position:relative;z-index:1;display:flex;gap:1px;background:var(--border);border-radius:14px;overflow:hidden;max-width:480px;margin:32px auto 50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);}
@@ -153,15 +202,26 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
 .lock-error{font-size:12px;color:var(--red);font-weight:600;height:18px;text-align:center;}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 
+@media(max-width:900px){
+  .primary-grid{grid-template-columns:1fr;}
+  .pareto-grid{grid-template-columns:1fr;}
+}
 @media(max-width:640px){
-  nav{padding:0 16px;} .hero{padding:88px 16px 24px;} .tools,.pending,.morning{padding:0 16px 60px;}
-  .grid{grid-template-columns:1fr;} .pending-grid{grid-template-columns:1fr;} .morning-grid{grid-template-columns:repeat(2,1fr);}
+  nav{padding:0 16px;} .hero{padding:88px 16px 16px;} .tools,.pending,.morning,.vision,.pareto{padding:0 16px;}
+  .vision{margin:8px auto 16px;}
+  .pending{padding-bottom:60px;}
+  .grid{grid-template-columns:1fr;} .pending-grid{grid-template-columns:1fr;} .secondary-grid{grid-template-columns:repeat(2,1fr);}
   footer{flex-direction:column;gap:12px;text-align:center;padding:20px 16px;}
   .nav-r{display:none;} .stats{max-width:100%;}
   .lock-digit{width:42px;height:50px;font-size:20px;}
   .morning-card{padding:20px 18px 18px;border-radius:18px;}
   .morning-head{align-items:flex-start;}
-  .kpi-value{font-size:18px;}
+  .kpi-primary .kpi-value{font-size:24px;} .kpi-secondary .kpi-value{font-size:17px;}
+  .pareto-card{padding:22px 20px;border-radius:18px;}
+  .vision-card{aspect-ratio:auto;min-height:240px;}
+  .vision-overlay{padding:22px 20px;}
+  .vision-countdown{top:16px;left:16px;padding:10px 14px;min-width:96px;}
+  .cd-num{font-size:26px;}
 }
 </style>
 </head>
@@ -192,9 +252,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
     <span>Aviv Malka</span>
   </a>
   <div class="nav-r">
+    <a class="nav-link" href="#vision">החזון</a>
     <a class="nav-link" href="#morning">בוקר טוב</a>
-    <a class="nav-link" href="#tools">הכלים שלי</a>
-    <a class="nav-link" href="#pending">בהמתנה</a>
+    <a class="nav-link" href="#pareto">פראטו</a>
+    <a class="nav-link" href="#tools">הכלים</a>
     <a class="nav-link" href="https://github.com/avivmalka123" target="_blank">GitHub ↗</a>
   </div>
 </nav>
@@ -206,6 +267,23 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
   </div>
   <h1>הכלים של<br><span class="gr">אביב מלכה</span></h1>
   <p>כל הכלים שבניתי מאפס — דשבורדים, מנתחים, מחוללים ועוד. גישה ישירה מבורד אחד.</p>
+</div>
+
+<!-- ═══════════ VISION ═══════════ -->
+<div class="vision" id="vision">
+  <div class="vision-card">
+    <img class="vision-img" src="vision-house.jpg" alt="הבית של אביב — ספטמבר 2027" onerror="this.style.display='none';">
+    <div class="vision-overlay">
+      <div class="vision-countdown">
+        <div class="cd-num" id="daysLeft">—</div>
+        <div class="cd-label">ימים לחזון</div>
+        <div class="cd-target">יעד · ספטמבר 2027</div>
+      </div>
+      <div class="vision-chip"><span class="vc-dot"></span>החזון · ספטמבר 2027</div>
+      <div class="vision-headline">הבית של <span>אביב מלכה</span></div>
+      <div class="vision-sub">היעד שאני בונה אליו · יום אחרי יום, החלטה אחרי החלטה. כל מה שאני עושה עכשיו — בשביל הרגע הזה.</div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════ MORNING DASHBOARD ═══════════ -->
@@ -230,6 +308,40 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
     <div id="morningContent">
       <div class="morning-loading">טוען נתונים מהגיליון…</div>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════ PARETO ═══════════ -->
+<div class="pareto" id="pareto">
+  <div class="pareto-card">
+    <div class="pareto-head">
+      <div class="pareto-icon">⚡</div>
+      <div>
+        <div class="pareto-title">חוק פראטו · <span>המוקד בראש</span></div>
+        <div class="pareto-sub">3 דברים שלא זזים מהם · כאן הכסף האמיתי</div>
+      </div>
+    </div>
+    <div class="pareto-grid">
+      <div class="pareto-item">
+        <div class="pi-num">01</div>
+        <div class="pi-icon">🎯</div>
+        <div class="pi-name">המוקד מכירות</div>
+        <div class="pi-action">לפתח מנהל מוקד · להוציא את עצמי מהיומיום של השיחות. המוקד הוא המנוע — הוא חייב לרוץ בלעדיי.</div>
+      </div>
+      <div class="pareto-item">
+        <div class="pi-num">02</div>
+        <div class="pi-icon">💰</div>
+        <div class="pi-name">איקומרס ממומן</div>
+        <div class="pi-action">לנהל ולסקייל · ROAS, מוצרים, פרסום. כל יום בודק נתונים, מקבל החלטות, יוצק תקציב למה שעובד.</div>
+      </div>
+      <div class="pareto-item">
+        <div class="pi-num">03</div>
+        <div class="pi-icon">📣</div>
+        <div class="pi-name">פרסונל ברנד</div>
+        <div class="pi-action">תוכן · תוכן · תוכן. אורגני בכל הפלטפורמות. הברנד שלי הוא הנכס הכי שווה — לא לעצור בשום יום.</div>
+      </div>
+    </div>
+    <div class="pareto-mantra">"כל יום, רק בשלושת אלה. <strong>כל השאר — רעש.</strong>"</div>
   </div>
 </div>
 
@@ -548,12 +660,32 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
   }
 })();
 
+/* ═══════════ Vision Countdown ═══════════ */
+(function(){
+  const TARGET = new Date('2027-09-01T00:00:00');
+  const el = document.getElementById('daysLeft');
+  if(!el) return;
+  function tick(){
+    const now = new Date();
+    const days = Math.max(0, Math.ceil((TARGET - now) / 86400000));
+    el.textContent = days.toLocaleString('en-US');
+  }
+  tick();
+  setInterval(tick, 60 * 60 * 1000); // refresh hourly
+})();
+
 /* ═══════════ Morning Dashboard ═══════════ */
 (function(){
   const SHEET_ID = '12pD_o17YvumBsipTMFGgy-LaS8n9zvkkbPirb-2N3Dw';
   const TAB = 'בוקר 2026';
   const COL_LABEL = 1; // Column B
   const COL_VALUE = 4; // Column E (April)
+  // Substring matchers — the labels in the sheet are long, we identify by a short stem
+  const PRIMARY_KEYS = [
+    'מחזור מזומן שהצוות',     // 01 · cash brought in by team
+    'מחזור מכירות נוכחי',      // 02 · total current sales
+    'מחזור מזומן תכלס שנכנס',  // 03 · cash actually deposited
+  ];
 
   const content = document.getElementById('morningContent');
   const btn = document.getElementById('refreshBtn');
@@ -629,14 +761,42 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
         return;
       }
 
-      const html = '<div class="morning-grid">' + items.map(it => {
+      // Split into primary (top 3, in user-defined order) + secondary (rest, original order)
+      const primary = new Array(PRIMARY_KEYS.length).fill(null);
+      const secondary = [];
+      for(const it of items){
+        const idx = PRIMARY_KEYS.findIndex(k => it.label.includes(k));
+        if(idx >= 0 && !primary[idx]) primary[idx] = it;
+        else secondary.push(it);
+      }
+      const primaryFiltered = primary.filter(Boolean);
+
+      const renderPrimary = (it, i) => {
         const cls = classifyValue(it.value);
         const formatted = formatValue(it.value);
-        return '<div class="kpi"><span class="kpi-stripe"></span>' +
+        const rank = String(i+1).padStart(2,'0');
+        return '<div class="kpi-primary">' +
+          '<div class="kpi-rank">· ' + rank + ' ·</div>' +
           '<div class="kpi-label">' + escapeHtml(it.label) + '</div>' +
           '<div class="kpi-value ' + cls + '">' + escapeHtml(formatted) + '</div>' +
         '</div>';
-      }).join('') + '</div>';
+      };
+      const renderSecondary = (it) => {
+        const cls = classifyValue(it.value);
+        const formatted = formatValue(it.value);
+        return '<div class="kpi-secondary">' +
+          '<div class="kpi-label">' + escapeHtml(it.label) + '</div>' +
+          '<div class="kpi-value ' + cls + '">' + escapeHtml(formatted) + '</div>' +
+        '</div>';
+      };
+
+      let html = '';
+      if(primaryFiltered.length){
+        html += '<div class="primary-grid">' + primaryFiltered.map(renderPrimary).join('') + '</div>';
+      }
+      if(secondary.length){
+        html += '<div class="secondary-grid">' + secondary.map(renderSecondary).join('') + '</div>';
+      }
       content.innerHTML = html;
 
       const now = new Date();
