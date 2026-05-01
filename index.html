@@ -38,30 +38,52 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;background:rgba(
 .nav-link{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;color:var(--text3);text-decoration:none;transition:all 0.2s;}
 .nav-link:hover{color:var(--text);background:var(--surface2);}
 
-/* Hero */
-.hero{position:relative;z-index:1;padding:96px 32px 32px;text-align:center;max-width:720px;margin:0 auto;}
-.hero-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid rgba(168,85,247,0.25);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:700;color:var(--purple);margin-bottom:24px;letter-spacing:0.3px;box-shadow:var(--shadow-sm);}
+/* Hero (compact) */
+.hero{position:relative;z-index:1;padding:84px 32px 16px;text-align:center;max-width:720px;margin:0 auto;}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid rgba(168,85,247,0.25);border-radius:100px;padding:5px 14px;font-size:10.5px;font-weight:700;color:var(--purple);margin-bottom:10px;letter-spacing:0.3px;box-shadow:var(--shadow-sm);}
 .hero-chip .dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px rgba(16,185,129,0.6);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-h1{font-size:clamp(32px,5.5vw,56px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;margin-bottom:16px;}
+h1{font-size:clamp(22px,3.5vw,32px);font-weight:900;line-height:1.15;letter-spacing:-1px;margin-bottom:6px;}
 .gr{background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 50%,var(--amber) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero p{font-size:16px;color:var(--text2);line-height:1.6;max-width:480px;margin:0 auto;}
+.hero p{font-size:13px;color:var(--text3);line-height:1.5;max-width:480px;margin:0 auto;}
 
-/* Vision Section */
-.vision{position:relative;z-index:1;max-width:1200px;margin:16px auto 24px;padding:0 32px;}
-.vision-card{position:relative;border-radius:28px;overflow:hidden;box-shadow:var(--shadow-md);aspect-ratio:16/7;background:linear-gradient(135deg,#1f2150 0%,#3b1f5e 50%,#7d2c5b 100%);min-height:280px;}
-.vision-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;}
-.vision-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,15,40,0.20) 0%,rgba(15,15,40,0.05) 40%,rgba(15,15,40,0.65) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:32px;color:#fff;}
-.vision-chip{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;background:rgba(255,255,255,0.18);backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,0.28);padding:8px 16px;border-radius:100px;font-size:11px;font-weight:800;letter-spacing:0.5px;margin-bottom:14px;text-shadow:0 2px 12px rgba(0,0,0,0.3);}
-.vision-chip .vc-dot{width:6px;height:6px;background:linear-gradient(135deg,#fef3c7,#f59e0b);border-radius:50%;box-shadow:0 0 10px rgba(245,158,11,0.6);}
-.vision-headline{font-size:clamp(28px,4vw,46px);font-weight:900;letter-spacing:-1.2px;line-height:1.05;margin-bottom:8px;text-shadow:0 4px 24px rgba(0,0,0,0.5);}
-.vision-headline span{background:linear-gradient(135deg,#fef3c7 0%,#fbbf24 50%,#f472b6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.vision-sub{font-size:14px;font-weight:600;opacity:0.95;max-width:560px;line-height:1.55;text-shadow:0 2px 12px rgba(0,0,0,0.4);}
-.vision-countdown{position:absolute;top:24px;left:24px;background:rgba(255,255,255,0.15);backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.30);border-radius:18px;padding:14px 20px;text-align:center;min-width:120px;}
-.cd-num{font-size:34px;font-weight:900;letter-spacing:-1.5px;background:linear-gradient(135deg,#fff,#fef3c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
-.cd-label{font-size:10px;font-weight:800;opacity:0.92;letter-spacing:0.6px;margin-top:4px;}
-.cd-target{font-size:9px;font-weight:700;opacity:0.75;margin-top:2px;letter-spacing:0.3px;}
-.vision-placeholder{position:absolute;top:50%;right:50%;transform:translate(50%,-50%);font-size:64px;opacity:0.4;}
+/* Vision Section — side-by-side, photo fully visible */
+.vision{position:relative;z-index:1;max-width:1200px;margin:12px auto 16px;padding:0 32px;}
+.vision-card{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border-radius:22px;overflow:hidden;box-shadow:var(--shadow-md);background:var(--surface);border:1px solid var(--border);}
+.vision-img-wrap{position:relative;background:linear-gradient(135deg,#1f2150,#7d2c5b);overflow:hidden;min-height:220px;}
+.vision-img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;}
+.vision-text{padding:20px 24px;display:flex;flex-direction:column;justify-content:center;gap:8px;}
+.vision-chip{display:inline-flex;align-self:flex-start;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(168,85,247,0.10),rgba(236,72,153,0.10));border:1px solid rgba(168,85,247,0.25);color:var(--purple);padding:5px 12px;border-radius:100px;font-size:10.5px;font-weight:800;letter-spacing:0.5px;margin-bottom:4px;}
+.vision-chip .vc-dot{width:6px;height:6px;background:linear-gradient(135deg,#f59e0b,#ec4899);border-radius:50%;box-shadow:0 0 10px rgba(236,72,153,0.5);}
+.vision-headline{font-size:clamp(22px,2.6vw,30px);font-weight:900;letter-spacing:-1px;line-height:1.1;color:var(--text);}
+.vision-headline span{background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 50%,var(--amber) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.vision-sub{font-size:12.5px;font-weight:600;color:var(--text2);line-height:1.55;}
+.vision-countdown{display:inline-flex;align-self:flex-start;align-items:center;gap:12px;background:linear-gradient(135deg,#1f2150,#5b1f6e);color:#fff;padding:10px 14px;border-radius:12px;margin-top:6px;}
+.cd-num{font-size:24px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#fff,#fef3c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.cd-text{display:flex;flex-direction:column;}
+.cd-label{font-size:10px;font-weight:800;letter-spacing:0.4px;line-height:1.2;}
+.cd-target{font-size:9px;font-weight:700;opacity:0.75;letter-spacing:0.3px;line-height:1.2;}
+
+/* Empire — 4 income streams */
+.empire{position:relative;z-index:1;max-width:1200px;margin:0 auto 16px;padding:0 32px;}
+.empire-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px 22px 16px;box-shadow:var(--shadow-md);}
+.empire-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+.empire-titlewrap{display:flex;align-items:center;gap:10px;}
+.empire-icon{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#1f2150,#5b1f6e);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;}
+.empire-title{font-size:15px;font-weight:900;letter-spacing:-0.3px;}
+.empire-sub{font-size:11px;color:var(--text3);font-weight:600;margin-top:1px;}
+.empire-total{font-size:11px;font-weight:700;color:var(--text3);text-align:left;direction:ltr;}
+.empire-total b{font-size:16px;background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;display:block;line-height:1.1;}
+.empire-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.stream{background:linear-gradient(160deg,#fafaff,#fff);border:1px solid var(--border);border-radius:13px;padding:12px 14px;position:relative;overflow:hidden;}
+.stream::before{content:'';position:absolute;top:0;right:0;left:0;height:3px;background:var(--str);}
+.stream-name{font-size:11.5px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px;color:var(--text);}
+.stream-emoji{font-size:14px;}
+.stream-cur{font-size:17px;font-weight:900;letter-spacing:-0.5px;color:var(--text);line-height:1;margin-bottom:3px;direction:ltr;text-align:right;}
+.stream-tgt{font-size:10.5px;color:var(--text3);font-weight:700;direction:ltr;text-align:right;margin-bottom:8px;}
+.stream-bar{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.stream-fill{height:100%;background:var(--str);border-radius:3px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1);}
+.stream-pct{font-size:10px;font-weight:800;color:var(--text2);margin-top:5px;text-align:left;direction:ltr;}
 
 /* Morning Dashboard */
 .morning{position:relative;z-index:1;max-width:1200px;margin:0 auto 24px;padding:0 32px;}
@@ -105,26 +127,64 @@ h1{font-size:clamp(32px,5.5vw,56px);font-weight:900;line-height:1.1;letter-spaci
 .morning-loading{padding:32px;text-align:center;color:var(--text3);font-size:13px;font-weight:600;}
 .morning-error{padding:18px;border-radius:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.20);color:var(--red);font-size:12px;font-weight:600;text-align:center;}
 
-/* Pareto Section */
-.pareto{position:relative;z-index:1;max-width:1200px;margin:0 auto 32px;padding:0 32px;}
-.pareto-card{position:relative;background:linear-gradient(160deg,#fff 0%,#fefcff 100%);border:1px solid var(--border);border-radius:24px;padding:28px;box-shadow:var(--shadow-md);overflow:hidden;}
+/* Pareto + Daily Checklist (combined) */
+.pareto{position:relative;z-index:1;max-width:1200px;margin:0 auto 16px;padding:0 32px;}
+.pareto-card{position:relative;background:linear-gradient(160deg,#fff 0%,#fefcff 100%);border:1px solid var(--border);border-radius:20px;padding:20px 22px 16px;box-shadow:var(--shadow-md);overflow:hidden;}
 .pareto-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--purple),var(--pink),var(--amber));}
-.pareto-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
-.pareto-icon{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 8px 20px rgba(168,85,247,0.30);}
-.pareto-title{font-size:19px;font-weight:900;letter-spacing:-0.4px;}
+.pareto-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
+.pareto-titlewrap{display:flex;align-items:center;gap:10px;}
+.pareto-icon{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;box-shadow:0 6px 16px rgba(168,85,247,0.30);}
+.pareto-title{font-size:15px;font-weight:900;letter-spacing:-0.3px;}
 .pareto-title span{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.pareto-sub{font-size:12px;color:var(--text3);font-weight:600;margin-top:3px;}
+.pareto-sub{font-size:11px;color:var(--text3);font-weight:600;margin-top:1px;}
+.pareto-streak{display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,rgba(245,158,11,0.10),rgba(239,68,68,0.10));border:1px solid rgba(245,158,11,0.28);padding:7px 12px;border-radius:100px;font-weight:800;}
+.streak-fire{font-size:14px;}
+.streak-num{font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--amber),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;}
+.streak-label{font-size:10.5px;color:var(--text2);font-weight:700;}
 
-.pareto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.pareto-item{position:relative;background:var(--surface);border:2px solid transparent;background-image:linear-gradient(var(--surface),var(--surface)),linear-gradient(135deg,rgba(168,85,247,0.5),rgba(236,72,153,0.5));background-origin:border-box;background-clip:padding-box,border-box;border-radius:16px;padding:24px 20px 20px;transition:all 0.3s;}
-.pareto-item:hover{transform:translateY(-3px);background-image:linear-gradient(var(--surface),var(--surface)),linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 16px 36px rgba(168,85,247,0.15);}
-.pareto-item .pi-num{position:absolute;top:-12px;right:18px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:11px;font-weight:900;padding:5px 11px;border-radius:100px;letter-spacing:0.6px;box-shadow:0 6px 14px rgba(168,85,247,0.35);}
-.pareto-item .pi-icon{font-size:30px;margin-bottom:10px;}
-.pareto-item .pi-name{font-size:18px;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px;}
-.pareto-item .pi-action{font-size:12.5px;color:var(--text2);line-height:1.6;font-weight:600;}
+.pareto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.pareto-item{position:relative;background:var(--surface);border:2px solid transparent;background-image:linear-gradient(var(--surface),var(--surface)),linear-gradient(135deg,rgba(168,85,247,0.4),rgba(236,72,153,0.4));background-origin:border-box;background-clip:padding-box,border-box;border-radius:14px;padding:18px 16px 14px;transition:all 0.3s;}
+.pareto-item.all-done{background-image:linear-gradient(var(--surface),var(--surface)),linear-gradient(135deg,#10b981,#06b6d4);}
+.pi-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.pi-num{flex-shrink:0;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:10px;font-weight:900;padding:3px 8px;border-radius:100px;letter-spacing:0.5px;}
+.pi-icon{font-size:18px;}
+.pi-name{font-size:14.5px;font-weight:900;letter-spacing:-0.3px;flex:1;}
+.pi-feeds{font-size:10px;color:var(--text3);font-weight:700;margin-bottom:10px;letter-spacing:0.2px;}
+.pi-checklist{display:flex;flex-direction:column;gap:3px;}
+.pi-task{display:flex;align-items:flex-start;gap:8px;cursor:pointer;padding:6px 8px;border-radius:8px;transition:background 0.2s;font-size:11.5px;line-height:1.4;color:var(--text2);font-weight:600;user-select:none;}
+.pi-task:hover{background:rgba(168,85,247,0.05);}
+.pi-task input{position:absolute;opacity:0;pointer-events:none;}
+.pi-check{width:16px;height:16px;border:2px solid var(--text3);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;margin-top:1px;background:#fff;}
+.pi-task input:checked + .pi-check{background:linear-gradient(135deg,var(--purple),var(--pink));border-color:transparent;}
+.pi-task input:checked + .pi-check::after{content:'✓';color:#fff;font-size:11px;font-weight:900;line-height:1;}
+.pi-task input:checked ~ .pi-task-text{text-decoration:line-through;opacity:0.55;color:var(--text3);}
+.pi-task-text{transition:all 0.2s;flex:1;}
 
-.pareto-mantra{margin-top:22px;padding:16px 20px;font-size:14px;font-weight:800;color:var(--purple);background:linear-gradient(90deg,rgba(168,85,247,0.06),rgba(236,72,153,0.06));border:1px dashed rgba(168,85,247,0.28);border-radius:14px;text-align:center;letter-spacing:0.2px;line-height:1.6;}
-.pareto-mantra strong{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
+.pareto-engine{margin-top:14px;padding:12px 16px;font-size:11.5px;font-weight:700;color:var(--text2);background:linear-gradient(90deg,rgba(168,85,247,0.05),rgba(236,72,153,0.05));border:1px dashed rgba(168,85,247,0.25);border-radius:12px;line-height:1.55;text-align:center;}
+.pareto-engine strong{background:linear-gradient(135deg,var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;}
+
+/* Roadmap to 40 */
+.roadmap{position:relative;z-index:1;max-width:1200px;margin:0 auto 24px;padding:0 32px;}
+.roadmap-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px 22px 14px;box-shadow:var(--shadow-md);overflow:hidden;}
+.roadmap-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.roadmap-icon{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;}
+.roadmap-title{font-size:15px;font-weight:900;letter-spacing:-0.3px;}
+.roadmap-sub{font-size:11px;color:var(--text3);font-weight:600;margin-top:1px;}
+.roadmap-track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;direction:ltr;}
+.roadmap-track::-webkit-scrollbar{height:5px;}
+.roadmap-track::-webkit-scrollbar-track{background:transparent;}
+.roadmap-track::-webkit-scrollbar-thumb{background:rgba(168,85,247,0.25);border-radius:3px;}
+.q-card{flex:0 0 200px;scroll-snap-align:start;background:linear-gradient(160deg,#fafaff,#fff);border:1px solid var(--border);border-radius:13px;padding:13px 14px 12px;position:relative;direction:rtl;}
+.q-card.now{border-color:var(--purple);background:linear-gradient(160deg,#faf5ff,#fdf2f8);box-shadow:0 6px 18px rgba(168,85,247,0.15);}
+.q-card.target{border-color:var(--amber);background:linear-gradient(160deg,#fffbeb,#fef3c7);}
+.q-card.bday{border-color:var(--pink);background:linear-gradient(160deg,#fdf2f8,#fce7f3);}
+.q-when{font-size:9.5px;font-weight:800;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;display:flex;align-items:center;gap:6px;}
+.q-now-badge{font-size:9px;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--purple),var(--pink));padding:2px 7px;border-radius:100px;letter-spacing:0.3px;}
+.q-name{font-size:13px;font-weight:900;margin-bottom:7px;letter-spacing:-0.2px;}
+.q-name .q-emoji{margin-left:4px;}
+.q-list{font-size:10.5px;color:var(--text2);line-height:1.5;list-style:none;font-weight:600;}
+.q-list li{padding:2px 0;display:flex;gap:5px;}
+.q-list li::before{content:'·';color:var(--purple);font-weight:900;flex-shrink:0;}
 
 /* Stats */
 .stats{position:relative;z-index:1;display:flex;gap:1px;background:var(--border);border-radius:14px;overflow:hidden;max-width:480px;margin:32px auto 50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);}
@@ -202,26 +262,29 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
 .lock-error{font-size:12px;color:var(--red);font-weight:600;height:18px;text-align:center;}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 
+@media(max-width:1000px){
+  .empire-grid{grid-template-columns:repeat(2,1fr);}
+}
 @media(max-width:900px){
   .primary-grid{grid-template-columns:1fr;}
   .pareto-grid{grid-template-columns:1fr;}
+  .vision-card{grid-template-columns:1fr;}
+  .vision-img-wrap{aspect-ratio:16/9;min-height:auto;}
 }
 @media(max-width:640px){
-  nav{padding:0 16px;} .hero{padding:88px 16px 16px;} .tools,.pending,.morning,.vision,.pareto{padding:0 16px;}
-  .vision{margin:8px auto 16px;}
+  nav{padding:0 16px;} .hero{padding:78px 16px 12px;} .tools,.pending,.morning,.vision,.pareto,.empire,.roadmap{padding:0 16px;}
+  .vision{margin:8px auto 12px;}
   .pending{padding-bottom:60px;}
-  .grid{grid-template-columns:1fr;} .pending-grid{grid-template-columns:1fr;} .secondary-grid{grid-template-columns:repeat(2,1fr);}
+  .grid{grid-template-columns:1fr;} .pending-grid{grid-template-columns:1fr;} .secondary-grid{grid-template-columns:repeat(2,1fr);} .empire-grid{grid-template-columns:repeat(2,1fr);}
   footer{flex-direction:column;gap:12px;text-align:center;padding:20px 16px;}
   .nav-r{display:none;} .stats{max-width:100%;}
   .lock-digit{width:42px;height:50px;font-size:20px;}
   .morning-card{padding:20px 18px 18px;border-radius:18px;}
   .morning-head{align-items:flex-start;}
-  .kpi-primary .kpi-value{font-size:24px;} .kpi-secondary .kpi-value{font-size:17px;}
-  .pareto-card{padding:22px 20px;border-radius:18px;}
-  .vision-card{aspect-ratio:auto;min-height:240px;}
-  .vision-overlay{padding:22px 20px;}
-  .vision-countdown{top:16px;left:16px;padding:10px 14px;min-width:96px;}
-  .cd-num{font-size:26px;}
+  .kpi-primary .kpi-value{font-size:22px;padding:0;} .kpi-secondary .kpi-value{font-size:16px;}
+  .kpi-primary{padding:16px;} .pareto-card,.empire-card,.roadmap-card{padding:18px 16px;border-radius:16px;}
+  .vision-text{padding:16px 18px;}
+  .q-card{flex:0 0 180px;}
 }
 </style>
 </head>
@@ -252,36 +315,80 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
     <span>Aviv Malka</span>
   </a>
   <div class="nav-r">
-    <a class="nav-link" href="#vision">החזון</a>
-    <a class="nav-link" href="#morning">בוקר טוב</a>
+    <a class="nav-link" href="#vision">חזון</a>
+    <a class="nav-link" href="#empire">אימפריה</a>
     <a class="nav-link" href="#pareto">פראטו</a>
-    <a class="nav-link" href="#tools">הכלים</a>
-    <a class="nav-link" href="https://github.com/avivmalka123" target="_blank">GitHub ↗</a>
+    <a class="nav-link" href="#roadmap">Roadmap</a>
+    <a class="nav-link" href="#tools">כלים</a>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hero-chip">
-    <span class="dot"></span>
-    כלים חיים באוויר
-  </div>
-  <h1>הכלים של<br><span class="gr">אביב מלכה</span></h1>
-  <p>כל הכלים שבניתי מאפס — דשבורדים, מנתחים, מחוללים ועוד. גישה ישירה מבורד אחד.</p>
+  <div class="hero-chip"><span class="dot"></span>בוקר טוב · המקום הנכון להיות בו</div>
+  <h1>הכלים של <span class="gr">אביב מלכה</span></h1>
+  <p>חזון · אימפריה · פראטו · כל הפעולות שמובילות לחופש כלכלי ב-2028.</p>
 </div>
 
 <!-- ═══════════ VISION ═══════════ -->
 <div class="vision" id="vision">
   <div class="vision-card">
-    <img class="vision-img" src="vision-house.jpg" alt="הבית של אביב — ספטמבר 2027" onerror="this.style.display='none';">
-    <div class="vision-overlay">
-      <div class="vision-countdown">
-        <div class="cd-num" id="daysLeft">—</div>
-        <div class="cd-label">ימים לחזון</div>
-        <div class="cd-target">יעד · ספטמבר 2027</div>
-      </div>
+    <div class="vision-img-wrap">
+      <img class="vision-img" src="vision-house.jpg" alt="הבית של אביב — ספטמבר 2027" onerror="this.style.display='none';">
+    </div>
+    <div class="vision-text">
       <div class="vision-chip"><span class="vc-dot"></span>החזון · ספטמבר 2027</div>
       <div class="vision-headline">הבית של <span>אביב מלכה</span></div>
-      <div class="vision-sub">היעד שאני בונה אליו · יום אחרי יום, החלטה אחרי החלטה. כל מה שאני עושה עכשיו — בשביל הרגע הזה.</div>
+      <div class="vision-sub">היעד שאני בונה אליו · יום אחרי יום, החלטה אחרי החלטה.</div>
+      <div class="vision-countdown">
+        <div class="cd-num" id="daysLeft">—</div>
+        <div class="cd-text">
+          <div class="cd-label">ימים לחזון</div>
+          <div class="cd-target">יעד · ספטמבר 2027</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ EMPIRE — 4 income streams ═══════════ -->
+<div class="empire" id="empire">
+  <div class="empire-card">
+    <div class="empire-head">
+      <div class="empire-titlewrap">
+        <div class="empire-icon">🏛️</div>
+        <div>
+          <div class="empire-title">האימפריה · 4 זרמי הכנסה</div>
+          <div class="empire-sub">חודשי · נוכחי מול יעד · פאוורד על ידי הפרסונל ברנד</div>
+        </div>
+      </div>
+      <div class="empire-total" id="empireTotal">
+        <span>סך חודשי לאימפריה</span><b id="empireTotalNum">—</b>
+      </div>
+    </div>
+    <div class="empire-grid" id="empireGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════ PARETO + DAILY CHECKLIST ═══════════ -->
+<div class="pareto" id="pareto">
+  <div class="pareto-card">
+    <div class="pareto-head">
+      <div class="pareto-titlewrap">
+        <div class="pareto-icon">⚡</div>
+        <div>
+          <div class="pareto-title">פראטו · <span>הלא-מתפשרים של היום</span></div>
+          <div class="pareto-sub">3 מנועים · 9 פעולות · יום אחרי יום</div>
+        </div>
+      </div>
+      <div class="pareto-streak">
+        <span class="streak-fire">🔥</span>
+        <span class="streak-num" id="streakNum">0</span>
+        <span class="streak-label">ימים ברצף</span>
+      </div>
+    </div>
+    <div class="pareto-grid" id="paretoGrid"></div>
+    <div class="pareto-engine">
+      📣 <strong>פרסונל ברנד</strong> = המנוע. מזין לידים למוקד · קונים לאיקומרס · חשיפה לשותפים · משתמשים ל-AI SaaS. <strong>כל פוסט עובד על כל הזרמים.</strong>
     </div>
   </div>
 </div>
@@ -301,7 +408,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
         <span class="last-update" id="lastUpdate"></span>
         <button class="refresh-btn" id="refreshBtn" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
-          <span>רענן נתונים</span>
+          <span>רענן</span>
         </button>
       </div>
     </div>
@@ -311,37 +418,17 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
   </div>
 </div>
 
-<!-- ═══════════ PARETO ═══════════ -->
-<div class="pareto" id="pareto">
-  <div class="pareto-card">
-    <div class="pareto-head">
-      <div class="pareto-icon">⚡</div>
+<!-- ═══════════ ROADMAP TO 40 ═══════════ -->
+<div class="roadmap" id="roadmap">
+  <div class="roadmap-card">
+    <div class="roadmap-head">
+      <div class="roadmap-icon">🗺️</div>
       <div>
-        <div class="pareto-title">חוק פראטו · <span>המוקד בראש</span></div>
-        <div class="pareto-sub">3 דברים שלא זזים מהם · כאן הכסף האמיתי</div>
+        <div class="roadmap-title">Roadmap · עד גיל 40</div>
+        <div class="roadmap-sub">9 רבעונים · אפריל 2026 → אפריל 2028</div>
       </div>
     </div>
-    <div class="pareto-grid">
-      <div class="pareto-item">
-        <div class="pi-num">01</div>
-        <div class="pi-icon">🎯</div>
-        <div class="pi-name">המוקד מכירות</div>
-        <div class="pi-action">לפתח מנהל מוקד · להוציא את עצמי מהיומיום של השיחות. המוקד הוא המנוע — הוא חייב לרוץ בלעדיי.</div>
-      </div>
-      <div class="pareto-item">
-        <div class="pi-num">02</div>
-        <div class="pi-icon">💰</div>
-        <div class="pi-name">איקומרס ממומן</div>
-        <div class="pi-action">לנהל ולסקייל · ROAS, מוצרים, פרסום. כל יום בודק נתונים, מקבל החלטות, יוצק תקציב למה שעובד.</div>
-      </div>
-      <div class="pareto-item">
-        <div class="pi-num">03</div>
-        <div class="pi-icon">📣</div>
-        <div class="pi-name">פרסונל ברנד</div>
-        <div class="pi-action">תוכן · תוכן · תוכן. אורגני בכל הפלטפורמות. הברנד שלי הוא הנכס הכי שווה — לא לעצור בשום יום.</div>
-      </div>
-    </div>
-    <div class="pareto-mantra">"כל יום, רק בשלושת אלה. <strong>כל השאר — רעש.</strong>"</div>
+    <div class="roadmap-track" id="roadmapTrack"></div>
   </div>
 </div>
 
@@ -671,7 +758,206 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24
     el.textContent = days.toLocaleString('en-US');
   }
   tick();
-  setInterval(tick, 60 * 60 * 1000); // refresh hourly
+  setInterval(tick, 60 * 60 * 1000);
+})();
+
+/* ═══════════ Empire — 4 income streams ═══════════ */
+(function(){
+  // FX into ILS for total computation
+  const FX = { '$': 3.7, '₪': 1 };
+  // Edit current values as numbers grow each month
+  const STREAMS = [
+    { key:'callcenter', emoji:'📞', name:'המוקד',     current:169000, target:1500000, currency:'₪', str:'linear-gradient(90deg,#a855f7,#ec4899)' },
+    { key:'ecom',       emoji:'🛒', name:'איקומרס',   current:30000,  target:60000,   currency:'$', str:'linear-gradient(90deg,#06b6d4,#3b82f6)' },
+    { key:'affiliate',  emoji:'🤝', name:'שותפים',    current:5000,   target:20000,   currency:'$', str:'linear-gradient(90deg,#10b981,#06b6d4)' },
+    { key:'ai',         emoji:'🤖', name:'AI SaaS',  current:8000,   target:100000,  currency:'₪', str:'linear-gradient(90deg,#f59e0b,#ef4444)' },
+  ];
+
+  const fmt = (n, c) => {
+    if(n >= 1000000) return c + (n/1000000).toFixed(2).replace(/\.?0+$/,'') + 'M';
+    if(n >= 1000)    return c + Math.round(n/1000) + 'K';
+    return c + n;
+  };
+
+  const grid = document.getElementById('empireGrid');
+  if(!grid) return;
+  let totalCurILS = 0, totalTgtILS = 0;
+
+  grid.innerHTML = STREAMS.map(s => {
+    const pct = Math.min(100, Math.round((s.current / s.target) * 100));
+    totalCurILS += s.current * (FX[s.currency] || 1);
+    totalTgtILS += s.target  * (FX[s.currency] || 1);
+    return `<div class="stream" style="--str:${s.str}">
+      <div class="stream-name"><span class="stream-emoji">${s.emoji}</span>${s.name}</div>
+      <div class="stream-cur">${fmt(s.current, s.currency)}</div>
+      <div class="stream-tgt">יעד: ${fmt(s.target, s.currency)}</div>
+      <div class="stream-bar"><div class="stream-fill" style="width:${pct}%"></div></div>
+      <div class="stream-pct">${pct}% · ${fmt(s.target - s.current, s.currency)} לסגור</div>
+    </div>`;
+  }).join('');
+
+  const totalPct = Math.round((totalCurILS / totalTgtILS) * 100);
+  document.getElementById('empireTotalNum').innerHTML = `${fmt(totalCurILS,'₪')} <span style="font-size:11px;color:var(--text3);font-weight:700;">/ ${fmt(totalTgtILS,'₪')} (${totalPct}%)</span>`;
+})();
+
+/* ═══════════ Pareto + Daily Checklist + Streak ═══════════ */
+(function(){
+  const PILLARS = [
+    {
+      key:'mokdei', num:'01', icon:'🎯', name:'המוקד מכירות', feeds:'→ זרם המוקד · ₪1.5M/חודש',
+      tasks:[
+        ['m1','שיחת בוקר 15 דק עם מנהל המוקד · מספרי אתמול + יעד היום'],
+        ['m2','להאזין ל-2 שיחות (אחת מנצחת, אחת מפסידה)'],
+        ['m3','לאמן את המנהל על מיומנות אחת ספציפית'],
+      ],
+    },
+    {
+      key:'ecom', num:'02', icon:'💰', name:'איקומרס ממומן', feeds:'→ זרם איקומרס · $60K/חודש',
+      tasks:[
+        ['e1','בדיקת ROAS לפני 12:00 · כיבוי מתחת ליעד'],
+        ['e2','סקייל +20% ל-3 המודעות החזקות'],
+        ['e3','אישור 1 קריאייטיב חדש להעלאה היום'],
+      ],
+    },
+    {
+      key:'pb', num:'03', icon:'📣', name:'פרסונל ברנד', feeds:'→ המנוע · מזין את כל ה-4 זרמים',
+      tasks:[
+        ['p1','להעלות 1 ריל / סטורי עם ערך אמיתי'],
+        ['p2','להגיב ל-10 תגובות (שיחות, לא לייקים)'],
+        ['p3','להוסיף 1 רעיון לבנק התוכן'],
+      ],
+    },
+  ];
+
+  const grid = document.getElementById('paretoGrid');
+  const streakEl = document.getElementById('streakNum');
+  if(!grid) return;
+
+  const today = () => new Date().toISOString().slice(0,10);
+  const STORAGE_KEY = 'paretoChecks';
+  const STREAK_KEY = 'paretoStreak';
+
+  function load(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; } }
+  function save(data){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+  function isDayComplete(day){
+    const d = load()[day] || {};
+    const totalTasks = PILLARS.reduce((n,p)=>n+p.tasks.length, 0);
+    const checked = Object.values(d).filter(Boolean).length;
+    return checked === totalTasks;
+  }
+
+  function computeStreak(){
+    let streak = 0;
+    const data = load();
+    let cursor = new Date();
+    // Today only counts if complete; otherwise start counting from yesterday
+    if(!isDayComplete(today())){
+      cursor.setDate(cursor.getDate() - 1);
+    }
+    while(true){
+      const d = cursor.toISOString().slice(0,10);
+      if(!data[d]) break;
+      const totalTasks = PILLARS.reduce((n,p)=>n+p.tasks.length, 0);
+      const checked = Object.values(data[d]).filter(Boolean).length;
+      if(checked < totalTasks) break;
+      streak++;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+    return streak;
+  }
+
+  function updateStreak(){ streakEl.textContent = computeStreak(); }
+
+  function render(){
+    const data = load();
+    const day = today();
+    const checks = data[day] || {};
+    grid.innerHTML = PILLARS.map(p => {
+      const allDone = p.tasks.every(([k]) => checks[k]);
+      return `<div class="pareto-item ${allDone ? 'all-done' : ''}">
+        <div class="pi-row">
+          <span class="pi-num">${p.num}</span>
+          <span class="pi-icon">${p.icon}</span>
+          <span class="pi-name">${p.name}</span>
+        </div>
+        <div class="pi-feeds">${p.feeds}</div>
+        <div class="pi-checklist">
+          ${p.tasks.map(([k,t]) => `<label class="pi-task">
+            <input type="checkbox" data-task="${k}" ${checks[k] ? 'checked' : ''}>
+            <span class="pi-check"></span>
+            <span class="pi-task-text">${t}</span>
+          </label>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+
+    grid.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const day = today();
+        const data = load();
+        if(!data[day]) data[day] = {};
+        data[day][cb.dataset.task] = cb.checked;
+        save(data);
+        // Update parent's all-done class without rebuilding the DOM (preserves focus + avoids flicker)
+        const item = cb.closest('.pareto-item');
+        const pillarTasks = Array.from(item.querySelectorAll('input[type=checkbox]'));
+        const allDone = pillarTasks.every(x => x.checked);
+        item.classList.toggle('all-done', allDone);
+        updateStreak();
+      });
+    });
+  }
+
+  render();
+  updateStreak();
+})();
+
+/* ═══════════ Roadmap to 40 ═══════════ */
+(function(){
+  const QUARTERS = [
+    { from:'2026-04-01', to:'2026-06-30', label:'Q2 2026', name:'בנייה · אנחנו כאן', emoji:'⚙️',
+      items:['הסדר הוא הכוח · המערכת הזו נכנסת לשגרה','מנהל מוקד נכנס לתהליך גיוס','איקומרס · ROAS יציב מעל 1.8','תוכן יומי בלתי מתפשר']},
+    { from:'2026-07-01', to:'2026-09-30', label:'Q3 2026', name:'ביסוס',
+      items:['מנהל מוקד מאומן · 70% מהשיחות בלעדיי','איקומרס $35K/חודש','3 שותפויות חתומות','Trick Studio v2 + iTerms beta']},
+    { from:'2026-10-01', to:'2026-12-31', label:'Q4 2026', name:'האצה',
+      items:['מוקד ₪600K/חודש','איקומרס $45K/חודש','שותפים $10K/חודש','AI ₪40K MRR','100K עוקבים IG']},
+    { from:'2027-01-01', to:'2027-03-31', label:'Q1 2027', name:'הוכחת קונספט',
+      items:['מוקד ₪900K/חודש','איקומרס $50K/חודש','שותפים $14K/חודש','AI ₪60K MRR','לונץ׳ פודקאסט/YouTube']},
+    { from:'2027-04-01', to:'2027-06-30', label:'Q2 2027', name:'המכפילות',
+      items:['מוקד ₪1.2M/חודש','איקומרס $55K/חודש','שותפים $17K/חודש','AI ₪80K MRR','250K עוקבים IG']},
+    { from:'2027-07-01', to:'2027-09-30', label:'Q3 2027', name:'הבית', emoji:'🏠', cls:'target',
+      items:['🎯 מוקד ₪1.5M · TARGET','🎯 איקומרס $60K · TARGET','🎯 שותפים $20K · TARGET','🎯 AI ₪100K MRR · TARGET','הפקדה לבית · ספטמבר 2027']},
+    { from:'2027-10-01', to:'2027-12-31', label:'Q4 2027', name:'נעילה',
+      items:['Run-rate נעול בכל 4 הזרמים','צוות שיווק מלא','אביב = בעלים, לא מנהל-יומיום']},
+    { from:'2028-01-01', to:'2028-03-31', label:'Q1 2028', name:'אופטימיזציה',
+      items:['מערכות אוטונומיות','3 חודשים רצופים מעל יעד','בדיקת אקזיט / מימון']},
+    { from:'2028-04-01', to:'2028-06-30', label:'Q2 2028', name:'בן 40', emoji:'🎂', cls:'bday',
+      items:['🎂 גיל 40 · אימפריה יציבה','חופש כלכלי בפועל','בחירת הפרק הבא']},
+  ];
+
+  const track = document.getElementById('roadmapTrack');
+  if(!track) return;
+
+  const now = new Date().toISOString().slice(0,10);
+  let nowIdx = -1;
+  QUARTERS.forEach((q,i) => { if(now >= q.from && now <= q.to) nowIdx = i; });
+
+  track.innerHTML = QUARTERS.map((q,i) => {
+    const isNow = i === nowIdx;
+    const cls = [q.cls, isNow ? 'now' : ''].filter(Boolean).join(' ');
+    return `<div class="q-card ${cls}">
+      <div class="q-when">${q.label}${isNow ? '<span class="q-now-badge">אתה כאן</span>' : ''}</div>
+      <div class="q-name">${q.name}${q.emoji ? '<span class="q-emoji">'+q.emoji+'</span>' : ''}</div>
+      <ul class="q-list">${q.items.map(x=>`<li>${x}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+
+  // Scroll current quarter into view (RTL: reverse direction so it appears in the right place)
+  if(nowIdx >= 0){
+    const cards = track.querySelectorAll('.q-card');
+    setTimeout(() => cards[nowIdx]?.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' }), 200);
+  }
 })();
 
 /* ═══════════ Morning Dashboard ═══════════ */
