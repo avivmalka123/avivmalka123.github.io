@@ -280,7 +280,7 @@
   </div>
   <div class="sec">👥 צוות ובורד מנהל</div>
   <div class="field"><label class="field-label">Supabase URL</label><input class="field-input ltr" id="sSbUrl" placeholder="https://xxxx.supabase.co"></div>
-  <div class="field"><label class="field-label">Supabase anon key</label><input class="field-input ltr" id="sSbKey" type="password" placeholder="eyJ..."></div>
+  <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><input class="field-input ltr" id="sSbKey" type="password" placeholder="sb_publishable_..."></div>
   <div class="hint">כשמוגדר, כל שיחה נשלחת בלייב לבורד המנהל. ההגדרה נכללת בלינק לצוות. <a href="../manager/" target="_blank" style="color:#c4b5fd">פתח את בורד המנהל ↗</a></div>
   <div class="field" style="margin-top:10px"><button class="btn" id="btnInvite" style="width:100%;justify-content:center">🔗 צור לינק לצוות (כולל מפתחות והגדרות)</button><div class="hint">הלינק מכיל את המפתחות בחלק שאחרי ה-#, שלא נשלח לשרת. שלח אותו רק לנציגים שלך, בערוץ פרטי.</div><input class="field-input ltr" id="inviteOut" readonly style="margin-top:6px;font-size:11px" placeholder="הלינק יופיע כאן"></div>
   <button class="btn btn-primary" id="btnSave" style="width:100%;justify-content:center;margin-top:8px">שמור הגדרות</button>
@@ -889,7 +889,7 @@ function callRow(extra){
 async function syncCall(extra={}){
   if(!sbReady()||!S.callId) return;
   try{
-    const r=await fetch(S.settings.sbUrl+'/rest/v1/calls?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json','apikey':S.settings.sbKey,'Authorization':'Bearer '+S.settings.sbKey,'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(callRow(extra))});
+    const r=await fetch(S.settings.sbUrl+'/rest/v1/calls?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json','apikey':S.settings.sbKey,...(S.settings.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+S.settings.sbKey}:{}),'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(callRow(extra))});
     if(!r.ok){ const t=await r.text(); throw new Error(r.status+' '+t.slice(0,120)); }
     const el=$('syncTag'); if(el){el.textContent='☁️ מסונכרן לבורד '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});el.className='sync on'}
   }catch(e){ console.warn('sync',e); const el=$('syncTag'); if(el){el.textContent='☁️ סנכרון נכשל: '+(e.message||'').slice(0,60);el.className='sync'} }

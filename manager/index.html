@@ -93,7 +93,7 @@
   <section id="setup" class="setup" style="display:none">
     <h2>חיבור לבורד</h2>
     <div class="field"><label class="field-label">Supabase URL</label><input class="field-input" id="cfgUrl" placeholder="https://xxxx.supabase.co"></div>
-    <div class="field"><label class="field-label">Supabase anon key</label><input class="field-input" id="cfgKey" type="password" placeholder="eyJ..."></div>
+    <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><input class="field-input" id="cfgKey" type="password" placeholder="sb_publishable_..."></div>
     <div class="hint">אותם פרטים שהגדרת ב-LiveCoach תחת "צוות ובורד מנהל". נשמרים בדפדפן הזה בלבד.</div>
     <button class="btn btn-primary" id="btnSaveCfg" style="margin-top:12px">שמור והתחבר</button>
   </section>
@@ -155,7 +155,7 @@ function range(){ const now=new Date(); const d=$('dayPick').value; const s=new 
 async function fetchRows(){
   const since=new Date(); since.setDate(since.getDate()-8);
   const url=CFG.sbUrl+'/rest/v1/calls?select=*&order=updated_at.desc&limit=400&started_at=gte.'+encodeURIComponent(since.toISOString());
-  const r=await fetch(url,{headers:{'apikey':CFG.sbKey,'Authorization':'Bearer '+CFG.sbKey}});
+  const r=await fetch(url,{headers:{'apikey':CFG.sbKey,...(CFG.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+CFG.sbKey}:{})}});
   if(!r.ok){ throw new Error(r.status+' '+(await r.text()).slice(0,140)); }
   return r.json();
 }
