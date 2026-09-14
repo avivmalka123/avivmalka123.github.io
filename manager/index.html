@@ -20,6 +20,32 @@
   .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:var(--text);background:var(--surface2);border:1px solid var(--border)}
   .btn:hover{background:var(--surface3)}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none}
   .btn-sm{padding:5px 10px;font-size:12px}
+  .tabs{display:inline-flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:4px}
+  .tabs button{font-family:inherit;font-size:13px;font-weight:700;padding:7px 12px;border-radius:9px;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+  .tabs button.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+  .cnt{background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:99px;display:none}.cnt.show{display:inline}
+  /* timeline */
+  .tl{display:flex;flex-direction:column;gap:8px}
+  .tl .msg{max-width:78%}
+  .tl .ev{align-self:stretch;background:rgba(124,58,237,.10);border:1px solid rgba(168,85,247,.35);border-radius:14px;padding:10px 14px;font-size:13px;line-height:1.5}
+  .tl .ev.precheck{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.4)}.tl .ev.insight{background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.35)}.tl .ev.card{background:rgba(245,179,66,.07);border-color:rgba(245,179,66,.3)}.tl .ev.lead,.tl .ev.custom,.tl .ev.ask{background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.35)}
+  .tl .ev .eh{display:flex;gap:8px;align-items:center;font-size:11px;font-weight:800;color:#c4b5fd;margin-bottom:4px;flex-wrap:wrap}.tl .ev .eh .fbm{margin-right:auto;font-size:14px}
+  .tl .ev .et{font-size:14px;font-weight:600}
+  .tl .ev .er{margin-top:6px;display:grid;grid-template-columns:1fr;gap:3px;font-size:12px;color:var(--text-muted);background:rgba(0,0,0,.2);border-radius:10px;padding:8px 10px}
+  .tl .ev .er b{color:var(--text)}
+  .tl .ev .teach{margin-top:8px;display:flex;gap:6px}
+  .tl .ev .teach textarea{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;min-height:38px;resize:vertical}
+  .tl .ev .fixed{margin-top:6px;font-size:12.5px;color:#6ee7b7}
+  .logrow{display:grid;grid-template-columns:60px 1fr 90px 70px 110px 90px;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px}
+  .logrow:hover{background:var(--surface2)}.logrow.h{font-size:11px;color:var(--text-muted);font-weight:800;cursor:default;text-transform:uppercase}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .field-input.sm{padding:7px 10px;font-size:13px;direction:rtl;text-align:right}
+  .note{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
+  .note .sc{font-size:10.5px;font-weight:800;color:#c4b5fd;white-space:nowrap;padding-top:2px;min-width:70px}
+  .note .tx{flex:1;white-space:pre-wrap}.note .meta{font-size:11px;color:var(--text-muted);margin-top:4px}
+  .train-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:1000px){.train-grid{grid-template-columns:1fr}}
+  .train-form textarea{width:100%;min-height:140px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-family:inherit;font-size:14px;line-height:1.6;resize:vertical}
+  .scopes{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.scopes button{font-family:inherit;font-size:12px;font-weight:700;padding:6px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);cursor:pointer}.scopes button.on{background:rgba(124,58,237,.3);color:#fff;border-color:var(--neon)}
   main{padding:18px 22px 60px;display:flex;flex-direction:column;gap:22px}
   h2{font-size:14px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:10px;margin-bottom:12px}
   h2 .live{color:var(--red);font-size:11px;display:inline-flex;align-items:center;gap:5px}h2 .live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite}
@@ -56,10 +82,10 @@
   .kpi .v{font-size:26px;font-weight:900}.kpi .l{font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
   /* detail drawer */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;display:none}.overlay.show{display:block}
-  .drawer{position:fixed;top:0;left:0;bottom:0;width:min(1100px,100%);background:var(--surface);border-right:1px solid var(--border);z-index:40;transform:translateX(-100%);transition:transform .3s;display:flex;flex-direction:column}
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:min(1400px,100%);background:var(--surface);border-right:1px solid var(--border);z-index:40;transform:translateX(-100%);transition:transform .3s;display:flex;flex-direction:column}
   .drawer.open{transform:none}
   .dh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
-  .db{flex:1;overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr 1fr;gap:0}
+  .db{flex:1;overflow:hidden;display:grid;grid-template-columns:1.6fr .8fr .9fr;gap:0}
   @media(max-width:1000px){.db{grid-template-columns:1fr;overflow-y:auto}}
   .col{overflow-y:auto;padding:14px 16px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
   .col h3{font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
@@ -84,6 +110,7 @@
   <div class="logo"><div class="logo-icon">📊</div><div>בורד מנהל<small>LiveCoach · שיחות בלייב, תחמושת וציונים</small></div></div>
   <span class="pill" id="pConn"><i class="dot"></i>חיבור לנתונים</span>
   <span class="pill" id="pPoll"><i class="dot"></i>רענון כל 4 שניות</span>
+  <nav class="tabs" id="navTabs"><button data-view="live" class="on">🔴 לייב וביצועים</button><button data-view="log">📚 יומן שיחות</button><button data-view="dislikes">👎 דיסלייקים <span id="dlCount" class="cnt"></span></button><button data-view="train">🎓 מרכז אימון</button></nav>
   <div class="spacer"></div>
   <select class="btn" id="dayPick" style="direction:rtl"><option value="today">היום</option><option value="yesterday">אתמול</option><option value="week">7 ימים</option></select>
   <button class="btn" id="btnSetup">⚙️ חיבור</button>
@@ -109,6 +136,37 @@
     <div style="overflow-x:auto"><table id="repTable"><thead><tr><th>נציג</th><th>ציון יומי</th><th>שיחות</th><th>הסתיימו</th><th>משך ממוצע</th><th>שלב ממוצע</th><th>סגירות</th><th>המשך טיפול</th><th>חסמים פתוחים (ממוצע)</th></tr></thead><tbody></tbody></table></div>
   </section>
 
+  <section id="logSec" style="display:none">
+    <h2>📚 יומן שיחות <span id="logCount" style="font-weight:500;text-transform:none"></span></h2>
+    <div class="filters"><select class="field-input sm" id="fRep" style="width:auto"><option value="">כל הנציגים</option></select><select class="field-input sm" id="fMode" style="width:auto"><option value="">כל הסוגים</option><option value="rep">שיחות</option><option value="listen">האזנות</option><option value="sim">סימולציות</option></select><select class="field-input sm" id="fFb" style="width:auto"><option value="">הכל</option><option value="dislike">עם דיסלייק</option><option value="fix">עם תיקון</option></select><input class="field-input sm" id="fText" placeholder="חיפוש בתמלול…" style="width:220px"></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden"><div class="logrow h"><div>ציון</div><div>נציג · תמצית</div><div>תאריך</div><div>משך</div><div>שלב</div><div>משוב</div></div><div id="logList"></div></div>
+  </section>
+
+  <section id="dlSec" style="display:none">
+    <h2>👎 תגובות שסומנו דיסלייק <span id="dlTotal" style="font-weight:500;text-transform:none"></span></h2>
+    <div class="hint" style="margin-bottom:12px">כל המלצה שנציג סימן 👎, עם ההקשר והנימוק של המאמן. כתוב מה היה נכון, והתיקון נכנס להנחיות המאמן מהשיחה הבאה.</div>
+    <div id="dlList" class="tl"></div>
+  </section>
+
+  <section id="trainSec" style="display:none">
+    <h2>🎓 מרכז אימון: כאן אתה מלמד את המאמן</h2>
+    <div class="train-grid">
+      <div>
+        <div class="d-box" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px">
+          <div class="hint" style="margin-bottom:8px">כל מה שתכתוב כאן נכנס לפרומפט של המאמן בכל שיחה, לפי הנושא. החדש גובר על הישן. אפשר לכתוב הרבה: דגשים, משפטים שאתה רוצה שישתמש בהם, דברים שאסור, דוגמאות.</div>
+          <div class="scopes" id="scopes"></div>
+          <div class="train-form"><textarea id="trainText" placeholder="למשל: בפתיחת שיחה תמיד תן לנציג לשאול קודם מה הביא את הלקוח דווקא עכשיו. אל תציע פתרון לפני שהלקוח אמר מספר…"></textarea></div>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center"><button class="btn btn-primary" id="btnTrainSave">שמור הנחיה</button><span class="hint" id="trainStatus"></span></div>
+        </div>
+        <div style="margin-top:14px"><h2 style="margin-bottom:8px">🎯 יעדים חודשיים של הנציגים</h2><div id="repsGoals" style="display:flex;flex-direction:column;gap:6px"></div></div>
+      </div>
+      <div>
+        <div class="filters"><select class="field-input sm" id="fScope" style="width:auto"><option value="">כל הנושאים</option></select><select class="field-input sm" id="fSource" style="width:auto"><option value="">הכל</option><option value="manager">הנחיות</option><option value="correction">תיקונים</option></select></div>
+        <div id="trainList" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+  </section>
+
   <section id="recentSec">
     <h2>📋 סיכומי שיחות <span id="recentCount" style="font-weight:500;text-transform:none"></span></h2>
     <div class="grid" id="recentGrid"></div>
@@ -119,7 +177,7 @@
 <aside class="drawer" id="drawer">
   <div class="dh"><div class="av" id="dAv">?</div><div class="nm" id="dName">—<small id="dMeta"></small></div><span class="tag" id="dStatus"></span><div class="spacer"></div><button class="btn btn-sm" id="btnCopy">העתק סיכום</button><button class="btn btn-sm" id="btnClose">✕</button></div>
   <div class="db">
-    <div class="col"><h3>💬 תמלול חי</h3><div id="dTranscript" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    <div class="col" style="grid-column:span 1"><h3>💬 השיחה כפי שקרתה: תמלול + כל פעולה של המאמן, בסדר ובזמן שהיא קרתה</h3><div id="dTranscript" class="tl"></div></div>
     <div class="col"><h3>🔥 תחמושת</h3><div id="dAmmo" style="display:flex;flex-direction:column;gap:8px"></div></div>
     <div class="col"><h3>🧠 מצב השיחה</h3><div id="dCoach" style="display:flex;flex-direction:column;gap:10px"></div></div>
   </div>
@@ -135,7 +193,11 @@ const AL={pain:'כאב',gap:'פער',motive:'מניע',why_now:'למה עכשי�
 const SE={hot:'🔴',high:'🟠',medium:'🟡',low:'🟢',resolved:'✅'};
 const TEMP={cold:'קר ❄️',warm:'פושר 🌤️',hot:'חם 🔥'};
 const b64u={dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
-let CFG={}, ROWS=[], SEL=null, pollIv=null;
+let CFG={}, ROWS=[], SEL=null, pollIv=null, TRAIN=[], REPS=[], VIEW='live', SCOPE='general';
+const SCOPES={general:'כללי',opening:'פתיחת שיחה',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע רכישה',solution:'הצגת מוצר',close:'סגירה',simulation:'סימולציה',motivation:'מוטיבציה'};
+const KIND={auto:'המלצה בזמן אמת',listen:'ניתוח בהאזנה',custom:'משפט לפי בקשה',lead:'הובלה',ask:'מה לשאול עכשיו',insight:'תובנה',card:'כרטיס',precheck:'לבדיקה לפני סגירה',sim:'סימולציה'};
+function hdr(extra={}){ const k=CFG.sbKey||''; return {'Content-Type':'application/json','apikey':k,...(k.startsWith('eyJ')?{'Authorization':'Bearer '+k}:{}),...extra}; }
+async function sb(method,path,body,prefer){ const r=await fetch(CFG.sbUrl+'/rest/v1/'+path,{method,headers:hdr(prefer?{'Prefer':prefer}:{}),body:body?JSON.stringify(body):undefined}); if(!r.ok) throw new Error(r.status+' '+(await r.text()).slice(0,160)); return r; }
 
 /* ── config ── */
 (function init(){
@@ -159,8 +221,9 @@ async function fetchRows(){
   if(!r.ok){ throw new Error(r.status+' '+(await r.text()).slice(0,140)); }
   return r.json();
 }
+async function fetchTraining(){ try{ const r=await fetch(CFG.sbUrl+'/rest/v1/training?select=*&order=created_at.desc&limit=500',{headers:hdr()}); if(r.ok) TRAIN=await r.json(); }catch(e){} try{ const r=await fetch(CFG.sbUrl+'/rest/v1/reps?select=*',{headers:hdr()}); if(r.ok) REPS=await r.json(); }catch(e){} }
 async function poll(){
-  try{ ROWS=await fetchRows(); $('pConn').className='pill on'; $('pConn').innerHTML='<i class="dot"></i>מחובר · '+ROWS.length+' שיחות'; render(); if(SEL) openDetail(SEL,true); }
+  try{ ROWS=await fetchRows(); if(!TRAIN.length||Math.random()<0.1) await fetchTraining(); $('pConn').className='pill on'; $('pConn').innerHTML='<i class="dot"></i>מחובר · '+ROWS.length+' שיחות'; render(); if(SEL) openDetail(SEL,true); }
   catch(e){ $('pConn').className='pill err'; $('pConn').innerHTML='<i class="dot"></i>שגיאה: '+esc(String(e.message||e).slice(0,80)); }
 }
 function start(){ clearInterval(pollIv); poll(); pollIv=setInterval(poll,4000); }
@@ -177,7 +240,36 @@ const openBarriers=r=>(r.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='res
 function stagesHtml(r){ const i=stageIdx(r); return '<div class="stages">'+STAGES.map((s,k)=>`<i class="${k<i?'d':k===i?'a':''}" title="${s.l}"></i>`).join('')+'</div>'; }
 
 /* ── render ── */
+function setView(v){ VIEW=v; for(const b of $('navTabs').querySelectorAll('button')) b.classList.toggle('on',b.dataset.view===v); $('liveSec').style.display=v==='live'?'':'none'; $('daySec').style.display=v==='live'?'':'none'; $('recentSec').style.display=v==='live'?'':'none'; $('logSec').style.display=v==='log'?'':'none'; $('dlSec').style.display=v==='dislikes'?'':'none'; $('trainSec').style.display=v==='train'?'':'none'; render(); }
+$('navTabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setView(b.dataset.view); };
+for(const id of ['fRep','fMode','fFb','fText','fScope','fSource']) $(id).addEventListener('input',()=>render());
+$('scopes').innerHTML=Object.entries(SCOPES).map(([k,l])=>`<button data-sc="${k}" class="${k==='general'?'on':''}">${l}</button>`).join('');
+$('scopes').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; SCOPE=b.dataset.sc; for(const x of $('scopes').querySelectorAll('button')) x.classList.toggle('on',x===b); };
+$('fScope').innerHTML='<option value="">כל הנושאים</option>'+Object.entries(SCOPES).map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
+$('btnTrainSave').onclick=async()=>{ const t=$('trainText').value.trim(); if(!t) return toast('כתוב הנחיה'); $('btnTrainSave').disabled=true; try{ await sb('POST','training',{scope:SCOPE,text:t,source:'manager'},'return=minimal'); $('trainText').value=''; $('trainStatus').textContent='נשמר. נכנס לתוקף בשיחה הבאה של כל נציג.'; await fetchTraining(); render(); }catch(e){ $('trainStatus').textContent='שגיאה: '+e.message; } finally{ $('btnTrainSave').disabled=false; } };
+window.delTrain=async(id)=>{ if(!confirm('למחוק את ההנחיה?')) return; try{ await sb('DELETE','training?id=eq.'+encodeURIComponent(id)); await fetchTraining(); render(); }catch(e){ toast('שגיאה: '+e.message); } };
+const allEvents=()=>ROWS.flatMap(r=>(r.events||[]).map(e=>({...e,call:r})));
+function evHtml(e,r,opts={}){
+  const t=new Date(e.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); const rs=e.reasoning||{};
+  return `<div class="ev ${e.kind||''}" id="ev_${e.id}"><div class="eh"><span>🤖 ${KIND[e.kind]||e.kind||'המלצה'}</span><span>· ${t}</span><span>· שלב: ${STAGES.find(s=>s.id===e.stage)?.l||e.stage||''}</span>${e.request?`<span>· בקשה: "${esc(String(e.request).slice(0,60))}"</span>`:''}${opts.showCall?`<span>· <a href="#" onclick="openDetail('${r.id}');return false" style="color:#c4b5fd">${esc(r.rep)} · ${new Date(r.started_at).toLocaleDateString('he-IL')}</a></span>`:''}<span class="fbm">${e.fb==='like'?'👍':e.fb==='dislike'?'👎':''}</span></div>
+    ${e.quote?`<div class="hint">"${esc(e.quote)}"</div>`:''}<div class="et">${esc(e.text||'')}</div>${e.why?`<div class="hint">למה: ${esc(e.why)}</div>`:''}${(e.plan&&e.plan.length)?`<div class="hint">🧭 ${esc(e.plan.join(' ← '))}</div>`:''}
+    <div class="er"><div><b>למה עכשיו:</b> ${esc(rs.why_now||'—')}</div><div><b>עיקרון:</b> ${esc(rs.principle||'—')}</div><div><b>מה ניסיתי להשיג:</b> ${esc(rs.goal||'—')}</div></div>
+    ${e.fix?`<div class="fixed">✅ לימדת: ${esc(e.fix)}</div>`:''}
+    <div class="teach"><textarea id="fix_${e.id}" placeholder="למד אותי: מה היה נכון לעשות כאן ואיך לפעול פעם הבאה…">${e.fix?'':''}</textarea><button class="btn btn-sm btn-primary" onclick="teach('${r.id}','${e.id}')">שמור</button></div></div>`;
+}
+window.teach=async(callId,evId)=>{
+  const ta=$('fix_'+evId); const txt=(ta.value||'').trim(); if(!txt) return toast('כתוב מה היה נכון');
+  const r=ROWS.find(x=>x.id===callId); const e=(r.events||[]).find(x=>x.id===evId); if(!r||!e) return;
+  try{
+    e.fix=txt; await sb('PATCH','calls?id=eq.'+encodeURIComponent(callId),{events:r.events},'return=minimal');
+    await sb('POST','training',{scope:(['kyc','pain','objection','goal','motive','solution','close'].includes(e.stage)?e.stage:'general'),text:txt,source:'correction',call_id:callId,event_id:evId,rep:r.rep,context:(e.text||'').slice(0,300)},'return=minimal');
+    toast('נשמר. המאמן ילמד מזה מהשיחה הבאה.'); await fetchTraining(); render(); if(SEL) openDetail(SEL,true);
+  }catch(err){ toast('שגיאה: '+err.message); }
+};
 function render(){
+  $('fRep').innerHTML='<option value="">כל הנציגים</option>'+[...new Set(ROWS.map(r=>r.rep))].map(n=>`<option value="${esc(n)}" ${$('fRep').value===n?'selected':''}>${esc(n)}</option>`).join('');
+  const dls=allEvents().filter(e=>e.fb==='dislike'&&!e.fix); $('dlCount').textContent=dls.length; $('dlCount').classList.toggle('show',dls.length>0);
+  if(VIEW==='log'){ renderLog(); return; } if(VIEW==='dislikes'){ renderDislikes(); return; } if(VIEW==='train'){ renderTrain(); return; }
   const live=ROWS.filter(r=>r.status==='live').sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at));
   $('liveCount').textContent=live.filter(isLive).length?live.filter(isLive).length+' שיחות פעילות':'';
   $('liveGrid').innerHTML=live.length?live.map(r=>{
@@ -211,6 +303,28 @@ function render(){
     </div>`).join(''):'<div class="empty">עדיין אין שיחות שהסתיימו בטווח הזה.</div>';
 }
 
+function renderLog(){
+  const rp=$('fRep').value, md=$('fMode').value, fb=$('fFb').value, q=$('fText').value.trim();
+  let rows=ROWS.filter(r=>r.status==='ended').sort((a,b)=>new Date(b.started_at)-new Date(a.started_at));
+  if(rp) rows=rows.filter(r=>r.rep===rp); if(md) rows=rows.filter(r=>(r.mode||'rep')===md);
+  if(fb==='dislike') rows=rows.filter(r=>(r.events||[]).some(e=>e.fb==='dislike')); if(fb==='fix') rows=rows.filter(r=>(r.events||[]).some(e=>e.fix));
+  if(q) rows=rows.filter(r=>(r.transcript||[]).some(l=>(l.t||'').includes(q))||(r.summary||'').includes(q));
+  $('logCount').textContent='· '+rows.length;
+  $('logList').innerHTML=rows.length?rows.map(r=>{ const ev=r.events||[]; const dl=ev.filter(e=>e.fb==='dislike').length, lk=ev.filter(e=>e.fb==='like').length, fx=ev.filter(e=>e.fix).length;
+    return `<div class="logrow" onclick="openDetail('${r.id}')"><div><span class="score ${scoreCls(r.score)}">${r.score??'—'}</span></div><div><b>${esc(r.rep)}</b> ${r.mode==='sim'?'<span class="tag">🎭 סימולציה</span>':r.mode==='listen'?'<span class="tag">👂 האזנה</span>':''}<div class="prof" style="margin:2px 0 0">${esc((r.summary_json&&r.summary_json.summary)||r.next_step||'')}</div></div><div>${new Date(r.started_at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div><div>${fmtDur(r.duration_sec)}</div><div>${STAGES[stageIdx(r)]?.l||''}</div><div>${lk?'👍'+lk+' ':''}${dl?'👎'+dl+' ':''}${fx?'✅'+fx:''}</div></div>`; }).join(''):'<div class="empty">אין שיחות שמתאימות לסינון</div>';
+}
+function renderDislikes(){
+  const list=allEvents().filter(e=>e.fb==='dislike').sort((a,b)=>b.ts-a.ts);
+  $('dlTotal').textContent='· '+list.length+(list.filter(e=>!e.fix).length?' · '+list.filter(e=>!e.fix).length+' ממתינים לתיקון':'');
+  $('dlList').innerHTML=list.length?list.map(e=>evHtml(e,e.call,{showCall:true})).join(''):'<div class="empty">אין דיסלייקים. או שהמאמן מדויק, או שהנציגים לא לוחצים 👎. תזכיר להם.</div>';
+}
+function renderTrain(){
+  const sc=$('fScope').value, so=$('fSource').value;
+  let list=TRAIN.slice(); if(sc) list=list.filter(n=>(n.scope||'general')===sc); if(so) list=list.filter(n=>(n.source||'manager')===so);
+  $('trainList').innerHTML=list.length?list.map(n=>`<div class="note"><div class="sc">${SCOPES[n.scope]||n.scope||'כללי'}<br><span style="color:var(--text-muted);font-weight:500">${n.source==='correction'?'תיקון':'הנחיה'}</span></div><div class="tx">${n.context?`<div class="hint">על ההמלצה: "${esc(String(n.context).slice(0,140))}"</div>`:''}${esc(n.text)}<div class="meta">${new Date(n.created_at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}${n.rep?' · נציג: '+esc(n.rep):''}${n.call_id?` · <a href="#" onclick="openDetail('${n.call_id}');return false" style="color:#c4b5fd">לשיחה</a>`:''}</div></div><button class="btn btn-sm" onclick="delTrain('${n.id}')">מחק</button></div>`).join(''):'<div class="empty">עדיין אין הנחיות. כתוב את הראשונה משמאל.</div>';
+  const mk=new Date(); const month=mk.getFullYear()+'-'+String(mk.getMonth()+1).padStart(2,'0');
+  const reps=REPS.filter(r=>r.month===month); $('repsGoals').innerHTML=reps.length?reps.map(r=>`<div class="note"><div class="sc">${esc(r.name)}</div><div class="tx">${r.achieved}/${r.target} סגירות<div class="goal-bar" style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${Math.min(100,r.target?r.achieved/r.target*100:0)}%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></i></div></div></div>`).join(''):'<div class="hint">הנציגים מגדירים יעד בתחילת החודש דרך "📈 היום שלי". כאן תראה את ההתקדמות.</div>';
+}
 /* ── detail ── */
 window.openDetail=function(id,refresh){
   const r=ROWS.find(x=>x.id===id); if(!r) return; SEL=id;
@@ -219,7 +333,12 @@ window.openDetail=function(id,refresh){
   $('dMeta').textContent=(isLive(r)?'בשיחה עכשיו · ':r.status==='ended'?'הסתיימה · ':'נותק · ')+(isLive(r)?liveDur(r):fmtDur(r.duration_sec))+' · התחילה '+new Date(r.started_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' · '+(r.mode==='listen'?'האזנה':'נציג');
   $('dStatus').textContent=(STAGES[stageIdx(r)]?.l||'')+' · '+(TEMP[r.temperature]||'');
   const tr=$('dTranscript'); const atBottom=tr.scrollHeight-tr.scrollTop-tr.clientHeight<60;
-  tr.innerHTML=(r.transcript||[]).map(l=>`<div class="msg ${l.who}"><div class="who">${l.who==='rep'?'נציג':l.who==='cust'?'לקוח':'?'} · ${new Date(l.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</div>${esc(l.t)}</div>`).join('')||'<div class="empty">אין תמלול עדיין</div>';
+  const focus=document.activeElement&&document.activeElement.tagName==='TEXTAREA'; if(focus&&refresh){ /* don't wipe a fix being typed */ }
+  else {
+  const items=[...(r.transcript||[]).map(l=>({t:'line',ts:l.ts,l})),...(r.events||[]).map(e=>({t:'ev',ts:e.ts,e}))].sort((a,b)=>a.ts-b.ts);
+  tr.className='tl';
+  tr.innerHTML=items.map(it=>it.t==='line'?`<div class="msg ${it.l.who}"><div class="who">${it.l.who==='rep'?'נציג':it.l.who==='cust'?'לקוח':'?'} · ${new Date(it.l.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</div>${esc(it.l.t)}</div>`:evHtml(it.e,r)).join('')||'<div class="empty">אין תמלול עדיין</div>';
+  }
   if(atBottom||!refresh) tr.parentElement.scrollTop=tr.parentElement.scrollHeight;
   $('dAmmo').innerHTML=(r.ammo||[]).length?(r.ammo||[]).map((a,i)=>`<div class="ammo s-${SE[a.status]?a.status:'medium'}"><div class="at">${SE[a.status]||'🟡'} ${i+1}. ${AL[a.type]||a.type}</div>${esc(a.text)}${a.note?`<div class="an">${esc(a.note)}</div>`:''}${a.use?`<div class="au">💬 ${esc(a.use)}</div>`:''}</div>`).join(''):'<div class="empty">אין תחמושת עדיין</div>';
   const ob=openBarriers(r);

@@ -39,6 +39,32 @@
   .idbar .b .rep{background:rgba(6,182,212,.35)}.idbar .b .cust{background:rgba(245,179,66,.35)}
   .idbar .b button:hover{filter:brightness(1.2)}
   .sync{font-size:11px;color:var(--text-muted)}.sync.on{color:var(--accent4)}
+  /* coach bubble + panel */
+  .bubble{position:fixed;left:22px;bottom:22px;width:64px;height:64px;border-radius:50%;border:none;background:transparent;cursor:pointer;z-index:45;padding:0;box-shadow:0 10px 30px rgba(124,58,237,.45);transition:transform .2s}
+  .bubble:hover{transform:scale(1.06)}.bubble svg{display:block;width:64px;height:64px}
+  .bubble .badge{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--red);border:2px solid var(--bg);display:none}
+  .bubble.ping .badge{display:block;animation:pulse 1.2s infinite}
+  .coach-panel{position:fixed;left:22px;bottom:96px;width:min(440px,calc(100vw - 44px));height:min(640px,calc(100vh - 130px));background:var(--surface);border:1px solid rgba(168,85,247,.35);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.6);z-index:46;display:none;flex-direction:column;overflow:hidden}
+  .coach-panel.open{display:flex}
+  .cp-h{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface2)}
+  .cp-tabs{display:flex;gap:4px;flex:1}.cp-tabs button{font-family:inherit;font-size:12.5px;font-weight:700;padding:7px 10px;border-radius:9px;border:1px solid transparent;background:transparent;color:var(--text-muted);cursor:pointer}
+  .cp-tabs button.on{background:var(--surface3);color:var(--text);border-color:var(--border)}
+  .cp-b{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+  .chat-log{flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+  .chat-in{display:flex;gap:8px;position:sticky;bottom:0;background:var(--surface);padding-top:6px}
+  .chat-in input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:13.5px;outline:none}
+  .cm{max-width:92%;padding:9px 12px;border-radius:13px;font-size:13.5px;line-height:1.55;white-space:pre-wrap}
+  .cm.me{align-self:flex-end;background:var(--surface3)}.cm.ai{align-self:flex-start;background:rgba(124,58,237,.14);border:1px solid rgba(168,85,247,.3)}
+  .sim-intro{font-size:13px;line-height:1.55;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+  .sim-btns{display:flex;gap:8px}
+  .daily{display:flex;flex-direction:column;gap:10px}
+  .d-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .d-kpi{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}.d-kpi .v{font-size:22px;font-weight:900}.d-kpi .l{font-size:10.5px;color:var(--text-muted);font-weight:700}
+  .d-box{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.5}
+  .d-box .k{font-size:11px;font-weight:800;color:#c4b5fd;margin-bottom:5px}
+  .goal-bar{height:10px;background:var(--surface3);border-radius:5px;overflow:hidden;margin:6px 0}.goal-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .motiv{background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(236,72,153,.12));border:1px solid rgba(245,158,11,.4);border-radius:12px;padding:10px 12px;font-weight:700;font-size:13.5px;line-height:1.5}
+  .goal-form{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:end}
   .pill .lvl{display:inline-block;width:34px;height:5px;border-radius:3px;background:var(--surface3);overflow:hidden;position:relative}
   .pill .lvl::after{content:'';position:absolute;inset:0;right:auto;width:var(--w,0%);background:var(--accent4);transition:width .08s}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -128,6 +154,12 @@
   .card .ct{font-size:12px;font-weight:800;color:var(--c);display:flex;align-items:center;gap:8px;margin-bottom:5px}
   .card .ct span{font-weight:500;color:var(--text-muted);font-size:10.5px;margin-right:auto}
   .card .cx{font-size:14px;line-height:1.55}
+  .c-precheck{--c:#fb923c;background:rgba(251,146,60,.07)}.c-precheck ul{padding-right:18px;margin:2px 0}.c-precheck li{margin:2px 0}
+  .fb{display:inline-flex;gap:4px}.fb button{font-family:inherit;font-size:13px;line-height:1;padding:4px 8px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;opacity:.7}
+  .fb button:hover{opacity:1;background:var(--surface3)}.fb button.on{opacity:1;background:rgba(124,58,237,.3);border-color:var(--neon)}
+  .card .card-fb{position:absolute;left:10px;bottom:8px}.card{position:relative;padding-bottom:34px}
+  .saynow .reason{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:#c4b5fd;margin-top:8px}
+  .saynow .sayfoot{display:flex;justify-content:flex-end;margin-top:6px}
   .c-insight{--c:var(--teal);background:rgba(45,212,191,.06)}
   .c-insight .q{font-style:italic;color:var(--text-muted);font-size:13px;margin-bottom:4px}
   .ammo .an{font-size:12px;color:var(--text-muted);margin-top:2px;line-height:1.45}
@@ -158,13 +190,56 @@
   .modal.show{display:flex}
   .modal .box{background:var(--surface);border:1px solid var(--border);border-radius:18px;width:min(760px,100%);max-height:90vh;display:flex;flex-direction:column}
   .modal .box .bh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:800}
-  .modal .box .bb{padding:20px;overflow-y:auto;white-space:pre-wrap;line-height:1.7;font-size:14px}
+  .modal .box .bb{padding:20px;overflow-y:auto;line-height:1.6;font-size:14px}
+  .modal .box-wide{width:min(1100px,100%)}
+  .db-top{display:grid;grid-template-columns:220px 1fr;gap:14px;margin-bottom:14px}
+  .db-score{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(236,72,153,.18));border:1px solid rgba(168,85,247,.45);border-radius:16px;padding:18px;text-align:center}
+  .db-score .big{font-size:56px;font-weight:900;line-height:1}.db-score .big small{font-size:18px;color:#c4b5fd}.db-score .lbl{font-size:12px;font-weight:700;color:#d8b4fe;margin-top:4px}.db-score .sub{font-size:12px;color:var(--text-muted);margin-top:8px}
+  .db-one{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:16px}
+  .db-one .k,.db-box .k{font-size:11px;font-weight:800;color:#c4b5fd;letter-spacing:.4px;margin-bottom:6px}
+  .db-one .t{font-size:18px;font-weight:700;line-height:1.45}.db-one .s{font-size:13.5px;color:var(--text);line-height:1.5}
+  .db-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:900px){.db-top,.db-grid{grid-template-columns:1fr}}
+  .db-box{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px;font-size:13.5px}
+  .db-box ul,.db-box ol{padding-right:18px;margin:0}.db-box li{margin:4px 0;line-height:1.45}
+  .pm{display:grid;grid-template-columns:70px 1fr 24px;align-items:center;gap:8px;margin:5px 0;font-size:12px}
+  .pb{height:8px;background:var(--surface3);border-radius:4px;overflow:hidden}.pb i{display:block;height:100%;border-radius:4px}.pv{font-weight:800;text-align:left}
+  .imp{border-right:3px solid var(--accent5);padding:4px 10px;margin:8px 0}.imp .q{font-style:italic;color:var(--text-muted);font-size:12.5px}.imp .b{margin-top:3px;font-weight:600}.imp .p{font-size:11px;color:#c4b5fd;margin-top:2px}
+  .db-crm{margin-top:14px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px}.db-crm summary{cursor:pointer;font-weight:700;font-size:13px}.db-crm pre{white-space:pre-wrap;font-family:inherit;font-size:13px;margin-top:10px;line-height:1.6}
+  .db-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 
   /* toast */
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface3);border:1px solid var(--border);padding:12px 20px;border-radius:12px;font-size:14px;z-index:60;box-shadow:0 10px 40px rgba(0,0,0,.5);opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
   .toast.show{opacity:1}.toast.t-error{border-color:var(--red)}.toast.t-ok{border-color:var(--accent4)}
   .meter{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-top:4px}
   .meter i{display:block;height:100%;width:0;background:var(--accent4);transition:width .08s}
+  /* ── polish: consistent controls, spacing, accessibility ── */
+  :root{--text-muted:#8b8bab}
+  .btn{min-height:36px;line-height:1;gap:6px}
+  .btn-sm{min-height:30px}
+  .grp{display:inline-flex;gap:6px;padding:4px;background:var(--surface2);border:1px solid var(--border);border-radius:12px}
+  .grp .btn{border-radius:9px}
+  header{gap:10px}
+  .pills .pill{min-height:30px}
+  button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--neon);outline-offset:2px}
+  .panel-h{min-height:48px}
+  .reqbar{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:stretch}
+  .reqbar input{min-height:40px}
+  .ck-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+  @media(max-width:700px){.ck-btns{grid-template-columns:1fr}}
+  .btn.lead{justify-content:flex-start;text-align:right;padding:9px 12px;min-height:52px;background:var(--surface);border:1px solid var(--border);border-radius:12px;white-space:normal}
+  .btn.lead:hover{border-color:rgba(168,85,247,.6);background:var(--surface3)}
+  .btn.lead i{font-style:normal;font-size:20px;width:28px;text-align:center;flex:none}
+  .btn.lead span{display:flex;flex-direction:column;gap:2px;font-size:13.5px;font-weight:800;line-height:1.2}
+  .btn.lead span small{font-size:11px;font-weight:500;color:var(--text-muted)}
+  .btn.lead.hot{border-color:rgba(239,68,68,.55)}.btn.lead.hot span small{color:#fca5a5}
+  .btn.lead:disabled{opacity:.4}
+  .ck-wrap{padding:12px 16px}.ck-items{gap:6px 18px}.ck{font-size:13px}
+  .saynow{padding:18px 20px}.saynow .t{font-size:21px}
+  .card{border-radius:14px}
+  .stagebar{padding:18px 22px 14px}
+  .msg{font-size:14.5px}
+  .empty{padding:32px 20px}
 </style>
 </head>
 <body>
@@ -178,13 +253,19 @@
   </div>
   <div class="seg" id="modeSeg" title="מצב עבודה"><button data-mode="rep" class="on">🎧 אני הנציג</button><button data-mode="listen">👂 האזנה לשיחה</button></div>
   <span class="pill" id="pWho" style="cursor:pointer" title="לחץ לשינוי שם">👤 <b id="whoName">—</b></span>
+  <span class="pill on" id="dayState" style="display:none"></span>
   <div class="spacer"></div>
   <div class="timer" id="timer">00:00</div>
-  <button class="btn btn-primary" id="btnStart">▶ התחל שיחה</button>
-  <button class="btn btn-danger" id="btnStop" style="display:none">■ סיים שיחה</button>
-  <button class="btn" id="btnDemo">🎬 הדגמה</button>
-  <button class="btn" id="btnSummary" disabled>📋 סיכום</button>
-  <button class="btn" id="btnSettings">⚙️</button>
+  <div class="grp">
+    <button class="btn btn-primary" id="btnDay" title="מאזין לחייגן כל היום: מתחיל ומסיים שיחות אוטומטית">🌅 התחל יום</button>
+    <button class="btn" id="btnStart" title="פתיחת שיחה אחת ידנית">▶ שיחה</button>
+    <button class="btn btn-danger" id="btnStop" style="display:none">■ סיים שיחה</button>
+  </div>
+  <div class="grp">
+    <button class="btn" id="btnDemo" title="הדגמה על שיחה מדומה">🎬 הדגמה</button>
+    <button class="btn" id="btnSummary" disabled title="סיכום וציון השיחה האחרונה">🏁 סיכום</button>
+    <button class="btn" id="btnSettings" title="הגדרות">⚙️ הגדרות</button>
+  </div>
 </header>
 
 <section class="stagebar">
@@ -210,8 +291,9 @@
         <div class="t" id="sayText">התחל שיחה או הרץ הדגמה. ברגע שהלקוח מדבר, המאמן יגיד לך בדיוק מה להגיד.</div>
         <div class="w" id="sayWhy"></div>
         <div class="avoid" id="sayAvoid"></div>
-        <div class="reqbar"><input id="reqInput" placeholder="בקש משפט לשיחה הזו: למשל 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-sm btn-primary" id="btnReq">✨ תן משפט</button></div>
-        <div class="reqbar" style="margin-top:8px"><button class="btn btn-sm" id="btnAsk" style="flex:1;justify-content:center;border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול עכשיו? (מההיסטוריה, בלי הנחיה)</button></div>
+        <div class="reason" id="sayReason"></div>
+        <div class="sayfoot"><span id="sayFb"></span></div>
+        <div class="reqbar"><input id="reqInput" placeholder="בקש משפט: 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-primary" id="btnReq">✨ תן משפט</button><button class="btn" id="btnAsk" title="בלי הנחיה: המאמן מבין מההיסטוריה מה לשאול עכשיו" style="border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול?</button></div>
       </div>
       <div class="cust-state" id="custState" style="display:none"></div>
       <div id="cards"></div>
@@ -270,6 +352,7 @@
     <div class="hint" id="custHint">בלחיצה על "התחל שיחה" כרום יבקש לבחור מסך. בחר את הטאב של ToChat וסמן "שתף שמע של הטאב".</div>
   </div>
   <div class="field" id="custDevWrap" style="display:none"><label class="field-label">התקן קלט ללקוח</label><select class="field-input" id="sCustDev"></select></div>
+  <div class="field"><label class="field-label">מצב יום: שניות שקט לסיום שיחה אוטומטי</label><input class="field-input" id="sAutoEnd" type="number" min="10" max="120" placeholder="25"></div>
   <div class="field"><label class="field-label">מודל תמלול</label>
     <select class="field-input" id="sSttModel">
       <option value="gpt-transcribe">gpt-transcribe (מומלץ, דיוק גבוה)</option>
@@ -295,8 +378,33 @@
   <button class="btn btn-primary" id="btnSave" style="width:100%;justify-content:center;margin-top:8px">שמור הגדרות</button>
 </aside>
 
-<div class="modal" id="modal"><div class="box"><div class="bh">📋 סיכום שיחה <span><button class="btn btn-sm" id="btnCopy">העתק</button> <button class="btn btn-sm" id="btnCloseModal">✕</button></span></div><div class="bb" id="modalBody"></div></div></div>
+<div class="modal" id="modal"><div class="box box-wide"><div class="bh">🏁 סיום שיחה: תובנות וציון <span><button class="btn btn-sm" id="btnCopy">העתק</button> <button class="btn btn-sm" id="btnCloseModal">✕</button></span></div><div class="bb" id="modalBody"></div></div></div>
 <div class="toast" id="toast"></div>
+
+<!-- Coach bubble + panel -->
+<button class="bubble" id="coachBubble" title="המאמן שלך: צ'אט, סימולציה, המדד היומי" onclick="openCoach()">
+  <svg viewBox="0 0 64 64" width="44" height="44" aria-hidden="true"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#ec4899"/></linearGradient></defs><circle cx="32" cy="32" r="32" fill="url(#bg)"/><circle cx="32" cy="25" r="11" fill="#fde7d6"/><path d="M32 14c-6 0-10 4-10 10 0 2 1 3 2 3 0-6 4-8 8-8s8 2 8 8c1 0 2-1 2-3 0-6-4-10-10-10z" fill="#3b2314"/><path d="M14 54c2-10 9-15 18-15s16 5 18 15c-5 4-11 6-18 6s-13-2-18-6z" fill="#1e1e38"/><path d="M26 39c2 3 4 4 6 4s4-1 6-4" fill="none" stroke="#fde7d6" stroke-width="2" stroke-linecap="round"/><circle cx="27" cy="25" r="1.6" fill="#1e1e38"/><circle cx="37" cy="25" r="1.6" fill="#1e1e38"/><path d="M28 30c1.5 1.5 6.5 1.5 8 0" fill="none" stroke="#1e1e38" stroke-width="1.6" stroke-linecap="round"/></svg>
+  <i class="badge" id="bubbleBadge"></i>
+</button>
+<div class="coach-panel" id="coachPanel">
+  <div class="cp-h">
+    <div class="cp-tabs"><button data-tab="chat" class="on">💬 צ'אט</button><button data-tab="sim">🎭 סימולציה</button><button data-tab="daily">📈 היום שלי</button></div>
+    <button class="btn btn-sm" onclick="closeCoach()">✕</button>
+  </div>
+  <div class="cp-b" id="cpChat">
+    <div class="chat-log" id="chatLog"></div>
+    <div class="chat-in"><input id="chatInput" placeholder="שאל את המאמן כל דבר: על שיחה, על טכניקה, על היום שלך…"><button class="btn btn-sm btn-primary" id="btnChatSend">שלח</button></div>
+  </div>
+  <div class="cp-b" id="cpSim" style="display:none">
+    <div class="sim-intro"><b>סימולציה חיה.</b> אתה מדבר באוזניות כמו בשיחה אמיתית, ואני עונה כלקוח, בטקסט, מהר. המאמן ממשיך לעבוד מהצד, ובסוף יש ציון ותובנות כמו בשיחה אמיתית.</div>
+    <div class="field"><label class="field-label">מי הלקוח</label><select class="field-input" id="simPersona"></select></div>
+    <div class="field"><label class="field-label">על מה להתאמן</label><select class="field-input" id="simFocus"><option value="opening">פתיחת שיחה ו-KYC</option><option value="pain">העמקת כאב</option><option value="objection">טיפול בחסם: "יקר לי", "אין לי זמן", "צריך לחשוב"</option><option value="close">הובלה לסגירה</option><option value="full">שיחה מלאה</option></select></div>
+    <label class="hint" style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" id="simTts"> 🔊 להקריא את תשובות הלקוח בקול (אם יש קול עברי במחשב)</label>
+    <div class="sim-btns"><button class="btn btn-primary" id="btnSimStart">🎭 התחל סימולציה</button><button class="btn btn-danger" id="btnSimStop" style="display:none">■ סיים סימולציה</button></div>
+    <div class="hint" id="simState">הסימולציה משתמשת במיקרופון בלבד. תשובות הלקוח מופיעות בתמלול בצד.</div>
+  </div>
+  <div class="cp-b" id="cpDaily"><div id="dailyBody" class="daily"></div></div>
+</div>
 
 <script type="module">
 import Anthropic from 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.125.0/+esm';
@@ -335,8 +443,9 @@ const S = {
   settings:{}, running:false, demo:false, startedAt:0, timerIv:null,
   lines:[],           // {id, who, text, final, ts}
   shownCards:[],      // titles already shown
-  checks:{}, viewStage:null,
+  checks:{}, viewStage:null, events:[], training:[], lastEventId:null,
   ammo:[], profile:'', single:false, custQuietTimer:null, spkMap:{}, spkSeen:[], sm:null,
+  day:false, act:{rep:0,cust:0}, burst:[], autoStarting:false, simActive:false, chat:[],
   stage:'kyc', stageIdx:0, temp:'cold',
   analysisPending:false, analysisInFlight:false, lastAnalyzedCount:0,
   audio:{ctx:null, streams:[], nodes:[]}, ws:{rep:null, cust:null},
@@ -356,7 +465,7 @@ function loadSettings(){
   $('sOpenai').value=s.openai||''; $('sAnthropic').value=s.anthropic||''; $('sSm').value=s.speechmatics||''; renderEnrolled();
   $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES;
   $('sRepName').value=s.repName||''; $('sCustName').value=s.custName||'';
-  $('sMode').value=s.mode||'rep'; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low';
+  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low';
   syncAudioUI();
 }
 const cleanKey=v=>(v||'').replace(/[^\x21-\x7E]/g,''); // keep printable ASCII only: strips Hebrew, RTL marks, zero-width chars, spaces
@@ -368,7 +477,7 @@ function saveSettings(){
   S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:($('sContext').value.trim()||DEFAULT_CONTEXT),
     principles:($('sPrinciples').value.trim()||DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),custName:$('sCustName').value.trim(),
     mic:$('sMic').value,mode:$('sMode').value,custSrc:$('sCustSrc').value,custDev:$('sCustDev').value,sttModel:$('sSttModel').value,effort:$('sEffort').value,
-    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value)};
+    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),autoEndSec:parseInt($('sAutoEnd').value)||25,goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
   syncModeSeg(); $('whoName').textContent=S.settings.repName||'ללא שם';
   localStorage.setItem('lc_settings',JSON.stringify(S.settings));
   S.anthropic=null;
@@ -430,10 +539,10 @@ function renderChecklist(){
   $('checklist').innerHTML=`<div class="ck-h">📋 צ'ק-ליסט ${st.l}${S.viewStage&&S.viewStage!==S.stage?' <span>(צפייה, השלב הפעיל: '+STAGES[S.stageIdx].l+')</span>':''}</div>
     <div class="ck-items">${items.map((t,i)=>`<div class="ck ${S.checks[id+'.'+(i+1)]?'on':''}"><i>${S.checks[id+'.'+(i+1)]?'✓':'○'}</i>${escapeHtml(t)}</div>`).join('')}</div>
     <div class="ck-btns">
-      <button class="btn btn-sm" onclick="leadTo('stage','${id}')">🧭 תוביל אותי להשלים את ${st.l}</button>
-      ${idx<STAGES.length-1?`<button class="btn btn-sm" onclick="leadTo('forward','${STAGES[idx+1].id}')">⏭️ תוביל אותי קדימה ל${STAGES[idx+1].l}</button>`:''}
-      <button class="btn btn-sm ${openB.length?'hot':''}" onclick="leadTo('barriers','')">🧱 תוביל אותי לפתרון החסמים העיקריים${openB.length?' ('+openB.length+')':''}</button>
-      <button class="btn btn-sm" onclick="leadTo('close','')">🏁 תוביל אותי לסגירה</button>
+      <button class="btn lead" onclick="leadTo('stage','${id}')"><i>🧭</i><span>השלם את ${st.l}<small>${items.length-stageDone(id)[0]} פריטים חסרים</small></span></button>
+      <button class="btn lead" onclick="leadTo('forward','${(STAGES[idx+1]||STAGES[idx]).id}')" ${idx>=STAGES.length-1?'disabled':''}><i>⏭️</i><span>קדימה ל${(STAGES[idx+1]||STAGES[idx]).l}<small>משפט מעבר טבעי</small></span></button>
+      <button class="btn lead ${openB.length?'hot':''}" onclick="leadTo('barriers','')"><i>🧱</i><span>פתור את החסמים<small>${openB.length?openB.length+' חסמים פתוחים':'אין חסמים פתוחים'}</small></span></button>
+      <button class="btn lead" onclick="leadTo('close','')"><i>🏁</i><span>הובל לסגירה<small>בודק מה חסר קודם</small></span></button>
     </div>`;
 }
 window.leadTo=(kind,target)=>{
@@ -465,6 +574,7 @@ function upsertLine(id,who,text,final){
 }
 // Trigger policy: the coach speaks when the CUSTOMER finishes a turn (quiet gap, or the rep starts talking). Rep lines alone never trigger.
 function onFinalLine(ln){
+  if(S.simActive&&ln.who==='rep'){ S.simRepAt=Date.now(); S.simPendingReply=true; clearTimeout(S.simTimer); S.simTimer=setTimeout(()=>{ if(S.simPendingReply){ S.simPendingReply=false; simCustomerTurn(false); } },900); }
   if(S.single){ S.newSinceInsight=true; return; } // listen mode: the 20s loop drives analysis
   clearTimeout(S.custQuietTimer);
   if(ln.who==='rep'){ if(S.analysisPending) scheduleAnalysis(); return; }
@@ -475,8 +585,11 @@ function onFinalLine(ln){
 // occluded windows (down to once a minute), but audio callbacks keep flowing, so every time-based trigger also runs here.
 function tick(){
   const now=Date.now(); if(now-(S.lastTick||0)<250) return; S.lastTick=now;
+  if(S.day&&!S.running&&!S.autoStarting){ const recent=S.burst.filter(t=>now-t<3000).length; if(recent>=8) autoStartCall(); return; }
+  if(S.day&&S.running&&!S.demo){ const last=Math.max(S.act.rep||0,S.act.cust||0); const endSec=parseInt(S.settings.autoEndSec)||25; if(now-S.startedAt>20000&&now-last>endSec*1000){ log('שקט '+endSec+' שניות בשני הערוצים: השיחה הסתיימה'); stopCall(); return; } }
   if(!S.running) return;
   if(S.analysisInFlight&&now-(S.inFlightAt||now)>75000){ S.analysisInFlight=false; log('המאמן לא ענה 75 שניות, מאפס וממשיך','err'); }
+  if(S.simActive&&S.simPendingReply&&now-(S.simRepAt||0)>=900){ S.simPendingReply=false; simCustomerTurn(false); }
   if(!S.single&&S.analysisPending&&!S.analysisInFlight&&now-(S.lastCustFinalAt||0)>=1400) scheduleAnalysis();
   if(S.single&&now-(S.lastInsightAt||S.startedAt)>=20000){ const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount){ S.lastInsightAt=now; scheduleAnalysis(); } }
   if(now-(S.lastSyncAt||0)>=15000){ S.lastSyncAt=now; syncCall(); }
@@ -675,7 +788,12 @@ async function pipe(stream,who,ws,meterId){
   const ctx=await getCtx();
   const src=ctx.createMediaStreamSource(stream);
   const lvl=$(who==='rep'?'lRep':'lCust'); let lastLog=0;
-  const {node,sink}=makeCapture(ctx,(pcm,peak)=>{ tick(); if(ws.readyState===1){ if(ws.sendAudio) ws.sendAudio(pcm); else ws.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); } const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
+  if(ws) S.ws[who]=ws;
+  const {node,sink}=makeCapture(ctx,(pcm,peak)=>{
+    if(peak>0.06){ S.act[who]=Date.now(); if(who==='cust'){ S.burst.push(Date.now()); if(S.burst.length>60) S.burst.shift(); } }
+    tick();
+    const w0=S.ws[who]; if(w0&&w0.readyState===1){ if(w0.sendAudio) w0.sendAudio(pcm); else w0.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); }
+    const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000&&S.running){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
   src.connect(node); // worklet: no destination (silent); script processor: muted sink
   S.audio.nodes.push(src,node); if(sink) S.audio.nodes.push(sink); S.audio.streams.push(stream);
 }
@@ -735,6 +853,11 @@ async function startCall(){
     toast('השיחה התחילה. המאמן מאזין.','t-ok');
   }catch(e){console.error(e);log(e.message||'שגיאה בהפעלה','err');toast(e.message||'שגיאה בהפעלה','t-error');teardownAudio();$('btnStart').disabled=false;setPill('pRep','');setPill('pCust','');}
 }
+function closeSockets(){
+  try{smFinalize()}catch(e){}
+  for(const k of ['rep','cust']){try{if(S.ws[k]&&S.ws[k].endStream)S.ws[k].endStream();}catch(e){} try{setTimeout((w=>()=>{try{w&&w.close()}catch(e){}})(S.ws[k]),1500)}catch(e){} S.ws[k]=null}
+  setPill('pRep',S.day?'busy':''); setPill('pCust',S.day?'busy':'');
+}
 function teardownAudio(){
   for(const n of S.audio.nodes){try{n.disconnect()}catch(e){}} S.audio.nodes=[];
   for(const s of S.audio.streams){s.getTracks().forEach(t=>t.stop())} S.audio.streams=[];
@@ -743,9 +866,10 @@ function teardownAudio(){
   $('mRep').style.width='0';$('mCust').style.width='0';$('lRep').style.setProperty('--w','0%');$('lCust').style.setProperty('--w','0%');
 }
 function beginSession(demo){
-  S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.insights=[]; S.summary=null;
+  S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.insights=[]; S.summary=null; S.events=[]; S.lastEventId=null;
   S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
+  if(!S.simActive) $('liveTag').textContent='LIVE';
   $('btnClear').click(); renderStages();
   $('btnStart').style.display='none'; $('btnStop').style.display=''; $('btnStart').disabled=false; $('btnDemo').disabled=true; $('liveTag').style.display='';
   $('timer').classList.add('live');
@@ -756,13 +880,56 @@ function beginSession(demo){
   S.insightIv=setInterval(()=>{ if(!S.single||!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount){ S.lastInsightAt=Date.now(); scheduleAnalysis(); } },20000);
 }
 function stopCall(){
-  S.running=false; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); teardownAudio(); S.demoAbort=true; renderIdBar();
+  S.running=false; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); if(S.day){ closeSockets(); } else { teardownAudio(); } S.demoAbort=true; renderIdBar();
   syncCall({status:'ended',ended_at:new Date().toISOString()});
   if(S.lines.filter(l=>l.final&&l.text.trim()).length>=6&&S.settings.anthropic) setTimeout(()=>runSummary(true),1500);
-  $('btnStart').style.display=''; $('btnStop').style.display='none'; $('btnDemo').disabled=false; $('liveTag').style.display='none'; $('timer').classList.remove('live');
-  setPill('pRep','');setPill('pCust','');
-  if(S.lines.length) toast('השיחה הסתיימה. לחץ "סיכום" לסיכום מוכן ל-CRM.','t-ok');
+  $('btnStart').style.display=S.day?'none':''; $('btnStop').style.display='none'; $('btnDemo').disabled=false; $('liveTag').style.display='none'; $('timer').classList.remove('live');
+  if(!S.day){ setPill('pRep','');setPill('pCust',''); } else { $('dayState').textContent='🟢 ממתין לשיחה הבאה…'; }
+  if(S.simActive){ S.simActive=false; $('simState').textContent='הסימולציה הסתיימה. הסיכום ייפתח מיד.'; $('btnSimStart').style.display=''; $('btnSimStop').style.display='none'; }
+  if(S.lines.length) toast(S.day?'השיחה הסתיימה ונשלחת לסיכום. ממשיך להאזין.':'השיחה הסתיימה. הסיכום ייפתח מיד.','t-ok');
 }
+/* ── day mode ── */
+async function startDay(){
+  if(S.settings.mode==='listen') return toast('מצב יום עובד במצב "אני הנציג"','t-error');
+  if(!S.settings.openai) {openDrawer();return toast('נדרש OpenAI API Key','t-error')}
+  if(!S.settings.anthropic){openDrawer();return toast('נדרש Anthropic API Key','t-error')}
+  $('btnDay').disabled=true; LOG.length=0;
+  try{
+    if(!window.isSecureContext||!navigator.mediaDevices?.getDisplayMedia) throw new Error('פתח את הכלי בכרום רגיל.');
+    log('מצב יום: מבקש מיקרופון…');
+    const mic=await navigator.mediaDevices.getUserMedia({audio:{deviceId:S.settings.mic?{exact:S.settings.mic}:undefined,echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+    log('מיקרופון: '+(mic.getAudioTracks()[0]?.label||'התקבל'),'ok');
+    let cust=null; const src=S.settings.custSrc||'tab';
+    if(src==='tab'){
+      log('בחר את הטאב של ToChat וסמן "Also share tab audio". השיתוף נשאר פתוח כל היום.');
+      const ds=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true,selfBrowserSurface:'exclude',preferCurrentTab:false,systemAudio:'include'});
+      const at=ds.getAudioTracks(); if(!at.length){ds.getTracks().forEach(t=>t.stop());throw new Error('הטאב נבחר בלי שמע. סמן "Also share tab audio".')}
+      ds.getVideoTracks()[0]?.addEventListener('ended',()=>{ if(S.day){ log('שיתוף הטאב הופסק, היום הסתיים','err'); endDay(); } });
+      cust=new MediaStream(at); S.audio.streams.push(ds);
+    }else if(src==='device'){ cust=await navigator.mediaDevices.getUserMedia({audio:{deviceId:{exact:S.settings.custDev},echoCancellation:false,noiseSuppression:false,autoGainControl:false}}); }
+    if(!cust) throw new Error('מצב יום צריך מקור שמע ללקוח (טאב או התקן).');
+    S.single=false; $('modeTag').style.display='none';
+    await pipe(mic,'rep',null,'mRep'); await pipe(cust,'cust',null,'mCust');
+    if(S.audio.ctx.state!=='running') await S.audio.ctx.resume();
+    S.day=true; S.burst=[]; S.act={rep:0,cust:0};
+    setPill('pRep','busy'); setPill('pCust','busy');
+    $('btnDay').textContent='⏹ סיים יום'; $('btnDay').classList.remove('btn-primary'); $('btnDay').classList.add('btn-danger'); $('btnStart').style.display='none'; $('dayState').style.display=''; $('dayState').textContent='🟢 מאזין לחייגן. ממתין לשיחה…';
+    log('מצב יום פעיל: כשהלקוח יתחיל לדבר, השיחה תיפתח אוטומטית. '+(parseInt(S.settings.autoEndSec)||25)+' שניות שקט = סיום שיחה.','ok');
+    toast('מצב יום פעיל. אפשר לעבור ל-ToChat ולעבוד רגיל.','t-ok');
+  }catch(e){ console.error(e); log(e.message||'שגיאה','err'); toast(e.message||'שגיאה','t-error'); teardownAudio(); }
+  finally{ $('btnDay').disabled=false; }
+}
+function endDay(){ if(S.running) stopCall(); S.day=false; teardownAudio(); $('btnDay').textContent='🌅 התחל יום'; $('btnDay').classList.add('btn-primary'); $('btnDay').classList.remove('btn-danger'); $('btnStart').style.display=''; $('dayState').style.display='none'; setPill('pRep','');setPill('pCust',''); log('היום הסתיים. כל הכבוד.','ok'); }
+async function autoStartCall(){
+  S.autoStarting=true;
+  try{
+    log('🔔 זוהה שמע בחייגן, פותח שיחה…'); $('dayState').textContent='🔴 בשיחה';
+    const [wsRep,wsCust]=await Promise.all([openStt('rep'),openStt('cust')]); S.ws.rep=wsRep; S.ws.cust=wsCust;
+    beginSession(false); S.burst=[]; log('המאמן מחובר לשיחה','ok');
+  }catch(e){ log('פתיחה אוטומטית נכשלה: '+(e.message||e),'err'); closeSockets(); S.burst=[]; }
+  finally{ S.autoStarting=false; }
+}
+$('btnDay').onclick=()=>{ if(S.day) endDay(); else startDay(); };
 $('btnStart').onclick=startCall; $('btnStop').onclick=stopCall;
 
 /* ───────────────────────── demo ───────────────────────── */
@@ -794,6 +961,8 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       required:['type','title','text']},description:'רק תובנות חדשות שלא הוצגו כבר, לכל היותר 2. אם אין חדש, מערך ריק'},
     speaker_labels:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string'},who:{type:'string',enum:['rep','cust']}},required:['id','who']},description:'לשורות שמסומנות "דובר לא ידוע": מי אמר אותן לפי התוכן. מערך ריק אם אין כאלה'},
     profile:{type:'string',description:'פרופיל הלקוח עד כה ב-2-3 משפטים: מי הוא, מה העסק/המצב, מה הוא ניסה, מה מגביל אותו. מצטבר על כל השיחה'},
+    reasoning:{type:'object',additionalProperties:false,properties:{why_now:{type:'string',description:'למה דווקא עכשיו, מה בדיוק בתמלול הפעיל את ההמלצה, עד 25 מילים'},principle:{type:'string',description:'שם העיקרון או הכלי מהפלייבוק שעליו ההמלצה נשענת, עד 10 מילים'},goal:{type:'string',description:'מה ההמלצה מנסה להשיג בשיחה, עד 15 מילים'}},required:['why_now','principle','goal'],description:'הנימוק המלא של say_now, לצורך למידה ובקרה של המנהל'},
+    close_check:{type:'array',items:{type:'string'},description:'רק כשהנציג מתקדם להצגת מוצר או לסגירה: רשימת דברים שעדיין לא נסגרו ושכדאי לו לוודא לפני שממשיך (חסם שלא אושר כפתור, פריט צ׳ק-ליסט חסר, הסכמה שלא נלקחה). עד 4 פריטים קצרים, לבדיקה בלבד, לא חובה. מערך ריק אם אין'},
     checks:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string',description:'מזהה פריט בצ׳ק-ליסט, בפורמט stage.index, למשל pain.2'},done:{type:'boolean'}},required:['id','done']},description:'מצב הצ׳ק-ליסט של כל השלבים עד השלב הנוכחי ועד אחד קדימה, לפי מה שקרה בפועל בתמלול. פריט done=true רק אם יש לזה עדות בתמלול. החזר את כל הפריטים הרלוונטיים בכל סבב'},
     insight:{type:'object',additionalProperties:false,properties:{quote:{type:'string',description:'ציטוט קצר ומדויק של משהו שהלקוח אמר (או מחרוזת ריקה אם אין חדש)'},principle:{type:'string',description:'שם העיקרון מהפלייבוק שרלוונטי לציטוט, עד 8 מילים'},lesson:{type:'string',description:'התובנה: מה הציטוט חושף על הלקוח ומה היה הצעד הנכון של הנציג לפי העיקרון, עד 35 מילים'}},required:['quote','principle','lesson'],description:'תובנה אחת שמחברת בין מה שהלקוח אמר לעיקרון מהפלייבוק, על ציטוט שעוד לא נותח'},
     ammo:{type:'array',items:{type:'object',additionalProperties:false,properties:{
@@ -804,7 +973,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       use:{type:'string',description:'משפט או שאלה טבעיים שהנציג יכול להגיד עכשיו בעזרת הפריט, או מחרוזת ריקה'}},
       required:['type','status','text','note','use']},
       description:'תחמושת: לוח תוצאות חי של השיחה. בדיוק 8 פריטים כשיש מספיק מידע אמיתי, מדורגים מהחזק והרלוונטי ביותר כרגע לפחות. רק מה שהלקוח אמר או רמז בבירור. חסם נחשב פתור רק אם הלקוח אישר. החזר את הרשימה המלאה והמעודכנת בכל סבב'}
-  },required:['stage','temperature','customer_state','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight','checks']};
+  },required:['stage','temperature','customer_state','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','reasoning','close_check']};
 
 function systemPrompt(){
   return `אתה מאמן מכירות בזמן אמת שיושב ליד נציג מכירות בזמן שיחת טלפון חיה עם לקוח. אתה רואה את התמלול החי ותפקידך להגיד לנציג, מיד, מה להגיד עכשיו.
@@ -822,6 +991,9 @@ function systemPrompt(){
 
 מנוע התחמושת (השדה ammo):
 ${AMMO_RULES}
+- close_check: כשהנציג עובר להצגת מוצר או לסגירה ויש חסם שהלקוח לא אישר שנפתר, פריט צ'ק-ליסט קריטי חסר, או הסכמה שלא נלקחה, החזר רשימה קצרה "לבדיקה לפני סגירה". זו הארה בלבד, לא עצירה.
+- reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך.
+${trainingBlock()}
 - Latency-sensitive; begin your visible answer immediately.
 - ענה אך ורק ב-JSON לפי הסכמה.
 
@@ -838,6 +1010,24 @@ ${S.settings.principles||DEFAULT_PRINCIPLES}
 הקשר על העסק והמוצר:
 ${S.settings.context||DEFAULT_CONTEXT}`;
 }
+// Manager training notes (from the manager board) and corrections on disliked responses, injected into every prompt.
+const SCOPE_LABEL={general:'כללי',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע רכישה',solution:'הצגת מוצר',close:'סגירה',simulation:'סימולציה',motivation:'מוטיבציה',opening:'פתיחת שיחה'};
+function trainingBlock(){
+  const notes=(S.training||[]).filter(n=>n.text&&n.scope!=='simulation'&&n.scope!=='motivation');
+  if(!notes.length) return '';
+  const groups={}; for(const n of notes){ (groups[n.scope||'general']=groups[n.scope||'general']||[]).push(n); }
+  let out='\nהנחיות המנהל (אימון שנצבר, עדיפות עליונה על כל כלל אחר, החדש גובר על הישן):\n';
+  for(const [sc,arr] of Object.entries(groups)){
+    out+='['+(SCOPE_LABEL[sc]||sc)+']\n'+arr.slice(0,40).map(n=>'- '+(n.source==='correction'&&n.context?'תיקון על המלצה קודמת ("'+String(n.context).slice(0,120)+'"): ':'')+String(n.text).slice(0,600)).join('\n')+'\n';
+  }
+  return out;
+}
+async function loadTraining(){
+  if(!sbReady()) return;
+  try{ const r=await fetch(S.settings.sbUrl+'/rest/v1/training?select=*&order=created_at.desc&limit=300',{headers:sbHdr()}); if(r.ok){ S.training=await r.json(); localStorage.setItem('lc_training',JSON.stringify(S.training)); } }
+  catch(e){ console.warn('training load',e); }
+}
+try{ S.training=JSON.parse(localStorage.getItem('lc_training')||'[]'); }catch(e){ S.training=[]; }
 function getClient(){
   if(!S.anthropic) S.anthropic=new Anthropic({apiKey:S.settings.anthropic,dangerouslyAllowBrowser:true,maxRetries:1,timeout:30000});
   return S.anthropic;
@@ -911,34 +1101,62 @@ function applyCoach(o){
     S.shownCards.push('Q:'+o.insight.quote); (S.insights=S.insights||[]).push({...o.insight,ts:Date.now()});
     const el=document.createElement('div'); el.className='card c-insight';
     const t=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    el.innerHTML=`<div class="ct">💡 תובנה · ${escapeHtml(o.insight.principle||'')}<span>${t}</span></div><div class="q">"${escapeHtml(o.insight.quote)}"</div><div class="cx">${escapeHtml(o.insight.lesson||'')}</div>`;
+    const ie=addEvent({kind:'insight',text:o.insight.lesson||'',quote:o.insight.quote,reasoning:{why_now:'ציטוט חדש של הלקוח: "'+String(o.insight.quote).slice(0,80)+'"',principle:o.insight.principle||'',goal:'לחבר את מה שהלקוח אמר לעיקרון ולצעד הנכון'}});
+    el.innerHTML=`<div class="ct">💡 תובנה · ${escapeHtml(o.insight.principle||'')}<span>${t}</span></div><div class="q">"${escapeHtml(o.insight.quote)}"</div><div class="cx">${escapeHtml(o.insight.lesson||'')}</div>${fbButtons(ie.id,'card-fb')}`;
     $('cards').prepend(el);
   }
   $('saynow').classList.remove('custom');
   if(Array.isArray(o.checks)){ for(const c of o.checks){ if(c&&typeof c.id==='string'&&STAGE_CHECKS[c.id.split('.')[0]]) S.checks[c.id]=!!c.done; } }
   if(o.stage) setStage(o.stage);
   if(o.temperature){S.temp=o.temperature;renderStages()}
+  const ev=addEvent({kind:S.single?'listen':'auto',text:o.say_now||'',why:o.why||'',avoid:o.avoid||'',reasoning:o.reasoning||null,close_check:o.close_check||[]});
   $('sayText').textContent=o.say_now||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
+  $('sayReason').innerHTML=o.reasoning?`<span>🧠 ${escapeHtml(o.reasoning.principle||'')}</span><span>🎯 ${escapeHtml(o.reasoning.goal||'')}</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
   const sn=$('saynow'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
+  if(Array.isArray(o.close_check)&&o.close_check.length){
+    const key='PC:'+o.close_check.join('|'); if(!S.shownCards.includes(key)){ S.shownCards.push(key);
+      const pe=addEvent({kind:'precheck',text:o.close_check.join(' · '),reasoning:{why_now:'הנציג מתקדם לסגירה עם פריטים פתוחים',principle:'תנאי הסגירה בפלייבוק',goal:'לוודא שלא נשאר חסם פתוח לפני ההחלטה'}});
+      const el=document.createElement('div'); el.className='card c-precheck';
+      el.innerHTML=`<div class="ct">🔎 לבדיקה לפני סגירה<span>${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</span></div><div class="cx"><ul>${o.close_check.slice(0,4).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul><div class="hint">הארה בלבד. אם כבר טופל, המשך.</div></div>${fbButtons(pe.id,'card-fb')}`;
+      $('cards').prepend(el); } }
   if(o.customer_state){S.custState=o.customer_state;const c=$('custState');c.style.display='';c.innerHTML='<b>מצב הלקוח:</b> '+escapeHtml(o.customer_state)}
   for(const c of (o.cards||[]).slice(0,2)){
     if(S.shownCards.includes(c.title)) continue;
     S.shownCards.push(c.title);
     const el=document.createElement('div'); el.className='card c-'+(CARD_LABEL[c.type]?c.type:'kyc');
     const t=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    el.innerHTML=`<div class="ct">${CARD_LABEL[c.type]||c.type} · ${escapeHtml(c.title)}<span>${t}</span></div><div class="cx">${escapeHtml(c.text)}</div>`;
+    const ce=addEvent({kind:'card',text:c.title+': '+c.text,reasoning:{why_now:'זוהה בתמלול: '+(CARD_LABEL[c.type]||c.type),principle:CARD_LABEL[c.type]||c.type,goal:'להאיר לנציג משהו שהלקוח חשף'}});
+    el.innerHTML=`<div class="ct">${CARD_LABEL[c.type]||c.type} · ${escapeHtml(c.title)}<span>${t}</span></div><div class="cx">${escapeHtml(c.text)}</div>${fbButtons(ce.id,'card-fb')}`;
     $('cards').prepend(el);
   }
 }
 
+/* ───────────────────────── event log: every coach action, with its reasoning, for the manager ───────────────────────── */
+function addEvent(ev){
+  const finals=S.lines.filter(l=>l.final&&l.text.trim());
+  const e={id:'e_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),ts:Date.now(),line:finals.length,stage:S.stage,fb:null,fix:'',...ev};
+  S.events.push(e); S.lastEventId=e.id; return e;
+}
+function fbButtons(eventId,cls=''){ return `<span class="fb ${cls}" data-ev="${eventId}"><button title="עזר לי" onclick="setFb('${eventId}','like',this)">👍</button><button title="לא מתאים" onclick="setFb('${eventId}','dislike',this)">👎</button></span>`; }
+window.setFb=(id,fb,btn)=>{
+  const e=S.events.find(x=>x.id===id); if(!e) return;
+  e.fb=(e.fb===fb)?null:fb;
+  document.querySelectorAll(`.fb[data-ev="${id}"] button`).forEach(b=>b.classList.remove('on'));
+  if(e.fb){ document.querySelectorAll(`.fb[data-ev="${id}"] button`).forEach(b=>{ if(b.textContent===(e.fb==='like'?'👍':'👎')) b.classList.add('on'); }); }
+  toast(e.fb==='dislike'?'סומן 👎. המנהל יראה את זה ביומן ויוכל לתקן.':e.fb==='like'?'סומן 👍':'הסימון בוטל','t-ok');
+  syncCall();
+};
+
 /* ───────────────────────── team sync → Supabase (manager board) ───────────────────────── */
 function sbReady(){ return !!(S.settings.sbUrl&&S.settings.sbKey); }
+function sbHdr(extra={}){ const k=S.settings.sbKey||''; return {'Content-Type':'application/json','apikey':k,...(k.startsWith('eyJ')?{'Authorization':'Bearer '+k}:{}),...extra}; }
+async function sbPost(table,row,prefer='return=minimal'){ const r=await fetch(S.settings.sbUrl+'/rest/v1/'+table,{method:'POST',headers:sbHdr({'Prefer':prefer}),body:JSON.stringify(row)}); if(!r.ok) throw new Error(r.status+' '+(await r.text()).slice(0,120)); return r; }
 function callRow(extra){
   const finals=S.lines.filter(l=>l.final&&l.text.trim());
-  return {id:S.callId, rep:S.settings.repName||'ללא שם', mode:S.single?'listen':'rep', status:S.running?'live':'ended',
-    started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round((Date.now()-S.startedAt)/1000),
+  return {id:S.callId, rep:S.settings.repName||'ללא שם', mode:S.simActive?'sim':(S.single?'listen':'rep'), status:S.running?'live':'ended',
+    started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round((Date.now()-S.startedAt)/1000), sim:!!S.simActive,
     stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
-    checks:S.checks||{}, ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length, ...extra};
+    checks:S.checks||{}, events:S.events||[], ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length, ...extra};
 }
 async function syncCall(extra={}){
   if(!sbReady()||!S.callId) return;
@@ -954,7 +1172,7 @@ async function syncCall(extra={}){
 }
 
 /* ───────────────────────── custom sentence on demand ───────────────────────── */
-const REQ_SCHEMA={type:'object',additionalProperties:false,properties:{sentence:{type:'string',description:'המשפט המדויק להגיד, בעברית מדוברת, 1-3 משפטים'},why:{type:'string',description:'למה זה עובד כאן, עד 15 מילים'},alt:{type:'string',description:'ניסוח חלופי קצר'},plan:{type:'array',items:{type:'string'},description:'עד 3 צעדים קצרים (עד 8 מילים כל אחד) איך להמשיך מכאן, או מערך ריק'}},required:['sentence','why','alt','plan']};
+const REQ_SCHEMA={type:'object',additionalProperties:false,properties:{sentence:{type:'string',description:'המשפט המדויק להגיד, בעברית מדוברת, 1-3 משפטים'},why:{type:'string',description:'למה זה עובד כאן, עד 15 מילים'},alt:{type:'string',description:'ניסוח חלופי קצר'},plan:{type:'array',items:{type:'string'},description:'עד 3 צעדים קצרים (עד 8 מילים כל אחד) איך להמשיך מכאן, או מערך ריק'},reasoning:{type:'object',additionalProperties:false,properties:{why_now:{type:'string'},principle:{type:'string'},goal:{type:'string'}},required:['why_now','principle','goal']}},required:['sentence','why','alt','plan','reasoning']};
 async function requestSentence(auto){
   const q=auto?'AUTO':$('reqInput').value.trim(); if(!q) return toast('כתוב מה אתה צריך, למשל: משפט סגירה','t-error');
   if(!S.settings.anthropic){openDrawer();return}
@@ -978,7 +1196,10 @@ ${transcript}
     });
     if(res.stop_reason==='refusal') throw new Error('המודל סירב');
     const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
+    const kind=auto?'ask':(q.startsWith('תוביל אותי')?'lead':'custom');
+    const ce=addEvent({kind,request:q==='AUTO'?'מה לשאול עכשיו':q.slice(0,200),text:o.sentence,why:o.why,plan:o.plan||[],reasoning:o.reasoning||null});
     $('sayText').textContent=o.sentence; $('sayWhy').textContent='למה: '+o.why+(o.alt?' · חלופה: '+o.alt:''); $('sayAvoid').textContent=(o.plan&&o.plan.length)?'🧭 '+o.plan.join(' ← '):'';
+    $('sayReason').innerHTML=o.reasoning?`<span>🧠 ${escapeHtml(o.reasoning.principle||'')}</span><span>🎯 ${escapeHtml(o.reasoning.goal||'')}</span>`:''; $('sayFb').innerHTML=fbButtons(ce.id);
     const sn=$('saynow'); sn.classList.add('custom'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
     setPill('pAI','on'); $('reqInput').value='';
   }catch(e){console.error(e);setPill('pAI','err');toast('שגיאה: '+(e.error?.error?.message||e.message||e).slice(0,140),'t-error')}
@@ -993,10 +1214,14 @@ const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
   next_step:{type:'string',description:'מה הוסכם / הצעד הבא, משפט אחד'},
   score:{type:'integer',minimum:1,maximum:10,description:'ציון ביצוע הנציג לפי הפלייבוק, 1-10'},
   stage_reached:{type:'string',enum:STAGES.map(x=>x.id)},
+  scores:{type:'object',additionalProperties:false,properties:{opening:{type:'integer',minimum:1,maximum:10,description:'פתיחת השיחה וראפור'},kyc:{type:'integer',minimum:1,maximum:10},pain:{type:'integer',minimum:1,maximum:10},objection:{type:'integer',minimum:1,maximum:10},goal:{type:'integer',minimum:1,maximum:10},motive:{type:'integer',minimum:1,maximum:10},solution:{type:'integer',minimum:1,maximum:10},close:{type:'integer',minimum:1,maximum:10},talk_ratio:{type:'integer',minimum:1,maximum:10,description:'יחס דיבור: 10 = הלקוח דיבר כ-60%'}},required:['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'],description:'ציון לכל פרמטר. שלב שלא הגיעו אליו: 1'},
+  opening_feedback:{type:'string',description:'משפט אחד על פתיחת השיחה: מה עבד ומה לשפר בפעם הבאה'},
+  lessons:{type:'array',items:{type:'string'},description:'3 לקחים עמוקים מהשיחה שהנציג לוקח לשיחה הבאה, עד 20 מילים כל אחד'},
+  one_thing:{type:'string',description:'הדבר האחד שאם הנציג ישנה בשיחה הבאה ישפר הכי הרבה, משפט אחד'},
   strengths:{type:'array',items:{type:'string'},description:'2-3 דברים שהנציג עשה נכון, עם ציטוט'},
   improvements:{type:'array',items:{type:'object',additionalProperties:false,properties:{quote:{type:'string'},better:{type:'string',description:'מה היה עדיף להגיד'},principle:{type:'string'}},required:['quote','better','principle']},description:'3 נקודות לשיפור קונקרטיות'},
   crm_text:{type:'string',description:'סיכום מנהלים מלא מוכן להדבקה ב-CRM, ללא Markdown, כותרות עם אימוג׳י: תמצית, פרופיל ופרטים שמסר, חום ליד ושלב, כאבים, התנגדויות ואיך טופלו, מטרה ומניע, הוסכם/צעד הבא, ציון ו-3 שיפורים'}
-},required:['summary','outcome','next_step','score','stage_reached','strengths','improvements','crm_text']};
+},required:['summary','outcome','next_step','score','stage_reached','strengths','improvements','crm_text','scores','opening_feedback','lessons','one_thing']};
 async function runSummary(auto){
   const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length) return;
   if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום…'; }
@@ -1017,16 +1242,174 @@ ${transcript}`}],
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לסכם');
     const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
     S.summary=o; syncCall({summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o});
-    $('modalBody').textContent=o.crm_text; if(auto){ toast('סיכום מוכן. ציון: '+o.score+'/10. לחץ "סיכום" לצפייה.','t-ok'); }
+    saveLocalHistory(o); renderDebrief(o); $('modal').classList.add('show'); if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok');
+    afterCallHooks();
   }catch(e){ const msg='שגיאה: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||e); if(!auto) $('modalBody').textContent=msg; log('Claude (סיכום): '+msg.slice(0,200),'err'); }
 }
-$('btnSummary').onclick=()=>{ if(S.summary){ $('modal').classList.add('show'); $('modalBody').textContent=S.summary.crm_text; } else runSummary(false); };
+$('btnSummary').onclick=()=>{ if(S.summary){ renderDebrief(S.summary); $('modal').classList.add('show'); } else runSummary(false); };
 $('btnCloseModal').onclick=()=>$('modal').classList.remove('show');
-$('btnCopy').onclick=()=>{navigator.clipboard.writeText($('modalBody').textContent);toast('הועתק','t-ok')};
+$('btnCopy').onclick=()=>{navigator.clipboard.writeText((S.summary&&S.summary.crm_text)||$('modalBody').textContent);toast('הסיכום ל-CRM הועתק','t-ok')};
+const PARAM_LABEL={opening:'פתיחה',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע',solution:'הצגה',close:'סגירה',talk_ratio:'יחס דיבור'};
+function renderDebrief(o){
+  const sc=o.scores||{}; const dur=Math.round((Date.now()-S.startedAt)/1000);
+  const bar=(k)=>{const v=sc[k]||0; const c=v>=8?'#10b981':v>=6?'#f5b342':'#ef4444'; return `<div class="pm"><div class="pl">${PARAM_LABEL[k]}</div><div class="pb"><i style="width:${v*10}%;background:${c}"></i></div><div class="pv">${v}</div></div>`};
+  $('modalBody').innerHTML=`
+  <div class="db-top">
+    <div class="db-score"><div class="big">${o.score}<small>/10</small></div><div class="lbl">ציון השיחה</div><div class="sub">${{closed:'✅ נסגר',follow_up:'📅 המשך טיפול',lost:'❌ לא נסגר',unknown:'—'}[o.outcome]||''} · ${STAGES.find(x=>x.id===o.stage_reached)?.l||''} · ${String(Math.floor(dur/60)).padStart(2,'0')}:${String(dur%60).padStart(2,'0')}</div></div>
+    <div class="db-one"><div class="k">🎯 הדבר האחד לשיחה הבאה</div><div class="t">${escapeHtml(o.one_thing||'')}</div><div class="k" style="margin-top:10px">🗣️ פתיחת השיחה</div><div class="s">${escapeHtml(o.opening_feedback||'')}</div></div>
+  </div>
+  <div class="db-grid">
+    <div class="db-box"><div class="k">📊 פרמטרים</div>${['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'].map(bar).join('')}</div>
+    <div class="db-box"><div class="k">💪 מה עבד</div><ul>${(o.strengths||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul><div class="k" style="margin-top:10px">📚 3 לקחים</div><ol>${(o.lessons||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ol></div>
+    <div class="db-box"><div class="k">🔧 לשפר, עם ציטוט</div>${(o.improvements||[]).map(i=>`<div class="imp"><div class="q">"${escapeHtml(i.quote)}"</div><div class="b">👉 ${escapeHtml(i.better)}</div><div class="p">${escapeHtml(i.principle)}</div></div>`).join('')}</div>
+  </div>
+  <details class="db-crm"><summary>📋 סיכום ל-CRM (לחץ להרחבה)</summary><pre>${escapeHtml(o.crm_text||'')}</pre></details>
+  <div class="db-actions"><button class="btn" onclick="openCoach('sim')">🎭 להתאמן על זה בסימולציה</button><button class="btn" onclick="openCoach('chat')">💬 לדבר עם המאמן על השיחה</button></div>`;
+}
+
+function saveLocalHistory(o){
+  try{ const h=JSON.parse(localStorage.getItem('lc_history')||'[]'); h.unshift({id:S.callId,ts:S.startedAt,dur:Math.round((Date.now()-S.startedAt)/1000),score:o.score,scores:o.scores,outcome:o.outcome,stage:o.stage_reached,improvements:(o.improvements||[]).map(i=>i.principle),one_thing:o.one_thing,mode:S.simActive?'sim':(S.single?'listen':'rep')}); localStorage.setItem('lc_history',JSON.stringify(h.slice(0,300))); }catch(e){}
+}
+function afterCallHooks(){ try{ const n=(parseInt(localStorage.getItem('lc_calls_since_sim')||'0')+ (S.simActive?0:1)); localStorage.setItem('lc_calls_since_sim',S.simActive?'0':String(n)); if(!S.simActive&&n>=5){ setTimeout(()=>{ toast('🎭 5 שיחות מאז הסימולציה האחרונה. זמן לאימון קצר עם המאמן.','t-ok'); $('coachBubble').classList.add('ping'); },4000); } detectPatterns(); }catch(e){} }
+
+/* ───────────────────────── coach panel: chat / simulation / daily ───────────────────────── */
+const MOTIV=['החודש הזה לא נגמר בסוף החודש. הוא נגמר כשהיעד כבוש.','רק ווינרים מגיעים לסוף החודש עם תוצאות. פראיירים מגיעים עם תירוצים.','כל שיחה היא הזדמנות שמישהו אחר היה משלם עליה. אל תבזבז אותה.','אתה לא מוכר קורס. אתה משנה למישהו את החיים. תתנהג בהתאם.','הלקוח מרגיש את הביטחון שלך לפני שהוא שומע את המילים שלך.','היעד לא כובש את עצמו. עוד שיחה. עוד העמקה. עוד סגירה.','מי שמתאמץ היום, סוגר מחר. מי שלא, מסביר בסוף החודש.','אל תסיים שיחה בלי צעד הבא. לעולם.','60% הלקוח, 40% אתה. שאל, שתוק, הקשב.','הכי טוב שיש זה לא סיסמה. זה החלטה שמתחילה בשיחה הבאה.','ווינר לא שואל אם הלקוח יקנה. הוא עוזר לו להחליט מי הוא רוצה להיות.','היום שלך נמדד בסגירות, לא בשעות.'];
+const PERSONAS=[
+  {id:'hitech',l:'שכירה בהייטק, ניסתה שופיפיי לבד ונתקעה',p:'דנה, 32, שכירה בהייטק, משכורת טובה. רוצה משהו משלה. פתחה חנות שופיפיי לפני שנה לבד ונתקעה אחרי חודשיים, שרפה 3,000 ש"ח בפרסום בלי מכירה. מפחדת לבחור מוצר לא נכון. חסמים: "אין לי זמן עם העבודה", "כבר שילמתי על קורס ביוטיוב". מתרככת רק כשמישהו באמת מבין את הכישלון הקודם שלה.'},
+  {id:'student',l:'סטודנט בלי כסף, רוצה להתחיל אבל מפחד',p:'עומר, 24, סטודנט, עובד במסעדה. רואה ביוטיוב אנשים שמצליחים באיקומרס ורוצה גם. אין לו הרבה כסף, מפחד להפסיד. חסמים: "יקר לי", "אולי אני צריך ללמוד לבד קודם". מניע עמוק: להוכיח להורים ולעצמו שהוא מסוגל. נפתח כששואלים על החלום, נסגר כשמוכרים לו.'},
+  {id:'owner',l:'בעל עסק סקפטי, "כל הקורסים בלוף"',p:'רועי, 41, בעל חנות פיזית. מחפש אפיק נוסף אונליין. סקפטי, חושב שכל מוכרי הקורסים נוכלים, שואל הרבה על מספרים. חסמים: "אני לא טכנולוגי", "השוק רווי". כאב אמיתי: העסק הפיזי בירידה, לחץ כלכלי, מתבייש להגיד. מכבד ישירות ואנשים שמדברים מניסיון.'},
+  {id:'mom',l:'אמא שרוצה הכנסה מהבית, מתייעצת עם בעלה',p:'נועה, 36, אמא לשלושה, עזבה עבודה. רוצה הכנסה מהבית ושליטה על הזמן. חסמים: "אני צריכה להתייעץ עם בעלי", "אין לי ביטחון בעצמי". מניע: להיות דוגמה לילדים, לא להיות תלויה. מתחברת לרגש ולסיפורים של נשים כמוה, בורחת מלחץ.'},
+  {id:'quiet',l:'לקוח שקט שעונה קצר, קשה להוציא ממנו',p:'יוסי, 29, שכיר בלוגיסטיקה. השאיר פרטים בלי הרבה מחשבה. עונה במילה או שתיים, "בסדר", "לא יודע", "אולי". נפתח רק לשאלות ספציפיות ואישיות. הכאב: משכורת נמוכה ותחושה שהחיים עוברים. חסם: "אני לא בטוח שזה בשבילי".'},
+];
+window.openCoach=(tab)=>{ $('coachPanel').classList.add('open'); $('coachBubble').classList.remove('ping'); if(tab) setCoachTab(tab); if(!S.chat.length) seedChat(); if(($('cpDaily').style.display!=='none')) renderDaily(); };
+window.closeCoach=()=>$('coachPanel').classList.remove('open');
+function setCoachTab(t){ for(const b of $('coachPanel').querySelectorAll('.cp-tabs button')) b.classList.toggle('on',b.dataset.tab===t); $('cpChat').style.display=t==='chat'?'':'none'; $('cpSim').style.display=t==='sim'?'':'none'; $('cpDaily').style.display=t==='daily'?'':'none'; if(t==='daily') renderDaily(); if(t==='chat') $('chatInput').focus(); }
+$('coachPanel').querySelector('.cp-tabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setCoachTab(b.dataset.tab); };
+$('simPersona').innerHTML='<option value="recent">לקוח כמו בשיחות האחרונות שלך</option>'+PERSONAS.map(p=>`<option value="${p.id}">${p.l}</option>`).join('');
+
+/* chat */
+function addChat(role,text){ S.chat.push({role,text}); const el=document.createElement('div'); el.className='cm '+(role==='user'?'me':'ai'); el.textContent=text; $('chatLog').appendChild(el); $('chatLog').scrollTop=$('chatLog').scrollHeight; return el; }
+function seedChat(){ const h=localHistory(); const pat=S.pattern; const name=S.settings.repName||''; const line=pat?`${name?name+', ':''}שמתי לב לדפוס ב-${pat.count} מהשיחות האחרונות: "${pat.principle}". רוצה שנעבוד על זה עכשיו? אפשר לדבר על זה כאן או להריץ סימולציה ממוקדת.`:h.length?`היי ${name}. ${MOTIV[Math.floor(Math.random()*MOTIV.length)]} מה תרצה לחדד היום?`:`היי ${name}. אני המאמן שלך. אפשר לשאול אותי על כל שיחה, לבקש תרגול, או לפתוח סימולציה. מאיפה מתחילים?`; addChat('assistant',line); }
+async function sendChat(){
+  const q=$('chatInput').value.trim(); if(!q) return; $('chatInput').value=''; addChat('user',q);
+  const el=addChat('assistant','…'); $('btnChatSend').disabled=true;
+  try{
+    const msgs=S.chat.slice(-16).map(m=>({role:m.role,content:m.text}));
+    const stream=getClient().beta.messages.stream({ model:'claude-opus-5', max_tokens:1200, betas:['server-side-fallback-2026-07-01'], fallbacks:'default', output_config:{effort:'low'},
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:'עכשיו אתה בצ\'אט חופשי עם הנציג, לא בשיחה חיה. דבר איתו אישית, קצר וברור (עד 120 מילים), כמאמן שמאמין בו ודורש ממנו. הנתונים שלו:\n'+repStatsText()+(S.pattern?'\nדפוס שזוהה: '+S.pattern.principle+' חזר ב-'+S.pattern.count+' שיחות מתוך 5.':'')+'\nאם הוא מבקש להתאמן, הצע לו ללחוץ על לשונית הסימולציה. אם הוא מתאר קושי בשלב מסוים, תן לו משפט מדויק לפי הפלייבוק ותרגיל קטן.'}],
+      messages:msgs });
+    let acc=''; for await(const ev of stream){ if(ev.type==='content_block_delta'&&ev.delta.type==='text_delta'){ acc+=ev.delta.text; el.textContent=acc; $('chatLog').scrollTop=$('chatLog').scrollHeight; } }
+    const fin=await stream.finalMessage(); if(fin.stop_reason==='refusal'){ el.textContent='לא יכול לענות על זה כאן.'; }
+    S.chat[S.chat.length-1].text=el.textContent;
+  }catch(e){ el.textContent='שגיאה: '+(e.error?.error?.message||e.message||e); }
+  finally{ $('btnChatSend').disabled=false; }
+}
+$('btnChatSend').onclick=sendChat; $('chatInput').addEventListener('keydown',e=>{ if(e.key==='Enter') sendChat(); });
+
+/* history + stats (local + Supabase) */
+function localHistory(){ try{ return JSON.parse(localStorage.getItem('lc_history')||'[]'); }catch(e){ return []; } }
+function repStatsText(){
+  const h=localHistory(); const today=h.filter(x=>new Date(x.ts).toDateString()===new Date().toDateString());
+  const avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1):'—';
+  const imps={}; for(const c of h.slice(0,10)) for(const p of (c.improvements||[])) imps[p]=(imps[p]||0)+1;
+  const top=Object.entries(imps).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>k+' ('+v+')').join(', ');
+  const g=S.settings.goal||{};
+  return `שיחות היום: ${today.length}, ציון ממוצע היום: ${avg(today.map(x=>x.score).filter(Boolean))}, ציון ממוצע 10 אחרונות: ${avg(h.slice(0,10).map(x=>x.score).filter(Boolean))}, פתיחה ממוצעת: ${avg(h.slice(0,10).map(x=>x.scores&&x.scores.opening).filter(Boolean))}, נושאי שיפור חוזרים: ${top||'אין עדיין'}. יעד חודשי: ${g.target||'לא הוגדר'} סגירות, הושגו ${g.achieved||0}.`;
+}
+function detectPatterns(){ const h=localHistory().slice(0,5); const c={}; for(const x of h) for(const p of new Set(x.improvements||[])) c[p]=(c[p]||0)+1; const top=Object.entries(c).sort((a,b)=>b[1]-a[1])[0]; if(top&&top[1]>=3){ S.pattern={principle:top[0],count:top[1]}; $('coachBubble').classList.add('ping'); if(S.chat.length){ addChat('assistant',`שמתי לב: "${top[0]}" חזר ב-${top[1]} מ-5 השיחות האחרונות. בוא נעבוד על זה. רוצה סימולציה ממוקדת?`); } } }
+async function teamCompare(){
+  if(!sbReady()) return null;
+  try{ const since=new Date(); since.setDate(since.getDate()-14); const r=await fetch(S.settings.sbUrl+'/rest/v1/calls?select=rep,score,summary_json,duration_sec,outcome&status=eq.ended&started_at=gte.'+encodeURIComponent(since.toISOString())+'&limit=400',{headers:sbHdr()}); if(!r.ok) return null; const rows=await r.json();
+    const me=S.settings.repName; const others=rows.filter(r=>r.rep!==me&&r.score!=null), mine=rows.filter(r=>r.rep===me&&r.score!=null);
+    const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null; const P=['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'];
+    const pm={},po={}; for(const k of P){ pm[k]=avg(mine.map(r=>r.summary_json&&r.summary_json.scores&&r.summary_json.scores[k]).filter(Boolean)); po[k]=avg(others.map(r=>r.summary_json&&r.summary_json.scores&&r.summary_json.scores[k]).filter(Boolean)); }
+    return {mine:avg(mine.map(r=>r.score)),others:avg(others.map(r=>r.score)),pm,po,nOthers:new Set(others.map(r=>r.rep)).size,closeMine:mine.filter(r=>r.outcome==='closed').length,closeOthers:others.length?others.filter(r=>r.outcome==='closed').length/Math.max(1,new Set(others.map(r=>r.rep)).size):null};
+  }catch(e){ return null; }
+}
+/* daily view */
+function monthKey(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+window.saveGoal=()=>{ const t=parseInt($('goalTarget').value)||0, a=parseInt($('goalAchieved').value)||0; S.settings.goal={month:monthKey(),target:t,achieved:a,updated:Date.now()}; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); if(sbReady()) sbPost('reps',{name:S.settings.repName||'ללא שם',month:monthKey(),target:t,achieved:a,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal').catch(()=>{}); toast('היעד עודכן. עכשיו לכבוש אותו.','t-ok'); renderDaily(); };
+async function renderDaily(){
+  const h=localHistory(); const now=new Date(); const todayL=h.filter(x=>new Date(x.ts).toDateString()===now.toDateString()&&x.mode!=='sim');
+  const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null; const f=v=>v==null?'—':v.toFixed(1);
+  const g=(S.settings.goal&&S.settings.goal.month===monthKey())?S.settings.goal:null;
+  const daysLeft=Math.max(1,new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate()+1);
+  const imps={}; for(const c of h.slice(0,10)) for(const p of (c.improvements||[])) imps[p]=(imps[p]||0)+1; const top=Object.entries(imps).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const motiv=MOTIV[(now.getDate()+h.length)%MOTIV.length];
+  const goalHtml=g?`<div class="d-box"><div class="k">🎯 היעד החודשי</div><div style="display:flex;justify-content:space-between;font-weight:800"><span>${g.achieved} / ${g.target} סגירות</span><span>${Math.max(0,g.target-g.achieved)} נותרו</span></div><div class="goal-bar"><i style="width:${Math.min(100,g.target?g.achieved/g.target*100:0)}%"></i></div><div class="hint">${daysLeft} ימים נותרו · קצב נדרש: ${((Math.max(0,g.target-g.achieved))/daysLeft).toFixed(1)} סגירות ביום</div><div class="goal-form" style="margin-top:8px"><div><label class="field-label">יעד</label><input class="field-input" id="goalTarget" type="number" value="${g.target}"></div><div><label class="field-label">הושגו</label><input class="field-input" id="goalAchieved" type="number" value="${g.achieved}"></div><button class="btn btn-sm" onclick="saveGoal()">עדכן</button></div></div>`
+    :`<div class="d-box"><div class="k">🎯 חודש חדש: מה היעד שלך?</div><div class="hint">כמה סגירות אתה כובש החודש, וכמה כבר יש? זה יופיע לך מול העיניים כל יום.</div><div class="goal-form" style="margin-top:8px"><div><label class="field-label">יעד סגירות</label><input class="field-input" id="goalTarget" type="number" placeholder="למשל 12"></div><div><label class="field-label">הושגו עד כה</label><input class="field-input" id="goalAchieved" type="number" placeholder="0"></div><button class="btn btn-sm btn-primary" onclick="saveGoal()">שמור</button></div></div>`;
+  $('dailyBody').innerHTML=`<div class="motiv">🔥 ${escapeHtml(motiv)}</div>
+    <div class="d-kpis"><div class="d-kpi"><div class="v">${f(avg(todayL.map(x=>x.score).filter(Boolean)))}</div><div class="l">ציון יומי</div></div><div class="d-kpi"><div class="v">${todayL.length}</div><div class="l">שיחות היום</div></div><div class="d-kpi"><div class="v">${f(avg(todayL.map(x=>x.scores&&x.scores.opening).filter(Boolean)))}</div><div class="l">פתיחות</div></div></div>
+    ${goalHtml}
+    <div class="d-box"><div class="k">🔧 מה חוזר אצלך (10 שיחות אחרונות)</div>${top.length?'<ul style="padding-right:18px;margin:0">'+top.map(([k,v])=>`<li>${escapeHtml(k)} <span class="hint">· ${v} פעמים</span></li>`).join('')+'</ul>':'<div class="hint">עדיין אין מספיק שיחות. אחרי 2-3 שיחות תראה כאן דפוסים.</div>'}</div>
+    <div class="d-box" id="dCompare"><div class="k">👥 מול הצוות</div><div class="hint">טוען…</div></div>
+    <div class="d-box" id="dFocus"><div class="k">🧠 הדגשים של המאמן להיום</div><div class="hint">${S.dailyFocus&&S.dailyFocus.day===now.toDateString()?escapeHtml(S.dailyFocus.text):''}</div>${!(S.dailyFocus&&S.dailyFocus.day===now.toDateString())?'<button class="btn btn-sm" onclick="dailyFocus()">קבל דגשים להיום</button>':''}</div>
+    <div class="d-box"><div class="k">🚀 השלב הבא שלך</div><div class="hint">${h.length<3?'שלוש שיחות מסוכמות, ואני אגיד לך בדיוק איפה אתה נופל ואיפה אתה מנצח.':'לחץ על "🎭 סימולציה" ותתאמן 5 דקות על הנושא שחוזר הכי הרבה. זה ההבדל בין נציג טוב לווינר מספר 1.'}</div></div>`;
+  const cmp=await teamCompare(); const el=$('dCompare'); if(!el) return;
+  if(!cmp||cmp.others==null){ el.innerHTML='<div class="k">👥 מול הצוות</div><div class="hint">'+(sbReady()?'אין עדיין מספיק נתונים מהצוות.':'לא מחובר לצוות.')+'</div>'; return; }
+  const P=Object.entries(cmp.pm).filter(([k,v])=>v!=null&&cmp.po[k]!=null); const weak=P.filter(([k,v])=>v<cmp.po[k]-0.7).map(([k])=>PARAM_LABEL[k]); const strong=P.filter(([k,v])=>v>cmp.po[k]+0.7).map(([k])=>PARAM_LABEL[k]);
+  el.innerHTML=`<div class="k">👥 מול הצוות (14 יום, ${cmp.nOthers} נציגים)</div><div>הציון שלך: <b>${f(cmp.mine)}</b> · ממוצע נציגים אחרים: <b>${f(cmp.others)}</b></div>${strong.length?`<div style="margin-top:4px">💪 חזק יותר מהצוות ב: ${strong.join(', ')}</div>`:''}${weak.length?`<div style="margin-top:4px">🎯 יש כמה נציגים שעושים טוב יותר ב: ${weak.join(', ')}. שם הפער, ושם הצמיחה.</div>`:'<div style="margin-top:4px">אין פערים משמעותיים מול הצוות. עכשיו להעלות את הרף.</div>'}`;
+}
+window.dailyFocus=async()=>{
+  const btn=$('dFocus').querySelector('button'); if(btn){btn.disabled=true;btn.textContent='חושב…';}
+  try{ const res=await getClient().beta.messages.create({ model:'claude-opus-5', max_tokens:700, betas:['server-side-fallback-2026-07-01'], fallbacks:'default', output_config:{effort:'low'},
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
+      messages:[{role:'user',content:'כתוב לנציג 3 דגשים להיום (משפט אחד כל אחד, קונקרטי, לפי הפלייבוק), על בסיס הנתונים שלו, ובסוף משפט מוטיבציה אחד חד על כיבוש היעד החודשי. בלי כותרות, בלי Markdown, עד 90 מילים. הנתונים: '+repStatsText()+' לקחים אחרונים: '+localHistory().slice(0,5).map(x=>x.one_thing).filter(Boolean).join(' | ')}] });
+    const t=res.content.filter(b=>b.type==='text').map(b=>b.text).join(''); S.dailyFocus={day:new Date().toDateString(),text:t}; localStorage.setItem('lc_focus',JSON.stringify(S.dailyFocus)); renderDaily();
+  }catch(e){ toast('שגיאה: '+(e.message||e).slice(0,100),'t-error'); if(btn){btn.disabled=false;btn.textContent='קבל דגשים להיום';} }
+};
+try{ S.dailyFocus=JSON.parse(localStorage.getItem('lc_focus')||'null'); }catch(e){}
+
+/* simulation: the rep speaks, Claude answers as the customer, the coach keeps coaching */
+function simPersonaText(){
+  const v=$('simPersona').value; if(v!=='recent'){ const p=PERSONAS.find(x=>x.id===v); return p?p.p:PERSONAS[0].p; }
+  const profs=(S.recentProfiles||[]).filter(Boolean); if(profs.length){ const pr=profs[Math.floor(Math.random()*profs.length)]; return 'לקוח שדומה ללקוח אמיתי מהשיחות האחרונות: '+pr+' תן לו שם, חסם אחד ברור ומניע עמוק שהוא לא אומר בהתחלה.'; }
+  return PERSONAS[Math.floor(Math.random()*PERSONAS.length)].p;
+}
+async function loadRecentProfiles(){ if(!sbReady()) return; try{ const r=await fetch(S.settings.sbUrl+'/rest/v1/calls?select=profile&rep=eq.'+encodeURIComponent(S.settings.repName||'')+'&status=eq.ended&order=started_at.desc&limit=15',{headers:sbHdr()}); if(r.ok){ S.recentProfiles=(await r.json()).map(x=>x.profile).filter(x=>x&&x.length>20); } }catch(e){} }
+async function startSim(){
+  if(S.running||S.day) return toast('סיים קודם את השיחה או את מצב היום','t-error');
+  if(!S.settings.openai) {openDrawer();return toast('הסימולציה צריכה מפתח OpenAI לתמלול','t-error')}
+  if(!S.settings.anthropic){openDrawer();return}
+  $('btnSimStart').disabled=true; $('simState').textContent='מבקש מיקרופון…';
+  try{
+    const mic=await navigator.mediaDevices.getUserMedia({audio:{deviceId:S.settings.mic?{exact:S.settings.mic}:undefined,echoCancellation:true,noiseSuppression:true}});
+    $('simState').textContent='מתחבר לתמלול…'; S.single=false; $('modeTag').style.display='none';
+    const ws=await openStt('rep'); await pipe(mic,'rep',ws,'mRep'); if(S.audio.ctx.state!=='running') await S.audio.ctx.resume();
+    S.simPersona=simPersonaText(); S.simFocus=$('simFocus').value; S.simHistory=[]; S.simActive=true;
+    beginSession(false); S.simActive=true;
+    $('btnSimStart').style.display='none'; $('btnSimStop').style.display=''; $('simState').textContent='🎭 הסימולציה רצה. פתח את השיחה כמו שאתה פותח עם לקוח אמיתי. הלקוח יענה בתמלול.';
+    $('liveTag').textContent='סימולציה'; closeCoach(); toast('סימולציה התחילה. דבר.','t-ok');
+    const focusLine={opening:'',pain:'הלקוח כבר אמר שהוא "תקוע" ומחכה שיעמיקו איתו.',objection:'הלקוח יעלה מהר התנגדות של מחיר או זמן.',close:'השיחה כבר עברה כאב ומטרה, הלקוח מתלבט לפני החלטה.',full:''}[S.simFocus];
+    if(S.simFocus!=='opening'&&S.simFocus!=='full'){ await simCustomerTurn(true,focusLine); }
+  }catch(e){ console.error(e); $('simState').textContent='❌ '+(e.message||e); teardownAudio(); S.simActive=false; }
+  finally{ $('btnSimStart').disabled=false; }
+}
+function stopSim(){ if(S.simActive){ stopCall(); } }
+$('btnSimStart').onclick=startSim; $('btnSimStop').onclick=stopSim;
+async function simCustomerTurn(opening,focusLine){
+  if(!S.simActive||S.simBusy) return; S.simBusy=true;
+  const finals=S.lines.filter(l=>l.final&&l.text.trim());
+  const rep=S.settings.repName||'הנציג';
+  const transcript=finals.map(l=>`[${l.who==='rep'?rep:'לקוח'}]: ${l.text}`).join('\n');
+  try{
+    const res=await getClient().beta.messages.create({ model:'claude-opus-5', max_tokens:220, betas:['server-side-fallback-2026-07-01'], fallbacks:'default', output_config:{effort:'low'},
+      system:[{type:'text',text:`אתה משחק לקוח בסימולציית מכירה לאימון נציג של מועדון האיקומרס. הדמות שלך: ${S.simPersona}
+כללים: ענה כמו בן אדם אמיתי בטלפון, 1-2 משפטים, עברית מדוברת, בלי הסברים ובלי לצאת מהדמות. אל תהיה קל מדי ואל תהיה בלתי אפשרי: תיפתח רק כשהנציג שואל נכון, תעלה התנגדויות טבעיות, תענה קצר לשאלות שטחיות ותרחיב לשאלות טובות. אם הנציג מציע פתרון לפני שהבין אותך, תתרחק. אם הוא מעמיק בכאב, תיפתח יותר. ${focusLine||''}
+${(S.training||[]).filter(n=>n.scope==='simulation').slice(0,10).map(n=>'הנחיית המנהל: '+n.text).join('\n')}
+ענה רק בטקסט של הלקוח.`}],
+      messages:[{role:'user',content:(opening?'התחל את השיחה: הנציג עדיין לא דיבר. אמור משפט פתיחה קצר של לקוח שענה לטלפון.':'התמלול עד עכשיו:\n'+transcript+'\n\nענה כלקוח למה שהנציג אמר הרגע.')}] });
+    let t=res.content.filter(b=>b.type==='text').map(b=>b.text).join('').trim(); if(!t) t='…';
+    upsertLine('simc_'+Date.now(),'cust',t,true);
+    if($('simTts').checked&&'speechSynthesis' in window){ const u=new SpeechSynthesisUtterance(t); u.lang='he-IL'; const v=speechSynthesis.getVoices().find(v=>/he/i.test(v.lang)); if(v) u.voice=v; u.rate=1.05; speechSynthesis.speak(u); }
+  }catch(e){ console.error(e); toast('הלקוח המדומה נתקע: '+(e.message||e).slice(0,80),'t-error'); }
+  finally{ S.simBusy=false; }
+}
+loadRecentProfiles();
 
 /* ───────────────────────── init ───────────────────────── */
 const fromLink=applyHashConfig();
-loadSettings(); renderStages();
+loadSettings(); renderStages(); loadTraining();
 if(fromLink){ toast('ההגדרות מהלינק נטענו','t-ok'); }
 if(!S.settings.repName){ setTimeout(()=>{ let n=null; try{ n=prompt('ברוך הבא ל-LiveCoach. מה השם שלך? (יופיע בבורד המנהל)','') }catch(e){} if(n&&n.trim()){ S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); } },600); }
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
