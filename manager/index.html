@@ -216,7 +216,8 @@ $('dayPick').onchange=()=>render();
 function range(){ const now=new Date(); const d=$('dayPick').value; const s=new Date(now); s.setHours(0,0,0,0); if(d==='yesterday'){ s.setDate(s.getDate()-1); const e=new Date(s); e.setDate(e.getDate()+1); return [s,e]; } if(d==='week'){ s.setDate(s.getDate()-6); } return [s,new Date(now.getTime()+3600e3)]; }
 async function fetchRows(){
   const since=new Date(); since.setDate(since.getDate()-8);
-  const url=CFG.sbUrl+'/rest/v1/calls?select=*&order=updated_at.desc&limit=400&started_at=gte.'+encodeURIComponent(since.toISOString());
+  const LIGHT='id,rep,mode,sim,status,started_at,updated_at,ended_at,duration_sec,stage,stage_idx,stage_reached,temperature,profile,customer_state,say_now,ammo,checks,open_barriers,summary,summary_json,score,outcome,next_step,events';
+  const url=CFG.sbUrl+'/rest/v1/calls?select='+LIGHT+'&status=neq.void&order=updated_at.desc&limit=400&started_at=gte.'+encodeURIComponent(since.toISOString());
   const r=await fetch(url,{headers:{'apikey':CFG.sbKey,...(CFG.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+CFG.sbKey}:{})}});
   if(!r.ok){ throw new Error(r.status+' '+(await r.text()).slice(0,140)); }
   return r.json();
@@ -248,13 +249,14 @@ $('scopes').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; SCOP
 $('fScope').innerHTML='<option value="">כל הנושאים</option>'+Object.entries(SCOPES).map(([k,l])=>`<option value="${k}">${l}</option>`).join('');
 $('btnTrainSave').onclick=async()=>{ const t=$('trainText').value.trim(); if(!t) return toast('כתוב הנחיה'); $('btnTrainSave').disabled=true; try{ await sb('POST','training',{scope:SCOPE,text:t,source:'manager'},'return=minimal'); $('trainText').value=''; $('trainStatus').textContent='נשמר. נכנס לתוקף בשיחה הבאה של כל נציג.'; await fetchTraining(); render(); }catch(e){ $('trainStatus').textContent='שגיאה: '+e.message; } finally{ $('btnTrainSave').disabled=false; } };
 window.delTrain=async(id)=>{ if(!confirm('למחוק את ההנחיה?')) return; try{ await sb('DELETE','training?id=eq.'+encodeURIComponent(id)); await fetchTraining(); render(); }catch(e){ toast('שגיאה: '+e.message); } };
-const allEvents=()=>ROWS.flatMap(r=>(r.events||[]).map(e=>({...e,call:r})));
+const fixFor=e=>e.fix||(TRAIN.find(t=>t.event_id===e.id)||{}).text||'';
+const allEvents=()=>ROWS.flatMap(r=>(r.events||[]).map(e=>({...e,fix:fixFor(e),call:r})));
 function evHtml(e,r,opts={}){
   const t=new Date(e.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); const rs=e.reasoning||{};
   return `<div class="ev ${e.kind||''}" id="ev_${e.id}"><div class="eh"><span>🤖 ${KIND[e.kind]||e.kind||'המלצה'}</span><span>· ${t}</span><span>· שלב: ${STAGES.find(s=>s.id===e.stage)?.l||e.stage||''}</span>${e.request?`<span>· בקשה: "${esc(String(e.request).slice(0,60))}"</span>`:''}${opts.showCall?`<span>· <a href="#" onclick="openDetail('${r.id}');return false" style="color:#c4b5fd">${esc(r.rep)} · ${new Date(r.started_at).toLocaleDateString('he-IL')}</a></span>`:''}<span class="fbm">${e.fb==='like'?'👍':e.fb==='dislike'?'👎':''}</span></div>
     ${e.quote?`<div class="hint">"${esc(e.quote)}"</div>`:''}<div class="et">${esc(e.text||'')}</div>${e.why?`<div class="hint">למה: ${esc(e.why)}</div>`:''}${(e.plan&&e.plan.length)?`<div class="hint">🧭 ${esc(e.plan.join(' ← '))}</div>`:''}
     <div class="er"><div><b>למה עכשיו:</b> ${esc(rs.why_now||'—')}</div><div><b>עיקרון:</b> ${esc(rs.principle||'—')}</div><div><b>מה ניסיתי להשיג:</b> ${esc(rs.goal||'—')}</div></div>
-    ${e.fix?`<div class="fixed">✅ לימדת: ${esc(e.fix)}</div>`:''}
+    ${fixFor(e)?`<div class="fixed">✅ לימדת: ${esc(fixFor(e))}</div>`:''}
     <div class="teach"><textarea id="fix_${e.id}" placeholder="למד אותי: מה היה נכון לעשות כאן ואיך לפעול פעם הבאה…">${e.fix?'':''}</textarea><button class="btn btn-sm btn-primary" onclick="teach('${r.id}','${e.id}')">שמור</button></div></div>`;
 }
 window.teach=async(callId,evId)=>{
@@ -314,6 +316,7 @@ function renderLog(){
     return `<div class="logrow" onclick="openDetail('${r.id}')"><div><span class="score ${scoreCls(r.score)}">${r.score??'—'}</span></div><div><b>${esc(r.rep)}</b> ${r.mode==='sim'?'<span class="tag">🎭 סימולציה</span>':r.mode==='listen'?'<span class="tag">👂 האזנה</span>':''}<div class="prof" style="margin:2px 0 0">${esc((r.summary_json&&r.summary_json.summary)||r.next_step||'')}</div></div><div>${new Date(r.started_at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div><div>${fmtDur(r.duration_sec)}</div><div>${STAGES[stageIdx(r)]?.l||''}</div><div>${lk?'👍'+lk+' ':''}${dl?'👎'+dl+' ':''}${fx?'✅'+fx:''}</div></div>`; }).join(''):'<div class="empty">אין שיחות שמתאימות לסינון</div>';
 }
 function renderDislikes(){
+  if(document.activeElement&&document.activeElement.tagName==='TEXTAREA'&&$('dlList').contains(document.activeElement)) return;
   const list=allEvents().filter(e=>e.fb==='dislike').sort((a,b)=>b.ts-a.ts);
   $('dlTotal').textContent='· '+list.length+(list.filter(e=>!e.fix).length?' · '+list.filter(e=>!e.fix).length+' ממתינים לתיקון':'');
   $('dlList').innerHTML=list.length?list.map(e=>evHtml(e,e.call,{showCall:true})).join(''):'<div class="empty">אין דיסלייקים. או שהמאמן מדויק, או שהנציגים לא לוחצים 👎. תזכיר להם.</div>';
@@ -326,13 +329,16 @@ function renderTrain(){
   const reps=REPS.filter(r=>r.month===month); $('repsGoals').innerHTML=reps.length?reps.map(r=>`<div class="note"><div class="sc">${esc(r.name)}</div><div class="tx">${r.achieved}/${r.target} סגירות<div class="goal-bar" style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${Math.min(100,r.target?r.achieved/r.target*100:0)}%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></i></div></div></div>`).join(''):'<div class="hint">הנציגים מגדירים יעד בתחילת החודש דרך "📈 היום שלי". כאן תראה את ההתקדמות.</div>';
 }
 /* ── detail ── */
-window.openDetail=function(id,refresh){
-  const r=ROWS.find(x=>x.id===id); if(!r) return; SEL=id;
+const FULL={};
+async function fetchFull(id){ try{ const r=await fetch(CFG.sbUrl+'/rest/v1/calls?select=*&id=eq.'+encodeURIComponent(id),{headers:hdr()}); if(r.ok){ const a=await r.json(); if(a[0]){ FULL[id]=a[0]; const i=ROWS.findIndex(x=>x.id===id); if(i>=0) ROWS[i]={...ROWS[i],...a[0]}; } } }catch(e){} }
+window.openDetail=async function(id,refresh){
+  if(!refresh||!FULL[id]||isLive(ROWS.find(x=>x.id===id)||{})) await fetchFull(id);
+  const r0=ROWS.find(x=>x.id===id); if(!r0) return; const r={...(FULL[id]||{}),...r0,transcript:(r0.transcript||(FULL[id]||{}).transcript||[]),insights:(r0.insights||(FULL[id]||{}).insights||[])}; SEL=id;
   if(!refresh){ $('drawer').classList.add('open'); $('overlay').classList.add('show'); }
   $('dAv').textContent=initials(r.rep); $('dName').firstChild.textContent=r.rep||'—';
   $('dMeta').textContent=(isLive(r)?'בשיחה עכשיו · ':r.status==='ended'?'הסתיימה · ':'נותק · ')+(isLive(r)?liveDur(r):fmtDur(r.duration_sec))+' · התחילה '+new Date(r.started_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' · '+(r.mode==='listen'?'האזנה':'נציג');
   $('dStatus').textContent=(STAGES[stageIdx(r)]?.l||'')+' · '+(TEMP[r.temperature]||'');
-  const tr=$('dTranscript'); const atBottom=tr.scrollHeight-tr.scrollTop-tr.clientHeight<60;
+  const tr=$('dTranscript'); const sc=tr.parentElement; const atBottom=sc.scrollHeight-sc.scrollTop-sc.clientHeight<60;
   const focus=document.activeElement&&document.activeElement.tagName==='TEXTAREA'; if(focus&&refresh){ /* don't wipe a fix being typed */ }
   else {
   const items=[...(r.transcript||[]).map(l=>({t:'line',ts:l.ts,l})),...(r.events||[]).map(e=>({t:'ev',ts:e.ts,e}))].sort((a,b)=>a.ts-b.ts);

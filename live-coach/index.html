@@ -225,9 +225,13 @@
   .panel-h{min-height:48px}
   .reqbar{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:stretch}
   .reqbar input{min-height:40px}
-  .ck-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
-  @media(max-width:700px){.ck-btns{grid-template-columns:1fr}}
-  .btn.lead{justify-content:flex-start;text-align:right;padding:9px 12px;min-height:52px;background:var(--surface);border:1px solid var(--border);border-radius:12px;white-space:normal}
+  .ck-btns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+  @media(max-width:1100px){.ck-btns{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:600px){.ck-btns{grid-template-columns:1fr}}
+  .logfoot{margin:0 22px 90px;padding-top:6px}
+  .logfoot summary{cursor:pointer;font-size:12px;color:var(--text-muted);font-weight:700;list-style:none;display:flex;gap:10px;align-items:center}
+  .logfoot summary::-webkit-details-marker{display:none}
+  .btn.lead{justify-content:flex-start;text-align:right;padding:8px 10px;min-height:48px;background:var(--surface);border:1px solid var(--border);border-radius:12px;white-space:normal}
   .btn.lead:hover{border-color:rgba(168,85,247,.6);background:var(--surface3)}
   .btn.lead i{font-style:normal;font-size:20px;width:28px;text-align:center;flex:none}
   .btn.lead span{display:flex;flex-direction:column;gap:2px;font-size:13.5px;font-weight:800;line-height:1.2}
@@ -275,8 +279,6 @@
     <span id="stageHint">ממתין לתחילת שיחה…</span>
     <span id="winHint" style="font-size:11px">💡 פתח את LiveCoach בכרום רגיל, בחלון נפרד ליד ToChat.</span>
   </div>
-  <div id="syncTag" class="sync" style="margin-top:8px"></div>
-  <div id="status" style="display:none;margin-top:10px;font-size:12px;line-height:1.7;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text-muted);font-family:ui-monospace,Menlo,monospace;direction:rtl"></div>
   <div style="display:none">
     <span class="temp t-cold" id="temp">חום ליד: <b>—</b></span>
   </div>
@@ -317,6 +319,10 @@
     </div>
   </section>
 </main>
+<footer class="logfoot">
+  <div id="syncTag" class="sync"></div>
+  <details id="statusWrap"><summary>🧾 יומן טכני <span id="statusLast" class="hint"></span></summary><div id="status" style="display:none;margin-top:8px;font-size:12px;line-height:1.7;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text-muted);font-family:ui-monospace,Menlo,monospace;direction:rtl"></div></details>
+</footer>
 
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer">
@@ -403,7 +409,7 @@
     <div class="sim-btns"><button class="btn btn-primary" id="btnSimStart">🎭 התחל סימולציה</button><button class="btn btn-danger" id="btnSimStop" style="display:none">■ סיים סימולציה</button></div>
     <div class="hint" id="simState">הסימולציה משתמשת במיקרופון בלבד. תשובות הלקוח מופיעות בתמלול בצד.</div>
   </div>
-  <div class="cp-b" id="cpDaily"><div id="dailyBody" class="daily"></div></div>
+  <div class="cp-b" id="cpDaily" style="display:none"><div id="dailyBody" class="daily"></div></div>
 </div>
 
 <script type="module">
@@ -455,7 +461,7 @@ const $ = id=>document.getElementById(id);
 const escapeHtml=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const toast=(m,c='')=>{const t=$('toast');t.textContent=m;t.className='toast show '+c;clearTimeout(t._h);t._h=setTimeout(()=>t.className='toast',3200)};
 const setPill=(id,st)=>{const p=$(id);p.className='pill '+st};
-const LOG=[];function log(m,kind=''){const t=new Date().toLocaleTimeString('he-IL');LOG.push(`${t} ${kind==='err'?'❌':kind==='ok'?'✅':'•'} ${m}`);if(LOG.length>6)LOG.shift();const el=$('status');el.style.display='';el.innerHTML=LOG.map(escapeHtml).join('<br>');console.log('[LiveCoach]',m)}
+const LOG=[];function log(m,kind=''){const t=new Date().toLocaleTimeString('he-IL');LOG.push(`${t} ${kind==='err'?'❌':kind==='ok'?'✅':'•'} ${m}`);if(LOG.length>12)LOG.shift();const el=$('status');el.style.display='';el.innerHTML=LOG.map(escapeHtml).join('<br>');const sl=$('statusLast');if(sl){sl.textContent='· '+m.slice(0,90);sl.style.color=kind==='err'?'#fca5a5':''} if(kind==='err'){$('statusWrap').open=true} console.log('[LiveCoach]',m)}
 
 /* ───────────────────────── settings ───────────────────────── */
 function loadSettings(){
@@ -558,11 +564,11 @@ function setStage(id){const i=STAGES.findIndex(s=>s.id===id); if(i<0) return; if
 
 /* ───────────────────────── transcript ───────────────────────── */
 const norm=t=>t.replace(/[^\p{L}\p{N} ]/gu,' ').toLowerCase().split(/\s+/).filter(w=>w.length>1);
-function similar(a,b){const A=new Set(norm(a)),B=new Set(norm(b));if(!A.size||!B.size)return 0;let n=0;for(const w of A)if(B.has(w))n++;return n/Math.min(A.size,B.size)}
+function similar(a,b){const A=new Set(norm(a)),B=new Set(norm(b));if(A.size<4||B.size<4)return 0;let n=0;for(const w of A)if(B.has(w))n++;return n/Math.max(A.size,B.size)}
 function isEcho(ln){ // rep-channel line that duplicates a recent customer-channel line (or vice versa) within 8s
-  if(S.single||S.demo) return false;
+  if(S.single||S.demo||S.simActive) return false;
   const other=ln.who==='rep'?'cust':'rep';
-  return S.lines.some(o=>o.who===other&&o.id!==ln.id&&o.text.trim()&&Math.abs(o.ts-ln.ts)<8000&&similar(o.text,ln.text)>=0.6&&(ln.who==='rep'||o.final));
+  return S.lines.some(o=>o.who===other&&o.id!==ln.id&&o.text.trim()&&Math.abs(o.ts-ln.ts)<8000&&similar(o.text,ln.text)>=0.75&&(ln.who==='rep'||o.final));
 }
 function upsertLine(id,who,text,final){
   let ln=S.lines.find(l=>l.id===id);
@@ -585,7 +591,7 @@ function onFinalLine(ln){
 // occluded windows (down to once a minute), but audio callbacks keep flowing, so every time-based trigger also runs here.
 function tick(){
   const now=Date.now(); if(now-(S.lastTick||0)<250) return; S.lastTick=now;
-  if(S.day&&!S.running&&!S.autoStarting){ const recent=S.burst.filter(t=>now-t<3000).length; if(recent>=8) autoStartCall(); return; }
+  if(S.day&&!S.running&&!S.autoStarting){ const lvl=S.lastPeak||{}; const st=$('dayState'); if(st&&now-(S.dayUiAt||0)>1000){ S.dayUiAt=now; st.textContent='🟢 מאזין · לקוח '+(now-(S.act.cust||0)<1500?'🔊':'·')+' נציג '+(now-(S.act.rep||0)<1500?'🔊':'·')+' · תמלול '+((S.ws.cust&&S.ws.cust.readyState===1)?'מחובר':'מתחבר…'); } return; }
   if(S.day&&S.running&&!S.demo){ const last=Math.max(S.act.rep||0,S.act.cust||0); const endSec=parseInt(S.settings.autoEndSec)||25; if(now-S.startedAt>20000&&now-last>endSec*1000){ log('שקט '+endSec+' שניות בשני הערוצים: השיחה הסתיימה'); stopCall(); return; } }
   if(!S.running) return;
   if(S.analysisInFlight&&now-(S.inFlightAt||now)>75000){ S.analysisInFlight=false; log('המאמן לא ענה 75 שניות, מאפס וממשיך','err'); }
@@ -681,7 +687,8 @@ function openStt(who){
           /model/i.test(code+msg)?'מודל התמלול לא זמין בחשבון שלך. נסה מודל אחר בהגדרות.':msg.slice(0,140);
         log('OpenAI ('+label+'): '+code+' — '+friendly,'err');toast('שגיאת תמלול ('+label+'): '+friendly,'t-error');
         if(!settled){settled=true;reject(new Error(friendly))}return}
-      if(m.type==='transcription_session.updated'||m.type==='session.updated'){if(!settled){settled=true;setPill(pill,'on');log('OpenAI ('+label+'): מוכן לתמלול','ok');resolve(ws)}}
+      if(m.type==='transcription_session.updated'||m.type==='session.updated'){if(!settled){settled=true;ws.openedAt=Date.now();setPill(pill,S.day&&!S.running?'busy':'on');log('OpenAI ('+label+'): מוכן לתמלול','ok');resolve(ws)}}
+      if(m.type==='input_audio_buffer.speech_started'||/transcription\.(delta|completed)$/.test(m.type)){ S.act[who]=Date.now(); if(S.day&&!S.running&&!S.autoStarting&&who==='cust'&&m.type==='input_audio_buffer.speech_started'){ autoStartCall(); } }
       if(m.type==='input_audio_buffer.speech_started') log('OpenAI ('+label+'): זוהה דיבור');
       const spk=S.single?'unk':who;
       if(m.type==='conversation.item.input_audio_transcription.delta'){const id=who+'_'+m.item_id;const ln=S.lines.find(l=>l.id===id);upsertLine(id,ln?ln.who:spk,(ln?ln.text:'')+(m.delta||''),false)}
@@ -689,7 +696,9 @@ function openStt(who){
       if(m.type==='input_audio_buffer.speech_started'){const id=who+'_'+m.item_id;if(!S.lines.find(l=>l.id===id))upsertLine(id,spk,'…',false); if(who==='rep'&&!S.single&&S.analysisPending){clearTimeout(S.custQuietTimer);scheduleAnalysis()}}
     };
     ws.onerror=e=>{setPill(pill,'err');log('OpenAI ('+label+'): החיבור נכשל. מפתח OpenAI לא תקין או חסום','err');if(!settled){settled=true;reject(new Error('לא ניתן להתחבר ל-OpenAI Realtime. בדוק את מפתח OpenAI.'))}};
-    ws.onclose=ev=>{setPill(pill,'');console.warn('[stt '+who+'] closed',ev.code,ev.reason);const why=ev.reason?' — '+ev.reason:'';if(!settled){settled=true;reject(new Error('OpenAI סגר את החיבור (קוד '+ev.code+why+'). בדוק שמפתח OpenAI תקין ושיש יתרה בחשבון.'))}if(S.running&&!S.demo){log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+why+')','err');toast('חיבור התמלול ('+label+') נסגר','t-error')}};
+    ws.onclose=ev=>{setPill(pill,S.day?'busy':'');console.warn('[stt '+who+'] closed',ev.code,ev.reason);const why=ev.reason?' — '+ev.reason:'';if(!settled){settled=true;reject(new Error('OpenAI סגר את החיבור (קוד '+ev.code+why+'). בדוק שמפתח OpenAI תקין ושיש יתרה בחשבון.'))}
+      if(S.day&&S.ws[who]===ws){ S.ws[who]=null; log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+'), מתחבר מחדש…'); setTimeout(()=>{ if(S.day&&!S.ws[who]) openStt(who).then(w=>{S.ws[who]=w}).catch(()=>{}); },1500); return; }
+      if(S.running&&!S.demo){log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+why+')','err');toast('חיבור התמלול ('+label+') נסגר','t-error')}};
   });
 }
 /* ── Speechmatics realtime: diarization by voice (listen mode) + speaker enrollment ── */
@@ -790,9 +799,11 @@ async function pipe(stream,who,ws,meterId){
   const lvl=$(who==='rep'?'lRep':'lCust'); let lastLog=0;
   if(ws) S.ws[who]=ws;
   const {node,sink}=makeCapture(ctx,(pcm,peak)=>{
-    if(peak>0.06){ S.act[who]=Date.now(); if(who==='cust'){ S.burst.push(Date.now()); if(S.burst.length>60) S.burst.shift(); } }
+    if(peak>0.035){ S.act[who]=Date.now(); if(who==='cust'&&peak>0.06){ S.burst.push(Date.now()); if(S.burst.length>60) S.burst.shift(); } }
     tick();
-    const w0=S.ws[who]; if(w0&&w0.readyState===1){ if(w0.sendAudio) w0.sendAudio(pcm); else w0.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); }
+    (S.lastPeak=S.lastPeak||{})[who]=peak; if(peak>0.012) S.lastAudible=Date.now();
+    const idleQuiet=S.day&&!S.running&&Date.now()-(S.lastAudible||0)>1500;
+    const w0=S.ws[who]; if(w0&&w0.readyState===1&&!idleQuiet){ if(w0.sendAudio) w0.sendAudio(pcm); else w0.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); }
     const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000&&S.running){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
   src.connect(node); // worklet: no destination (silent); script processor: muted sink
   S.audio.nodes.push(src,node); if(sink) S.audio.nodes.push(sink); S.audio.streams.push(stream);
@@ -870,26 +881,30 @@ function beginSession(demo){
   S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
   if(!S.simActive) $('liveTag').textContent='LIVE';
+  $('modal').classList.remove('show'); S.endedSim=false; S.endedAt=null; loadTraining();
   $('btnClear').click(); renderStages();
   $('btnStart').style.display='none'; $('btnStop').style.display=''; $('btnStart').disabled=false; $('btnDemo').disabled=true; $('liveTag').style.display='';
   $('timer').classList.add('live');
   S.timerIv=setInterval(()=>{const s=Math.floor((Date.now()-S.startedAt)/1000);$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},500);
-  clearInterval(S.syncIv); S.syncIv=setInterval(()=>{ if(S.running) syncCall(); },15000); if(!demo||sbReady()) syncCall();
+  clearInterval(S.syncIv); S.syncIv=setInterval(()=>{ if(S.running) syncCall(); },15000); if(!demo) syncCall();
   clearInterval(S.insightIv);
   S.lastInsightAt=Date.now(); S.lastSyncAt=Date.now(); S.lastTick=0; S.analysisInFlight=false; S.analysisPending=false;
   S.insightIv=setInterval(()=>{ if(!S.single||!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount){ S.lastInsightAt=Date.now(); scheduleAnalysis(); } },20000);
 }
 function stopCall(){
-  S.running=false; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); if(S.day){ closeSockets(); } else { teardownAudio(); } S.demoAbort=true; renderIdBar();
-  syncCall({status:'ended',ended_at:new Date().toISOString()});
-  if(S.lines.filter(l=>l.final&&l.text.trim()).length>=6&&S.settings.anthropic) setTimeout(()=>runSummary(true),1500);
+  S.running=false; S.endedSim=!!S.simActive; S.endedAt=Date.now(); S.burst=[]; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); if(S.day){ try{smFinalize()}catch(e){} } else { teardownAudio(); } S.demoAbort=true; renderIdBar();
+  const nFinal=S.lines.filter(l=>l.final&&l.text.trim()).length;
+  if(S.day&&nFinal<2){ syncCall({status:'void',ended_at:new Date().toISOString()}); log('לא זוהה דיבור אמיתי (צלצול/רעש), השיחה בוטלה'); }
+  else syncCall({status:'ended',ended_at:new Date().toISOString()});
+  if(nFinal>=6&&S.settings.anthropic) setTimeout(()=>runSummary(true),1500);
   $('btnStart').style.display=S.day?'none':''; $('btnStop').style.display='none'; $('btnDemo').disabled=false; $('liveTag').style.display='none'; $('timer').classList.remove('live');
-  if(!S.day){ setPill('pRep','');setPill('pCust',''); } else { $('dayState').textContent='🟢 ממתין לשיחה הבאה…'; }
+  if(!S.day){ setPill('pRep','');setPill('pCust',''); } else { setPill('pRep','busy'); setPill('pCust','busy'); $('dayState').textContent='🟢 ממתין לשיחה הבאה…'; }
   if(S.simActive){ S.simActive=false; $('simState').textContent='הסימולציה הסתיימה. הסיכום ייפתח מיד.'; $('btnSimStart').style.display=''; $('btnSimStop').style.display='none'; }
   if(S.lines.length) toast(S.day?'השיחה הסתיימה ונשלחת לסיכום. ממשיך להאזין.':'השיחה הסתיימה. הסיכום ייפתח מיד.','t-ok');
 }
 /* ── day mode ── */
 async function startDay(){
+  if(S.running||S.simActive) return toast('סיים קודם את השיחה הנוכחית','t-error');
   if(S.settings.mode==='listen') return toast('מצב יום עובד במצב "אני הנציג"','t-error');
   if(!S.settings.openai) {openDrawer();return toast('נדרש OpenAI API Key','t-error')}
   if(!S.settings.anthropic){openDrawer();return toast('נדרש Anthropic API Key','t-error')}
@@ -913,20 +928,20 @@ async function startDay(){
     if(S.audio.ctx.state!=='running') await S.audio.ctx.resume();
     S.day=true; S.burst=[]; S.act={rep:0,cust:0};
     setPill('pRep','busy'); setPill('pCust','busy');
+    log('מתחבר לתמלול (נשאר מחובר כל היום)…');
+    const [wsRep,wsCust]=await Promise.all([openStt('rep'),openStt('cust')]); S.ws.rep=wsRep; S.ws.cust=wsCust;
+    S.dayRefresh=setInterval(()=>{ if(!S.day||S.running) return; for(const k of ['rep','cust']){ const w=S.ws[k]; if(w&&w.openedAt&&Date.now()-w.openedAt>45*60000){ S.ws[k]=null; try{w.close()}catch(e){} } } },60000);
     $('btnDay').textContent='⏹ סיים יום'; $('btnDay').classList.remove('btn-primary'); $('btnDay').classList.add('btn-danger'); $('btnStart').style.display='none'; $('dayState').style.display=''; $('dayState').textContent='🟢 מאזין לחייגן. ממתין לשיחה…';
     log('מצב יום פעיל: כשהלקוח יתחיל לדבר, השיחה תיפתח אוטומטית. '+(parseInt(S.settings.autoEndSec)||25)+' שניות שקט = סיום שיחה.','ok');
     toast('מצב יום פעיל. אפשר לעבור ל-ToChat ולעבוד רגיל.','t-ok');
   }catch(e){ console.error(e); log(e.message||'שגיאה','err'); toast(e.message||'שגיאה','t-error'); teardownAudio(); }
   finally{ $('btnDay').disabled=false; }
 }
-function endDay(){ if(S.running) stopCall(); S.day=false; teardownAudio(); $('btnDay').textContent='🌅 התחל יום'; $('btnDay').classList.add('btn-primary'); $('btnDay').classList.remove('btn-danger'); $('btnStart').style.display=''; $('dayState').style.display='none'; setPill('pRep','');setPill('pCust',''); log('היום הסתיים. כל הכבוד.','ok'); }
-async function autoStartCall(){
-  S.autoStarting=true;
-  try{
-    log('🔔 זוהה שמע בחייגן, פותח שיחה…'); $('dayState').textContent='🔴 בשיחה';
-    const [wsRep,wsCust]=await Promise.all([openStt('rep'),openStt('cust')]); S.ws.rep=wsRep; S.ws.cust=wsCust;
-    beginSession(false); S.burst=[]; log('המאמן מחובר לשיחה','ok');
-  }catch(e){ log('פתיחה אוטומטית נכשלה: '+(e.message||e),'err'); closeSockets(); S.burst=[]; }
+function endDay(){ if(S.running) stopCall(); S.day=false; clearInterval(S.dayRefresh); for(const k of ['rep','cust']){ const w=S.ws[k]; S.ws[k]=null; try{w&&w.close()}catch(e){} } teardownAudio(); $('btnDay').textContent='🌅 התחל יום'; $('btnDay').classList.add('btn-primary'); $('btnDay').classList.remove('btn-danger'); $('btnStart').style.display=''; $('dayState').style.display='none'; setPill('pRep','');setPill('pCust',''); log('היום הסתיים. כל הכבוד.','ok'); }
+function autoStartCall(){
+  if(S.running||S.autoStarting) return; S.autoStarting=true;
+  try{ $('dayState').textContent='🔴 בשיחה'; beginSession(false); setPill('pRep','on'); setPill('pCust','on'); log('🔔 הלקוח התחיל לדבר: שיחה נפתחה אוטומטית','ok'); }
+  catch(e){ log('פתיחה אוטומטית נכשלה: '+(e.message||e),'err'); }
   finally{ S.autoStarting=false; }
 }
 $('btnDay').onclick=()=>{ if(S.day) endDay(); else startDay(); };
@@ -1042,7 +1057,7 @@ async function runAnalysis(){
   if(!finals.length||finals.length===S.lastAnalyzedCount){S.analysisPending=false;return}
   if(!S.single&&!finals.some(l=>l.who==='cust')){S.analysisPending=false;return} // wait for the customer to say something
   if(!S.settings.anthropic){return}
-  S.analysisInFlight=true; S.inFlightAt=Date.now(); S.analysisPending=false; const analyzedCount=finals.length; log('מנתח… ('+finals.length+' משפטים)');
+  S.analysisInFlight=true; S.inFlightAt=Date.now(); S.analysisPending=false; const analyzedCount=finals.length; const runId=(S.runId=(S.runId||0)+1), runCall=S.callId; log('מנתח… ('+finals.length+' משפטים)');
   $('saynow').classList.add('thinking'); setPill('pAI','busy'); const t0=performance.now();
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   const tag=l=>l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'דובר לא ידוע #'+l.id;
@@ -1073,6 +1088,7 @@ ${transcript}
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לנתח את הקטע הזה');
     const txt=res.content.filter(b=>b.type==='text').map(b=>b.text).join('');
     const out=JSON.parse(txt);
+    if(S.callId!==runCall||S.runId!==runId){ return; } // the call changed (or the watchdog started a newer run) while this one was in flight
     applyCoach(out); syncCall();
     S.lastAnalyzedCount=analyzedCount;
     $('aiLatency').textContent=((performance.now()-t0)/1000).toFixed(1)+'s'; setPill('pAI','on');
@@ -1081,7 +1097,7 @@ ${transcript}
     const msg=(e.status===401)?'מפתח Anthropic לא תקין. פתח הגדרות ובדוק אותו.':(e.status===429)?'Anthropic: חריגה ממכסה, ננסה שוב בסבב הבא.':(e.message||String(e)).slice(0,160);
     toast('שגיאת מאמן: '+msg,'t-error'); log('Claude: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||String(e)).slice(0,200),'err');
   }finally{
-    S.analysisInFlight=false; $('saynow').classList.remove('thinking');
+    if(S.runId===runId){ S.analysisInFlight=false; $('saynow').classList.remove('thinking'); }
     if(S.analysisPending) runAnalysis(); // only if new lines arrived mid-flight; an error waits for the next line (no retry storm)
   }
 }
@@ -1153,13 +1169,18 @@ function sbHdr(extra={}){ const k=S.settings.sbKey||''; return {'Content-Type':'
 async function sbPost(table,row,prefer='return=minimal'){ const r=await fetch(S.settings.sbUrl+'/rest/v1/'+table,{method:'POST',headers:sbHdr({'Prefer':prefer}),body:JSON.stringify(row)}); if(!r.ok) throw new Error(r.status+' '+(await r.text()).slice(0,120)); return r; }
 function callRow(extra){
   const finals=S.lines.filter(l=>l.final&&l.text.trim());
-  return {id:S.callId, rep:S.settings.repName||'ללא שם', mode:S.simActive?'sim':(S.single?'listen':'rep'), status:S.running?'live':'ended',
-    started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round((Date.now()-S.startedAt)/1000), sim:!!S.simActive,
+  const sim=!!(S.simActive||(!S.running&&S.endedSim));
+  return {id:S.callId, rep:S.settings.repName||'ללא שם', mode:sim?'sim':(S.single?'listen':'rep'), status:S.running?'live':'ended',
+    started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round(((S.running?Date.now():(S.endedAt||Date.now()))-S.startedAt)/1000), sim,
     stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
     checks:S.checks||{}, events:S.events||[], ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length, ...extra};
 }
+async function syncRow(row){
+  if(!sbReady()) return;
+  try{ for(const k of (S.sbDropCols||[])) delete row[k]; await fetch(S.settings.sbUrl+'/rest/v1/calls?on_conflict=id',{method:'POST',headers:sbHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify(row)}); }catch(e){ console.warn('syncRow',e); }
+}
 async function syncCall(extra={}){
-  if(!sbReady()||!S.callId) return;
+  if(!sbReady()||!S.callId||S.demo) return;
   try{
     const hdr={'Content-Type':'application/json','apikey':S.settings.sbKey,...(S.settings.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+S.settings.sbKey}:{}),'Prefer':'resolution=merge-duplicates,return=minimal'};
     const row=callRow(extra); for(const k of (S.sbDropCols||[])) delete row[k];
@@ -1226,6 +1247,8 @@ async function runSummary(auto){
   const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length) return;
   if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום…'; }
   else if(S.summary){ return; }
+  if(S.demo) { /* demo runs get a debrief but are never stored */ }
+  const ctx={id:S.callId,startedAt:S.startedAt,endedAt:S.endedAt||Date.now(),single:S.single,sim:!!(S.simActive||S.endedSim),demo:!!S.demo,rep:S.settings.repName||'ללא שם',events:S.events.slice(),ammo:S.ammo.slice(),profile:S.profile,checks:{...S.checks},stage:S.stage,stageIdx:S.stageIdx,temp:S.temp,custState:S.custState,transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})),insights:(S.insights||[]).slice()};
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   const transcript=finals.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
   try{
@@ -1238,20 +1261,23 @@ async function runSummary(auto){
 
 התמלול המלא:
 ${transcript}`}],
-    });
+    },{timeout:180000,maxRetries:1});
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לסכם');
     const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
-    S.summary=o; syncCall({summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o});
-    saveLocalHistory(o); renderDebrief(o); $('modal').classList.add('show'); if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok');
-    afterCallHooks();
+    const sumFields={summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o};
+    if(!ctx.demo){ if(S.callId===ctx.id){ syncCall(sumFields); } else { syncRow({id:ctx.id,rep:ctx.rep,mode:ctx.sim?'sim':(ctx.single?'listen':'rep'),sim:ctx.sim,status:'ended',started_at:new Date(ctx.startedAt).toISOString(),updated_at:new Date().toISOString(),ended_at:new Date(ctx.endedAt).toISOString(),duration_sec:Math.round((ctx.endedAt-ctx.startedAt)/1000),stage:ctx.stage,stage_idx:ctx.stageIdx,temperature:ctx.temp,profile:ctx.profile||'',customer_state:ctx.custState||'',checks:ctx.checks,events:ctx.events,ammo:ctx.ammo,transcript:ctx.transcript,insights:ctx.insights,open_barriers:ctx.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length,...sumFields}); } }
+    if(!ctx.demo) saveLocalHistory(o,ctx);
+    if(S.callId===ctx.id||!S.running){ S.summary=o; renderDebrief(o,ctx); $('modal').classList.add('show'); if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok'); }
+    else { toast('סיכום השיחה הקודמת מוכן (ציון '+o.score+'/10). יופיע בבורד.','t-ok'); }
+    if(!ctx.demo) afterCallHooks(ctx);
   }catch(e){ const msg='שגיאה: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||e); if(!auto) $('modalBody').textContent=msg; log('Claude (סיכום): '+msg.slice(0,200),'err'); }
 }
 $('btnSummary').onclick=()=>{ if(S.summary){ renderDebrief(S.summary); $('modal').classList.add('show'); } else runSummary(false); };
 $('btnCloseModal').onclick=()=>$('modal').classList.remove('show');
 $('btnCopy').onclick=()=>{navigator.clipboard.writeText((S.summary&&S.summary.crm_text)||$('modalBody').textContent);toast('הסיכום ל-CRM הועתק','t-ok')};
 const PARAM_LABEL={opening:'פתיחה',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע',solution:'הצגה',close:'סגירה',talk_ratio:'יחס דיבור'};
-function renderDebrief(o){
-  const sc=o.scores||{}; const dur=Math.round((Date.now()-S.startedAt)/1000);
+function renderDebrief(o,ctx){
+  const sc=o.scores||{}; const dur=Math.round((((ctx&&ctx.endedAt)||S.endedAt||Date.now())-((ctx&&ctx.startedAt)||S.startedAt))/1000);
   const bar=(k)=>{const v=sc[k]||0; const c=v>=8?'#10b981':v>=6?'#f5b342':'#ef4444'; return `<div class="pm"><div class="pl">${PARAM_LABEL[k]}</div><div class="pb"><i style="width:${v*10}%;background:${c}"></i></div><div class="pv">${v}</div></div>`};
   $('modalBody').innerHTML=`
   <div class="db-top">
@@ -1267,10 +1293,10 @@ function renderDebrief(o){
   <div class="db-actions"><button class="btn" onclick="openCoach('sim')">🎭 להתאמן על זה בסימולציה</button><button class="btn" onclick="openCoach('chat')">💬 לדבר עם המאמן על השיחה</button></div>`;
 }
 
-function saveLocalHistory(o){
-  try{ const h=JSON.parse(localStorage.getItem('lc_history')||'[]'); h.unshift({id:S.callId,ts:S.startedAt,dur:Math.round((Date.now()-S.startedAt)/1000),score:o.score,scores:o.scores,outcome:o.outcome,stage:o.stage_reached,improvements:(o.improvements||[]).map(i=>i.principle),one_thing:o.one_thing,mode:S.simActive?'sim':(S.single?'listen':'rep')}); localStorage.setItem('lc_history',JSON.stringify(h.slice(0,300))); }catch(e){}
+function saveLocalHistory(o,ctx){
+  try{ const h=JSON.parse(localStorage.getItem('lc_history')||'[]'); h.unshift({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),score:o.score,scores:o.scores,outcome:o.outcome,stage:o.stage_reached,improvements:(o.improvements||[]).map(i=>i.principle),one_thing:o.one_thing,mode:ctx.sim?'sim':(ctx.single?'listen':'rep')}); localStorage.setItem('lc_history',JSON.stringify(h.slice(0,300))); }catch(e){}
 }
-function afterCallHooks(){ try{ const n=(parseInt(localStorage.getItem('lc_calls_since_sim')||'0')+ (S.simActive?0:1)); localStorage.setItem('lc_calls_since_sim',S.simActive?'0':String(n)); if(!S.simActive&&n>=5){ setTimeout(()=>{ toast('🎭 5 שיחות מאז הסימולציה האחרונה. זמן לאימון קצר עם המאמן.','t-ok'); $('coachBubble').classList.add('ping'); },4000); } detectPatterns(); }catch(e){} }
+function afterCallHooks(ctx){ try{ const sim=!!(ctx&&ctx.sim); const n=(parseInt(localStorage.getItem('lc_calls_since_sim')||'0')+ (sim?0:1)); localStorage.setItem('lc_calls_since_sim',sim?'0':String(n)); if(!sim&&n>=5){ setTimeout(()=>{ toast('🎭 5 שיחות מאז הסימולציה האחרונה. זמן לאימון קצר עם המאמן.','t-ok'); $('coachBubble').classList.add('ping'); },4000); } detectPatterns(); }catch(e){} }
 
 /* ───────────────────────── coach panel: chat / simulation / daily ───────────────────────── */
 const MOTIV=['החודש הזה לא נגמר בסוף החודש. הוא נגמר כשהיעד כבוש.','רק ווינרים מגיעים לסוף החודש עם תוצאות. פראיירים מגיעים עם תירוצים.','כל שיחה היא הזדמנות שמישהו אחר היה משלם עליה. אל תבזבז אותה.','אתה לא מוכר קורס. אתה משנה למישהו את החיים. תתנהג בהתאם.','הלקוח מרגיש את הביטחון שלך לפני שהוא שומע את המילים שלך.','היעד לא כובש את עצמו. עוד שיחה. עוד העמקה. עוד סגירה.','מי שמתאמץ היום, סוגר מחר. מי שלא, מסביר בסוף החודש.','אל תסיים שיחה בלי צעד הבא. לעולם.','60% הלקוח, 40% אתה. שאל, שתוק, הקשב.','הכי טוב שיש זה לא סיסמה. זה החלטה שמתחילה בשיחה הבאה.','ווינר לא שואל אם הלקוח יקנה. הוא עוזר לו להחליט מי הוא רוצה להיות.','היום שלך נמדד בסגירות, לא בשעות.'];
@@ -1281,7 +1307,7 @@ const PERSONAS=[
   {id:'mom',l:'אמא שרוצה הכנסה מהבית, מתייעצת עם בעלה',p:'נועה, 36, אמא לשלושה, עזבה עבודה. רוצה הכנסה מהבית ושליטה על הזמן. חסמים: "אני צריכה להתייעץ עם בעלי", "אין לי ביטחון בעצמי". מניע: להיות דוגמה לילדים, לא להיות תלויה. מתחברת לרגש ולסיפורים של נשים כמוה, בורחת מלחץ.'},
   {id:'quiet',l:'לקוח שקט שעונה קצר, קשה להוציא ממנו',p:'יוסי, 29, שכיר בלוגיסטיקה. השאיר פרטים בלי הרבה מחשבה. עונה במילה או שתיים, "בסדר", "לא יודע", "אולי". נפתח רק לשאלות ספציפיות ואישיות. הכאב: משכורת נמוכה ותחושה שהחיים עוברים. חסם: "אני לא בטוח שזה בשבילי".'},
 ];
-window.openCoach=(tab)=>{ $('coachPanel').classList.add('open'); $('coachBubble').classList.remove('ping'); if(tab) setCoachTab(tab); if(!S.chat.length) seedChat(); if(($('cpDaily').style.display!=='none')) renderDaily(); };
+window.openCoach=(tab)=>{ $('modal').classList.remove('show'); $('coachPanel').classList.add('open'); $('coachBubble').classList.remove('ping'); if(tab) setCoachTab(tab); if(!S.chat.length) seedChat(); if(($('cpDaily').style.display!=='none')) renderDaily(); };
 window.closeCoach=()=>$('coachPanel').classList.remove('open');
 function setCoachTab(t){ for(const b of $('coachPanel').querySelectorAll('.cp-tabs button')) b.classList.toggle('on',b.dataset.tab===t); $('cpChat').style.display=t==='chat'?'':'none'; $('cpSim').style.display=t==='sim'?'':'none'; $('cpDaily').style.display=t==='daily'?'':'none'; if(t==='daily') renderDaily(); if(t==='chat') $('chatInput').focus(); }
 $('coachPanel').querySelector('.cp-tabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setCoachTab(b.dataset.tab); };
@@ -1292,9 +1318,9 @@ function addChat(role,text){ S.chat.push({role,text}); const el=document.createE
 function seedChat(){ const h=localHistory(); const pat=S.pattern; const name=S.settings.repName||''; const line=pat?`${name?name+', ':''}שמתי לב לדפוס ב-${pat.count} מהשיחות האחרונות: "${pat.principle}". רוצה שנעבוד על זה עכשיו? אפשר לדבר על זה כאן או להריץ סימולציה ממוקדת.`:h.length?`היי ${name}. ${MOTIV[Math.floor(Math.random()*MOTIV.length)]} מה תרצה לחדד היום?`:`היי ${name}. אני המאמן שלך. אפשר לשאול אותי על כל שיחה, לבקש תרגול, או לפתוח סימולציה. מאיפה מתחילים?`; addChat('assistant',line); }
 async function sendChat(){
   const q=$('chatInput').value.trim(); if(!q) return; $('chatInput').value=''; addChat('user',q);
+  const msgs=S.chat.slice(-16).map(m=>({role:m.role,content:m.text})); while(msgs.length&&msgs[0].role==='assistant') msgs.shift();
   const el=addChat('assistant','…'); $('btnChatSend').disabled=true;
   try{
-    const msgs=S.chat.slice(-16).map(m=>({role:m.role,content:m.text}));
     const stream=getClient().beta.messages.stream({ model:'claude-opus-5', max_tokens:1200, betas:['server-side-fallback-2026-07-01'], fallbacks:'default', output_config:{effort:'low'},
       system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:'עכשיו אתה בצ\'אט חופשי עם הנציג, לא בשיחה חיה. דבר איתו אישית, קצר וברור (עד 120 מילים), כמאמן שמאמין בו ודורש ממנו. הנתונים שלו:\n'+repStatsText()+(S.pattern?'\nדפוס שזוהה: '+S.pattern.principle+' חזר ב-'+S.pattern.count+' שיחות מתוך 5.':'')+'\nאם הוא מבקש להתאמן, הצע לו ללחוץ על לשונית הסימולציה. אם הוא מתאר קושי בשלב מסוים, תן לו משפט מדויק לפי הפלייבוק ותרגיל קטן.'}],
       messages:msgs });
@@ -1381,7 +1407,7 @@ async function startSim(){
     $('btnSimStart').style.display='none'; $('btnSimStop').style.display=''; $('simState').textContent='🎭 הסימולציה רצה. פתח את השיחה כמו שאתה פותח עם לקוח אמיתי. הלקוח יענה בתמלול.';
     $('liveTag').textContent='סימולציה'; closeCoach(); toast('סימולציה התחילה. דבר.','t-ok');
     const focusLine={opening:'',pain:'הלקוח כבר אמר שהוא "תקוע" ומחכה שיעמיקו איתו.',objection:'הלקוח יעלה מהר התנגדות של מחיר או זמן.',close:'השיחה כבר עברה כאב ומטרה, הלקוח מתלבט לפני החלטה.',full:''}[S.simFocus];
-    if(S.simFocus!=='opening'&&S.simFocus!=='full'){ await simCustomerTurn(true,focusLine); }
+    await simCustomerTurn(true,focusLine);
   }catch(e){ console.error(e); $('simState').textContent='❌ '+(e.message||e); teardownAudio(); S.simActive=false; }
   finally{ $('btnSimStart').disabled=false; }
 }
@@ -1398,24 +1424,23 @@ async function simCustomerTurn(opening,focusLine){
 כללים: ענה כמו בן אדם אמיתי בטלפון, 1-2 משפטים, עברית מדוברת, בלי הסברים ובלי לצאת מהדמות. אל תהיה קל מדי ואל תהיה בלתי אפשרי: תיפתח רק כשהנציג שואל נכון, תעלה התנגדויות טבעיות, תענה קצר לשאלות שטחיות ותרחיב לשאלות טובות. אם הנציג מציע פתרון לפני שהבין אותך, תתרחק. אם הוא מעמיק בכאב, תיפתח יותר. ${focusLine||''}
 ${(S.training||[]).filter(n=>n.scope==='simulation').slice(0,10).map(n=>'הנחיית המנהל: '+n.text).join('\n')}
 ענה רק בטקסט של הלקוח.`}],
-      messages:[{role:'user',content:(opening?'התחל את השיחה: הנציג עדיין לא דיבר. אמור משפט פתיחה קצר של לקוח שענה לטלפון.':'התמלול עד עכשיו:\n'+transcript+'\n\nענה כלקוח למה שהנציג אמר הרגע.')}] });
+      messages:[{role:'user',content:(opening?'הטלפון מצלצל ואתה עונה. הנציג עדיין לא דיבר. אמור רק את מה שלקוח אומר כשהוא עונה לשיחה ממספר לא מוכר (מילה-שתיים, כמו "הלו?" או "כן, מי זה?").':'התמלול עד עכשיו:\n'+transcript+'\n\nענה כלקוח למה שהנציג אמר הרגע.')}] });
     let t=res.content.filter(b=>b.type==='text').map(b=>b.text).join('').trim(); if(!t) t='…';
     upsertLine('simc_'+Date.now(),'cust',t,true);
     if($('simTts').checked&&'speechSynthesis' in window){ const u=new SpeechSynthesisUtterance(t); u.lang='he-IL'; const v=speechSynthesis.getVoices().find(v=>/he/i.test(v.lang)); if(v) u.voice=v; u.rate=1.05; speechSynthesis.speak(u); }
   }catch(e){ console.error(e); toast('הלקוח המדומה נתקע: '+(e.message||e).slice(0,80),'t-error'); }
   finally{ S.simBusy=false; }
 }
-loadRecentProfiles();
 
 /* ───────────────────────── init ───────────────────────── */
 const fromLink=applyHashConfig();
-loadSettings(); renderStages(); loadTraining();
+loadSettings(); renderStages(); loadTraining(); loadRecentProfiles();
 if(fromLink){ toast('ההגדרות מהלינק נטענו','t-ok'); }
 if(!S.settings.repName){ setTimeout(()=>{ let n=null; try{ n=prompt('ברוך הבא ל-LiveCoach. מה השם שלך? (יופיע בבורד המנהל)','') }catch(e){} if(n&&n.trim()){ S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); } },600); }
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
 window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis}; // debug hooks
 if(!S.settings.anthropic||(!S.settings.openai&&!S.settings.speechmatics)) setTimeout(openDrawer,900);
-window.addEventListener('beforeunload',e=>{if(S.running&&!S.demo){e.preventDefault();e.returnValue=''}});
+window.addEventListener('beforeunload',e=>{if((S.running&&!S.demo)||S.day){e.preventDefault();e.returnValue=''}});
 </script>
 </body>
 </html>
