@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiveCoach ✦ בורד מנהל</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+  :root{--bg:#080810;--surface:#10101c;--surface2:#16162a;--surface3:#1e1e38;--border:rgba(255,255,255,0.07);--text:#e8e8f0;--text-muted:#6b6b8a;--accent:#7c3aed;--accent2:#ec4899;--accent3:#06b6d4;--accent4:#10b981;--accent5:#f59e0b;--neon:#a855f7;--red:#ef4444;--glow:rgba(124,58,237,0.4);--gold:#f5b342;--blue:#4f8ef7;--teal:#2dd4bf}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;direction:rtl}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(8,8,16,.85);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800}
+  .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px var(--glow)}
+  .logo small{display:block;font-size:11px;font-weight:500;color:var(--text-muted)}
+  .spacer{flex:1}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted)}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:#444}.pill.on{color:var(--text)}.pill.on .dot{background:var(--accent4);box-shadow:0 0 8px var(--accent4)}.pill.err .dot{background:var(--red)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:var(--text);background:var(--surface2);border:1px solid var(--border)}
+  .btn:hover{background:var(--surface3)}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  main{padding:18px 22px 60px;display:flex;flex-direction:column;gap:22px}
+  h2{font-size:14px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  h2 .live{color:var(--red);font-size:11px;display:inline-flex;align-items:center;gap:5px}h2 .live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;cursor:pointer;transition:border-color .2s;position:relative}
+  .card:hover{border-color:rgba(168,85,247,.5)}
+  .card.live{border-color:rgba(239,68,68,.35);box-shadow:0 0 24px rgba(239,68,68,.12)}
+  .card.stale{opacity:.6}
+  .ch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent3),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+  .nm{font-weight:800;font-size:15px}.nm small{display:block;font-size:11px;color:var(--text-muted);font-weight:500}
+  .tm{font-variant-numeric:tabular-nums;font-weight:800;font-size:16px;margin-right:auto}
+  .stages{display:flex;gap:3px;margin:8px 0}
+  .stages i{flex:1;height:5px;border-radius:3px;background:var(--surface3)}.stages i.d{background:var(--accent4)}.stages i.a{background:var(--blue);box-shadow:0 0 8px var(--blue)}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--text-muted);margin-bottom:8px}
+  .meta b{color:var(--text)}
+  .tag{padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;background:var(--surface2);border:1px solid var(--border)}
+  .t-cold{color:#9cc0ff}.t-warm{color:var(--gold)}.t-hot{color:#fca5a5}
+  .bar{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:6px 10px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:8px}
+  .say{font-size:13px;line-height:1.5;background:rgba(124,58,237,.12);border:1px solid rgba(168,85,247,.3);border-radius:10px;padding:8px 10px;margin-bottom:8px}
+  .say b{color:#d8b4fe;font-size:10.5px;display:block;margin-bottom:2px}
+  .am{font-size:12.5px;line-height:1.5;color:var(--text)}.am div{padding:3px 0;border-bottom:1px dashed var(--border)}.am div:last-child{border:none}
+  .prof{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:8px}
+  .empty{color:var(--text-muted);font-size:13px;text-align:center;padding:30px;border:1px dashed var(--border);border-radius:12px;line-height:1.7}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--border)}
+  th{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;background:var(--surface2)}
+  tr:last-child td{border:none}
+  .score{display:inline-block;min-width:44px;text-align:center;padding:3px 10px;border-radius:99px;font-weight:800}
+  .s-g{background:rgba(16,185,129,.2);color:#6ee7b7}.s-y{background:rgba(245,179,66,.2);color:var(--gold)}.s-r{background:rgba(239,68,68,.2);color:#fca5a5}.s-n{background:var(--surface2);color:var(--text-muted)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px}
+  .kpi .v{font-size:26px;font-weight:900}.kpi .l{font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  /* detail drawer */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;display:none}.overlay.show{display:block}
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:min(1100px,100%);background:var(--surface);border-right:1px solid var(--border);z-index:40;transform:translateX(-100%);transition:transform .3s;display:flex;flex-direction:column}
+  .drawer.open{transform:none}
+  .dh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+  .db{flex:1;overflow:hidden;display:grid;grid-template-columns:1.1fr .9fr 1fr;gap:0}
+  @media(max-width:1000px){.db{grid-template-columns:1fr;overflow-y:auto}}
+  .col{overflow-y:auto;padding:14px 16px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
+  .col h3{font-size:12px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+  .msg{max-width:90%;padding:9px 13px;border-radius:13px;font-size:13.5px;line-height:1.5}
+  .msg .who{font-size:10.5px;color:var(--text-muted);font-weight:700;margin-bottom:2px}
+  .msg.rep{align-self:flex-end;background:var(--surface3)}.msg.cust{align-self:flex-start;background:rgba(245,179,66,.08);border:1px solid rgba(245,179,66,.18)}.msg.unk{align-self:center;background:var(--surface2)}
+  .ammo{border-radius:12px;padding:9px 12px;border:1px solid var(--border);background:var(--surface2);border-right:3px solid var(--a,#888);font-size:13px;line-height:1.5}
+  .ammo .at{font-size:10.5px;font-weight:800;color:var(--a);margin-bottom:2px}.ammo .an{font-size:12px;color:var(--text-muted)}.ammo .au{font-size:12px;color:#c4b5fd;margin-top:4px}
+  .s-hot{--a:#ef4444}.s-high{--a:#fb923c}.s-medium{--a:#facc15}.s-low{--a:#22c55e}.s-resolved{--a:#6b6b8a;opacity:.6}
+  .ins{border-radius:12px;padding:10px 12px;border:1px solid rgba(45,212,191,.3);background:rgba(45,212,191,.06);font-size:13px;line-height:1.5}
+  .ins .q{font-style:italic;color:var(--text-muted);font-size:12px}.ins b{color:var(--teal);font-size:11px;display:block}
+  .sum{white-space:pre-wrap;font-size:13px;line-height:1.65;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px}
+  .setup{max-width:560px;margin:60px auto;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}.field-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase}
+  .field-input{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;width:100%;direction:ltr;text-align:left}
+  .hint{font-size:12px;color:var(--text-muted);line-height:1.6}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface3);border:1px solid var(--border);padding:12px 20px;border-radius:12px;font-size:14px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="logo-icon">📊</div><div>בורד מנהל<small>LiveCoach · שיחות בלייב, תחמושת וציונים</small></div></div>
+  <span class="pill" id="pConn"><i class="dot"></i>חיבור לנתונים</span>
+  <span class="pill" id="pPoll"><i class="dot"></i>רענון כל 4 שניות</span>
+  <div class="spacer"></div>
+  <select class="btn" id="dayPick" style="direction:rtl"><option value="today">היום</option><option value="yesterday">אתמול</option><option value="week">7 ימים</option></select>
+  <button class="btn" id="btnSetup">⚙️ חיבור</button>
+</header>
+
+<main id="main">
+  <section id="setup" class="setup" style="display:none">
+    <h2>חיבור לבורד</h2>
+    <div class="field"><label class="field-label">Supabase URL</label><input class="field-input" id="cfgUrl" placeholder="https://xxxx.supabase.co"></div>
+    <div class="field"><label class="field-label">Supabase anon key</label><input class="field-input" id="cfgKey" type="password" placeholder="eyJ..."></div>
+    <div class="hint">אותם פרטים שהגדרת ב-LiveCoach תחת "צוות ובורד מנהל". נשמרים בדפדפן הזה בלבד.</div>
+    <button class="btn btn-primary" id="btnSaveCfg" style="margin-top:12px">שמור והתחבר</button>
+  </section>
+
+  <section id="liveSec">
+    <h2>🔴 בלייב עכשיו <span class="live">LIVE</span><span class="spacer"></span><span id="liveCount" style="font-weight:500;text-transform:none"></span></h2>
+    <div class="grid" id="liveGrid"><div class="empty">אין שיחות פעילות כרגע. כשנציג לוחץ "התחל שיחה" ב-LiveCoach, השיחה תופיע כאן תוך שניות.</div></div>
+  </section>
+
+  <section id="daySec">
+    <h2>📈 ביצועי נציגים <span id="dayLabel" style="font-weight:500;text-transform:none"></span></h2>
+    <div class="kpis" id="kpis"></div>
+    <div style="overflow-x:auto"><table id="repTable"><thead><tr><th>נציג</th><th>ציון יומי</th><th>שיחות</th><th>הסתיימו</th><th>משך ממוצע</th><th>שלב ממוצע</th><th>סגירות</th><th>המשך טיפול</th><th>חסמים פתוחים (ממוצע)</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section id="recentSec">
+    <h2>📋 סיכומי שיחות <span id="recentCount" style="font-weight:500;text-transform:none"></span></h2>
+    <div class="grid" id="recentGrid"></div>
+  </section>
+</main>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="dh"><div class="av" id="dAv">?</div><div class="nm" id="dName">—<small id="dMeta"></small></div><span class="tag" id="dStatus"></span><div class="spacer"></div><button class="btn btn-sm" id="btnCopy">העתק סיכום</button><button class="btn btn-sm" id="btnClose">✕</button></div>
+  <div class="db">
+    <div class="col"><h3>💬 תמלול חי</h3><div id="dTranscript" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    <div class="col"><h3>🔥 תחמושת</h3><div id="dAmmo" style="display:flex;flex-direction:column;gap:8px"></div></div>
+    <div class="col"><h3>🧠 מצב השיחה</h3><div id="dCoach" style="display:flex;flex-direction:column;gap:10px"></div></div>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const toast=(m)=>{const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),3000)};
+const STAGES=[{id:'kyc',l:'KYC'},{id:'pain',l:'כאב'},{id:'objection',l:'חסם'},{id:'goal',l:'מטרה'},{id:'motive',l:'מניע'},{id:'solution',l:'פתרון'},{id:'close',l:'סגירה'}];
+const AL={pain:'כאב',gap:'פער',motive:'מניע',why_now:'למה עכשיו',cost_of_inaction:'מחיר אי-עשייה',past:'ניסיון עבר',barrier:'חסם',fear:'פחד',desire:'רצון',contradiction:'סתירה',urgency:'דחיפות',belief:'אמונה',personal:'אישי',number:'מספר',commitment:'התחייבות'};
+const SE={hot:'🔴',high:'🟠',medium:'🟡',low:'🟢',resolved:'✅'};
+const TEMP={cold:'קר ❄️',warm:'פושר 🌤️',hot:'חם 🔥'};
+const b64u={dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
+let CFG={}, ROWS=[], SEL=null, pollIv=null;
+
+/* ── config ── */
+(function init(){
+  const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/);
+  if(m){ try{ const c=b64u.dec(m[1]); if(c.sbUrl&&c.sbKey){ localStorage.setItem('lc_mgr',JSON.stringify({sbUrl:c.sbUrl,sbKey:c.sbKey})); history.replaceState(null,'',location.pathname); } }catch(e){} }
+  try{CFG=JSON.parse(localStorage.getItem('lc_mgr')||'{}')}catch(e){CFG={}}
+  $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||'';
+  if(!CFG.sbUrl||!CFG.sbKey){ showSetup(true); } else { start(); }
+})();
+function showSetup(v){ $('setup').style.display=v?'':'none'; for(const id of ['liveSec','daySec','recentSec']) $(id).style.display=v?'none':''; }
+$('btnSetup').onclick=()=>showSetup($('setup').style.display==='none');
+$('btnSaveCfg').onclick=()=>{ CFG={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim()}; localStorage.setItem('lc_mgr',JSON.stringify(CFG)); showSetup(false); start(); };
+$('dayPick').onchange=()=>render();
+
+/* ── data ── */
+function range(){ const now=new Date(); const d=$('dayPick').value; const s=new Date(now); s.setHours(0,0,0,0); if(d==='yesterday'){ s.setDate(s.getDate()-1); const e=new Date(s); e.setDate(e.getDate()+1); return [s,e]; } if(d==='week'){ s.setDate(s.getDate()-6); } return [s,new Date(now.getTime()+3600e3)]; }
+async function fetchRows(){
+  const since=new Date(); since.setDate(since.getDate()-8);
+  const url=CFG.sbUrl+'/rest/v1/calls?select=*&order=updated_at.desc&limit=400&started_at=gte.'+encodeURIComponent(since.toISOString());
+  const r=await fetch(url,{headers:{'apikey':CFG.sbKey,'Authorization':'Bearer '+CFG.sbKey}});
+  if(!r.ok){ throw new Error(r.status+' '+(await r.text()).slice(0,140)); }
+  return r.json();
+}
+async function poll(){
+  try{ ROWS=await fetchRows(); $('pConn').className='pill on'; $('pConn').innerHTML='<i class="dot"></i>מחובר · '+ROWS.length+' שיחות'; render(); if(SEL) openDetail(SEL,true); }
+  catch(e){ $('pConn').className='pill err'; $('pConn').innerHTML='<i class="dot"></i>שגיאה: '+esc(String(e.message||e).slice(0,80)); }
+}
+function start(){ clearInterval(pollIv); poll(); pollIv=setInterval(poll,4000); }
+
+/* ── helpers ── */
+const isLive=r=>r.status==='live'&&(Date.now()-new Date(r.updated_at).getTime())<120e3;
+const isStale=r=>r.status==='live'&&!isLive(r);
+const fmtDur=s=>{s=Math.max(0,Math.round(s||0));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const liveDur=r=>fmtDur((Date.now()-new Date(r.started_at).getTime())/1000);
+const initials=n=>(n||'?').trim().slice(0,2);
+const scoreCls=v=>v==null?'s-n':v>=8?'s-g':v>=6?'s-y':'s-r';
+const stageIdx=r=>Number.isInteger(r.stage_idx)?r.stage_idx:Math.max(0,STAGES.findIndex(s=>s.id===(r.stage_reached||r.stage)));
+const openBarriers=r=>(r.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved');
+function stagesHtml(r){ const i=stageIdx(r); return '<div class="stages">'+STAGES.map((s,k)=>`<i class="${k<i?'d':k===i?'a':''}" title="${s.l}"></i>`).join('')+'</div>'; }
+
+/* ── render ── */
+function render(){
+  const live=ROWS.filter(r=>r.status==='live').sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at));
+  $('liveCount').textContent=live.filter(isLive).length?live.filter(isLive).length+' שיחות פעילות':'';
+  $('liveGrid').innerHTML=live.length?live.map(r=>{
+    const ob=openBarriers(r); const top=(r.ammo||[]).slice(0,3);
+    return `<div class="card ${isLive(r)?'live':'stale'}" onclick="openDetail('${r.id}')">
+      <div class="ch"><div class="av">${esc(initials(r.rep))}</div><div class="nm">${esc(r.rep)}<small>${isLive(r)?'בשיחה עכשיו':'נותק לפני '+fmtDur((Date.now()-new Date(r.updated_at))/1000)} · ${r.mode==='listen'?'האזנה':'נציג'}</small></div><div class="tm">${liveDur(r)}</div></div>
+      ${stagesHtml(r)}
+      <div class="meta"><span class="tag">${STAGES[stageIdx(r)]?.l||r.stage||''}</span><span class="tag ${'t-'+(r.temperature||'cold')}">${TEMP[r.temperature]||'—'}</span><span>${(r.transcript||[]).length} משפטים</span></div>
+      ${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · ')).slice(0,120)}</div>`:''}
+      ${r.customer_state?`<div class="prof"><b style="color:var(--text)">מצב הלקוח:</b> ${esc(r.customer_state)}</div>`:''}
+      ${r.say_now?`<div class="say"><b>המאמן מציע עכשיו</b>${esc(r.say_now)}</div>`:''}
+      ${top.length?`<div class="am">${top.map((a,i)=>`<div>${SE[a.status]||'🟡'} ${i+1}. ${esc(a.text)}</div>`).join('')}</div>`:''}
+    </div>`;}).join(''):'<div class="empty">אין שיחות פעילות כרגע. כשנציג לוחץ "התחל שיחה" ב-LiveCoach, השיחה תופיע כאן תוך שניות.</div>';
+
+  const [s,e]=range(); const day=ROWS.filter(r=>{const t=new Date(r.started_at);return t>=s&&t<e});
+  $('dayLabel').textContent='· '+day.length+' שיחות בטווח';
+  const byRep={}; for(const r of day){ (byRep[r.rep||'ללא שם']=byRep[r.rep||'ללא שם']||[]).push(r); }
+  const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+  const rows=Object.entries(byRep).map(([rep,rs])=>{ const ended=rs.filter(r=>r.status==='ended'); const sc=avg(ended.filter(r=>r.score!=null).map(r=>r.score)); return {rep,rs,ended,score:sc,dur:avg(ended.map(r=>r.duration_sec||0)),stage:avg(rs.map(stageIdx)),closed:ended.filter(r=>r.outcome==='closed').length,fu:ended.filter(r=>r.outcome==='follow_up').length,ob:avg(rs.map(r=>openBarriers(r).length))}; }).sort((a,b)=>(b.score??-1)-(a.score??-1));
+  const allEnded=day.filter(r=>r.status==='ended'); const teamScore=avg(allEnded.filter(r=>r.score!=null).map(r=>r.score));
+  $('kpis').innerHTML=[['שיחות',day.length],['פעילות עכשיו',live.filter(isLive).length],['ציון צוות',teamScore!=null?teamScore.toFixed(1):'—'],['סגירות',allEnded.filter(r=>r.outcome==='closed').length],['משך ממוצע',fmtDur(avg(allEnded.map(r=>r.duration_sec||0))||0)],['הגיעו לסגירה',day.filter(r=>stageIdx(r)>=6).length]].map(([l,v])=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+  $('repTable').querySelector('tbody').innerHTML=rows.length?rows.map(x=>`<tr><td><b>${esc(x.rep)}</b></td><td><span class="score ${scoreCls(x.score)}">${x.score!=null?x.score.toFixed(1):'—'}</span></td><td>${x.rs.length}</td><td>${x.ended.length}</td><td>${fmtDur(x.dur||0)}</td><td>${x.stage!=null?STAGES[Math.round(x.stage)]?.l||'':'—'}</td><td>${x.closed}</td><td>${x.fu}</td><td>${x.ob!=null?x.ob.toFixed(1):'—'}</td></tr>`).join(''):'<tr><td colspan="9" style="color:var(--text-muted);text-align:center">אין נתונים בטווח הזה</td></tr>';
+
+  const recent=day.filter(r=>r.status==='ended').sort((a,b)=>new Date(b.started_at)-new Date(a.started_at)).slice(0,30);
+  $('recentCount').textContent=recent.length?'· '+recent.length:'';
+  $('recentGrid').innerHTML=recent.length?recent.map(r=>`<div class="card" onclick="openDetail('${r.id}')">
+      <div class="ch"><div class="av">${esc(initials(r.rep))}</div><div class="nm">${esc(r.rep)}<small>${new Date(r.started_at).toLocaleString('he-IL',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})} · ${fmtDur(r.duration_sec)}</small></div><span class="score ${scoreCls(r.score)}" style="margin-right:auto">${r.score!=null?r.score+'/10':'—'}</span></div>
+      ${stagesHtml(r)}
+      <div class="meta"><span class="tag">${{closed:'✅ נסגר',follow_up:'📅 המשך טיפול',lost:'❌ לא נסגר',unknown:'—'}[r.outcome]||'—'}</span><span class="tag ${'t-'+(r.temperature||'cold')}">${TEMP[r.temperature]||'—'}</span></div>
+      <div class="prof">${esc((r.summary_json&&r.summary_json.summary)||r.next_step||r.profile||'')}</div>
+    </div>`).join(''):'<div class="empty">עדיין אין שיחות שהסתיימו בטווח הזה.</div>';
+}
+
+/* ── detail ── */
+window.openDetail=function(id,refresh){
+  const r=ROWS.find(x=>x.id===id); if(!r) return; SEL=id;
+  if(!refresh){ $('drawer').classList.add('open'); $('overlay').classList.add('show'); }
+  $('dAv').textContent=initials(r.rep); $('dName').firstChild.textContent=r.rep||'—';
+  $('dMeta').textContent=(isLive(r)?'בשיחה עכשיו · ':r.status==='ended'?'הסתיימה · ':'נותק · ')+(isLive(r)?liveDur(r):fmtDur(r.duration_sec))+' · התחילה '+new Date(r.started_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' · '+(r.mode==='listen'?'האזנה':'נציג');
+  $('dStatus').textContent=(STAGES[stageIdx(r)]?.l||'')+' · '+(TEMP[r.temperature]||'');
+  const tr=$('dTranscript'); const atBottom=tr.scrollHeight-tr.scrollTop-tr.clientHeight<60;
+  tr.innerHTML=(r.transcript||[]).map(l=>`<div class="msg ${l.who}"><div class="who">${l.who==='rep'?'נציג':l.who==='cust'?'לקוח':'?'} · ${new Date(l.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</div>${esc(l.t)}</div>`).join('')||'<div class="empty">אין תמלול עדיין</div>';
+  if(atBottom||!refresh) tr.parentElement.scrollTop=tr.parentElement.scrollHeight;
+  $('dAmmo').innerHTML=(r.ammo||[]).length?(r.ammo||[]).map((a,i)=>`<div class="ammo s-${SE[a.status]?a.status:'medium'}"><div class="at">${SE[a.status]||'🟡'} ${i+1}. ${AL[a.type]||a.type}</div>${esc(a.text)}${a.note?`<div class="an">${esc(a.note)}</div>`:''}${a.use?`<div class="au">💬 ${esc(a.use)}</div>`:''}</div>`).join(''):'<div class="empty">אין תחמושת עדיין</div>';
+  const ob=openBarriers(r);
+  $('dCoach').innerHTML=`${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · '))}</div>`:''}
+    ${r.profile?`<div class="prof"><b style="color:var(--text)">פרופיל:</b> ${esc(r.profile)}</div>`:''}
+    ${r.customer_state?`<div class="prof"><b style="color:var(--text)">מצב הלקוח:</b> ${esc(r.customer_state)}</div>`:''}
+    ${r.say_now?`<div class="say"><b>המאמן מציע עכשיו</b>${esc(r.say_now)}</div>`:''}
+    ${(r.insights||[]).slice().reverse().map(i=>`<div class="ins"><b>💡 ${esc(i.principle||'')}</b><div class="q">"${esc(i.quote||'')}"</div>${esc(i.lesson||'')}</div>`).join('')}
+    ${r.summary?`<h3 style="margin-top:6px">📋 סיכום · ציון ${r.score??'—'}/10</h3><div class="sum">${esc(r.summary)}</div>`:''}`;
+};
+$('btnClose').onclick=$('overlay').onclick=()=>{ $('drawer').classList.remove('open'); $('overlay').classList.remove('show'); SEL=null; };
+$('btnCopy').onclick=()=>{ const r=ROWS.find(x=>x.id===SEL); if(r&&r.summary){ navigator.clipboard.writeText(r.summary); toast('הסיכום הועתק'); } else toast('אין סיכום עדיין'); };
+setInterval(()=>{ if(ROWS.some(isLive)) render(); },1000); // live timers
+window.__mgr={setRows:rows=>{ROWS=rows;render()}};
+</script>
+</body>
+</html>

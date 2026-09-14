@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiveCoach ✦ מאמן מכירות בזמן אמת</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+  :root{
+    --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
+    --border:rgba(255,255,255,0.07); --text:#e8e8f0; --text-muted:#6b6b8a;
+    --accent:#7c3aed; --accent2:#ec4899; --accent3:#06b6d4; --accent4:#10b981;
+    --accent5:#f59e0b; --neon:#a855f7; --red:#ef4444; --glow:rgba(124,58,237,0.4);
+    --gold:#f5b342; --blue:#4f8ef7; --teal:#2dd4bf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;direction:rtl;overflow-x:hidden}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+
+  /* ── header ── */
+  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(8,8,16,0.85);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .logo{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:-0.5px}
+  .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px var(--glow)}
+  .logo small{display:block;font-size:11px;font-weight:500;color:var(--text-muted);letter-spacing:0}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted)}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:#444}
+  .pill.on{color:var(--text)}.pill.on .dot{background:var(--accent4);box-shadow:0 0 8px var(--accent4)}
+  .pill.busy .dot{background:var(--accent5);animation:pulse 1s infinite}
+  .pill.err .dot{background:var(--red)}
+  .seg{display:inline-flex;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:3px;gap:3px}
+  .seg button{font-family:inherit;font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:8px;border:none;background:transparent;color:var(--text-muted);cursor:pointer}
+  .seg button.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 0 12px var(--glow)}
+  .idbar{background:linear-gradient(135deg,rgba(45,212,191,.18),rgba(79,142,247,.12));border:1px solid rgba(45,212,191,.5);border-radius:14px;padding:12px 14px;animation:in .3s ease;box-shadow:0 0 24px rgba(45,212,191,.2)}
+  .idbar .k{font-size:11px;font-weight:800;color:var(--teal);letter-spacing:.5px;margin-bottom:6px}
+  .idbar .q{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:10px}
+  .idbar .b{display:flex;gap:8px}
+  .idbar .b button{flex:1;font-family:inherit;font-size:14px;font-weight:800;padding:10px;border-radius:10px;border:1px solid var(--border);cursor:pointer;color:#fff}
+  .idbar .b .rep{background:rgba(6,182,212,.35)}.idbar .b .cust{background:rgba(245,179,66,.35)}
+  .idbar .b button:hover{filter:brightness(1.2)}
+  .sync{font-size:11px;color:var(--text-muted)}.sync.on{color:var(--accent4)}
+  .pill .lvl{display:inline-block;width:34px;height:5px;border-radius:3px;background:var(--surface3);overflow:hidden;position:relative}
+  .pill .lvl::after{content:'';position:absolute;inset:0;right:auto;width:var(--w,0%);background:var(--accent4);transition:width .08s}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .spacer{flex:1}
+  .timer{font-variant-numeric:tabular-nums;font-size:22px;font-weight:800;background:var(--surface2);border:1px solid var(--border);padding:4px 14px;border-radius:10px;min-width:92px;text-align:center}
+  .timer.live{border-color:var(--red);box-shadow:0 0 14px rgba(239,68,68,.35)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;border:none;cursor:pointer;font-family:'Heebo',sans-serif;font-size:14px;font-weight:600;transition:all .2s;white-space:nowrap;color:var(--text);background:var(--surface2);border:1px solid var(--border)}
+  .btn:hover{background:var(--surface3)}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;box-shadow:0 0 18px var(--glow)}
+  .btn-primary:hover{filter:brightness(1.1)}
+  .btn-danger{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#fca5a5}
+  .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  /* ── stage bar ── */
+  .stagebar{margin:16px 22px 0;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 22px 12px;position:relative}
+  .stages{display:flex;align-items:flex-start;justify-content:space-between;position:relative}
+  .stages::before{content:'';position:absolute;top:11px;right:20px;left:20px;height:2px;background:var(--surface3);z-index:0}
+  .stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;cursor:default}
+  .stage .c{width:24px;height:24px;border-radius:50%;background:var(--surface3);border:2px solid var(--surface3);transition:all .3s;display:flex;align-items:center;justify-content:center;font-size:11px}
+  .stage .l{font-size:12px;color:var(--text-muted);font-weight:600;white-space:nowrap}
+  .stage.done .c{background:var(--accent4);border-color:var(--accent4)}
+  .stage.done .l{color:var(--text)}
+  .stage.active .c{background:var(--blue);border-color:#9cc0ff;box-shadow:0 0 0 5px rgba(79,142,247,.25),0 0 18px rgba(79,142,247,.6);transform:scale(1.15)}
+  .stage.active .l{color:#fff;font-weight:800}
+  .stage-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--text-muted);gap:12px;flex-wrap:wrap}
+  .temp{display:inline-flex;gap:6px;align-items:center;font-weight:700}
+  .temp b{padding:2px 10px;border-radius:99px;font-size:11px}
+  .t-cold b{background:rgba(79,142,247,.2);color:#9cc0ff}.t-warm b{background:rgba(245,179,66,.2);color:var(--gold)}.t-hot b{background:rgba(239,68,68,.2);color:#fca5a5}
+
+  /* ── main grid ── */
+  main{display:grid;grid-template-columns:1.15fr 0.85fr 1.1fr;gap:16px;padding:16px 22px 40px;align-items:start}
+  @media(max-width:1250px){main{grid-template-columns:1fr 1fr}}
+  @media(max-width:860px){main{grid-template-columns:1fr}}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;min-height:420px;max-height:calc(100vh - 230px)}
+  .panel-h{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+  .panel-h .live{display:inline-flex;align-items:center;gap:5px;color:var(--red);font-size:11px}
+  .panel-h .live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite}
+  .panel-b{padding:14px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+
+  /* transcript */
+  .msg{max-width:88%;padding:10px 14px;border-radius:14px;font-size:14.5px;line-height:1.55;position:relative;animation:in .25s ease}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .msg .who{font-size:10.5px;font-weight:700;color:var(--text-muted);margin-bottom:3px;display:flex;gap:6px;align-items:center}
+  .msg .who i{width:6px;height:6px;border-radius:50%;display:inline-block}
+  .msg.rep{align-self:flex-end;background:var(--surface3);border-bottom-right-radius:4px}
+  .msg.rep .who i{background:var(--accent3)}
+  .msg.cust{align-self:flex-start;background:rgba(245,179,66,.08);border:1px solid rgba(245,179,66,.18);border-bottom-left-radius:4px}
+  .msg.cust .who i{background:var(--gold)}
+  .msg.partial{opacity:.6;font-style:italic}
+  .msg.unk{align-self:center;background:var(--surface2);border:1px dashed rgba(255,255,255,.15);max-width:94%}
+  .msg.unk .who i{background:#888}
+  .spk{display:inline-flex;gap:4px;margin-right:auto}
+  .spk button{font-family:inherit;font-size:10px;font-weight:700;padding:1px 8px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer}
+  .spk button.on{background:var(--surface3);color:var(--text);border-color:rgba(255,255,255,.2)}
+  .spk button:hover{color:var(--text)}
+  .reqbar{display:flex;gap:8px;margin-top:10px}
+  .reqbar input{flex:1;background:rgba(0,0,0,.25);border:1px solid rgba(168,85,247,.35);border-radius:10px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none}
+  .reqbar input:focus{border-color:var(--neon)}
+  .saynow.custom{border-color:var(--teal);box-shadow:0 0 30px rgba(45,212,191,.25)}
+  .profile{font-size:13px;line-height:1.6;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px}
+  .profile b{color:#c4b5fd}
+  .ammo{border-radius:12px;padding:9px 12px;border:1px solid var(--border);background:var(--surface2);border-right:3px solid var(--a,#888);font-size:13.5px;line-height:1.5;animation:in .3s ease}
+  .ammo .at{font-size:10.5px;font-weight:800;color:var(--a);margin-bottom:2px}
+  .a-fact{--a:#94a3b8}.a-quote{--a:var(--neon)}.a-pain{--a:var(--gold)}.a-goal{--a:var(--accent4)}.a-objection{--a:#f87171}.a-motive{--a:var(--teal)}.a-personal{--a:var(--blue)}.a-commitment{--a:#34d399}.a-number{--a:#fb923c}
+  .mode-tag{font-size:11px;color:var(--text-muted);background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:99px}
+  .empty{color:var(--text-muted);font-size:13px;text-align:center;padding:40px 20px;border:1px dashed var(--border);border-radius:12px;line-height:1.7}
+
+  /* coach */
+  .saynow{background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.15));border:1px solid rgba(168,85,247,.45);border-radius:16px;padding:16px 18px;box-shadow:0 0 30px rgba(124,58,237,.25);animation:in .3s ease}
+  .saynow .k{font-size:11px;font-weight:800;letter-spacing:.6px;color:#d8b4fe;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .saynow .k .spin{width:12px;height:12px;border:2px solid #d8b4fe;border-top-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:none}
+  .saynow.thinking .k .spin{display:inline-block}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .saynow .t{font-size:19px;font-weight:700;line-height:1.5;color:#fff}
+  .saynow .w{font-size:12.5px;color:#c4b5fd;margin-top:8px;line-height:1.5}
+  .saynow .avoid{font-size:12px;color:#fca5a5;margin-top:6px}
+  .card{border-radius:14px;padding:12px 14px;border:1px solid var(--border);background:var(--surface2);border-right:4px solid var(--c,#888);animation:in .3s ease}
+  .card .ct{font-size:12px;font-weight:800;color:var(--c);display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .card .ct span{font-weight:500;color:var(--text-muted);font-size:10.5px;margin-right:auto}
+  .card .cx{font-size:14px;line-height:1.55}
+  .c-insight{--c:var(--teal);background:rgba(45,212,191,.06)}
+  .c-insight .q{font-style:italic;color:var(--text-muted);font-size:13px;margin-bottom:4px}
+  .ammo .an{font-size:12px;color:var(--text-muted);margin-top:2px;line-height:1.45}
+  .ammo .au{font-size:12px;color:#c4b5fd;margin-top:5px;line-height:1.45;border-top:1px dashed var(--border);padding-top:5px}
+  .ammo .rank{display:inline-block;min-width:18px;font-weight:800;color:var(--text-muted);margin-left:4px}
+  .ammo.empty{opacity:.45;border-right-color:var(--surface3)}
+  .s-hot{--a:#ef4444}.s-high{--a:#fb923c}.s-medium{--a:#facc15}.s-low{--a:#22c55e}.s-resolved{--a:#6b6b8a;opacity:.6}
+  .c-pain{--c:var(--gold)}.c-objection{--c:#f87171}.c-motive{--c:var(--teal)}.c-goal{--c:var(--accent4)}.c-shift{--c:var(--blue)}.c-warning{--c:#fb923c}.c-opportunity{--c:var(--neon)}.c-close{--c:#34d399}.c-kyc{--c:#94a3b8}
+  .cust-state{font-size:13px;color:var(--text-muted);background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;line-height:1.5}
+  .cust-state b{color:var(--text)}
+
+  /* settings drawer */
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:min(520px,100%);background:var(--surface);border-right:1px solid var(--border);z-index:40;transform:translateX(-100%);transition:transform .3s;overflow-y:auto;padding:22px}
+  .drawer.open{transform:none}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30;display:none}.overlay.show{display:block}
+  .drawer h2{font-size:18px;font-weight:800;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .field-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+  .field-input,select.field-input,textarea.field-input{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Heebo',sans-serif;font-size:14px;outline:none;transition:border-color .2s;direction:rtl;width:100%}
+  .field-input:focus{border-color:var(--accent)}
+  .field-input.ltr{direction:ltr;text-align:left}
+  textarea.field-input{min-height:120px;resize:vertical;line-height:1.55}
+  .hint{font-size:11.5px;color:var(--text-muted);line-height:1.5}
+  .sec{font-size:13px;font-weight:800;margin:20px 0 10px;color:#c4b5fd;border-bottom:1px solid var(--border);padding-bottom:6px}
+
+  /* summary modal */
+  .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:20px}
+  .modal.show{display:flex}
+  .modal .box{background:var(--surface);border:1px solid var(--border);border-radius:18px;width:min(760px,100%);max-height:90vh;display:flex;flex-direction:column}
+  .modal .box .bh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:800}
+  .modal .box .bb{padding:20px;overflow-y:auto;white-space:pre-wrap;line-height:1.7;font-size:14px}
+
+  /* toast */
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface3);border:1px solid var(--border);padding:12px 20px;border-radius:12px;font-size:14px;z-index:60;box-shadow:0 10px 40px rgba(0,0,0,.5);opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
+  .toast.show{opacity:1}.toast.t-error{border-color:var(--red)}.toast.t-ok{border-color:var(--accent4)}
+  .meter{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-top:4px}
+  .meter i{display:block;height:100%;width:0;background:var(--accent4);transition:width .08s}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><div class="logo-icon">🎧</div><div>LiveCoach<small>מאמן מכירות בזמן אמת</small></div></div>
+  <div class="pills">
+    <span class="pill" id="pRep"><i class="dot"></i>מיקרופון נציג <i class="lvl" id="lRep"></i></span>
+    <span class="pill" id="pCust"><i class="dot"></i>שמע לקוח <i class="lvl" id="lCust"></i></span>
+    <span class="pill" id="pAI"><i class="dot"></i>מאמן AI</span>
+  </div>
+  <div class="seg" id="modeSeg" title="מצב עבודה"><button data-mode="rep" class="on">🎧 אני הנציג</button><button data-mode="listen">👂 האזנה לשיחה</button></div>
+  <span class="pill" id="pWho" style="cursor:pointer" title="לחץ לשינוי שם">👤 <b id="whoName">—</b></span>
+  <div class="spacer"></div>
+  <div class="timer" id="timer">00:00</div>
+  <button class="btn btn-primary" id="btnStart">▶ התחל שיחה</button>
+  <button class="btn btn-danger" id="btnStop" style="display:none">■ סיים שיחה</button>
+  <button class="btn" id="btnDemo">🎬 הדגמה</button>
+  <button class="btn" id="btnSummary" disabled>📋 סיכום</button>
+  <button class="btn" id="btnSettings">⚙️</button>
+</header>
+
+<section class="stagebar">
+  <div class="stages" id="stages"></div>
+  <div class="stage-meta">
+    <span id="stageHint">ממתין לתחילת שיחה…</span>
+    <span id="winHint" style="font-size:11px">💡 פתח את LiveCoach בכרום רגיל, בחלון נפרד ליד ToChat.</span>
+  </div>
+  <div id="syncTag" class="sync" style="margin-top:8px"></div>
+  <div id="status" style="display:none;margin-top:10px;font-size:12px;line-height:1.7;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;color:var(--text-muted);font-family:ui-monospace,Menlo,monospace;direction:rtl"></div>
+  <div style="display:none">
+    <span class="temp t-cold" id="temp">חום ליד: <b>—</b></span>
+  </div>
+</section>
+
+<main>
+  <section class="panel">
+    <div class="panel-h">🧠 מה להגיד עכשיו <span class="spacer"></span><span id="aiLatency" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
+    <div class="panel-b" id="coach">
+      <div class="saynow" id="saynow">
+        <div class="k"><i class="spin"></i>אמור עכשיו</div>
+        <div class="t" id="sayText">התחל שיחה או הרץ הדגמה. ברגע שהלקוח מדבר, המאמן יגיד לך בדיוק מה להגיד.</div>
+        <div class="w" id="sayWhy"></div>
+        <div class="avoid" id="sayAvoid"></div>
+        <div class="reqbar"><input id="reqInput" placeholder="בקש משפט לשיחה הזו: למשל 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-sm btn-primary" id="btnReq">✨ תן משפט</button></div>
+        <div class="reqbar" style="margin-top:8px"><button class="btn btn-sm" id="btnAsk" style="flex:1;justify-content:center;border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול עכשיו? (מההיסטוריה, בלי הנחיה)</button></div>
+      </div>
+      <div class="cust-state" id="custState" style="display:none"></div>
+      <div id="cards"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-h">🔥 תחמושת <span class="spacer"></span><span id="ammoCount" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
+    <div class="panel-b" id="ammoPanel">
+      <div class="profile" id="profile" style="display:none"></div>
+      <div class="empty" id="emptyA">כאן נאספים כל הפרטים שהלקוח מסר: מספרים, ציטוטים, כאבים, מטרות, פרטים אישיים והתחייבויות. הכל זמין לשימוש בהמשך השיחה ובסגירה.</div>
+      <div id="ammo"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-h">💬 תמלול חי <span class="live" id="liveTag" style="display:none">LIVE</span><span class="mode-tag" id="modeTag" style="display:none">ערוץ אחד · בחר דובר לכל משפט</span><span class="spacer"></span><button class="btn btn-sm" id="btnAnalyze" title="נתח עכשיו">🔄</button><button class="btn btn-sm" id="btnClear">נקה</button></div>
+    <div id="idbarWrap" style="padding:12px 16px 0;display:none"></div>
+    <div class="panel-b" id="transcript">
+      <div class="empty" id="emptyT">התמלול יופיע כאן.<br>הנציג בצד שמאל, הלקוח בצד ימין. כל משפט שמסתיים נשלח למאמן.</div>
+    </div>
+  </section>
+</main>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <h2>הגדרות <button class="btn btn-sm" id="btnCloseDrawer">✕</button></h2>
+
+  <div class="sec">🔑 מפתחות</div>
+  <div class="field"><label class="field-label">OpenAI API Key (תמלול בזמן אמת)</label><input class="field-input ltr" id="sOpenai" type="password" placeholder="sk-..."></div>
+  <div class="field"><label class="field-label">Anthropic API Key (המאמן)</label><input class="field-input ltr" id="sAnthropic" type="password" placeholder="sk-ant-..."></div>
+  <div class="field"><label class="field-label">Speechmatics API Key (זיהוי קול במצב האזנה)</label><input class="field-input ltr" id="sSm" type="password" placeholder="..."><div class="hint">מפתח מ-portal.speechmatics.com. במצב האזנה, אם יש מפתח, התמלול עובר ל-Speechmatics שמפריד דוברים לפי קול. בלעדיו, הזיהוי הוא לפי תוכן בלבד.</div></div>
+  <div class="hint">המפתחות נשמרים רק בדפדפן שלך (localStorage) ונשלחים ישירות לספקים.</div>
+
+  <div class="sec">🎤 זיהוי קול (Speechmatics)</div>
+  <div class="hint" style="margin-bottom:10px">הקלט פעם אחת 20 שניות של כל נציג. אחר כך, בכל האזנה, המערכת תזהה את הנציג לפי הקול ותתייג אותו אוטומטית. כל קול אחר = לקוח.</div>
+  <div class="field"><label class="field-label">שם הנציג להקלטה</label><div style="display:flex;gap:8px"><input class="field-input" id="enrollName" placeholder="למשל: יובל" style="flex:1"><button class="btn btn-sm btn-primary" id="btnEnroll" style="white-space:nowrap">🎤 הקלט 20 שניות</button></div><div class="meter"><i id="mEnroll"></i></div><div class="hint" id="enrollStatus"></div></div>
+  <div id="enrolledList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:6px"></div>
+
+  <div class="sec">🎙️ שמע</div>
+  <div class="field"><label class="field-label">מצב עבודה</label>
+    <select class="field-input" id="sMode">
+      <option value="rep">אני הנציג בשיחה: המיקרופון שלי = נציג, שמע הטאב/התקן = לקוח (שני ערוצים, זיהוי ודאי)</option>
+      <option value="listen">האזנה לשיחה: שני הדוברים מגיעים באותו ערוץ. זיהוי דובר לפי תוכן + בחירה ידנית</option>
+    </select>
+    <div class="hint" id="modeHint">במצב נציג, המיקרופון שלך מזוהה תמיד כנציג. הד של הלקוח שנקלט במיקרופון מסונן אוטומטית.</div>
+  </div>
+  <div class="field" id="micWrap"><label class="field-label">מיקרופון הנציג</label><select class="field-input" id="sMic"></select><div class="meter"><i id="mRep"></i></div></div>
+  <div class="field"><label class="field-label" id="custSrcLabel">מקור שמע הלקוח</label>
+    <select class="field-input" id="sCustSrc">
+      <option value="tab">שיתוף טאב בדפדפן (ToChat פתוח בכרום) — מומלץ</option>
+      <option value="device">התקן קלט (BlackHole / Loopback)</option>
+      <option value="mic">המיקרופון (קולט את שני הצדדים מהרמקול)</option>
+    </select>
+    <div class="meter"><i id="mCust"></i></div>
+    <div class="hint" id="custHint">בלחיצה על "התחל שיחה" כרום יבקש לבחור מסך. בחר את הטאב של ToChat וסמן "שתף שמע של הטאב".</div>
+  </div>
+  <div class="field" id="custDevWrap" style="display:none"><label class="field-label">התקן קלט ללקוח</label><select class="field-input" id="sCustDev"></select></div>
+  <div class="field"><label class="field-label">מודל תמלול</label>
+    <select class="field-input" id="sSttModel">
+      <option value="gpt-transcribe">gpt-transcribe (מומלץ, דיוק גבוה)</option>
+      <option value="gpt-live-transcribe">gpt-live-transcribe (השהיה הכי נמוכה)</option>
+      <option value="gpt-4o-transcribe">gpt-4o-transcribe (דור קודם)</option>
+      <option value="gpt-4o-mini-transcribe">gpt-4o-mini-transcribe (דור קודם, זול)</option>
+    </select>
+  </div>
+
+  <div class="sec">🧠 המאמן <span id="ctxTag" style="font-weight:500;font-size:11px;color:var(--text-muted)"></span></div>
+  <div class="field"><label class="field-label">על העסק והמוצר</label><textarea class="field-input" id="sContext" style="min-height:160px" placeholder="מה אתה מוכר, למי, מחיר, מה ההצעה, מה הבידול…"></textarea><div class="hint">ברירת המחדל: מועדון האיקומרס של אביב מלכה (מוטמע בכלי). ערוך חופשי, השאר ריק כדי לחזור לברירת המחדל.</div></div>
+  <div class="field"><label class="field-label">עקרונות המכירה (המאמן פועל לפיהם)</label><textarea class="field-input" id="sPrinciples" style="min-height:220px"></textarea><div class="hint">ניתן לערוך חופשי. השאר ריק כדי לחזור לברירת המחדל.</div></div>
+  <div class="field"><label class="field-label">שם הנציג</label><input class="field-input" id="sRepName" placeholder="יובל"></div>
+  <div class="field"><label class="field-label">שם הלקוח (אופציונלי)</label><input class="field-input" id="sCustName" placeholder="דנה"></div>
+  <div class="field"><label class="field-label">רמת חשיבה של המאמן</label>
+    <select class="field-input" id="sEffort"><option value="low">מהיר (מומלץ לזמן אמת)</option><option value="medium">מאוזן</option><option value="high">מעמיק (איטי יותר)</option></select>
+  </div>
+  <div class="sec">👥 צוות ובורד מנהל</div>
+  <div class="field"><label class="field-label">Supabase URL</label><input class="field-input ltr" id="sSbUrl" placeholder="https://xxxx.supabase.co"></div>
+  <div class="field"><label class="field-label">Supabase anon key</label><input class="field-input ltr" id="sSbKey" type="password" placeholder="eyJ..."></div>
+  <div class="hint">כשמוגדר, כל שיחה נשלחת בלייב לבורד המנהל. ההגדרה נכללת בלינק לצוות. <a href="../manager/" target="_blank" style="color:#c4b5fd">פתח את בורד המנהל ↗</a></div>
+  <div class="field" style="margin-top:10px"><button class="btn" id="btnInvite" style="width:100%;justify-content:center">🔗 צור לינק לצוות (כולל מפתחות והגדרות)</button><div class="hint">הלינק מכיל את המפתחות בחלק שאחרי ה-#, שלא נשלח לשרת. שלח אותו רק לנציגים שלך, בערוץ פרטי.</div><input class="field-input ltr" id="inviteOut" readonly style="margin-top:6px;font-size:11px" placeholder="הלינק יופיע כאן"></div>
+  <button class="btn btn-primary" id="btnSave" style="width:100%;justify-content:center;margin-top:8px">שמור הגדרות</button>
+</aside>
+
+<div class="modal" id="modal"><div class="box"><div class="bh">📋 סיכום שיחה <span><button class="btn btn-sm" id="btnCopy">העתק</button> <button class="btn btn-sm" id="btnCloseModal">✕</button></span></div><div class="bb" id="modalBody"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import Anthropic from 'https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.125.0/+esm';
+
+/* ───────────────────────── constants ───────────────────────── */
+const STAGES = [
+  {id:'kyc',      l:'KYC',         h:'הכר את הלקוח: מצב נוכחי, מה עשה עד היום, מה הביא אותו לשיחה.'},
+  {id:'pain',     l:'כאב',          h:'זהה והעמק את הכאב. כמה זה עולה לו להישאר במצב הזה?'},
+  {id:'objection',l:'חסם',          h:'בודד את ההתנגדות האמיתית: כסף, זמן, אמון, ביטחון עצמי.'},
+  {id:'goal',     l:'מטרה',         h:'לאן הוא רוצה להגיע? הפוך את המטרה למדידה וקונקרטית.'},
+  {id:'motive',   l:'מניע רכישה',   h:'מה באמת מניע אותו: סקרנות, פחד, שאיפה, השוואה חברתית.'},
+  {id:'solution', l:'הצגת פתרון',   h:'הצג פתרון שמחובר לכאב ולמטרה שלו, לא רשימת פיצ\'רים.'},
+  {id:'close',    l:'סגירה',        h:'סגור: צעד הבא ברור, תאריך, תשלום, או שיחת המשך קבועה.'},
+];
+const CARD_LABEL = {pain:'כאב זוהה',objection:'חסם זוהה',motive:'מניע רכישה זוהה',goal:'מטרה זוהתה',shift:'שינוי טון',warning:'אזהרה',opportunity:'הזדמנות',close:'סימן קנייה',kyc:'מידע על הלקוח'};
+
+const DEFAULT_PRINCIPLES = "PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה (שיטת אביתר ענקי, כפי שמיושמת במועדון האיקומרס)\n\nפילוסופיה: אנחנו לא מוכרים קורס. הלקוח לא מתעורר בבוקר ורוצה \"קורס דרופשיפינג\". הוא רוצה שינוי: ביטחון, חופש, מסוגלות, מימוש עצמי, ערך, שליטה על החיים, שייכות, יציבות, נחת. הקורס הוא הכלי. מודל שינוי התוצאות: אמונות → החלטות → פעולות → תוצאות. אם האמונה לא משתנה, התוצאה לא משתנה. לכן המכירה היא שינוי תפיסה וזהות, לא שכנוע. איש המכירות מקשיב, מזהה, שואל, מוביל, יוצר בהירות. המטרה: שהלקוח יבין בעצמו \"אם אמשיך לקבל את אותן החלטות אקבל את אותן תוצאות, ואני בוחר אחרת\".\n\nעיקרון על: כל שלב חייב ליצור את הצורך בשלב הבא. אין מעבר טכני. KYC טוב מייצר קצות חוט לכאב. כאב עמוק מוביל לחסמים. חשיפת החסם מסבירה למה לא היה שינוי עד היום. רצון לשינוי פותח מקום למטרה. מטרה עמוקה יוצרת מניע. המניע הופך את הצגת המוצר לרלוונטית. הסגירה היא המשך טבעי.\n\nשלב 1, KYC: \"ב-KYC אני לא מחפש תשובות, אני מחפש דלתות\". אנשים נפתחים למי שבאמת רואה אותם. שלושה יעדים: ראפור ואתוס (הקשבה, קצב, זכירת פרטים וחזרה אליהם), להבין מי האדם (גיל, מאיפה, עיסוק, רקע, מה הביא אותו, מצב כלכלי, מי עוד מעורב בהחלטה, איך מקבל החלטות), ולזהות קצות חוט. סוגי קצות חוט: שינוי טונציה, מילים רגשיות (\"נמאס לי\", \"תקוע\", \"חייב שינוי\", \"מבזבז זמן\"), נקודות אדומות (\"צריך להתייעץ עם אח שלי\", \"אשתי מחליטה איתי\", \"אין לי כסף\", \"לא מבין בטכנולוגיה\"), אמונות (\"אי אפשר להצליח בישראל\", \"אני לא בנוי לזה\", \"אני לא מתמיד\"), רצונות (\"רוצה חופש\", \"לעזוב את העבודה\", \"לעזור למשפחה\"). לא שאלה אחת בכל פעם כמו חקירה, אלא שאלת סיפור אחת: \"בשביל שנוכל לדייק את המסלול הנכון עבורך, ספר לי קצת על עצמך: בן כמה אתה, מאיפה, במה אתה עוסק היום ומה בכלל הביא אותך להתעניין בלהרוויח דרך האינטרנט?\" לפני ששואלים נותנים סיבה. כשעולה קצה חוט: לחזור על המילה ולעצור (\"12 שעות ביום?\") ואז \"איך זה משפיע עליך?\". טעויות: חקירה, להפריע, להכניס את עצמי, לקפוץ למטרה. סיימנו כשהלקוח פתוח, יש תמונה כללית, זיהינו קצות חוט והוא כבר נוגע בעצמו בבעיה.\n\nשלב 2, כאב: \"אני לא מסיים את שלב הכאב כשהבנתי את הבעיה, אלא כשהלקוח התחבר אליה\". אנשים לא משתנים כי הבינו שיש בעיה, אלא כשהם מרגישים את המחיר של להישאר. המטרה: לא לגלות בעיה (הוא יודע אותה) ולא ליצור כאב חדש, אלא להאיר כאב קיים עד שהוא לא מוכן להמשיך ככה. כאב הוא לא הבעיה הטכנית אלא המשמעות הרגשית: \"אין כסף\" = אין ביטחון, לא יכול לעזור למשפחה, פחד מהעתיד. \"עובד הרבה\" = אין חיים, מפספס את הילדים, מבזבז שנים. השאלה המרכזית: \"מה המחיר של להישאר בדיוק במקום הזה?\" חוק הזהב: אל תאסוף מידע, תעמיק במשמעות. כלי העמקה: 1) הרחבה: \"מה בדיוק אתה מרגיש שאתה לא מרוצה ממנו?\" 2) פירוק מילה רגשית: \"כשאתה אומר תקוע, למה אתה מתכוון?\" 3) השפעה: \"איך זה משפיע עליך? על מה עוד? על מי עוד? ואיך זה משפיע עליהם?\" 4) סיטואציה ספציפית: \"קח אותי לרגע ספציפי שזה הורגש. מה קרה שם? מה עבר לך בראש?\" 5) זמן: \"כמה זמן אתה כבר מרגיש ככה? מה גרם לך דווקא עכשיו לחפש שינוי?\" 6) מחיר: \"מה המחיר שאתה משלם? אם שום דבר לא ישתנה בחצי שנה, מה יקרה?\" 7) השלכה: \"אם המצב יישאר, איפה תהיה בעוד חצי שנה?\" טונציה: להאט, שתיקות, רגוע, נוכח. אחרי תשובה ראשונית יש עוד שכבה: לחזור על המילה ולשתוק (\"לא משהו?\"). אסור: להאשים, לשפוט, להתווכח, להסביר, לשכנע, לתת פתרון, לתת עצות, להביא את עצמנו, לפתור מוקדם (\"בדיוק בשביל זה הקורס שלנו\" = טעות). סיימנו כשהלקוח מרגיש את המחיר, מבין את ההשפעה על העתיד והסביבה, יש שיא רגשי, ומבין שאי אפשר להמשיך. נקודת המעבר לחסמים, רק אחרי מספיק כאב: \"מה ניסית לעשות עד היום כדי לשנות את המצב?\"\n\nשלב 3, חסמי קנייה: \"אל תנסה לנצח את האמונה של הלקוח, תעזור לו לראות אותה מחדש\". חסם הוא לא התנגדות. התנגדות היא המשפט ברגע ההחלטה (\"צריך לחשוב\", \"אין כסף\", \"אין זמן\"). חסם הוא האמונה או הפחד מתחת, שמונע פעולה והוא המקור שנותן לבעיה חיים. סוגים: כלפי עצמי (\"לא מתמיד\", \"לא טכנולוגי\", \"לא מספיק חכם\"), כלפי התחום (\"השוק רווי\", \"רק עם מזל\"), כלפי הדרך (\"קורסים לא עובדים\", \"צריך ללמוד לבד קודם\"), רגשיים (פחד מכישלון, לאבד כסף, לגלות שלא מסוגל). \"מה ניסית עד היום?\" חושף: לא ניסה (למה? מה עצר?) או ניסה ונכשל (מה למד? איזו אמונה נוצרה?). לא \"בגלל זה הקורס שלנו יותר טוב\" אלא \"מה אתה חושב שגרם לזה לא להצליח?\" העמקה: שלב 1 להבין את האמונה (\"מה גורם לך לחשוב שאתה לא מתמיד? מאיפה זה מגיע?\"), שלב 2 למצוא סתירה (\"יש דברים שאתה כן מתמיד בהם? אז אתה כן מסוגל, פשוט היו מקומות שזה לא קרה?\"). כלי: שאלת החזרה בזמן: \"אם הייתי מחזיר אותך שנה אחורה עם כל מה שאתה יודע היום, מה היית עושה אחרת?\" → \"הייתי מתחיל\" → \"למה? מה השתנה?\" מראה שההזדמנות הייתה קיימת ומה שעצר היה פנימי. על \"לא היה לי זמן\": \"אם לפני חצי שנה היית משקיע שעה ביום והיום היית עם עוד 40,000 ש\"ח בחודש, היית מוצא שעה ביום? אז מה בכל זאת מעבר לזמן? מה הפחיד אותך?\" סימנים שמצאנו את החסם: עוצר לחשוב, טונציה משתנה, לוקח אחריות, מפסיק להאשים. אסור: לשכנע בכוח, להוכיח צדק, להקטין, \"זה רק בראש שלך\", \"כולם מצליחים\", ולא להשתמש במילים כמו \"חסם\" או \"אמונה מגבילה\". סיימנו כשהלקוח מבין מה האמונה שעצרה אותו, איך היא יצרה את המציאות שלו, לקח אחריות, ונפתח לאפשרות חדשה.\n\nשלב 4, מטרה: \"כאב יוצר רצון לברוח מהמצב הקיים, מטרה יוצרת רצון לרוץ לעבר משהו חדש\". אנשים לא קונים בגלל מה שהם רוצים לקבל אלא בגלל מי שהם רוצים להפוך להיות. כאב לבד לא מספיק: צריך מצוי מספיק כואב ורצוי מספיק מושך, הפער יוצר תנועה. \"להרוויח כסף\" זו תוצאה, לא מטרה. שאלת הזהב, לקלף שכבות: \"למה זה חשוב לך?\" → \"מה זה יאפשר לך?\" → \"מה זה אומר עבורך?\" → \"איך זה יגרום לך להרגיש?\" עד שמגיעים לרגש. דמיון עתידי: \"נניח שעברה שנה והדברים הסתדרו בדיוק כמו שאתה רוצה. מה השתנה? איך נראה היום שלך? מי סביבך רואה את השינוי?\" זהות: \"איזה אדם היית צריך להפוך להיות כדי להגיע לשם? מה האדם הזה עושה היום שאתה עדיין לא?\" חשוב: המטרה היא לא \"הצלחה עם המוצר\" אלא זהות: \"אדם שמסוגל ללמוד, לבצע, להתמיד וליצור לעצמו\". טעות קריטית: לדבר על כסף או פתרון מוקדם (\"מעולה, הקורס יביא לך הכנסה\"). לא להתלהב במקום הלקוח, לא דעה אישית. שאלת סיום לפני מעבר: \"ומה אם זה לא יקרה?\" סיימנו כשהלקוח יודע לאן, למה זה חשוב, מרגיש את המשמעות, מתאר עתיד, ויש פער ברור.\n\nשלב 5, מניע רכישה: \"אני לא מציג את המוצר, אני מחבר אותו למה שהלקוח כבר אמר שהוא צריך כדי להצליח\". מניע רכישה = מה הלקוח מאמין שהוא צריך לקבל כדי לעבור מהמצוי לרצוי. אנשים לא קונים פתרון, הם קונים ביטחון שהפתרון יעזור להם להשתנות. מפת תרגום: \"צריך מנטור\" = ביטחון והכוונה. \"צריך קהילה\" = שייכות, לא לבד. \"משהו קצר ותכל'ס\" = להתקדם מהר בלי לטבוע במידע. \"הרבה תמיכה\" = גב, לא להיכשל לבד. \"צריך סדר\" = פחד ללכת לאיבוד. שאלות: \"מה לדעתך הכי יעזור לבנאדם לעבור מהמקום שהוא נמצא היום למקום שהוא רוצה?\" \"מה חשוב לך לקבל בתוך התהליך?\" \"אם היית בונה לעצמך את התהליך המושלם, מה היה חייב להיות בו?\" \"מה היה חסר לך בניסיונות קודמים?\" \"מה יעזור לך להמשיך גם כשיהיה קשה?\" לא להניח ולא להבטיח מהר (\"מעולה יש לנו ליווי\" = טעות; קודם \"איזה ליווי? למה?\"). לחפש דפוסים מכל השיחה: אם חזר על \"שמישהו יכוון אותי\", \"מפחד לטעות\", המניע הוא ביטחון והכוונה. הידהוד שפה: להשתמש במילים שלו עצמו. סיימנו כשיודעים מה חשוב לו בתהליך, מה ייתן ביטחון, איך רוצה להרגיש, באילו מילים משתמש, ואיך לחבר את ההצגה אליו.\n\nשלב 6, הצגת מוצר: \"אל תציג את מה שיש במוצר, תציג את הדרך שהלקוח בעצמו אמר שהוא צריך לעבור\". מותר להגיע רק אחרי: כאב אמיתי, אחריות, חסם, מטרה, מניע, דחיפות, ראפור. מעבר: \"ממה ששמעתי ממך, אמרת לי שחשוב לך ___ ושאתה רוצה להגיע ל___, אז אני רוצה להראות לך איך בדיוק בנינו את הדרך לשם.\" לא \"יש לנו קהילה, מנטורים, שיעורים\" אלא \"אמרת לי שהכי חשוב לך לא להרגיש לבד ושיהיה מי שיכוון אותך כשאתה נתקע, בגלל זה אחד הדברים המרכזיים בתהליך הוא הקהילה והליווי\". דיאלוג לא מונולוג: הסבר קצר → חיבור אליו → שאלה → הסכמה. הצגת המסע לא הפיצ'רים: \"השלב הראשון הוא לבנות לך בסיס כדי שלא תירה באוויר\" במקום \"מודול מחקר מוצרים\". לפנות לזהות החדשה. שאלות דמיון שימוש: \"איך לדעתך תיעזר בקהילה?\" \"אתה יותר אחד שבא לשאול או גם אוהב לעזור לאחרים?\" פחות = יותר: עודף מידע מעביר מהלב לראש. לבנות 3-4 הסכמות קטנות. סוגסטיה: \"כשתראה את המוצר הראשון עולה לאוויר, התחושה היא שאתה כבר לא רק לומד, אתה בונה משהו\" (להמחיש תהליך, לא להבטיח תוצאה). טונציה: יותר אנרגיה וביטחון, ביחס ללקוח. בסוף ההצגה הלקוח מרגיש \"זה בדיוק מה שחיפשתי\".\n\nשלב 7, סגירה: \"בסגירה אני לא מוכר מוצר. אני עוזר ללקוח לבחור אם להמשיך מהזהות הישנה או מהחדשה שהוא כבר בנה\". אם צריך לשכנע בסגירה, משהו קודם לא נבנה. סגירה היא החלטה: איזה אדם אני בוחר להיות. תנאים: ראפור, כאב עמוק, אחריות, אמונה שעורערה, מטרה, מניע, הצגה מותאמת, 3-4 הסכמות. אם חסר משהו, חוזרים אחורה. הסגירה חייבת להיות המשך של השיחה, לא \"טוב, אז המחיר הוא\". לפני המחיר, להחזיר אותו לזהות החדשה: \"מבין כל הדברים שעברנו עליהם, מה הדבר שתשתמש בו הכי הרבה בדרך למטרה שלך?\" \"חשוב לך באמת להצליח?\" \"אתה תעשה מה שצריך?\" \"אתה מרגיש שסוף סוף הגיע הזמן לצאת מ___ ולהגיע ל___?\" סגירה היא רצף של הסכמות. אין נאומים: מדברים פחות, שואלים יותר, קצר, חד, בביטחון מלא, בלי התנצלות ובלי לחץ. התנגדות היא לא אויב: או משהו לא נסגר, או בדיקת ביטחון. לא מתווכחים, בודקים ומובילים. \"אני צריך לחשוב\": לא להסביר. \"יש את האדם שמבין בדיוק מה נכון עבורו אבל ברגע האמת דוחה, ויש את האדם שמבין, לוקח אחריות ופועל. מי מהם יגיע למטרה? ואיזה מהם אתה רוצה להיות? אז מה ההחלטה שתקרב אותך לאדם הזה כבר היום?\" משפטי סגירה: \"אתה רוצה להגיע ל___?\" \"אתה מוכן לעשות את מה שהאדם החדש הזה היה עושה?\"\n\nכללים חוצי-שלבים: יחס דיבור, הלקוח 60% הנציג 40%. אם הנציג מרצה יותר מ-3 משפטים ברצף, עצור ושאל. אל תמציא את הכאב, גלה אותו. לא מוכרים כסף קל, כפתור קסם או הכנסה פסיבית. תמיד להשתמש בתחמושת: המילים, המספרים והרגעים שהלקוח עצמו נתן.";
+const AMMO_RULES = "SALES AMMO ENGINE. אתה מנהל באופן רציף אזור בשם \"תחמושת\": מידע מתוך השיחה שאיש המכירות יכול להשתמש בו כדי לקדם את הלקוח להחלטה. בכל רגע תציג בדיוק 8 פריטים, מדורגים מהחזק והרלוונטי ביותר כרגע ועד לפחות רלוונטי, כדי שאיש המכירות יסתכל לשנייה ויבין: מה הדבר הכי חזק שיש לי כרגע מול הלקוח?\n\nהתחמושת דינמית, לוח תוצאות חי (Leaderboard). אל תיצור רשימה בתחילת השיחה ותשאיר אותה קבועה. מידע חדש יכול להיכנס למקום הראשון, לדחוף פריט למטה, לחזק פריט, להפוך פריט לפחות רלוונטי, להעלים פריט, או לסמן חסם כפתור ולהוציא אותו מהתחמושת הפעילה.\n\nמה נחשב תחמושת חזקה: מידע שהלקוח עצמו נתן ושמחבר בין המצב שלו, החסם שעוצר אותו, וההחלטה להתקדם. חפש במיוחד: כאב (בעיה אמיתית), פער (בין איפה שהוא לאיפה שרוצה), מניע (למה בכלל איקומרס), למה עכשיו (אירוע שהופך את זה לרלוונטי), מחיר אי העשייה, ניסיון עבר (ניסה ולא הגיע לתוצאה), חסם (מה מונע כרגע), פחד (מה חושש שיקרה אם יתחיל), רצון (תוצאה שאמר במפורש), סתירה (רוצה X אבל ההחלטה הנוכחית מנוגדת), דחיפות (סיבה אמיתית לפתור עכשיו), אמונה או חוסר אמונה (מאמין באיקומרס אבל לא שמסוגל לבד).\n\nחוק הזהב: התחמושת הטובה ביותר מגיעה מהפה של הלקוח. אל תמציא כאבים, אל תניח מניעים, אל תכניס משפטים שיווקיים. אם הלקוח לא אמר או רמז בצורה חזקה, אל תציג כעובדה. שמור את הניסוח המקורי שלו: \"שנתיים רוצה להתחיל ולא מתקדם\" ולא \"הלקוח סובל מחוסר מימוש עצמי\".\n\nדירוג: ציון פנימי לפי עוצמת הכאב, רלוונטיות לרגע הנוכחי, קשר להצעה (כמה ההצעה פותרת את זה), הוכחה מהשיחה (כמה ברור שהלקוח אמר), עוצמה רגשית, דחיפות, וסטטוס החסם (פתוח או נפתר). המקום הראשון = הדבר שהכי נכון לאיש המכירות להיות מודע אליו כרגע.\n\nחסמים ופתרונם, קריטי: אתה לא רק מזהה חסמים, אתה עוקב האם נפתרו. \"אין לי זמן\" → חסם זמן. אם אחר כך הלקוח אמר \"אם זה שעה ביום אני כן יכול\", החסם נפתר: הורד משמעותית או הסר. אם אמר \"עדיין לא יודע מאיפה אביא זמן\", החסם לא נפתר ונשאר גבוה. אל תבלבל בין תשובה של הנציג לבין פתרון: חסם נפתר רק כשיש אינדיקציה מהלקוח שקיבל (\"אוקיי זה דווקא פותר לי\", \"ככה זה נשמע אחרת\", \"אם זה ככה אין לי בעיה\", \"הבנתי\", או מעבר ברור מההתנגדות). בלי אינדיקציה, החסם נשאר פתוח.\n\nדעיכה: פריט שהיה מספר 1 בדקה 8 לא חייב להישאר בדקה 30. נחשף חזק יותר → הורד. נפתר → הורד משמעותית. לא רלוונטי להחלטה → הסר. הלקוח חזר אליו → העלה מחדש.\n\nבדיוק 8 פריטים כשיש מספיק מידע אמיתי. אל תמציא כדי למלא. אם אין 8, החזר פחות (המערכת תציג \"עדיין אין מספיק מידע\" במקומות הריקים).\n\nפורמט: קצר מאוד. text = כותרת במילים של הלקוח (עד 10 מילים). note = שורה אחת של הקשר וסטטוס (עד 15 מילים), למשל \"אמר שניסה לבד ותמיד נעצר. חסם עדיין פתוח.\" status: hot=🔴 חזק מאוד / חסם משמעותי / דורש טיפול, high=🟠 רלוונטי מאוד, medium=🟡 רלוונטי, low=🟢 משני או כמעט פתור, resolved=✅ נפתר (לא תופס מקום לאורך זמן).\n\nהתאמה לשלב: בתחילת השיחה תעדף גילוי של מניע, מצב קיים, מטרה, כאב, פער. באמצע: עומק הכאב, ניסיונות עבר, חסמים, מחיר אי העשייה, למה עכשיו. לקראת הצעה וסגירה: חסמים שעדיין לא נפתרו, סיבות אישיות לפעול, פער משמעותי, התוצאה הרצויה, סתירות בין מה שרוצה לבין הסיבה שנמנע מהחלטה. לקראת סגירה שאל: איזה חסם עדיין פתוח? חסם משמעותי שלא נפתר עולה למעלה. אל תאפשר לנציג להגיע לסגירה כשיש התנגדות מרכזית שהלקוח העלה ואף אחד לא חזר אליה. המטרה היא לא \"לנצח התנגדויות\" אלא להבין מה באמת מונע החלטה ולבדוק אם אפשר לפתור באמת.\n\nשימוש: כשמתאים, use = משפט או שאלה טבעיים, לא מניפולטיביים ולא אגרסיביים, שהנציג יכול להגיד עכשיו. למשל: \"אמרת לי משהו קודם שאני רוצה לחזור אליו. כבר שנתיים אתה רוצה להיכנס לזה. מה לדעתך יקרה אם גם הפעם תחליט להסתדר עם זה לבד?\" או \"קודם אמרת שהפחד המרכזי שלך הוא לשרוף כסף על פרסום. מה עדיין חסר לך כדי להרגיש שקיבלת תשובה על זה?\"\n\nכלל אחרון: אל תחשוב כמו מסכם שיחות. תחשוב כמו אסטרטג שיושב ליד איש המכירות בזמן אמת: מה למדתי עכשיו על האדם? מה באמת חשוב לו? מה השתנה? מה עדיין פתוח? איזה חסם נפתר? איזה חסם אנחנו בטעות חושבים שנפתר? מה התחמושת הכי חזקה כרגע? ומה הדבר הכי נכון שאיש המכירות יתייחס אליו עכשיו? רשימת ה-8 היא התשובה לשאלה: אם איש המכירות יכול לראות רק 8 דברים מהשיחה עד עכשיו, מהם 8 הדברים שהכי יעזרו לו לנהל נכון את ההמשך ולהביא את הלקוח להחלטה שמתאימה לו?";
+
+const DEFAULT_CONTEXT = "מועדון האיקומרס של אביב מלכה.\n\nמה אנחנו מוכרים באמת: לא \"קורס דרופשיפינג\" אלא מסלול מעשי להקמת עסק איקומרס מאפס, עם מעטפת שמלווה את הלקוח מהרגע שהוא רוצה להיכנס לתחום ועד שיש לו חנות אמיתית, מוצרים, שיווק, קמפיינים ויכולת לייצר תוצאות. המטרה היא שהוא יעשה: יקים, ישיק, ימכור, ינהל וישפר, ויחזיק בנכס איקומרס שהוא יודע להפעיל. אנחנו הדרך הקצרה והמסודרת בין \"אני רוצה להיכנס לאיקומרס\" לבין \"יש לי עסק איקומרס אמיתי ואני יודע מה אני עושה\".\n\nהאווטאר: אדם שרוצה להיכנס לעולם האיקומרס ולהקים עסק או מקור הכנסה דרך האינטרנט. אין דמוגרפיה אחת: שכיר, עצמאי, סטודנט, חייל משוחרר, בין עבודות, בעל עסק שמחפש אפיק נוסף, בן 22 או בן 45, מרוויח טוב ורוצה משהו משלו או מחפש לשפר משמעותית את המצב הכלכלי. לכן אסור להמציא את הכאב מראש: לא כולם שונאים את העבודה, לא כולם רוצים לעזוב בוס, לא כולם בחובות, לא כולם חולמים על \"הכנסה פסיבית\". מה שמשותף: הרצון להיכנס לאיקומרס והפער בין הרצון לבין היכולת לעשות את זה נכון בפועל. הפער מגיע מ: חוסר ידע, עודף מידע ובלבול, פחד לבחור מוצר לא נכון, פחד להפסיד כסף, חוסר ניסיון, חוסר ביטחון, חוסר זמן, קושי טכנולוגי, ניסיון קודם שנכשל, חוסר יכולת להתמיד לבד, ואין לידו מישהו שכבר עשה את הדרך.\n\nשאלות גילוי שחייבים לברר עם כל אדם: למה דווקא איקומרס? למה עכשיו? מה הוא רוצה שהאיקומרס יאפשר לו? איפה הוא היום? לאן רוצה להגיע? מה ניסה עד היום? מה עצר אותו? מה מפחיד אותו? למה עדיין לא עשה את זה לבד? מה המשמעות מבחינתו אם בעוד שנה הוא באותו מקום?\n\nמה הלקוח מקבל: 1) הכשרה דיגיטלית מלאה מאפס: מוצרים, נישות, הקמת חנות, דפי מוצר, ספקים, קריאייטיבים, שיווק, Meta Ads, ניתוח נתונים, אופטימיזציה, מכירות, סקייל, ומעבר מדרופשיפינג בסיסי למותג איקומרס אמיתי. 2) AI כחלק מהשיטה: מחקר, כתיבה, בניית חנות, קריאייטיבים, ניתוח, רעיונות, שיווק, אוטומציות, כדי לתת למתחיל יכולות של צוות מנוסה. 3) מנטורינג אישי: לא נשאר לבד מול קורס. 4) ליווי ארוך טווח גם אחרי שהחנות באוויר: השקות, נתונים, קמפיינים, טעויות, שיפורים, סקייל. 5) 4 עד 8 מפגשי לייב בחודש על מה שקורה עכשיו בשטח. 6) קהילה של אנשים שעובדים על אותה מטרה. 7) תמיכה שוטפת כדי שלא יהיה תקוע ימים על שאלה אחת. 8) חשיפה למה שעובד עכשיו: אנחנו עסק איקומרס פעיל.\n\nההצעה: הדרך, המערכת והמעטפת להקים עסק איקומרס מאפס גם בלי ניסיון, עם ידע, AI, מנטורינג, תמיכה וקהילה, במקום להרכיב לבד את הפאזל מיוטיוב ומקורסים. לא צריך להבין הכל לפני שמתחילים, לא צריך להיות מומחה בכל תחום, לא צריך לעבור לבד את כל הטעויות שאנחנו כבר עברנו.\n\nהבידול: 1) לא קורס אלא מעטפת ביצוע: האינטרנט מלא בידע, הבעיה היא המעבר מידע לביצוע. ידע + מערכת + מנטורינג + תמיכה + קהילה + ניסיון + AI + יישום. 2) מגיעים מהשטח: אביב מלכה, כ-15 שנות ניסיון, עשרות מיליוני דולרים במכירות איקומרס, מיליוני דולרים בפרסום, מותגים וחנויות אמיתיים, מאות תלמידים. 3) מראים את התהליך: מוצרים, חנויות, מספרים, מה עבד ומה לא, קמפיינים והחשיבה מאחורי ההחלטות. התלמיד לומד איך איש איקומרס חושב. 4) המועדון חי: Meta, AI, קריאייטיבים, מוצרים וכלים משתנים, לכן לייבים, עדכונים וקהילה. 5) AI הוא חלק מהשיטה, לא גימיק.\n\nמה אנחנו לא מוכרים: לא כסף קל, לא כפתור קסם, לא הבטחה שכל אחד יתעשר, לא \"הכנסה פסיבית בלי לעבוד\". איקומרס הוא עסק: צריך ללמוד, לבצע, לבדוק, לטעות, להשתפר. היתרון: לא עושים את הדרך לבד.\n\nהמסר המרכזי: אתה יכול לנסות ללמוד הכל לבד, לחבר מידע מעשרות מקומות ולעבור את הטעויות בעצמך, או להיכנס למערכת שכבר בנויה סביב המטרה הזאת ולקבל דרך מסודרת, מנטורינג, כלים, AI, קהילה ותמיכה מאנשים שעושים איקומרס בפועל. ברמה העמוקה הלקוח קונה יכולת: מרעיון למוצר, ממוצר להצעה, מהצעה לתנועה, מתנועה למכירות, לקרוא נתונים, לשפר, למצוא את המוצר הבא.";
+
+const DEMO = [
+  {who:'rep', t:'היי דנה, מה שלומך? מדבר יובל ממועדון האיקומרס של אביב מלכה. ראיתי שהשארת פרטים, ספרי לי, מה גרם לך להתעניין דווקא באיקומרס?'},
+  {who:'cust',t:'אני שכירה בהייטק, המשכורת בסדר, אבל אני רוצה משהו משלי. ניסיתי לפני שנה לפתוח חנות שופיפיי לבד ונתקעתי אחרי חודשיים.'},
+  {who:'rep', t:'אני שומע אותך. יש לנו מסלול שבנוי בדיוק למצב הזה, עם ליווי ומנטורינג.'},
+  {who:'cust',t:'נשמע טוב, אבל כבר שילמתי על קורס ביוטיוב שלא הוביל לכלום, ואני לא בטוחה שיש לי זמן עם העבודה.'},
+  {who:'rep', t:'מבין. אצלנו זה לא קורס, זה מעטפת שמלווה אותך עד שהחנות באוויר ומוכרת.'},
+  {who:'cust',t:'מה שהכי מפחיד אותי זה לבחור מוצר לא נכון ולשרוף כסף על פרסום כמו בפעם הקודמת.'},
+  {who:'rep', t:'בדיוק בשביל זה יש מנטור שעובר איתך על המוצר לפני שמשקיעים שקל בפרסום. תני לי להראות לך איך זה נראה אצל תלמידה שהגיעה מהייטק כמוך.'},
+  {who:'cust',t:'טוב, אם באמת יש מישהו שעובר איתי על זה ולא נשארת לבד, אז אני רוצה לשמוע. מה השלב הבא?'},
+];
+
+/* ───────────────────────── state ───────────────────────── */
+const S = {
+  settings:{}, running:false, demo:false, startedAt:0, timerIv:null,
+  lines:[],           // {id, who, text, final, ts}
+  shownCards:[],      // titles already shown
+  ammo:[], profile:'', single:false, custQuietTimer:null, spkMap:{}, spkSeen:[], sm:null,
+  stage:'kyc', stageIdx:0, temp:'cold',
+  analysisPending:false, analysisInFlight:false, lastAnalyzedCount:0,
+  audio:{ctx:null, streams:[], nodes:[]}, ws:{rep:null, cust:null},
+  anthropic:null,
+};
+const $ = id=>document.getElementById(id);
+const escapeHtml=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const toast=(m,c='')=>{const t=$('toast');t.textContent=m;t.className='toast show '+c;clearTimeout(t._h);t._h=setTimeout(()=>t.className='toast',3200)};
+const setPill=(id,st)=>{const p=$(id);p.className='pill '+st};
+const LOG=[];function log(m,kind=''){const t=new Date().toLocaleTimeString('he-IL');LOG.push(`${t} ${kind==='err'?'❌':kind==='ok'?'✅':'•'} ${m}`);if(LOG.length>6)LOG.shift();const el=$('status');el.style.display='';el.innerHTML=LOG.map(escapeHtml).join('<br>');console.log('[LiveCoach]',m)}
+
+/* ───────────────────────── settings ───────────────────────── */
+function loadSettings(){
+  try{S.settings=JSON.parse(localStorage.getItem('lc_settings')||'{}')}catch(e){S.settings={}}
+  const s=S.settings; s.openai=cleanKey(s.openai); s.anthropic=cleanKey(s.anthropic);
+  s.speechmatics=cleanKey(s.speechmatics); s.smSpeakers=Array.isArray(s.smSpeakers)?s.smSpeakers:[];
+  $('sOpenai').value=s.openai||''; $('sAnthropic').value=s.anthropic||''; $('sSm').value=s.speechmatics||''; renderEnrolled();
+  $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES;
+  $('sRepName').value=s.repName||''; $('sCustName').value=s.custName||'';
+  $('sMode').value=s.mode||'rep'; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low';
+  syncAudioUI();
+}
+const cleanKey=v=>(v||'').replace(/[^\x21-\x7E]/g,''); // keep printable ASCII only: strips Hebrew, RTL marks, zero-width chars, spaces
+function saveSettings(){
+  const ok=cleanKey($('sOpenai').value), ak=cleanKey($('sAnthropic').value), sk=cleanKey($('sSm').value);
+  $('sOpenai').value=ok; $('sAnthropic').value=ak; $('sSm').value=sk;
+  if(ak&&!ak.startsWith('sk-ant-')) toast('שים לב: מפתח Anthropic אמור להתחיל ב-sk-ant-','t-error');
+  if(ok&&!ok.startsWith('sk-')) toast('שים לב: מפתח OpenAI אמור להתחיל ב-sk-','t-error');
+  S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:($('sContext').value.trim()||DEFAULT_CONTEXT),
+    principles:($('sPrinciples').value.trim()||DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),custName:$('sCustName').value.trim(),
+    mic:$('sMic').value,mode:$('sMode').value,custSrc:$('sCustSrc').value,custDev:$('sCustDev').value,sttModel:$('sSttModel').value,effort:$('sEffort').value,
+    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value)};
+  syncModeSeg(); $('whoName').textContent=S.settings.repName||'ללא שם';
+  localStorage.setItem('lc_settings',JSON.stringify(S.settings));
+  S.anthropic=null;
+  toast('ההגדרות נשמרו','t-ok'); closeDrawer();
+}
+async function listDevices(){
+  try{
+    // permission first so labels are populated
+    try{const st=await navigator.mediaDevices.getUserMedia({audio:true});st.getTracks().forEach(t=>t.stop())}catch(e){}
+    const devs=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput');
+    for(const sel of [$('sMic'),$('sCustDev')]){
+      sel.innerHTML=devs.map(d=>`<option value="${d.deviceId}">${d.label||'התקן קלט'}</option>`).join('')||'<option value="">לא נמצאו התקנים</option>';
+    }
+    if(S.settings.mic) $('sMic').value=S.settings.mic;
+    if(S.settings.custDev) $('sCustDev').value=S.settings.custDev;
+    else { const bh=devs.find(d=>/blackhole|loopback/i.test(d.label)); if(bh) $('sCustDev').value=bh.deviceId; }
+  }catch(e){console.warn(e)}
+}
+const openDrawer=()=>{$('drawer').classList.add('open');$('overlay').classList.add('show');listDevices()};
+const closeDrawer=()=>{$('drawer').classList.remove('open');$('overlay').classList.remove('show')};
+function syncModeSeg(){ const m=S.settings.mode||'rep'; for(const b of $('modeSeg').querySelectorAll('button')) b.classList.toggle('on',b.dataset.mode===m); }
+$('modeSeg').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; if(S.running) return toast('אפשר להחליף מצב רק כשאין שיחה פעילה','t-error');
+  S.settings.mode=b.dataset.mode; $('sMode').value=S.settings.mode; syncAudioUI(); localStorage.setItem('lc_settings',JSON.stringify(S.settings)); syncModeSeg();
+  toast(S.settings.mode==='listen'?'מצב האזנה: שני הדוברים באותו ערוץ, זיהוי לפי קול'+(S.settings.speechmatics?'':' (הוסף מפתח Speechmatics)'):'מצב נציג: המיקרופון שלך = נציג, הטאב = לקוח','t-ok'); };
+$('pWho').onclick=()=>{ let n=null; try{ n=prompt('מה השם שלך? (יופיע בבורד המנהל)',S.settings.repName||'') }catch(e){} if(n===null) return; S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName||'ללא שם'; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); };
+const b64u={enc:o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
+$('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.openai,anthropic:S.settings.anthropic,speechmatics:S.settings.speechmatics,sbUrl:S.settings.sbUrl,sbKey:S.settings.sbKey,mode:'rep',custSrc:'tab',sttModel:S.settings.sttModel,effort:S.settings.effort,
+    context:(S.settings.context!==DEFAULT_CONTEXT?S.settings.context:undefined),principles:(S.settings.principles!==DEFAULT_PRINCIPLES?S.settings.principles:undefined)};
+  const url=location.origin+location.pathname+'#cfg='+b64u.enc(cfg); $('inviteOut').value=url; navigator.clipboard?.writeText(url).then(()=>toast('הלינק הועתק','t-ok')).catch(()=>{}); };
+function saveSettingsSilent(){ const keep=S.settings; S.settings={...keep,openai:cleanKey($('sOpenai').value),anthropic:cleanKey($('sAnthropic').value),speechmatics:cleanKey($('sSm').value),sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),sttModel:$('sSttModel').value,effort:$('sEffort').value,context:($('sContext').value.trim()||DEFAULT_CONTEXT),principles:($('sPrinciples').value.trim()||DEFAULT_PRINCIPLES)}; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); }
+function applyHashConfig(){ const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/); if(!m) return false; try{ const cfg=b64u.dec(m[1]); let cur={}; try{cur=JSON.parse(localStorage.getItem('lc_settings')||'{}')}catch(e){}
+    const merged={...cur}; for(const k of ['openai','anthropic','speechmatics','sbUrl','sbKey','sttModel','effort','context','principles']) if(cfg[k]) merged[k]=cfg[k]; if(!merged.mode) merged.mode=cfg.mode||'rep'; if(!merged.custSrc) merged.custSrc=cfg.custSrc||'tab';
+    localStorage.setItem('lc_settings',JSON.stringify(merged)); history.replaceState(null,'',location.pathname+location.search); return true; }catch(e){ console.warn('bad cfg',e); return false; } }
+$('btnSettings').onclick=openDrawer; $('btnCloseDrawer').onclick=closeDrawer; $('overlay').onclick=closeDrawer; $('btnSave').onclick=saveSettings;
+function syncAudioUI(){
+  const mode=$('sMode').value, src=$('sCustSrc').value;
+  $('custDevWrap').style.display=src==='device'?'':'none';
+  $('micWrap').style.display=(mode==='rep'||src==='mic')?'':'none';
+  $('custSrcLabel').textContent=mode==='rep'?'מקור שמע הלקוח':'מקור השמע של השיחה (שני הדוברים)';
+  $('modeHint').textContent=mode==='rep'?'במצב נציג, המיקרופון שלך מזוהה תמיד כנציג. הד של הלקוח שנקלט במיקרופון מסונן אוטומטית.':(S.settings.speechmatics?'במצב האזנה התמלול עובר ל-Speechmatics עם הפרדת דוברים לפי קול. נציג שהוקלט מזוהה אוטומטית; אחרת לחיצה אחת על "נציג" באחד המשפטים מתייגת את כל הקול הזה.':'במצב האזנה כל משפט נכנס כ"מי מדבר?", ה-AI מנחש לפי התוכן ואתה יכול לתקן בלחיצה. הוסף מפתח Speechmatics לזיהוי לפי קול.');
+  $('custHint').textContent=src==='tab'?'בלחיצה על "התחל שיחה" כרום יבקש לבחור מסך. בחר את הטאב של ToChat וסמן "שתף שמע של הטאב".':
+    src==='device'?'נתב את שמע המערכת ל-BlackHole (Audio MIDI Setup → Multi-Output Device) ובחר אותו כאן.':'המיקרופון קולט את שני הצדדים מהרמקול. ודא שהרמקול פתוח ובעוצמה סבירה.';
+}
+$('sCustSrc').onchange=syncAudioUI; $('sMode').onchange=syncAudioUI;
+
+/* ───────────────────────── stage bar ───────────────────────── */
+function renderStages(){
+  $('stages').innerHTML=STAGES.map((s,i)=>`<div class="stage ${i<S.stageIdx?'done':i===S.stageIdx?'active':''}" title="${s.h}"><div class="c">${i<S.stageIdx?'✓':''}</div><div class="l">${s.l}</div></div>`).join('');
+  $('stageHint').textContent=STAGES[S.stageIdx].h;
+  const t=$('temp'); t.className='temp t-'+S.temp; t.innerHTML='חום ליד: <b>'+({cold:'קר ❄️',warm:'פושר 🌤️',hot:'חם 🔥'}[S.temp]||'—')+'</b>';
+}
+function setStage(id){const i=STAGES.findIndex(s=>s.id===id); if(i<0) return; if(i>S.stageIdx||i<S.stageIdx-1){S.stageIdx=i;S.stage=id;} else if(i===S.stageIdx-1){/* allow one step back */S.stageIdx=i;S.stage=id;} renderStages();}
+
+/* ───────────────────────── transcript ───────────────────────── */
+const norm=t=>t.replace(/[^\p{L}\p{N} ]/gu,' ').toLowerCase().split(/\s+/).filter(w=>w.length>1);
+function similar(a,b){const A=new Set(norm(a)),B=new Set(norm(b));if(!A.size||!B.size)return 0;let n=0;for(const w of A)if(B.has(w))n++;return n/Math.min(A.size,B.size)}
+function isEcho(ln){ // rep-channel line that duplicates a recent customer-channel line (or vice versa) within 8s
+  if(S.single||S.demo) return false;
+  const other=ln.who==='rep'?'cust':'rep';
+  return S.lines.some(o=>o.who===other&&o.id!==ln.id&&o.text.trim()&&Math.abs(o.ts-ln.ts)<8000&&similar(o.text,ln.text)>=0.6&&(ln.who==='rep'||o.final));
+}
+function upsertLine(id,who,text,final){
+  let ln=S.lines.find(l=>l.id===id);
+  if(!ln){ln={id,who,text:'',final:false,ts:Date.now(),manual:false};S.lines.push(ln);}
+  ln.text=text; ln.final=final;
+  if(final&&ln.who==='rep'&&isEcho(ln)){ const el=document.getElementById('ln_'+id); if(el) el.remove(); S.lines=S.lines.filter(l=>l.id!==id); log('סונן הד: הלקוח נקלט גם במיקרופון'); return; }
+  renderLine(ln);
+  if(final && text.trim()){ $('btnSummary').disabled=false; onFinalLine(ln); renderIdBar(); }
+}
+// Trigger policy: the coach speaks when the CUSTOMER finishes a turn (quiet gap, or the rep starts talking). Rep lines alone never trigger.
+function onFinalLine(ln){
+  if(S.single) return; // listen mode: the 20s insight loop drives analysis
+  clearTimeout(S.custQuietTimer);
+  if(ln.who==='rep'){ if(S.analysisPending) scheduleAnalysis(); return; }
+  S.analysisPending=true;
+  S.custQuietTimer=setTimeout(()=>{ if(S.analysisPending) scheduleAnalysis(); },1400);
+}
+function setSpeaker(id,who,manual){
+  const ln=S.lines.find(l=>l.id===id); if(!ln) return;
+  if(ln.manual&&!manual) return;           // a human choice always wins over an AI guess
+  if(ln.spk){ // voice-diarized line: the label applies to the whole voice, past and future
+    const cur=S.spkMap[ln.spk];
+    if(cur&&cur.manual&&!manual) return;
+    S.spkMap[ln.spk]={who,manual:!!manual};
+    const others=Object.keys(S.spkMap).concat(S.spkSeen).filter((v,i,a)=>a.indexOf(v)===i&&v!==ln.spk);
+    if(others.length===1&&!(S.spkMap[others[0]]&&S.spkMap[others[0]].manual)) S.spkMap[others[0]]={who:who==='rep'?'cust':'rep',manual:false};
+    for(const l of S.lines){ if(l.spk&&S.spkMap[l.spk]&&!l.manual){ l.who=S.spkMap[l.spk].who; renderLine(l);} }
+    if(manual) log('קול '+ln.spk+' = '+(who==='rep'?'נציג':'לקוח')+' (חל על כל המשפטים של הקול הזה)','ok');
+  }
+  ln.who=who; if(manual) ln.manual=true; renderLine(ln); renderIdBar();
+  if(manual&&ln.final){ S.lastAnalyzedCount=-1; scheduleAnalysis(); }
+}
+window.setSpeaker=setSpeaker;
+function renderLine(ln){
+  EMPTY_EL.style.display='none';
+  let el=document.getElementById('ln_'+ln.id);
+  const box=$('transcript');
+  const name=ln.who==='rep'?(S.settings.repName||'נציג'):ln.who==='cust'?(S.settings.custName||'לקוח'):'מי מדבר?';
+  const time=new Date(ln.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  if(!el){el=document.createElement('div');el.id='ln_'+ln.id;box.appendChild(el);}
+  el.className='msg '+ln.who+(ln.final?'':' partial');
+  const chips=S.single?`<span class="spk">${ln.spk?`<button disabled style="opacity:.7">${ln.spk}</button>`:''}<button class="${ln.who==='cust'?'on':''}" onclick="setSpeaker('${ln.id}','cust',true)">לקוח</button><button class="${ln.who==='rep'?'on':''}" onclick="setSpeaker('${ln.id}','rep',true)">נציג</button></span>`:'';
+  el.innerHTML=`<div class="who"><i></i>${name} · ${time}${ln.manual?' ✓':''}${chips}</div>${escapeHtml(ln.text)}`;
+  box.scrollTop=box.scrollHeight;
+}
+$('btnAnalyze').onclick=()=>{S.lastAnalyzedCount=-1;scheduleAnalysis()};
+const EMPTY_EL=$('emptyT');
+$('btnClear').onclick=()=>{S.lines=[];S.shownCards=[];S.ammo=[];S.profile='';S.lastAnalyzedCount=0;$('transcript').innerHTML='';$('transcript').appendChild(EMPTY_EL);EMPTY_EL.style.display='';$('cards').innerHTML='';$('custState').style.display='none';$('ammo').innerHTML='';$('emptyA').style.display='';$('profile').style.display='none';$('ammoCount').textContent='';};
+
+/* ───────────────────────── audio capture → OpenAI realtime STT ───────────────────────── */
+const WORKLET_SRC=`class P extends AudioWorkletProcessor{constructor(){super();this.buf=[];this.n=0}
+process(inputs){const ch=inputs[0]&&inputs[0][0];if(!ch)return true;const o=new Int16Array(ch.length);let peak=0;
+for(let i=0;i<ch.length;i++){let v=Math.max(-1,Math.min(1,ch[i]));peak=Math.max(peak,Math.abs(v));o[i]=v<0?v*0x8000:v*0x7fff}
+this.buf.push(o);this.n+=o.length;if(this.n>=2400){const out=new Int16Array(this.n);let p=0;for(const b of this.buf){out.set(b,p);p+=b.length}this.buf=[];this.n=0;this.port.postMessage({pcm:out.buffer,peak},[out.buffer])}return true}}
+registerProcessor('pcm',P)`;
+
+async function getCtx(){
+  if(S.audio.ctx) return S.audio.ctx;
+  const ctx=new AudioContext({sampleRate:24000});
+  S.audio.worklet=false;
+  if(ctx.audioWorklet){
+    try{ await ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET_SRC],{type:'application/javascript'}))); S.audio.worklet=true; }
+    catch(e1){ try{ await ctx.audioWorklet.addModule('data:application/javascript;base64,'+btoa(unescape(encodeURIComponent(WORKLET_SRC)))); S.audio.worklet=true; }
+      catch(e2){ console.warn('worklet unavailable, using ScriptProcessor',e1,e2); log('מעבד שמע: מסלול חלופי (ScriptProcessor)'); } }
+  }
+  S.audio.ctx=ctx; return ctx;
+}
+// Capture node: AudioWorklet when available, ScriptProcessor fallback (file://, strict CSP, old Chrome)
+function makeCapture(ctx,onChunk){
+  if(S.audio.worklet){ const node=new AudioWorkletNode(ctx,'pcm'); node.port.onmessage=e=>onChunk(e.data.pcm,e.data.peak); return {node,sink:null}; }
+  const node=ctx.createScriptProcessor(2048,1,1); const sink=ctx.createGain(); sink.gain.value=0; sink.connect(ctx.destination);
+  let buf=[],n=0;
+  node.onaudioprocess=e=>{ const ch=e.inputBuffer.getChannelData(0); const o=new Int16Array(ch.length); let peak=0;
+    for(let i=0;i<ch.length;i++){ const v=Math.max(-1,Math.min(1,ch[i])); peak=Math.max(peak,Math.abs(v)); o[i]=v<0?v*0x8000:v*0x7fff; }
+    buf.push(o); n+=o.length; if(n>=2400){ const out=new Int16Array(n); let p=0; for(const b of buf){out.set(b,p);p+=b.length} buf=[];n=0; onChunk(out.buffer,peak); } };
+  node.connect(sink); return {node,sink};
+}
+function b64(buf){let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
+
+function openStt(who){
+  return new Promise((resolve,reject)=>{
+    const key=S.settings.openai;
+    const ws=new WebSocket('wss://api.openai.com/v1/realtime?intent=transcription',['realtime','openai-insecure-api-key.'+key]);
+    const pill=who==='rep'?'pRep':'pCust';
+    let settled=false, legacyTried=false;
+    const label=who==='rep'?'נציג':'לקוח';
+    const model=S.settings.sttModel||'gpt-transcribe', prompt=[S.settings.repName,S.settings.custName].filter(Boolean).join(', ');
+    const vad={type:'server_vad',threshold:0.5,prefix_padding_ms:300,silence_duration_ms:600};
+    const sendNew=()=>ws.send(JSON.stringify({type:'session.update',session:{type:'transcription',audio:{input:{format:{type:'audio/pcm',rate:24000},transcription:{model,language:'he',prompt},turn_detection:vad}}}}));
+    const sendLegacy=()=>ws.send(JSON.stringify({type:'transcription_session.update',session:{input_audio_format:'pcm16',input_audio_transcription:{model,language:'he',prompt},turn_detection:vad}}));
+    ws.onopen=()=>{log('OpenAI ('+label+'): חיבור נפתח, שולח הגדרות');sendNew()};
+    ws.onmessage=ev=>{
+      let m; try{m=JSON.parse(ev.data)}catch(e){return}
+      if(!/delta|append/.test(m.type)) console.log('[stt '+who+']',m.type,m);
+      if(m.type==='error'){
+        const code=m.error?.code||m.error?.type||'', msg=m.error?.message||JSON.stringify(m.error||m), param=String(m.error?.param||'');
+        const isFormat=/session|audio|turn_detection|unknown_parameter|missing_required|invalid_value/i.test(param+' '+code+' '+msg)&&!/api_key|quota|billing|permission|model/i.test(code+' '+msg);
+        if(isFormat&&!legacyTried&&!settled){legacyTried=true;log('OpenAI ('+label+'): הפורמט החדש נדחה ('+msg.slice(0,80)+'), מנסה פורמט ישן');sendLegacy();return}
+        console.error(who,m);
+        const friendly=/api_key/i.test(code)?'מפתח OpenAI שגוי. ודא שבשדה OpenAI יש מפתח שמתחיל ב-sk- מ-platform.openai.com (לא מפתח Anthropic).':
+          /quota|billing/i.test(code+msg)?'לחשבון OpenAI אין יתרה. טען קרדיט ב-platform.openai.com/settings/organization/billing.':
+          /model/i.test(code+msg)?'מודל התמלול לא זמין בחשבון שלך. נסה מודל אחר בהגדרות.':msg.slice(0,140);
+        log('OpenAI ('+label+'): '+code+' — '+friendly,'err');toast('שגיאת תמלול ('+label+'): '+friendly,'t-error');
+        if(!settled){settled=true;reject(new Error(friendly))}return}
+      if(m.type==='transcription_session.updated'||m.type==='session.updated'){if(!settled){settled=true;setPill(pill,'on');log('OpenAI ('+label+'): מוכן לתמלול','ok');resolve(ws)}}
+      if(m.type==='input_audio_buffer.speech_started') log('OpenAI ('+label+'): זוהה דיבור');
+      const spk=S.single?'unk':who;
+      if(m.type==='conversation.item.input_audio_transcription.delta'){const id=who+'_'+m.item_id;const ln=S.lines.find(l=>l.id===id);upsertLine(id,ln?ln.who:spk,(ln?ln.text:'')+(m.delta||''),false)}
+      if(m.type==='conversation.item.input_audio_transcription.completed'){const id=who+'_'+m.item_id;const t=(m.transcript||'').trim();const ln=S.lines.find(l=>l.id===id);if(t)upsertLine(id,ln?ln.who:spk,t,true);else{const el=document.getElementById('ln_'+id);if(el)el.remove();S.lines=S.lines.filter(l=>l.id!==id)}}
+      if(m.type==='input_audio_buffer.speech_started'){const id=who+'_'+m.item_id;if(!S.lines.find(l=>l.id===id))upsertLine(id,spk,'…',false); if(who==='rep'&&!S.single&&S.analysisPending){clearTimeout(S.custQuietTimer);scheduleAnalysis()}}
+    };
+    ws.onerror=e=>{setPill(pill,'err');log('OpenAI ('+label+'): החיבור נכשל. מפתח OpenAI לא תקין או חסום','err');if(!settled){settled=true;reject(new Error('לא ניתן להתחבר ל-OpenAI Realtime. בדוק את מפתח OpenAI.'))}};
+    ws.onclose=ev=>{setPill(pill,'');console.warn('[stt '+who+'] closed',ev.code,ev.reason);const why=ev.reason?' — '+ev.reason:'';if(!settled){settled=true;reject(new Error('OpenAI סגר את החיבור (קוד '+ev.code+why+'). בדוק שמפתח OpenAI תקין ושיש יתרה בחשבון.'))}if(S.running&&!S.demo){log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+why+')','err');toast('חיבור התמלול ('+label+') נסגר','t-error')}};
+  });
+}
+/* ── Speechmatics realtime: diarization by voice (listen mode) + speaker enrollment ── */
+async function smTempKey(){
+  const r=await fetch('https://mp.speechmatics.com/v1/api_keys?type=rt',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.settings.speechmatics},body:JSON.stringify({ttl:3600})});
+  if(!r.ok){ throw new Error('Speechmatics: מפתח לא תקין או אין יתרה ('+r.status+')'); }
+  return (await r.json()).key_value;
+}
+function openSm(who,opts={}){
+  return new Promise(async(resolve,reject)=>{
+    let jwt; try{jwt=await smTempKey()}catch(e){return reject(e)}
+    const ws=new WebSocket('wss://eu.rt.speechmatics.com/v2?jwt='+encodeURIComponent(jwt)); ws.binaryType='arraybuffer';
+    let seq=0, settled=false; const pill=who==='rep'?'pRep':'pCust';
+    const enrolled=(S.settings.smSpeakers||[]).filter(x=>x.speaker_identifiers&&x.speaker_identifiers.length);
+    const dcfg={max_speakers:opts.enroll?1:3,prefer_current_speaker:true};
+    if(opts.enroll) dcfg.get_speakers=true; else if(enrolled.length) dcfg.speakers=enrolled.map(x=>({label:x.label,speaker_identifiers:x.speaker_identifiers}));
+    ws.onopen=()=>{ log('Speechmatics: חיבור נפתח'+(enrolled.length&&!opts.enroll?', '+enrolled.length+' קולות רשומים':'')); ws.send(JSON.stringify({message:'StartRecognition',audio_format:{type:'raw',encoding:'pcm_s16le',sample_rate:24000},
+      transcription_config:{language:'he',model:'enhanced',enable_partials:true,max_delay:1.5,diarization:'speaker',speaker_diarization_config:dcfg,conversation_config:{end_of_utterance_silence_trigger:0.8}}})); };
+    ws.onmessage=ev=>{ let m; try{m=JSON.parse(ev.data)}catch(e){return}
+      if(!/AudioAdded|Partial/.test(m.message)) console.log('[sm]',m.message,m);
+      switch(m.message){
+        case 'RecognitionStarted': settled=true; setPill(pill,'on'); log('Speechmatics: מוכן לתמלול עם זיהוי קול','ok'); resolve(ws); break;
+        case 'AddPartialTranscript': if(!opts.enroll) smWords(m,false); break;
+        case 'AddTranscript': if(!opts.enroll) smWords(m,true); break;
+        case 'EndOfUtterance': if(!opts.enroll) smFinalize(); break;
+        case 'SpeakersResult': opts.onSpeakers&&opts.onSpeakers(m); break;
+        case 'EndOfTranscript': opts.onEnd&&opts.onEnd(); break;
+        case 'Warning': log('Speechmatics: '+(m.reason||m.type)); break;
+        case 'Error': log('Speechmatics: '+(m.type||'')+' '+(m.reason||''),'err'); toast('Speechmatics: '+(m.reason||m.type),'t-error'); if(!settled){settled=true;reject(new Error(m.reason||m.type))} break;
+      } };
+    ws.onerror=()=>{setPill(pill,'err');if(!settled){settled=true;reject(new Error('לא ניתן להתחבר ל-Speechmatics'))}};
+    ws.onclose=ev=>{setPill(pill,'');if(!settled){settled=true;reject(new Error('Speechmatics סגר את החיבור ('+ev.code+' '+(ev.reason||'')+')'))} if(S.running&&!S.demo&&!opts.enroll) log('Speechmatics: החיבור נסגר ('+ev.code+')','err')};
+    ws.sendAudio=buf=>{ if(ws.readyState===1){ ws.send(buf); seq++; } };
+    ws.endStream=()=>{ if(ws.readyState===1) ws.send(JSON.stringify({message:'EndOfStream',last_seq_no:seq})); };
+  });
+}
+// Word assembly: consecutive words of the same voice form one utterance; a voice change or EndOfUtterance closes it.
+const SMW={cur:null,partial:''};
+function smRole(spk){ if(!spk||spk==='UU') return 'unk'; const en=(S.settings.smSpeakers||[]).find(x=>x.label===spk); if(en) return 'rep'; if(S.spkMap[spk]) return S.spkMap[spk].who; if((S.settings.smSpeakers||[]).length) return 'cust'; return 'unk'; }
+function smWords(m,final){
+  const res=(m.results||[]).filter(r=>r.alternatives&&r.alternatives.length);
+  if(!final){ SMW.partial=res.map(r=>r.alternatives[0].content).join(' ').replace(/ ([,.?!:;])/g,'$1'); if(SMW.cur) smRender(false); else if(SMW.partial.trim()){ const spk=res[0].alternatives[0].speaker||res[0].speaker; smStart(spk); smRender(false);} return; }
+  for(const r of res){ const a=r.alternatives[0]; const spk=a.speaker||r.speaker||'UU'; const isPunct=r.type==='punctuation'||(r.attaches_to==='previous');
+    if(!SMW.cur||(SMW.cur.spk!==spk&&!isPunct)){ if(SMW.cur) smFinalize(); smStart(spk); }
+    SMW.cur.text+= (isPunct||!SMW.cur.text?'':' ')+a.content; SMW.cur.end=r.end_time; }
+  SMW.partial=''; if(SMW.cur) smRender(false);
+}
+function smStart(spk){ if(spk&&spk!=='UU'&&!S.spkSeen.includes(spk)) S.spkSeen.push(spk); SMW.cur={id:'sm_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),spk,text:'',end:0}; }
+// "Who said this?" banner: the first final sentence of every unlabeled voice (or unlabeled line) is put in front of the listener with two big buttons.
+function renderIdBar(){
+  const w=$('idbarWrap'); if(!S.single||!S.running){ w.style.display='none'; return; }
+  const cand=S.lines.find(l=>l.final&&l.text.trim()&&l.text!=='…'&&l.who==='unk'&&(!l.spk||!S.spkMap[l.spk]));
+  if(!cand){ w.style.display='none'; return; }
+  const voice=cand.spk?`קול ${cand.spk}`:'המשפט הזה'; const known=Object.entries(S.spkMap).filter(([k,v])=>v.manual).map(([k,v])=>k+'='+(v.who==='rep'?'נציג':'לקוח')).join(', ');
+  w.style.display=''; w.innerHTML=`<div class="idbar"><div class="k">🎤 ${cand.spk?'קול חדש זוהה':'מי מדבר?'}${known?' · כבר סומן: '+known:''}</div><div class="q">מי אמר: "${escapeHtml(cand.text.slice(0,140))}"</div><div class="b"><button class="rep" onclick="setSpeaker('${cand.id}','rep',true)">🎧 הנציג</button><button class="cust" onclick="setSpeaker('${cand.id}','cust',true)">👤 הלקוח</button></div><div class="hint" style="margin-top:8px">${cand.spk?'הבחירה תחול על כל המשפטים של הקול הזה, אחורה וקדימה. הקול השני יסומן הפוך אוטומטית.':'ה-AI מתייג את השאר לפי התוכן. אפשר לתקן כל משפט בכפתורים שלידו.'}</div></div>`;
+}
+function smRender(final){ const c=SMW.cur; if(!c) return; const t=(c.text+(final?'':(SMW.partial?' '+SMW.partial:''))).trim(); if(!t) return; let ln=S.lines.find(l=>l.id===c.id); if(!ln){ upsertLine(c.id,smRole(c.spk),t,false); ln=S.lines.find(l=>l.id===c.id); if(ln) ln.spk=(c.spk&&c.spk!=='UU')?c.spk:null; } const who=(ln&&ln.manual)?ln.who:smRole(c.spk); upsertLine(c.id,who,t,final); }
+function smFinalize(){ if(!SMW.cur) return; if(SMW.cur.text.trim()) smRender(true); else { const el=document.getElementById('ln_'+SMW.cur.id); if(el) el.remove(); S.lines=S.lines.filter(l=>l.id!==SMW.cur.id); } SMW.cur=null; SMW.partial=''; }
+
+/* enrollment: record 20s of one rep, get speaker identifiers, store under the rep's name */
+async function enrollVoice(){
+  const name=$('enrollName').value.trim(); if(!name) return toast('כתוב את שם הנציג','t-error');
+  if(!cleanKey($('sSm').value)) return toast('נדרש מפתח Speechmatics','t-error');
+  S.settings.speechmatics=cleanKey($('sSm').value);
+  const st=$('enrollStatus'); $('btnEnroll').disabled=true;
+  let mic=null, ws=null;
+  try{
+    st.textContent='מבקש מיקרופון…';
+    mic=await navigator.mediaDevices.getUserMedia({audio:{deviceId:$('sMic').value?{exact:$('sMic').value}:undefined,echoCancellation:true,noiseSuppression:true}});
+    st.textContent='מתחבר ל-Speechmatics…';
+    const result=new Promise((res,rej)=>{ openSm('rep',{enroll:true,onSpeakers:m=>res(m),onEnd:()=>setTimeout(()=>rej(new Error('לא התקבלו מזהי קול. נסה שוב בסביבה שקטה.')),4000)}).then(w=>{ws=w}).catch(rej); });
+    await new Promise(r=>setTimeout(r,800)); if(!ws) await new Promise(r=>setTimeout(r,1500)); if(!ws) throw new Error('החיבור לא נפתח');
+    const ctx=await getCtx(); const src=ctx.createMediaStreamSource(mic);
+    const {node,sink}=makeCapture(ctx,(pcm,peak)=>{ ws.sendAudio(pcm); $('mEnroll').style.width=Math.min(100,peak*140)+'%'; }); src.connect(node);
+    if(ctx.state!=='running') await ctx.resume();
+    for(let i=20;i>0;i--){ st.textContent='🔴 מקליט… דבר ברצף, כמו בשיחה. '+i+' שניות'; await sleep(1000); }
+    st.textContent='מעבד…'; try{src.disconnect();node.disconnect();if(sink)sink.disconnect()}catch(e){} mic.getTracks().forEach(t=>t.stop()); mic=null;
+    ws.endStream();
+    const m=await result;
+    const ids=[]; for(const sp of (m.speakers||[])){ for(const id of (sp.speaker_identifiers||[])) ids.push(id); }
+    if(!ids.length) throw new Error('לא זוהה קול. נסה שוב, דבר ברצף וקרוב למיקרופון.');
+    S.settings.smSpeakers=(S.settings.smSpeakers||[]).filter(x=>x.label!==name).concat([{label:name,speaker_identifiers:ids.slice(0,5),at:Date.now()}]);
+    localStorage.setItem('lc_settings',JSON.stringify(S.settings)); renderEnrolled();
+    st.textContent='✅ הקול של '+name+' נשמר ('+ids.length+' מזהים). מעכשיו הוא יזוהה אוטומטית כנציג.'; $('mEnroll').style.width='0';
+  }catch(e){ console.error(e); st.textContent='❌ '+(e.message||e); if(mic) mic.getTracks().forEach(t=>t.stop()); }
+  finally{ try{ws&&ws.close()}catch(e){} $('btnEnroll').disabled=false; }
+}
+function renderEnrolled(){
+  const list=S.settings.smSpeakers||[]; const el=$('enrolledList'); if(!el) return;
+  el.innerHTML=list.length?list.map((x,i)=>`<div style="display:flex;align-items:center;gap:8px;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 12px"><span>🎤 <b>${escapeHtml(x.label)}</b> · ${x.speaker_identifiers.length} מזהי קול</span><span class="spacer"></span><button class="btn btn-sm" onclick="removeEnrolled(${i})">מחק</button></div>`).join(''):'<div class="hint">אין קולות רשומים עדיין.</div>';
+}
+window.removeEnrolled=i=>{ S.settings.smSpeakers.splice(i,1); localStorage.setItem('lc_settings',JSON.stringify(S.settings)); renderEnrolled(); };
+$('btnEnroll').onclick=enrollVoice;
+
+async function pipe(stream,who,ws,meterId){
+  const ctx=await getCtx();
+  const src=ctx.createMediaStreamSource(stream);
+  const lvl=$(who==='rep'?'lRep':'lCust'); let lastLog=0;
+  const {node,sink}=makeCapture(ctx,(pcm,peak)=>{ if(ws.readyState===1){ if(ws.sendAudio) ws.sendAudio(pcm); else ws.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); } const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
+  src.connect(node); // worklet: no destination (silent); script processor: muted sink
+  S.audio.nodes.push(src,node); if(sink) S.audio.nodes.push(sink); S.audio.streams.push(stream);
+}
+
+async function startCall(){
+  if(!S.settings.openai&&!(S.settings.mode==='listen'&&S.settings.speechmatics)) {openDrawer();return toast('נדרש OpenAI API Key לתמלול','t-error')}
+  if(!S.settings.anthropic){openDrawer();return toast('נדרש Anthropic API Key למאמן','t-error')}
+  $('btnStart').disabled=true; LOG.length=0;
+  try{
+    if(!window.isSecureContext||!navigator.mediaDevices?.getDisplayMedia) throw new Error('הדפדפן הזה לא מאפשר לכידת שמע. פתח את הכלי בכרום רגיל (localhost או https).');
+    const listen=S.settings.mode==='listen'; const src=S.settings.custSrc||'tab';
+    log(listen?'מצב האזנה: מקור אחד עם שני הדוברים':'מצב נציג: מיקרופון = נציג, '+(src==='tab'?'טאב':'התקן')+' = לקוח');
+    // 1. rep mic (rep mode always; listen mode only when the mic is the source)
+    let mic=null;
+    if(!listen||src==='mic'){
+      log('מבקש גישה למיקרופון…');
+      try{mic=await navigator.mediaDevices.getUserMedia({audio:{deviceId:S.settings.mic?{exact:S.settings.mic}:undefined,echoCancellation:!listen,noiseSuppression:!listen,autoGainControl:true}})}
+      catch(e){throw new Error('אין גישה למיקרופון ('+e.name+'). אשר מיקרופון בכרום: לחץ על המנעול בשורת הכתובת.')}
+      log('מיקרופון: '+(mic.getAudioTracks()[0]?.label||'התקבל'),'ok');
+    }
+    // 2. customer / call audio
+    let cust=null;
+    if(src==='tab'){
+      log('פותח בחירת טאב. בחר "Chrome Tab" → הטאב של ToChat → סמן "Also share tab audio"');
+      let ds;
+      try{ds=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true,selfBrowserSurface:'exclude',preferCurrentTab:false,systemAudio:'include'})}
+      catch(e){throw new Error('בחירת הטאב בוטלה או נחסמה ('+e.name+').')}
+      const at=ds.getAudioTracks();
+      if(!at.length){ds.getTracks().forEach(t=>t.stop());throw new Error('הטאב נבחר אבל בלי שמע. בחלון הבחירה: לשונית "Chrome Tab" (לא Window/Screen), ובפינה למטה סמן "Also share tab audio" / "שתף גם שמע של הטאב".')}
+      log('שמע לקוח: '+(at[0].label||'טאב')+' ('+(ds.getVideoTracks()[0]?.getSettings().displaySurface||'')+')','ok');
+      ds.getVideoTracks()[0]?.addEventListener('ended',()=>{if(S.running){log('שיתוף הטאב הופסק','err');stopCall()}});
+      cust=new MediaStream(at); S.audio.streams.push(ds);
+    }else if(src==='device'){
+      cust=await navigator.mediaDevices.getUserMedia({audio:{deviceId:{exact:S.settings.custDev},echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+      log('שמע לקוח: '+(cust.getAudioTracks()[0]?.label||'התקן'),'ok');
+    }
+    if(listen&&src==='mic'){cust=null}  // listen via mic: one channel only
+    // 3. STT sockets: one per channel
+    S.single=listen; $('modeTag').style.display=listen?'':'none';
+    if(mic) setPill('pRep','busy'); if(cust) setPill('pCust','busy');
+    S.spkMap={}; S.spkSeen=[]; SMW.cur=null; SMW.partial='';
+    const useSm=listen&&!!S.settings.speechmatics;
+    if(useSm){
+      const stream=cust||mic, ch=cust?'cust':'rep', meter=cust?'mCust':'mRep';
+      log('מתחבר ל-Speechmatics (זיהוי דוברים לפי קול)…');
+      const ws=await openSm(ch); S.ws[ch]=ws; await pipe(stream,ch,ws,meter);
+    }else{
+      if(!S.settings.openai) throw new Error('נדרש OpenAI API Key לתמלול (או מפתח Speechmatics למצב האזנה).');
+      log('מתחבר ל-OpenAI Realtime…');
+      const [wsRep,wsCust]=await Promise.all([mic?openStt('rep'):Promise.resolve(null),cust?openStt('cust'):Promise.resolve(null)]);
+      S.ws.rep=wsRep; S.ws.cust=wsCust;
+      if(mic) await pipe(mic,'rep',wsRep,'mRep'); if(cust) await pipe(cust,'cust',wsCust,'mCust');
+    }
+    if(S.audio.ctx.state!=='running') await S.audio.ctx.resume();
+    log('שמע זורם. דבר, או תן ללקוח לדבר.','ok');
+    beginSession(false);
+    toast('השיחה התחילה. המאמן מאזין.','t-ok');
+  }catch(e){console.error(e);log(e.message||'שגיאה בהפעלה','err');toast(e.message||'שגיאה בהפעלה','t-error');teardownAudio();$('btnStart').disabled=false;setPill('pRep','');setPill('pCust','');}
+}
+function teardownAudio(){
+  for(const n of S.audio.nodes){try{n.disconnect()}catch(e){}} S.audio.nodes=[];
+  for(const s of S.audio.streams){s.getTracks().forEach(t=>t.stop())} S.audio.streams=[];
+  try{smFinalize()}catch(e){}
+  for(const k of ['rep','cust']){try{if(S.ws[k]&&S.ws[k].endStream)S.ws[k].endStream();}catch(e){} try{setTimeout((w=>()=>{try{w&&w.close()}catch(e){}})(S.ws[k]),1500)}catch(e){} S.ws[k]=null}
+  $('mRep').style.width='0';$('mCust').style.width='0';$('lRep').style.setProperty('--w','0%');$('lCust').style.setProperty('--w','0%');
+}
+function beginSession(demo){
+  S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.insights=[]; S.summary=null;
+  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile='';
+  if(demo){S.single=false;$('modeTag').style.display='none'}
+  $('btnClear').click(); renderStages();
+  $('btnStart').style.display='none'; $('btnStop').style.display=''; $('btnStart').disabled=false; $('btnDemo').disabled=true; $('liveTag').style.display='';
+  $('timer').classList.add('live');
+  S.timerIv=setInterval(()=>{const s=Math.floor((Date.now()-S.startedAt)/1000);$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},500);
+  clearInterval(S.syncIv); S.syncIv=setInterval(()=>{ if(S.running) syncCall(); },15000); if(!demo||sbReady()) syncCall();
+  clearInterval(S.insightIv);
+  S.insightIv=setInterval(()=>{ if(!S.single||!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount) scheduleAnalysis(); },20000);
+}
+function stopCall(){
+  S.running=false; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); teardownAudio(); S.demoAbort=true; renderIdBar();
+  syncCall({status:'ended',ended_at:new Date().toISOString()});
+  if(S.lines.filter(l=>l.final&&l.text.trim()).length>=6&&S.settings.anthropic) setTimeout(()=>runSummary(true),1500);
+  $('btnStart').style.display=''; $('btnStop').style.display='none'; $('btnDemo').disabled=false; $('liveTag').style.display='none'; $('timer').classList.remove('live');
+  setPill('pRep','');setPill('pCust','');
+  if(S.lines.length) toast('השיחה הסתיימה. לחץ "סיכום" לסיכום מוכן ל-CRM.','t-ok');
+}
+$('btnStart').onclick=startCall; $('btnStop').onclick=stopCall;
+
+/* ───────────────────────── demo ───────────────────────── */
+$('btnDemo').onclick=async()=>{
+  if(!S.settings.anthropic){openDrawer();return toast('נדרש Anthropic API Key כדי שהמאמן יגיב','t-error')}
+  beginSession(true); S.demoAbort=false;
+  for(let i=0;i<DEMO.length;i++){
+    if(S.demoAbort) return;
+    const d=DEMO[i]; const id='demo_'+i; const words=d.t.split(' '); let acc='';
+    for(const w of words){ if(S.demoAbort) return; acc+=(acc?' ':'')+w; upsertLine(id,d.who,acc,false); await sleep(90+Math.random()*80); }
+    upsertLine(id,d.who,d.t,true);
+    await sleep(2600+Math.random()*1200);
+  }
+  await sleep(1500); if(!S.demoAbort) stopCall();
+};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ───────────────────────── coach engine (Claude) ───────────────────────── */
+const COACH_SCHEMA={type:'object',additionalProperties:false,
+  properties:{
+    stage:{type:'string',enum:STAGES.map(s=>s.id),description:'השלב הנוכחי של השיחה'},
+    temperature:{type:'string',enum:['cold','warm','hot'],description:'חום הליד כרגע'},
+    customer_state:{type:'string',description:'משפט אחד: מה הלקוח מרגיש/רוצה/חושש כרגע'},
+    say_now:{type:'string',description:'המשפט המדויק שהנציג צריך להגיד עכשיו, בעברית מדוברת, 1-2 משפטים, ניתן לקרוא מהמסך'},
+    why:{type:'string',description:'למה זה המשפט הנכון עכשיו, עד 15 מילים'},
+    avoid:{type:'string',description:'מה לא לעשות עכשיו, עד 12 מילים, או מחרוזת ריקה'},
+    cards:{type:'array',items:{type:'object',additionalProperties:false,
+      properties:{type:{type:'string',enum:Object.keys(CARD_LABEL)},title:{type:'string',description:'כותרת קצרה, עד 6 מילים'},text:{type:'string',description:'תובנה + מה לעשות איתה, עד 30 מילים'}},
+      required:['type','title','text']},description:'רק תובנות חדשות שלא הוצגו כבר, לכל היותר 2. אם אין חדש, מערך ריק'},
+    speaker_labels:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string'},who:{type:'string',enum:['rep','cust']}},required:['id','who']},description:'לשורות שמסומנות "דובר לא ידוע": מי אמר אותן לפי התוכן. מערך ריק אם אין כאלה'},
+    profile:{type:'string',description:'פרופיל הלקוח עד כה ב-2-3 משפטים: מי הוא, מה העסק/המצב, מה הוא ניסה, מה מגביל אותו. מצטבר על כל השיחה'},
+    insight:{type:'object',additionalProperties:false,properties:{quote:{type:'string',description:'ציטוט קצר ומדויק של משהו שהלקוח אמר (או מחרוזת ריקה אם אין חדש)'},principle:{type:'string',description:'שם העיקרון מהפלייבוק שרלוונטי לציטוט, עד 8 מילים'},lesson:{type:'string',description:'התובנה: מה הציטוט חושף על הלקוח ומה היה הצעד הנכון של הנציג לפי העיקרון, עד 35 מילים'}},required:['quote','principle','lesson'],description:'תובנה אחת שמחברת בין מה שהלקוח אמר לעיקרון מהפלייבוק, על ציטוט שעוד לא נותח'},
+    ammo:{type:'array',items:{type:'object',additionalProperties:false,properties:{
+      type:{type:'string',enum:['pain','gap','motive','why_now','cost_of_inaction','past','barrier','fear','desire','contradiction','urgency','belief','personal','number','commitment']},
+      status:{type:'string',enum:['hot','high','medium','low','resolved'],description:'hot=🔴 חזק מאוד/חסם משמעותי, high=🟠, medium=🟡, low=🟢 משני או כמעט פתור, resolved=✅ נפתר'},
+      text:{type:'string',description:'כותרת קצרה במילים של הלקוח, עד 10 מילים. לא ניסוח שיווקי ולא פרשנות'},
+      note:{type:'string',description:'שורה אחת: הקשר, מה זה מחזק, האם החסם פתוח או נפתר, עד 15 מילים'},
+      use:{type:'string',description:'משפט או שאלה טבעיים שהנציג יכול להגיד עכשיו בעזרת הפריט, או מחרוזת ריקה'}},
+      required:['type','status','text','note','use']},
+      description:'תחמושת: לוח תוצאות חי של השיחה. בדיוק 8 פריטים כשיש מספיק מידע אמיתי, מדורגים מהחזק והרלוונטי ביותר כרגע לפחות. רק מה שהלקוח אמר או רמז בבירור. חסם נחשב פתור רק אם הלקוח אישר. החזר את הרשימה המלאה והמעודכנת בכל סבב'}
+  },required:['stage','temperature','customer_state','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight']};
+
+function systemPrompt(){
+  return `אתה מאמן מכירות בזמן אמת שיושב ליד נציג מכירות בזמן שיחת טלפון חיה עם לקוח. אתה רואה את התמלול החי ותפקידך להגיד לנציג, מיד, מה להגיד עכשיו.
+כללי ברזל:
+- כתוב בעברית מדוברת, חמה וישירה. "say_now" הוא טקסט שהנציג מקריא מהמסך בקול, לכן הוא חייב להישמע טבעי, קצר, ולהתאים למגדר של הלקוח אם ידוע.
+- אתה מופעל ברגע שהלקוח סיים לדבר. say_now הוא התגובה של הנציג למה שהלקוח אמר הרגע, בהקשר של כל השיחה.
+- קצב: אל תקפוץ לחסם או לפתרון מוקדם מדי. בתחילת השיחה (2-3 תשובות ראשונות של הלקוח) אסוף מידע ובנה קרבה. עבור לכאב רק כשהלקוח פתח פתח, ואז העמק: הפוך "תקוע" למספרים, זמן, כסף, תחושה. הרחב את הפער בין המצב היום לבין מה שהוא רוצה. עבור לחסם רק אחרי שהכאב ברור, אלא אם הלקוח העלה התנגדות בעצמו.
+- זו שיחת מכירה: כל say_now מקדם לעבר פעולה. אחרי שהכאב והמטרה ברורים, דחוף לצעד הבא בביטחון. אל תסיים סבב בלי כיוון לסגירה.
+- השתמש בתחמושת: צטט לנציג דברים שהלקוח עצמו אמר ("אמרת שאת מפסידה X") כדי להעמיק ולסגור.
+- אם יש שורות שמסומנות "דובר לא ידוע", קבע לפי התוכן מי אמר אותן והחזר ב-speaker_labels לכל אחת מהן. נציג = שואל שאלות, מציג את המועדון, מטפל בהתנגדויות, מכוון לסגירה, משתמש ב"אנחנו/אצלנו". לקוח = מספר על עצמו, על העסק, על ניסיון קודם, מתלבט, מתנגד, שואל "כמה זה עולה". שני משפטים רצופים יכולים להיות של אותו דובר. השתמש בהקשר של השורות המתויגות מסביב.
+- אל תחזור על תובנות שכבר הוצגו. cards מכיל רק דברים חדשים. לרוב 0-1 כרטיסים לסבב.
+- profile מצטבר: החזר תמיד את הגרסה המלאה והמעודכנת על בסיס כל התמלול.
+- insight: בכל סבב בחר ציטוט אחד של הלקוח שעוד לא נותח, ותן תובנה שמחברת אותו לעיקרון מהפלייבוק: מה הוא חושף (קצה חוט, כאב, אמונה, מניע) ומה הצעד הנכון של הנציג.
+- אם המצב הוא "האזנה לשיחה" (מצוין בהודעה), הנציג בשיחה הוא לא מי שקורא את המסך. אז say_now = "מה היה נכון להגיד עכשיו" לפי הפלייבוק, ו-why = מה הנציג עשה בפועל לעומת זה. דבר על הנציג בגוף שלישי.
+
+מנוע התחמושת (השדה ammo):
+${AMMO_RULES}
+- Latency-sensitive; begin your visible answer immediately.
+- ענה אך ורק ב-JSON לפי הסכמה.
+
+שלבי השיחה (התקדם לפי מה שקרה בפועל, אפשר גם לחזור אחורה):
+${STAGES.map((s,i)=>`${i+1}. ${s.id} (${s.l}): ${s.h}`).join('\n')}
+
+עקרונות המכירה שלפיהם אתה מאמן:
+${S.settings.principles||DEFAULT_PRINCIPLES}
+
+הקשר על העסק והמוצר:
+${S.settings.context||DEFAULT_CONTEXT}`;
+}
+function getClient(){
+  if(!S.anthropic) S.anthropic=new Anthropic({apiKey:S.settings.anthropic,dangerouslyAllowBrowser:true,maxRetries:1,timeout:30000});
+  return S.anthropic;
+}
+function scheduleAnalysis(){
+  S.analysisPending=true;
+  if(!S.analysisInFlight) runAnalysis(); // event-driven: background tabs throttle setTimeout, so never wait on a timer
+}
+async function runAnalysis(){
+  if(S.analysisInFlight){return}
+  const finals=S.lines.filter(l=>l.final&&l.text.trim());
+  if(!finals.length||finals.length===S.lastAnalyzedCount){S.analysisPending=false;return}
+  if(!S.single&&!finals.some(l=>l.who==='cust')){S.analysisPending=false;return} // wait for the customer to say something
+  if(!S.settings.anthropic){return}
+  S.analysisInFlight=true; S.analysisPending=false; const analyzedCount=finals.length;
+  $('saynow').classList.add('thinking'); setPill('pAI','busy'); const t0=performance.now();
+  const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
+  const tag=l=>l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'דובר לא ידוע #'+l.id;
+  const transcript=finals.slice(-400).map(l=>`[${tag(l)}]: ${l.text}`).join('\n');
+  const elapsed=Math.round((Date.now()-S.startedAt)/1000);
+  const unknown=finals.filter(l=>l.who==='unk').map(l=>l.id);
+  const user=`${S.single?'מצב: האזנה לשיחה (המאמן מגיב כל 20 שניות, מתייג דוברים ומייצר תובנות על השיחה).':'מצב: הנציג בשיחה חיה וקורא את המסך.'}
+זמן שיחה: ${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}
+שלב נוכחי לפי המערכת: ${S.stage}
+כרטיסים שכבר הוצגו לנציג: ${S.shownCards.length?S.shownCards.join(' | '):'אין'}
+לוח התחמושת הנוכחי (דרג מחדש לפי מה שנוסף): ${S.ammo.length?S.ammo.map((a,i)=>(i+1)+'. ['+a.status+'] '+a.type+': '+a.text+(a.note?' ('+a.note+')':'')).join(' | '):'ריק'}
+${unknown.length?'שורות עם דובר לא ידוע (החזר speaker_labels עם ה-id המדויק): '+unknown.join(', ')+(S.spkSeen.length?'. הערה: הזיהוי הוא לפי קול, לכן כל השורות עם אותו תג קול ('+S.spkSeen.join('/')+') הן של אותו אדם. תייג בעקביות.':''):''}
+${S.lines.filter(l=>!l.final&&l.text.trim()&&l.text!=='…').map(l=>`(מדבר כרגע, לא סופי) [${tag(l)}]: ${l.text}`).join('\n')}
+
+התמלול המלא עד עכשיו:
+${transcript}
+
+הדובר האחרון: ${finals[finals.length-1].who==='rep'?'הנציג':finals[finals.length-1].who==='cust'?'הלקוח':'לא ידוע'}. הלקוח סיים לדבר. מה הנציג צריך להגיד עכשיו?`;
+  try{
+    const res=await getClient().beta.messages.create({
+      model:'claude-opus-5', max_tokens:2500,
+      betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
+      output_config:{effort:S.settings.effort||'low',format:{type:'json_schema',schema:COACH_SCHEMA}},
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
+      messages:[{role:'user',content:user}],
+    });
+    if(res.stop_reason==='refusal') throw new Error('המודל סירב לנתח את הקטע הזה');
+    const txt=res.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    const out=JSON.parse(txt);
+    applyCoach(out); syncCall();
+    S.lastAnalyzedCount=analyzedCount;
+    $('aiLatency').textContent=((performance.now()-t0)/1000).toFixed(1)+'s'; setPill('pAI','on');
+  }catch(e){
+    console.error(e); setPill('pAI','err');
+    const msg=(e.status===401)?'מפתח Anthropic לא תקין. פתח הגדרות ובדוק אותו.':(e.status===429)?'Anthropic: חריגה ממכסה, ננסה שוב בסבב הבא.':(e.message||String(e)).slice(0,160);
+    toast('שגיאת מאמן: '+msg,'t-error'); log('Claude: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||String(e)).slice(0,200),'err');
+  }finally{
+    S.analysisInFlight=false; $('saynow').classList.remove('thinking');
+    if(S.analysisPending) runAnalysis(); // only if new lines arrived mid-flight; an error waits for the next line (no retry storm)
+  }
+}
+function applyCoach(o){
+  for(const sl of (o.speaker_labels||[])) setSpeaker(sl.id,sl.who,false);
+  if(o.profile){S.profile=o.profile;const p=$('profile');p.style.display='';p.innerHTML='<b>פרופיל הלקוח:</b> '+escapeHtml(o.profile)}
+  if(Array.isArray(o.ammo)){
+    S.ammo=o.ammo.slice(0,8);
+    const AL={pain:'כאב',gap:'פער',motive:'מניע',why_now:'למה עכשיו',cost_of_inaction:'מחיר אי-עשייה',past:'ניסיון עבר',barrier:'חסם',fear:'פחד',desire:'רצון',contradiction:'סתירה',urgency:'דחיפות',belief:'אמונה',personal:'אישי',number:'מספר',commitment:'התחייבות'};
+    const SE={hot:'🔴',high:'🟠',medium:'🟡',low:'🟢',resolved:'✅'};
+    let html=S.ammo.map((a,i)=>`<div class="ammo s-${SE[a.status]?a.status:'medium'}"><div class="at">${SE[a.status]||'🟡'} <span class="rank">${i+1}.</span>${AL[a.type]||a.type}</div><div>${escapeHtml(a.text)}</div>${a.note?`<div class="an">${escapeHtml(a.note)}</div>`:''}${a.use?`<div class="au">💬 ${escapeHtml(a.use)}</div>`:''}</div>`).join('');
+    for(let i=S.ammo.length;i<8;i++) html+=`<div class="ammo empty"><div class="at"><span class="rank">${i+1}.</span></div><div style="font-size:12.5px;color:var(--text-muted)">עדיין אין מספיק מידע</div></div>`;
+    $('ammo').innerHTML=html;
+    $('emptyA').style.display='none'; const open=S.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length; $('ammoCount').textContent=S.ammo.length+'/8'+(open?' · '+open+' חסמים פתוחים':'');
+  }
+  if(o.insight&&o.insight.quote&&!S.shownCards.includes('Q:'+o.insight.quote)){
+    S.shownCards.push('Q:'+o.insight.quote); (S.insights=S.insights||[]).push({...o.insight,ts:Date.now()});
+    const el=document.createElement('div'); el.className='card c-insight';
+    const t=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    el.innerHTML=`<div class="ct">💡 תובנה · ${escapeHtml(o.insight.principle||'')}<span>${t}</span></div><div class="q">"${escapeHtml(o.insight.quote)}"</div><div class="cx">${escapeHtml(o.insight.lesson||'')}</div>`;
+    $('cards').prepend(el);
+  }
+  $('saynow').classList.remove('custom');
+  if(o.stage) setStage(o.stage);
+  if(o.temperature){S.temp=o.temperature;renderStages()}
+  $('sayText').textContent=o.say_now||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
+  const sn=$('saynow'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
+  if(o.customer_state){S.custState=o.customer_state;const c=$('custState');c.style.display='';c.innerHTML='<b>מצב הלקוח:</b> '+escapeHtml(o.customer_state)}
+  for(const c of (o.cards||[]).slice(0,2)){
+    if(S.shownCards.includes(c.title)) continue;
+    S.shownCards.push(c.title);
+    const el=document.createElement('div'); el.className='card c-'+(CARD_LABEL[c.type]?c.type:'kyc');
+    const t=new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    el.innerHTML=`<div class="ct">${CARD_LABEL[c.type]||c.type} · ${escapeHtml(c.title)}<span>${t}</span></div><div class="cx">${escapeHtml(c.text)}</div>`;
+    $('cards').prepend(el);
+  }
+}
+
+/* ───────────────────────── team sync → Supabase (manager board) ───────────────────────── */
+function sbReady(){ return !!(S.settings.sbUrl&&S.settings.sbKey); }
+function callRow(extra){
+  const finals=S.lines.filter(l=>l.final&&l.text.trim());
+  return {id:S.callId, rep:S.settings.repName||'ללא שם', mode:S.single?'listen':'rep', status:S.running?'live':'ended',
+    started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round((Date.now()-S.startedAt)/1000),
+    stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
+    ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length, ...extra};
+}
+async function syncCall(extra={}){
+  if(!sbReady()||!S.callId) return;
+  try{
+    const r=await fetch(S.settings.sbUrl+'/rest/v1/calls?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json','apikey':S.settings.sbKey,'Authorization':'Bearer '+S.settings.sbKey,'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(callRow(extra))});
+    if(!r.ok){ const t=await r.text(); throw new Error(r.status+' '+t.slice(0,120)); }
+    const el=$('syncTag'); if(el){el.textContent='☁️ מסונכרן לבורד '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});el.className='sync on'}
+  }catch(e){ console.warn('sync',e); const el=$('syncTag'); if(el){el.textContent='☁️ סנכרון נכשל: '+(e.message||'').slice(0,60);el.className='sync'} }
+}
+
+/* ───────────────────────── custom sentence on demand ───────────────────────── */
+const REQ_SCHEMA={type:'object',additionalProperties:false,properties:{sentence:{type:'string',description:'המשפט המדויק להגיד, בעברית מדוברת, 1-3 משפטים'},why:{type:'string',description:'למה זה עובד כאן, עד 15 מילים'},alt:{type:'string',description:'ניסוח חלופי קצר'}},required:['sentence','why','alt']};
+async function requestSentence(auto){
+  const q=auto?'AUTO':$('reqInput').value.trim(); if(!q) return toast('כתוב מה אתה צריך, למשל: משפט סגירה','t-error');
+  if(!S.settings.anthropic){openDrawer();return}
+  const finals=S.lines.filter(l=>l.final&&l.text.trim());
+  const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
+  const transcript=finals.slice(-400).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n')||'(אין תמלול עדיין)';
+  $('btnReq').disabled=true; $('btnAsk').disabled=true; $('saynow').classList.add('thinking'); setPill('pAI','busy');
+  try{
+    const res=await getClient().beta.messages.create({
+      model:'claude-opus-5', max_tokens:800, betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
+      output_config:{effort:S.settings.effort||'low',format:{type:'json_schema',schema:REQ_SCHEMA}},
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
+      messages:[{role:'user',content:(auto?`הנציג לחץ "מה לשאול עכשיו" בלי לתת הנחיה. קרא את כל ההיסטוריה, קבע לפי הפלייבוק באיזה שלב השיחה באמת נמצאת ומה עדיין חסר (צ'קליסט המעבר של השלב), זהה את קצה החוט הכי חזק שהלקוח נתן ועוד לא נפתח, וכתוב את השאלה האחת המדויקת שהנציג צריך לשאול עכשיו כדי לקדם את השיחה שלב אחד. ב-why הסבר איזו דלת זה פותח ומה להקשיב לו בתשובה.`:`הנציג מבקש ממך משפט ספציפי לשיחה הזו. הבקשה: "${q}"`)+`
+שלב נוכחי: ${S.stage}. פרופיל הלקוח: ${S.profile||'לא ידוע עדיין'}.
+תחמושת: ${S.ammo.length?S.ammo.map((a,i)=>(i+1)+'. ['+a.status+'] '+a.text+(a.use?' → '+a.use:'')).join(' | '):'אין'}
+
+התמלול המלא:
+${transcript}
+
+כתוב משפט שמשתמש בפרטים הספציפיים של הלקוח הזה (שמות, מספרים, מילים שלו). לא גנרי.`}],
+    });
+    if(res.stop_reason==='refusal') throw new Error('המודל סירב');
+    const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
+    $('sayText').textContent=o.sentence; $('sayWhy').textContent='למה: '+o.why+(o.alt?' · חלופה: '+o.alt:''); $('sayAvoid').textContent='';
+    const sn=$('saynow'); sn.classList.add('custom'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
+    setPill('pAI','on'); $('reqInput').value='';
+  }catch(e){console.error(e);setPill('pAI','err');toast('שגיאה: '+(e.error?.error?.message||e.message||e).slice(0,140),'t-error')}
+  finally{$('btnReq').disabled=false;$('btnAsk').disabled=false;$('saynow').classList.remove('thinking')}
+}
+$('btnReq').onclick=()=>requestSentence(false); $('btnAsk').onclick=()=>requestSentence(true); $('reqInput').addEventListener('keydown',e=>{if(e.key==='Enter')requestSentence(false)});
+
+/* ───────────────────────── summary ───────────────────────── */
+const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
+  summary:{type:'string',description:'תמצית ב-2 משפטים'},
+  outcome:{type:'string',enum:['closed','follow_up','lost','unknown'],description:'תוצאת השיחה'},
+  next_step:{type:'string',description:'מה הוסכם / הצעד הבא, משפט אחד'},
+  score:{type:'integer',minimum:1,maximum:10,description:'ציון ביצוע הנציג לפי הפלייבוק, 1-10'},
+  stage_reached:{type:'string',enum:STAGES.map(x=>x.id)},
+  strengths:{type:'array',items:{type:'string'},description:'2-3 דברים שהנציג עשה נכון, עם ציטוט'},
+  improvements:{type:'array',items:{type:'object',additionalProperties:false,properties:{quote:{type:'string'},better:{type:'string',description:'מה היה עדיף להגיד'},principle:{type:'string'}},required:['quote','better','principle']},description:'3 נקודות לשיפור קונקרטיות'},
+  crm_text:{type:'string',description:'סיכום מנהלים מלא מוכן להדבקה ב-CRM, ללא Markdown, כותרות עם אימוג׳י: תמצית, פרופיל ופרטים שמסר, חום ליד ושלב, כאבים, התנגדויות ואיך טופלו, מטרה ומניע, הוסכם/צעד הבא, ציון ו-3 שיפורים'}
+},required:['summary','outcome','next_step','score','stage_reached','strengths','improvements','crm_text']};
+async function runSummary(auto){
+  const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length) return;
+  if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום…'; }
+  else if(S.summary){ return; }
+  const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
+  const transcript=finals.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
+  try{
+    const res=await getClient().beta.messages.create({
+      model:'claude-opus-5', max_tokens:6000, betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
+      output_config:{effort:'medium',format:{type:'json_schema',schema:SUMMARY_SCHEMA}},
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
+      messages:[{role:'user',content:`השיחה הסתיימה. פרופיל הלקוח: ${S.profile||'—'}. תחמושת: ${S.ammo.map((a,i)=>(i+1)+'. ['+a.status+'] '+a.type+': '+a.text+' ('+a.note+')').join(' | ')||'—'}.
+דרג את הנציג לפי הפלייבוק (איכות KYC, העמקת כאב, טיפול בחסם, מטרה, מניע, הצגה מותאמת, סגירה, יחס דיבור). ציון 10 = שיחה לפי הספר. כתוב גם crm_text מלא.
+
+התמלול המלא:
+${transcript}`}],
+    });
+    if(res.stop_reason==='refusal') throw new Error('המודל סירב לסכם');
+    const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
+    S.summary=o; syncCall({summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o});
+    $('modalBody').textContent=o.crm_text; if(auto){ toast('סיכום מוכן. ציון: '+o.score+'/10. לחץ "סיכום" לצפייה.','t-ok'); }
+  }catch(e){ const msg='שגיאה: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||e); if(!auto) $('modalBody').textContent=msg; log('Claude (סיכום): '+msg.slice(0,200),'err'); }
+}
+$('btnSummary').onclick=()=>{ if(S.summary){ $('modal').classList.add('show'); $('modalBody').textContent=S.summary.crm_text; } else runSummary(false); };
+$('btnCloseModal').onclick=()=>$('modal').classList.remove('show');
+$('btnCopy').onclick=()=>{navigator.clipboard.writeText($('modalBody').textContent);toast('הועתק','t-ok')};
+
+/* ───────────────────────── init ───────────────────────── */
+const fromLink=applyHashConfig();
+loadSettings(); renderStages();
+if(fromLink){ toast('ההגדרות מהלינק נטענו','t-ok'); }
+if(!S.settings.repName){ setTimeout(()=>{ let n=null; try{ n=prompt('ברוך הבא ל-LiveCoach. מה השם שלך? (יופיע בבורד המנהל)','') }catch(e){} if(n&&n.trim()){ S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); } },600); }
+$('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
+window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker}; // debug hooks
+if(!S.settings.anthropic||(!S.settings.openai&&!S.settings.speechmatics)) setTimeout(openDrawer,900);
+window.addEventListener('beforeunload',e=>{if(S.running&&!S.demo){e.preventDefault();e.returnValue=''}});
+</script>
+</body>
+</html>
