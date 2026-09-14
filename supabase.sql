@@ -19,6 +19,7 @@ create table if not exists public.calls (
   customer_state text,
   say_now       text,
   ammo          jsonb default '[]'::jsonb,
+  checks        jsonb default '{}'::jsonb,
   transcript    jsonb default '[]'::jsonb,
   insights      jsonb default '[]'::jsonb,
   open_barriers integer default 0,
@@ -41,3 +42,6 @@ drop policy if exists "team update" on public.calls;
 create policy "team read"   on public.calls for select to anon using (true);
 create policy "team write"  on public.calls for insert to anon with check (true);
 create policy "team update" on public.calls for update to anon using (true) with check (true);
+
+-- Added later: run this line if the table already existed before the checks column was introduced.
+alter table public.calls add column if not exists checks jsonb default '{}'::jsonb;

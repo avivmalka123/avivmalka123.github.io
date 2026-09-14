@@ -64,6 +64,14 @@
   .stage.done .l{color:var(--text)}
   .stage.active .c{background:var(--blue);border-color:#9cc0ff;box-shadow:0 0 0 5px rgba(79,142,247,.25),0 0 18px rgba(79,142,247,.6);transform:scale(1.15)}
   .stage.active .l{color:#fff;font-weight:800}
+  .stage .n{font-size:10px;color:var(--text-muted);font-weight:700;margin-top:-4px}
+  .stage{cursor:pointer}.stage.view .l{text-decoration:underline;text-underline-offset:3px}
+  .ck-wrap{margin-top:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px}
+  .ck-h{font-size:12px;font-weight:800;color:#c4b5fd;margin-bottom:8px}.ck-h span{font-weight:500;color:var(--text-muted)}
+  .ck-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 16px}
+  .ck{font-size:12.5px;color:var(--text-muted);display:flex;gap:8px;align-items:flex-start;line-height:1.45;padding:2px 0}
+  .ck i{font-style:normal;font-weight:900;color:var(--text-muted);width:14px;flex:none}.ck.on{color:var(--text)}.ck.on i{color:var(--accent4)}
+  .ck-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ck-btns .btn.hot{border-color:rgba(239,68,68,.5);color:#fca5a5}
   .stage-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--text-muted);gap:12px;flex-wrap:wrap}
   .temp{display:inline-flex;gap:6px;align-items:center;font-weight:700}
   .temp b{padding:2px 10px;border-radius:99px;font-size:11px}
@@ -181,6 +189,7 @@
 
 <section class="stagebar">
   <div class="stages" id="stages"></div>
+  <div id="checklist" class="ck-wrap"></div>
   <div class="stage-meta">
     <span id="stageHint">ממתין לתחילת שיחה…</span>
     <span id="winHint" style="font-size:11px">💡 פתח את LiveCoach בכרום רגיל, בחלון נפרד ליד ToChat.</span>
@@ -302,6 +311,7 @@ const STAGES = [
   {id:'solution', l:'הצגת פתרון',   h:'הצג פתרון שמחובר לכאב ולמטרה שלו, לא רשימת פיצ\'רים.'},
   {id:'close',    l:'סגירה',        h:'סגור: צעד הבא ברור, תאריך, תשלום, או שיחת המשך קבועה.'},
 ];
+const STAGE_CHECKS = {"kyc": ["הלקוח פתוח ומספר, לא נחקר", "ידוע מי הוא: גיל, עיסוק, רקע, מה הביא אותו", "ידוע מי מעורב בהחלטה ומה המצב הכלכלי", "זוהו לפחות 2 קצות חוט", "הלקוח כבר נוגע בעצמו בבעיה"], "pain": ["הלקוח ביטא כאב אמיתי במילים שלו", "הובן מה התחושה שחסרה לו", "הכאב הפך למחיר: כסף, זמן, משפחה, שנים", "הלקוח אמר שלא מוכן להמשיך ככה", "לא הוצע פתרון מוקדם מדי"], "objection": ["נשאל \"מה ניסית עד היום\"", "זוהתה האמונה או הפחד מאחורי ההתנגדות", "נמצאה סתירה באמונה", "הלקוח לקח אחריות, לא מאשים גורם חיצוני", "נוצרה פתיחות לאפשרות חדשה"], "goal": ["הלקוח תיאר לאן הוא רוצה להגיע", "נשאל \"למה זה חשוב לך\" עד שהגיע לרגש", "עברנו מתוצאה (כסף) לזהות ותחושה", "הלקוח דמיין עתיד קונקרטי", "נשאל \"ומה אם זה לא יקרה\""], "motive": ["ידוע מה הוא צריך לקבל בתהליך", "ידוע מה ייתן לו ביטחון", "ידוע מה היה חסר בניסיונות קודמים", "נאספו המילים שלו להידהוד"], "solution": ["המעבר נעשה עם \"אמרת לי ש…\"", "המוצר הוצג כמסע, לא כרשימת פיצ׳רים", "כל מניע שהלקוח נתן חובר להצעה", "נאספו 3-4 הסכמות קטנות", "הלקוח אמר \"זה מה שחיפשתי\" או דומה"], "close": ["הלקוח דיבר מתוך הזהות החדשה", "הוצע צעד הבא ברור", "כל החסמים שעלו טופלו ואושרו על ידי הלקוח", "התנגדות אחרונה טופלה בלי נאום", "הוסכם: תשלום, מועד או צעד"]};
 const CARD_LABEL = {pain:'כאב זוהה',objection:'חסם זוהה',motive:'מניע רכישה זוהה',goal:'מטרה זוהתה',shift:'שינוי טון',warning:'אזהרה',opportunity:'הזדמנות',close:'סימן קנייה',kyc:'מידע על הלקוח'};
 
 const DEFAULT_PRINCIPLES = "PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה (שיטת אביתר ענקי, כפי שמיושמת במועדון האיקומרס)\n\nפילוסופיה: אנחנו לא מוכרים קורס. הלקוח לא מתעורר בבוקר ורוצה \"קורס דרופשיפינג\". הוא רוצה שינוי: ביטחון, חופש, מסוגלות, מימוש עצמי, ערך, שליטה על החיים, שייכות, יציבות, נחת. הקורס הוא הכלי. מודל שינוי התוצאות: אמונות → החלטות → פעולות → תוצאות. אם האמונה לא משתנה, התוצאה לא משתנה. לכן המכירה היא שינוי תפיסה וזהות, לא שכנוע. איש המכירות מקשיב, מזהה, שואל, מוביל, יוצר בהירות. המטרה: שהלקוח יבין בעצמו \"אם אמשיך לקבל את אותן החלטות אקבל את אותן תוצאות, ואני בוחר אחרת\".\n\nעיקרון על: כל שלב חייב ליצור את הצורך בשלב הבא. אין מעבר טכני. KYC טוב מייצר קצות חוט לכאב. כאב עמוק מוביל לחסמים. חשיפת החסם מסבירה למה לא היה שינוי עד היום. רצון לשינוי פותח מקום למטרה. מטרה עמוקה יוצרת מניע. המניע הופך את הצגת המוצר לרלוונטית. הסגירה היא המשך טבעי.\n\nשלב 1, KYC: \"ב-KYC אני לא מחפש תשובות, אני מחפש דלתות\". אנשים נפתחים למי שבאמת רואה אותם. שלושה יעדים: ראפור ואתוס (הקשבה, קצב, זכירת פרטים וחזרה אליהם), להבין מי האדם (גיל, מאיפה, עיסוק, רקע, מה הביא אותו, מצב כלכלי, מי עוד מעורב בהחלטה, איך מקבל החלטות), ולזהות קצות חוט. סוגי קצות חוט: שינוי טונציה, מילים רגשיות (\"נמאס לי\", \"תקוע\", \"חייב שינוי\", \"מבזבז זמן\"), נקודות אדומות (\"צריך להתייעץ עם אח שלי\", \"אשתי מחליטה איתי\", \"אין לי כסף\", \"לא מבין בטכנולוגיה\"), אמונות (\"אי אפשר להצליח בישראל\", \"אני לא בנוי לזה\", \"אני לא מתמיד\"), רצונות (\"רוצה חופש\", \"לעזוב את העבודה\", \"לעזור למשפחה\"). לא שאלה אחת בכל פעם כמו חקירה, אלא שאלת סיפור אחת: \"בשביל שנוכל לדייק את המסלול הנכון עבורך, ספר לי קצת על עצמך: בן כמה אתה, מאיפה, במה אתה עוסק היום ומה בכלל הביא אותך להתעניין בלהרוויח דרך האינטרנט?\" לפני ששואלים נותנים סיבה. כשעולה קצה חוט: לחזור על המילה ולעצור (\"12 שעות ביום?\") ואז \"איך זה משפיע עליך?\". טעויות: חקירה, להפריע, להכניס את עצמי, לקפוץ למטרה. סיימנו כשהלקוח פתוח, יש תמונה כללית, זיהינו קצות חוט והוא כבר נוגע בעצמו בבעיה.\n\nשלב 2, כאב: \"אני לא מסיים את שלב הכאב כשהבנתי את הבעיה, אלא כשהלקוח התחבר אליה\". אנשים לא משתנים כי הבינו שיש בעיה, אלא כשהם מרגישים את המחיר של להישאר. המטרה: לא לגלות בעיה (הוא יודע אותה) ולא ליצור כאב חדש, אלא להאיר כאב קיים עד שהוא לא מוכן להמשיך ככה. כאב הוא לא הבעיה הטכנית אלא המשמעות הרגשית: \"אין כסף\" = אין ביטחון, לא יכול לעזור למשפחה, פחד מהעתיד. \"עובד הרבה\" = אין חיים, מפספס את הילדים, מבזבז שנים. השאלה המרכזית: \"מה המחיר של להישאר בדיוק במקום הזה?\" חוק הזהב: אל תאסוף מידע, תעמיק במשמעות. כלי העמקה: 1) הרחבה: \"מה בדיוק אתה מרגיש שאתה לא מרוצה ממנו?\" 2) פירוק מילה רגשית: \"כשאתה אומר תקוע, למה אתה מתכוון?\" 3) השפעה: \"איך זה משפיע עליך? על מה עוד? על מי עוד? ואיך זה משפיע עליהם?\" 4) סיטואציה ספציפית: \"קח אותי לרגע ספציפי שזה הורגש. מה קרה שם? מה עבר לך בראש?\" 5) זמן: \"כמה זמן אתה כבר מרגיש ככה? מה גרם לך דווקא עכשיו לחפש שינוי?\" 6) מחיר: \"מה המחיר שאתה משלם? אם שום דבר לא ישתנה בחצי שנה, מה יקרה?\" 7) השלכה: \"אם המצב יישאר, איפה תהיה בעוד חצי שנה?\" טונציה: להאט, שתיקות, רגוע, נוכח. אחרי תשובה ראשונית יש עוד שכבה: לחזור על המילה ולשתוק (\"לא משהו?\"). אסור: להאשים, לשפוט, להתווכח, להסביר, לשכנע, לתת פתרון, לתת עצות, להביא את עצמנו, לפתור מוקדם (\"בדיוק בשביל זה הקורס שלנו\" = טעות). סיימנו כשהלקוח מרגיש את המחיר, מבין את ההשפעה על העתיד והסביבה, יש שיא רגשי, ומבין שאי אפשר להמשיך. נקודת המעבר לחסמים, רק אחרי מספיק כאב: \"מה ניסית לעשות עד היום כדי לשנות את המצב?\"\n\nשלב 3, חסמי קנייה: \"אל תנסה לנצח את האמונה של הלקוח, תעזור לו לראות אותה מחדש\". חסם הוא לא התנגדות. התנגדות היא המשפט ברגע ההחלטה (\"צריך לחשוב\", \"אין כסף\", \"אין זמן\"). חסם הוא האמונה או הפחד מתחת, שמונע פעולה והוא המקור שנותן לבעיה חיים. סוגים: כלפי עצמי (\"לא מתמיד\", \"לא טכנולוגי\", \"לא מספיק חכם\"), כלפי התחום (\"השוק רווי\", \"רק עם מזל\"), כלפי הדרך (\"קורסים לא עובדים\", \"צריך ללמוד לבד קודם\"), רגשיים (פחד מכישלון, לאבד כסף, לגלות שלא מסוגל). \"מה ניסית עד היום?\" חושף: לא ניסה (למה? מה עצר?) או ניסה ונכשל (מה למד? איזו אמונה נוצרה?). לא \"בגלל זה הקורס שלנו יותר טוב\" אלא \"מה אתה חושב שגרם לזה לא להצליח?\" העמקה: שלב 1 להבין את האמונה (\"מה גורם לך לחשוב שאתה לא מתמיד? מאיפה זה מגיע?\"), שלב 2 למצוא סתירה (\"יש דברים שאתה כן מתמיד בהם? אז אתה כן מסוגל, פשוט היו מקומות שזה לא קרה?\"). כלי: שאלת החזרה בזמן: \"אם הייתי מחזיר אותך שנה אחורה עם כל מה שאתה יודע היום, מה היית עושה אחרת?\" → \"הייתי מתחיל\" → \"למה? מה השתנה?\" מראה שההזדמנות הייתה קיימת ומה שעצר היה פנימי. על \"לא היה לי זמן\": \"אם לפני חצי שנה היית משקיע שעה ביום והיום היית עם עוד 40,000 ש\"ח בחודש, היית מוצא שעה ביום? אז מה בכל זאת מעבר לזמן? מה הפחיד אותך?\" סימנים שמצאנו את החסם: עוצר לחשוב, טונציה משתנה, לוקח אחריות, מפסיק להאשים. אסור: לשכנע בכוח, להוכיח צדק, להקטין, \"זה רק בראש שלך\", \"כולם מצליחים\", ולא להשתמש במילים כמו \"חסם\" או \"אמונה מגבילה\". סיימנו כשהלקוח מבין מה האמונה שעצרה אותו, איך היא יצרה את המציאות שלו, לקח אחריות, ונפתח לאפשרות חדשה.\n\nשלב 4, מטרה: \"כאב יוצר רצון לברוח מהמצב הקיים, מטרה יוצרת רצון לרוץ לעבר משהו חדש\". אנשים לא קונים בגלל מה שהם רוצים לקבל אלא בגלל מי שהם רוצים להפוך להיות. כאב לבד לא מספיק: צריך מצוי מספיק כואב ורצוי מספיק מושך, הפער יוצר תנועה. \"להרוויח כסף\" זו תוצאה, לא מטרה. שאלת הזהב, לקלף שכבות: \"למה זה חשוב לך?\" → \"מה זה יאפשר לך?\" → \"מה זה אומר עבורך?\" → \"איך זה יגרום לך להרגיש?\" עד שמגיעים לרגש. דמיון עתידי: \"נניח שעברה שנה והדברים הסתדרו בדיוק כמו שאתה רוצה. מה השתנה? איך נראה היום שלך? מי סביבך רואה את השינוי?\" זהות: \"איזה אדם היית צריך להפוך להיות כדי להגיע לשם? מה האדם הזה עושה היום שאתה עדיין לא?\" חשוב: המטרה היא לא \"הצלחה עם המוצר\" אלא זהות: \"אדם שמסוגל ללמוד, לבצע, להתמיד וליצור לעצמו\". טעות קריטית: לדבר על כסף או פתרון מוקדם (\"מעולה, הקורס יביא לך הכנסה\"). לא להתלהב במקום הלקוח, לא דעה אישית. שאלת סיום לפני מעבר: \"ומה אם זה לא יקרה?\" סיימנו כשהלקוח יודע לאן, למה זה חשוב, מרגיש את המשמעות, מתאר עתיד, ויש פער ברור.\n\nשלב 5, מניע רכישה: \"אני לא מציג את המוצר, אני מחבר אותו למה שהלקוח כבר אמר שהוא צריך כדי להצליח\". מניע רכישה = מה הלקוח מאמין שהוא צריך לקבל כדי לעבור מהמצוי לרצוי. אנשים לא קונים פתרון, הם קונים ביטחון שהפתרון יעזור להם להשתנות. מפת תרגום: \"צריך מנטור\" = ביטחון והכוונה. \"צריך קהילה\" = שייכות, לא לבד. \"משהו קצר ותכל'ס\" = להתקדם מהר בלי לטבוע במידע. \"הרבה תמיכה\" = גב, לא להיכשל לבד. \"צריך סדר\" = פחד ללכת לאיבוד. שאלות: \"מה לדעתך הכי יעזור לבנאדם לעבור מהמקום שהוא נמצא היום למקום שהוא רוצה?\" \"מה חשוב לך לקבל בתוך התהליך?\" \"אם היית בונה לעצמך את התהליך המושלם, מה היה חייב להיות בו?\" \"מה היה חסר לך בניסיונות קודמים?\" \"מה יעזור לך להמשיך גם כשיהיה קשה?\" לא להניח ולא להבטיח מהר (\"מעולה יש לנו ליווי\" = טעות; קודם \"איזה ליווי? למה?\"). לחפש דפוסים מכל השיחה: אם חזר על \"שמישהו יכוון אותי\", \"מפחד לטעות\", המניע הוא ביטחון והכוונה. הידהוד שפה: להשתמש במילים שלו עצמו. סיימנו כשיודעים מה חשוב לו בתהליך, מה ייתן ביטחון, איך רוצה להרגיש, באילו מילים משתמש, ואיך לחבר את ההצגה אליו.\n\nשלב 6, הצגת מוצר: \"אל תציג את מה שיש במוצר, תציג את הדרך שהלקוח בעצמו אמר שהוא צריך לעבור\". מותר להגיע רק אחרי: כאב אמיתי, אחריות, חסם, מטרה, מניע, דחיפות, ראפור. מעבר: \"ממה ששמעתי ממך, אמרת לי שחשוב לך ___ ושאתה רוצה להגיע ל___, אז אני רוצה להראות לך איך בדיוק בנינו את הדרך לשם.\" לא \"יש לנו קהילה, מנטורים, שיעורים\" אלא \"אמרת לי שהכי חשוב לך לא להרגיש לבד ושיהיה מי שיכוון אותך כשאתה נתקע, בגלל זה אחד הדברים המרכזיים בתהליך הוא הקהילה והליווי\". דיאלוג לא מונולוג: הסבר קצר → חיבור אליו → שאלה → הסכמה. הצגת המסע לא הפיצ'רים: \"השלב הראשון הוא לבנות לך בסיס כדי שלא תירה באוויר\" במקום \"מודול מחקר מוצרים\". לפנות לזהות החדשה. שאלות דמיון שימוש: \"איך לדעתך תיעזר בקהילה?\" \"אתה יותר אחד שבא לשאול או גם אוהב לעזור לאחרים?\" פחות = יותר: עודף מידע מעביר מהלב לראש. לבנות 3-4 הסכמות קטנות. סוגסטיה: \"כשתראה את המוצר הראשון עולה לאוויר, התחושה היא שאתה כבר לא רק לומד, אתה בונה משהו\" (להמחיש תהליך, לא להבטיח תוצאה). טונציה: יותר אנרגיה וביטחון, ביחס ללקוח. בסוף ההצגה הלקוח מרגיש \"זה בדיוק מה שחיפשתי\".\n\nשלב 7, סגירה: \"בסגירה אני לא מוכר מוצר. אני עוזר ללקוח לבחור אם להמשיך מהזהות הישנה או מהחדשה שהוא כבר בנה\". אם צריך לשכנע בסגירה, משהו קודם לא נבנה. סגירה היא החלטה: איזה אדם אני בוחר להיות. תנאים: ראפור, כאב עמוק, אחריות, אמונה שעורערה, מטרה, מניע, הצגה מותאמת, 3-4 הסכמות. אם חסר משהו, חוזרים אחורה. הסגירה חייבת להיות המשך של השיחה, לא \"טוב, אז המחיר הוא\". לפני המחיר, להחזיר אותו לזהות החדשה: \"מבין כל הדברים שעברנו עליהם, מה הדבר שתשתמש בו הכי הרבה בדרך למטרה שלך?\" \"חשוב לך באמת להצליח?\" \"אתה תעשה מה שצריך?\" \"אתה מרגיש שסוף סוף הגיע הזמן לצאת מ___ ולהגיע ל___?\" סגירה היא רצף של הסכמות. אין נאומים: מדברים פחות, שואלים יותר, קצר, חד, בביטחון מלא, בלי התנצלות ובלי לחץ. התנגדות היא לא אויב: או משהו לא נסגר, או בדיקת ביטחון. לא מתווכחים, בודקים ומובילים. \"אני צריך לחשוב\": לא להסביר. \"יש את האדם שמבין בדיוק מה נכון עבורו אבל ברגע האמת דוחה, ויש את האדם שמבין, לוקח אחריות ופועל. מי מהם יגיע למטרה? ואיזה מהם אתה רוצה להיות? אז מה ההחלטה שתקרב אותך לאדם הזה כבר היום?\" משפטי סגירה: \"אתה רוצה להגיע ל___?\" \"אתה מוכן לעשות את מה שהאדם החדש הזה היה עושה?\"\n\nכללים חוצי-שלבים: יחס דיבור, הלקוח 60% הנציג 40%. אם הנציג מרצה יותר מ-3 משפטים ברצף, עצור ושאל. אל תמציא את הכאב, גלה אותו. לא מוכרים כסף קל, כפתור קסם או הכנסה פסיבית. תמיד להשתמש בתחמושת: המילים, המספרים והרגעים שהלקוח עצמו נתן.";
@@ -325,6 +335,7 @@ const S = {
   settings:{}, running:false, demo:false, startedAt:0, timerIv:null,
   lines:[],           // {id, who, text, final, ts}
   shownCards:[],      // titles already shown
+  checks:{}, viewStage:null,
   ammo:[], profile:'', single:false, custQuietTimer:null, spkMap:{}, spkSeen:[], sm:null,
   stage:'kyc', stageIdx:0, temp:'cold',
   analysisPending:false, analysisInFlight:false, lastAnalyzedCount:0,
@@ -404,11 +415,36 @@ function syncAudioUI(){
 $('sCustSrc').onchange=syncAudioUI; $('sMode').onchange=syncAudioUI;
 
 /* ───────────────────────── stage bar ───────────────────────── */
+const stageDone=id=>{const n=STAGE_CHECKS[id].length; let d=0; for(let i=1;i<=n;i++) if(S.checks[id+'.'+i]) d++; return [d,n];};
 function renderStages(){
-  $('stages').innerHTML=STAGES.map((s,i)=>`<div class="stage ${i<S.stageIdx?'done':i===S.stageIdx?'active':''}" title="${s.h}"><div class="c">${i<S.stageIdx?'✓':''}</div><div class="l">${s.l}</div></div>`).join('');
+  $('stages').innerHTML=STAGES.map((s,i)=>{const [d,n]=stageDone(s.id); return `<div class="stage ${i<S.stageIdx?'done':i===S.stageIdx?'active':''} ${S.viewStage===s.id?'view':''}" title="${s.h}" onclick="viewStage('${s.id}')"><div class="c">${i<S.stageIdx&&d===n?'✓':(d?d:'')}</div><div class="l">${s.l}</div><div class="n">${d}/${n}</div></div>`}).join('');
   $('stageHint').textContent=STAGES[S.stageIdx].h;
+  renderChecklist();
   const t=$('temp'); t.className='temp t-'+S.temp; t.innerHTML='חום ליד: <b>'+({cold:'קר ❄️',warm:'פושר 🌤️',hot:'חם 🔥'}[S.temp]||'—')+'</b>';
 }
+window.viewStage=id=>{ S.viewStage=(S.viewStage===id)?null:id; renderStages(); };
+function renderChecklist(){
+  const id=S.viewStage||S.stage; const st=STAGES.find(x=>x.id===id); const items=STAGE_CHECKS[id]||[]; const idx=STAGES.findIndex(x=>x.id===id);
+  const next=STAGES[Math.min(STAGES.length-1,S.stageIdx+1)];
+  const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved');
+  $('checklist').innerHTML=`<div class="ck-h">📋 צ'ק-ליסט ${st.l}${S.viewStage&&S.viewStage!==S.stage?' <span>(צפייה, השלב הפעיל: '+STAGES[S.stageIdx].l+')</span>':''}</div>
+    <div class="ck-items">${items.map((t,i)=>`<div class="ck ${S.checks[id+'.'+(i+1)]?'on':''}"><i>${S.checks[id+'.'+(i+1)]?'✓':'○'}</i>${escapeHtml(t)}</div>`).join('')}</div>
+    <div class="ck-btns">
+      <button class="btn btn-sm" onclick="leadTo('stage','${id}')">🧭 תוביל אותי להשלים את ${st.l}</button>
+      ${idx<STAGES.length-1?`<button class="btn btn-sm" onclick="leadTo('forward','${STAGES[idx+1].id}')">⏭️ תוביל אותי קדימה ל${STAGES[idx+1].l}</button>`:''}
+      <button class="btn btn-sm ${openB.length?'hot':''}" onclick="leadTo('barriers','')">🧱 תוביל אותי לפתרון החסמים העיקריים${openB.length?' ('+openB.length+')':''}</button>
+      <button class="btn btn-sm" onclick="leadTo('close','')">🏁 תוביל אותי לסגירה</button>
+    </div>`;
+}
+window.leadTo=(kind,target)=>{
+  const st=STAGES.find(x=>x.id===target); const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved');
+  const missing=target?STAGE_CHECKS[target].map((t,i)=>S.checks[target+'.'+(i+1)]?null:t).filter(Boolean):[];
+  const req=kind==='stage'?`תוביל אותי להשלים את שלב "${st.l}". הפריטים שעדיין חסרים בצ'ק-ליסט: ${missing.join(' | ')||'הכל הושלם, אז חזק ועבור הלאה'}. תן את המשפט או השאלה הבאה שסוגרים את הפער הכי חשוב, ובתוכנית 3 צעדים קצרים איך להשלים את השלב.`
+    :kind==='forward'?`תוביל אותי קדימה לשלב "${st.l}" מהנקודה שבה השיחה נמצאת עכשיו. אם השלב הנוכחי לא הושלם, המשפט הראשון צריך לגשר על החסר בצורה טבעית. תן משפט מעבר ותוכנית 3 צעדים.`
+    :kind==='barriers'?`תוביל אותי לפתרון החסמים העיקריים ביותר. חסמים פתוחים: ${openB.map(a=>a.text+(a.note?' ('+a.note+')':'')).join(' | ')||'לא זוהו חסמים מפורשים, זהה אותם מהתמלול'}. לפי הפלייבוק: לא להתווכח, למצוא את האמונה מתחת, למצוא סתירה, להביא לאחריות. תן את המשפט הראשון ותוכנית 3 צעדים לפתרון החסם הכי חשוב.`
+    :`תוביל אותי לסגירה מהנקודה הנוכחית. בדוק קודם מה חסר לפי תנאי הסגירה בפלייבוק (חסמים פתוחים: ${openB.length}); אם משהו חסר, המשפט הראשון סוגר את הפער ואז מוביל לסגירה. תן משפט ותוכנית 3 צעדים עד ההחלטה, בלי נאומים.`;
+  $('reqInput').value=req; requestSentence(false);
+};
 function setStage(id){const i=STAGES.findIndex(s=>s.id===id); if(i<0) return; if(i>S.stageIdx||i<S.stageIdx-1){S.stageIdx=i;S.stage=id;} else if(i===S.stageIdx-1){/* allow one step back */S.stageIdx=i;S.stage=id;} renderStages();}
 
 /* ───────────────────────── transcript ───────────────────────── */
@@ -429,11 +465,21 @@ function upsertLine(id,who,text,final){
 }
 // Trigger policy: the coach speaks when the CUSTOMER finishes a turn (quiet gap, or the rep starts talking). Rep lines alone never trigger.
 function onFinalLine(ln){
-  if(S.single) return; // listen mode: the 20s insight loop drives analysis
+  if(S.single){ S.newSinceInsight=true; return; } // listen mode: the 20s loop drives analysis
   clearTimeout(S.custQuietTimer);
   if(ln.who==='rep'){ if(S.analysisPending) scheduleAnalysis(); return; }
-  S.analysisPending=true;
+  S.analysisPending=true; S.lastCustFinalAt=Date.now();
   S.custQuietTimer=setTimeout(()=>{ if(S.analysisPending) scheduleAnalysis(); },1400);
+}
+// Audio-driven clock: called ~10x/sec from the capture callback. Chrome throttles setTimeout/setInterval in hidden or
+// occluded windows (down to once a minute), but audio callbacks keep flowing, so every time-based trigger also runs here.
+function tick(){
+  const now=Date.now(); if(now-(S.lastTick||0)<250) return; S.lastTick=now;
+  if(!S.running) return;
+  if(S.analysisInFlight&&now-(S.inFlightAt||now)>75000){ S.analysisInFlight=false; log('המאמן לא ענה 75 שניות, מאפס וממשיך','err'); }
+  if(!S.single&&S.analysisPending&&!S.analysisInFlight&&now-(S.lastCustFinalAt||0)>=1400) scheduleAnalysis();
+  if(S.single&&now-(S.lastInsightAt||S.startedAt)>=20000){ const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount){ S.lastInsightAt=now; scheduleAnalysis(); } }
+  if(now-(S.lastSyncAt||0)>=15000){ S.lastSyncAt=now; syncCall(); }
 }
 function setSpeaker(id,who,manual){
   const ln=S.lines.find(l=>l.id===id); if(!ln) return;
@@ -629,7 +675,7 @@ async function pipe(stream,who,ws,meterId){
   const ctx=await getCtx();
   const src=ctx.createMediaStreamSource(stream);
   const lvl=$(who==='rep'?'lRep':'lCust'); let lastLog=0;
-  const {node,sink}=makeCapture(ctx,(pcm,peak)=>{ if(ws.readyState===1){ if(ws.sendAudio) ws.sendAudio(pcm); else ws.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); } const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
+  const {node,sink}=makeCapture(ctx,(pcm,peak)=>{ tick(); if(ws.readyState===1){ if(ws.sendAudio) ws.sendAudio(pcm); else ws.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); } const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
   src.connect(node); // worklet: no destination (silent); script processor: muted sink
   S.audio.nodes.push(src,node); if(sink) S.audio.nodes.push(sink); S.audio.streams.push(stream);
 }
@@ -698,7 +744,7 @@ function teardownAudio(){
 }
 function beginSession(demo){
   S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.insights=[]; S.summary=null;
-  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile='';
+  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
   $('btnClear').click(); renderStages();
   $('btnStart').style.display='none'; $('btnStop').style.display=''; $('btnStart').disabled=false; $('btnDemo').disabled=true; $('liveTag').style.display='';
@@ -706,7 +752,8 @@ function beginSession(demo){
   S.timerIv=setInterval(()=>{const s=Math.floor((Date.now()-S.startedAt)/1000);$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},500);
   clearInterval(S.syncIv); S.syncIv=setInterval(()=>{ if(S.running) syncCall(); },15000); if(!demo||sbReady()) syncCall();
   clearInterval(S.insightIv);
-  S.insightIv=setInterval(()=>{ if(!S.single||!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount) scheduleAnalysis(); },20000);
+  S.lastInsightAt=Date.now(); S.lastSyncAt=Date.now(); S.lastTick=0; S.analysisInFlight=false; S.analysisPending=false;
+  S.insightIv=setInterval(()=>{ if(!S.single||!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount){ S.lastInsightAt=Date.now(); scheduleAnalysis(); } },20000);
 }
 function stopCall(){
   S.running=false; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); teardownAudio(); S.demoAbort=true; renderIdBar();
@@ -747,6 +794,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       required:['type','title','text']},description:'רק תובנות חדשות שלא הוצגו כבר, לכל היותר 2. אם אין חדש, מערך ריק'},
     speaker_labels:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string'},who:{type:'string',enum:['rep','cust']}},required:['id','who']},description:'לשורות שמסומנות "דובר לא ידוע": מי אמר אותן לפי התוכן. מערך ריק אם אין כאלה'},
     profile:{type:'string',description:'פרופיל הלקוח עד כה ב-2-3 משפטים: מי הוא, מה העסק/המצב, מה הוא ניסה, מה מגביל אותו. מצטבר על כל השיחה'},
+    checks:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string',description:'מזהה פריט בצ׳ק-ליסט, בפורמט stage.index, למשל pain.2'},done:{type:'boolean'}},required:['id','done']},description:'מצב הצ׳ק-ליסט של כל השלבים עד השלב הנוכחי ועד אחד קדימה, לפי מה שקרה בפועל בתמלול. פריט done=true רק אם יש לזה עדות בתמלול. החזר את כל הפריטים הרלוונטיים בכל סבב'},
     insight:{type:'object',additionalProperties:false,properties:{quote:{type:'string',description:'ציטוט קצר ומדויק של משהו שהלקוח אמר (או מחרוזת ריקה אם אין חדש)'},principle:{type:'string',description:'שם העיקרון מהפלייבוק שרלוונטי לציטוט, עד 8 מילים'},lesson:{type:'string',description:'התובנה: מה הציטוט חושף על הלקוח ומה היה הצעד הנכון של הנציג לפי העיקרון, עד 35 מילים'}},required:['quote','principle','lesson'],description:'תובנה אחת שמחברת בין מה שהלקוח אמר לעיקרון מהפלייבוק, על ציטוט שעוד לא נותח'},
     ammo:{type:'array',items:{type:'object',additionalProperties:false,properties:{
       type:{type:'string',enum:['pain','gap','motive','why_now','cost_of_inaction','past','barrier','fear','desire','contradiction','urgency','belief','personal','number','commitment']},
@@ -756,7 +804,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       use:{type:'string',description:'משפט או שאלה טבעיים שהנציג יכול להגיד עכשיו בעזרת הפריט, או מחרוזת ריקה'}},
       required:['type','status','text','note','use']},
       description:'תחמושת: לוח תוצאות חי של השיחה. בדיוק 8 פריטים כשיש מספיק מידע אמיתי, מדורגים מהחזק והרלוונטי ביותר כרגע לפחות. רק מה שהלקוח אמר או רמז בבירור. חסם נחשב פתור רק אם הלקוח אישר. החזר את הרשימה המלאה והמעודכנת בכל סבב'}
-  },required:['stage','temperature','customer_state','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight']};
+  },required:['stage','temperature','customer_state','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight','checks']};
 
 function systemPrompt(){
   return `אתה מאמן מכירות בזמן אמת שיושב ליד נציג מכירות בזמן שיחת טלפון חיה עם לקוח. אתה רואה את התמלול החי ותפקידך להגיד לנציג, מיד, מה להגיד עכשיו.
@@ -780,6 +828,10 @@ ${AMMO_RULES}
 שלבי השיחה (התקדם לפי מה שקרה בפועל, אפשר גם לחזור אחורה):
 ${STAGES.map((s,i)=>`${i+1}. ${s.id} (${s.l}): ${s.h}`).join('\n')}
 
+צ'ק-ליסט המעבר של כל שלב (השדה checks; מזהה = stage.index):
+${Object.entries(STAGE_CHECKS).map(([k,arr])=>k+': '+arr.map((t,i)=>k+'.'+(i+1)+' '+t).join(' | ')).join('\n')}
+משמעת שלבים: stage מתקדם רק כשרוב פריטי הצ'ק-ליסט של השלב הנוכחי הושלמו בפועל, או כשהלקוח עצמו הזיז את השיחה (למשל העלה התנגדות). אל תסמן פריט כ-done בלי עדות בתמלול. אם הנציג קפץ קדימה בלי להשלים שלב, say_now מחזיר אותו לפריט החסר.
+
 עקרונות המכירה שלפיהם אתה מאמן:
 ${S.settings.principles||DEFAULT_PRINCIPLES}
 
@@ -800,7 +852,7 @@ async function runAnalysis(){
   if(!finals.length||finals.length===S.lastAnalyzedCount){S.analysisPending=false;return}
   if(!S.single&&!finals.some(l=>l.who==='cust')){S.analysisPending=false;return} // wait for the customer to say something
   if(!S.settings.anthropic){return}
-  S.analysisInFlight=true; S.analysisPending=false; const analyzedCount=finals.length;
+  S.analysisInFlight=true; S.inFlightAt=Date.now(); S.analysisPending=false; const analyzedCount=finals.length; log('מנתח… ('+finals.length+' משפטים)');
   $('saynow').classList.add('thinking'); setPill('pAI','busy'); const t0=performance.now();
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   const tag=l=>l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'דובר לא ידוע #'+l.id;
@@ -810,6 +862,7 @@ async function runAnalysis(){
   const user=`${S.single?'מצב: האזנה לשיחה (המאמן מגיב כל 20 שניות, מתייג דוברים ומייצר תובנות על השיחה).':'מצב: הנציג בשיחה חיה וקורא את המסך.'}
 זמן שיחה: ${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}
 שלב נוכחי לפי המערכת: ${S.stage}
+מצב הצ'ק-ליסט כרגע: ${Object.keys(S.checks).length?Object.entries(S.checks).filter(([k,v])=>v).map(([k])=>k).join(', ')||'כלום עדיין':'כלום עדיין'}
 כרטיסים שכבר הוצגו לנציג: ${S.shownCards.length?S.shownCards.join(' | '):'אין'}
 לוח התחמושת הנוכחי (דרג מחדש לפי מה שנוסף): ${S.ammo.length?S.ammo.map((a,i)=>(i+1)+'. ['+a.status+'] '+a.type+': '+a.text+(a.note?' ('+a.note+')':'')).join(' | '):'ריק'}
 ${unknown.length?'שורות עם דובר לא ידוע (החזר speaker_labels עם ה-id המדויק): '+unknown.join(', ')+(S.spkSeen.length?'. הערה: הזיהוי הוא לפי קול, לכן כל השורות עם אותו תג קול ('+S.spkSeen.join('/')+') הן של אותו אדם. תייג בעקביות.':''):''}
@@ -862,6 +915,7 @@ function applyCoach(o){
     $('cards').prepend(el);
   }
   $('saynow').classList.remove('custom');
+  if(Array.isArray(o.checks)){ for(const c of o.checks){ if(c&&typeof c.id==='string'&&STAGE_CHECKS[c.id.split('.')[0]]) S.checks[c.id]=!!c.done; } }
   if(o.stage) setStage(o.stage);
   if(o.temperature){S.temp=o.temperature;renderStages()}
   $('sayText').textContent=o.say_now||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
@@ -884,19 +938,23 @@ function callRow(extra){
   return {id:S.callId, rep:S.settings.repName||'ללא שם', mode:S.single?'listen':'rep', status:S.running?'live':'ended',
     started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round((Date.now()-S.startedAt)/1000),
     stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
-    ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length, ...extra};
+    checks:S.checks||{}, ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length, ...extra};
 }
 async function syncCall(extra={}){
   if(!sbReady()||!S.callId) return;
   try{
-    const r=await fetch(S.settings.sbUrl+'/rest/v1/calls?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json','apikey':S.settings.sbKey,...(S.settings.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+S.settings.sbKey}:{}),'Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(callRow(extra))});
-    if(!r.ok){ const t=await r.text(); throw new Error(r.status+' '+t.slice(0,120)); }
+    const hdr={'Content-Type':'application/json','apikey':S.settings.sbKey,...(S.settings.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+S.settings.sbKey}:{}),'Prefer':'resolution=merge-duplicates,return=minimal'};
+    const row=callRow(extra); for(const k of (S.sbDropCols||[])) delete row[k];
+    let r=await fetch(S.settings.sbUrl+'/rest/v1/calls?on_conflict=id',{method:'POST',headers:hdr,body:JSON.stringify(row)});
+    if(!r.ok){ const t=await r.text(); const m=t.match(/column "?([a-z_]+)"? of relation|Could not find the '([a-z_]+)' column/i); const col=m&&(m[1]||m[2]);
+      if(col&&row[col]!==undefined){ (S.sbDropCols=S.sbDropCols||[]).push(col); log('בורד: העמודה '+col+' חסרה בטבלה (הרץ את שורת ה-ALTER ב-supabase.sql). ממשיך בלעדיה'); delete row[col]; r=await fetch(S.settings.sbUrl+'/rest/v1/calls?on_conflict=id',{method:'POST',headers:hdr,body:JSON.stringify(row)}); }
+      if(!r.ok){ const t2=await r.text(); throw new Error(r.status+' '+t2.slice(0,120)); } }
     const el=$('syncTag'); if(el){el.textContent='☁️ מסונכרן לבורד '+new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});el.className='sync on'}
   }catch(e){ console.warn('sync',e); const el=$('syncTag'); if(el){el.textContent='☁️ סנכרון נכשל: '+(e.message||'').slice(0,60);el.className='sync'} }
 }
 
 /* ───────────────────────── custom sentence on demand ───────────────────────── */
-const REQ_SCHEMA={type:'object',additionalProperties:false,properties:{sentence:{type:'string',description:'המשפט המדויק להגיד, בעברית מדוברת, 1-3 משפטים'},why:{type:'string',description:'למה זה עובד כאן, עד 15 מילים'},alt:{type:'string',description:'ניסוח חלופי קצר'}},required:['sentence','why','alt']};
+const REQ_SCHEMA={type:'object',additionalProperties:false,properties:{sentence:{type:'string',description:'המשפט המדויק להגיד, בעברית מדוברת, 1-3 משפטים'},why:{type:'string',description:'למה זה עובד כאן, עד 15 מילים'},alt:{type:'string',description:'ניסוח חלופי קצר'},plan:{type:'array',items:{type:'string'},description:'עד 3 צעדים קצרים (עד 8 מילים כל אחד) איך להמשיך מכאן, או מערך ריק'}},required:['sentence','why','alt','plan']};
 async function requestSentence(auto){
   const q=auto?'AUTO':$('reqInput').value.trim(); if(!q) return toast('כתוב מה אתה צריך, למשל: משפט סגירה','t-error');
   if(!S.settings.anthropic){openDrawer();return}
@@ -920,7 +978,7 @@ ${transcript}
     });
     if(res.stop_reason==='refusal') throw new Error('המודל סירב');
     const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
-    $('sayText').textContent=o.sentence; $('sayWhy').textContent='למה: '+o.why+(o.alt?' · חלופה: '+o.alt:''); $('sayAvoid').textContent='';
+    $('sayText').textContent=o.sentence; $('sayWhy').textContent='למה: '+o.why+(o.alt?' · חלופה: '+o.alt:''); $('sayAvoid').textContent=(o.plan&&o.plan.length)?'🧭 '+o.plan.join(' ← '):'';
     const sn=$('saynow'); sn.classList.add('custom'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
     setPill('pAI','on'); $('reqInput').value='';
   }catch(e){console.error(e);setPill('pAI','err');toast('שגיאה: '+(e.error?.error?.message||e.message||e).slice(0,140),'t-error')}
@@ -972,7 +1030,7 @@ loadSettings(); renderStages();
 if(fromLink){ toast('ההגדרות מהלינק נטענו','t-ok'); }
 if(!S.settings.repName){ setTimeout(()=>{ let n=null; try{ n=prompt('ברוך הבא ל-LiveCoach. מה השם שלך? (יופיע בבורד המנהל)','') }catch(e){} if(n&&n.trim()){ S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); } },600); }
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
-window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker}; // debug hooks
+window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis}; // debug hooks
 if(!S.settings.anthropic||(!S.settings.openai&&!S.settings.speechmatics)) setTimeout(openDrawer,900);
 window.addEventListener('beforeunload',e=>{if(S.running&&!S.demo){e.preventDefault();e.returnValue=''}});
 </script>

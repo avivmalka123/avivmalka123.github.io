@@ -223,7 +223,9 @@ window.openDetail=function(id,refresh){
   if(atBottom||!refresh) tr.parentElement.scrollTop=tr.parentElement.scrollHeight;
   $('dAmmo').innerHTML=(r.ammo||[]).length?(r.ammo||[]).map((a,i)=>`<div class="ammo s-${SE[a.status]?a.status:'medium'}"><div class="at">${SE[a.status]||'🟡'} ${i+1}. ${AL[a.type]||a.type}</div>${esc(a.text)}${a.note?`<div class="an">${esc(a.note)}</div>`:''}${a.use?`<div class="au">💬 ${esc(a.use)}</div>`:''}</div>`).join(''):'<div class="empty">אין תחמושת עדיין</div>';
   const ob=openBarriers(r);
-  $('dCoach').innerHTML=`${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · '))}</div>`:''}
+  const CKN={kyc:5,pain:5,objection:5,goal:5,motive:4,solution:5,close:5}; const ck=r.checks||{};
+  const ckLine=STAGES.map(s=>{let d=0;for(let i=1;i<=CKN[s.id];i++) if(ck[s.id+'.'+i]) d++; return `<span class="tag" style="${d===CKN[s.id]?'color:#6ee7b7':d?'color:var(--gold)':''}">${s.l} ${d}/${CKN[s.id]}</span>`}).join(' ');
+  $('dCoach').innerHTML=`<div class="meta" style="margin-bottom:6px">${ckLine}</div>${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · '))}</div>`:''}
     ${r.profile?`<div class="prof"><b style="color:var(--text)">פרופיל:</b> ${esc(r.profile)}</div>`:''}
     ${r.customer_state?`<div class="prof"><b style="color:var(--text)">מצב הלקוח:</b> ${esc(r.customer_state)}</div>`:''}
     ${r.say_now?`<div class="say"><b>המאמן מציע עכשיו</b>${esc(r.say_now)}</div>`:''}
