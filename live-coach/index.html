@@ -1105,7 +1105,7 @@ function systemPrompt(){
 מנוע התחמושת (השדה ammo):
 ${AMMO_RULES}
 - close_check: כשהנציג עובר להצגת מוצר או לסגירה ויש חסם שהלקוח לא אישר שנפתר, פריט צ'ק-ליסט קריטי חסר, או הסכמה שלא נלקחה, החזר רשימה קצרה "לבדיקה לפני סגירה". זו הארה בלבד, לא עצירה.
-- reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך.
+- reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך. אם נשענת על הנחיית מנהל או על דוגמה מהשטח, כתוב את זה ב-reasoning.principle (למשל: "שיחת מופת: שאלת המחיר של ראם").
 ${trainingBlock()}
 - Latency-sensitive; begin your visible answer immediately.
 - בכל שדה טקסט: עברית מדוברת בלבד. בלי Markdown, בלי כוכביות, בלי קוד, בלי שמות שדות באנגלית, בלי סוגריים מסולסלים. כל משפט צריך להיקרא בקול כמו שהוא.
@@ -1348,7 +1348,7 @@ const QUICK_SYS=`אתה מאמן מכירות בזמן אמת שיושב ליד 
 המשימה: פעם ב-40 שניות אתה נותן לנציג משפט אחד, הכי חזק שאפשר, לא הכי נעים. משפט שמזיז את השיחה: שאלה חדה או שיקוף שנוגע בדיוק במה שחסר בצ'ק-ליסט של השלב, שמשתמש במילים, במספרים וברגעים שהלקוח עצמו נתן, ושהלקוח יזכור אחרי השיחה. לא "איך זה מרגיש לך" גנרי, לא פרפרזה מנומסת, לא הסבר. אם השלב הוא כאב: משפט שמאיר את המחיר. אם חסם: משפט שמסדק את האמונה או שאלת החזרה בזמן. אם מטרה: קילוף למה זה חשוב לו. אם סגירה: להזכיר את הפער ולבקש החלטה בלי לבקש רשות. ב-why כתוב איזה פריט חסר בשלב המשפט סוגר.
 חוקים: עברית מדוברת וחמה. משפט אחד (לכל היותר שניים) שהנציג מקריא מהמסך מיד. הלקוח מדבר 60%; אם הנציג הרצה, המשפט הבא הוא שאלה קצרה. לא לפתור ולא להציג מוצר לפני שהכאב, החסם והמטרה ברורים. משתמשים במילים, במספרים וברגעים שהלקוח עצמו נתן. נציג חזק שואל ושותק; נציג חלש מסביר ומרגיע.
 לשון: קבע מגדר לפי ההנחיה בהודעה ושמור על לשון אחת לאורך כל המשפט. אסור לערבב זכר ונקבה, אסור לוכסנים (ספר/י). אם לא ידוע, ניטרלי.
-פלט: JSON בלבד, בלי טקסט לפני או אחרי, בלי גדרות קוד: {"sentence":"המשפט להגיד עכשיו","why":"למה, עד 12 מילים","customer_state":"משפט אחד: מה הלקוח מרגיש/רוצה/חושש עכשיו"}`;
+פלט: JSON בלבד, בלי טקסט לפני או אחרי, בלי גדרות קוד: {"sentence":"המשפט להגיד עכשיו","why":"למה, עד 12 מילים","customer_state":"משפט אחד: מה הלקוח מרגיש/רוצה/חושש עכשיו","based_on":"על איזו הנחיה או דוגמה מהשטח נשענת, או ריק"}`;
 const scrubText=t=>String(t==null?'':t).replace(/```[a-z]*/gi,'').replace(/[`*_#]+/g,'').replace(/\\n/g,' ').replace(/^\s*"(.*)"\s*$/s,'$1').replace(/^[a-z_]{2,20}\s*:\s*/i,'').replace(/[{}\[\]<>]/g,'').replace(/\s{2,}/g,' ').trim();
 function scrub(o){ if(typeof o==='string') return scrubText(o); if(Array.isArray(o)) return o.map(scrub); if(o&&typeof o==='object'){ const r={}; for(const k of Object.keys(o)) r[k]=(k==='id'||k==='type'||k==='status'||k==='stage'||k==='temperature'||k==='who'||k==='outcome'||k==='stage_reached'||k==='customer_gender')?o[k]:scrub(o[k]); return r; } return o; }
 function parseLooseJson(raw){
@@ -1357,7 +1357,7 @@ function parseLooseJson(raw){
   const m=txt.match(/\{[\s\S]*\}/); if(m){ try{ return JSON.parse(m[0]); }catch(e){} }
   // truncated / malformed JSON: salvage the fields by regex so the rep never sees raw JSON on screen
   const pick=k=>{ const r=txt.match(new RegExp('"'+k+'"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)')); return r?r[1].replace(/\\"/g,'"').replace(/\\n/g,' ').trim():''; };
-  const sentence=pick('sentence'); if(sentence) return {sentence,why:pick('why'),customer_state:pick('customer_state')};
+  const sentence=pick('sentence'); if(sentence) return {sentence,why:pick('why'),customer_state:pick('customer_state'),based_on:pick('based_on')};
   if(/^[\[{]/.test(txt)||/"sentence"/.test(txt)) return {sentence:'',why:'',customer_state:'',bad:true};
   return {sentence:txt.replace(/[`{}]/g,'').slice(0,300),why:'',customer_state:''};
 }
@@ -1402,7 +1402,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS){
     try{
-      const res=await getClient().messages.create({model,max_tokens:420,system:QUICK_SYS,...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+'\nאם השתמשת בהנחיית מנהל או בדוגמה מהשטח, כתוב ב-based_on במילים ספורות על מה נשענת (למשל: "שיחת מופת של ראם, שאלת המחיר"). אחרת השאר ריק.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -1413,7 +1413,7 @@ ${tr.text}`;
     if(S.callId!==runCall) return;
     const kind=mode==='quick'?'quick':mode;
     const ev=addEvent({kind,request:mode==='ask'?'מה לשאול עכשיו':mode==='custom'?q.slice(0,200):'',text:o.sentence||'',why:o.why||'',reasoning:null});
-    $('sayText').textContent=o.sentence||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=''; $('sayReason').innerHTML=''; $('sayFb').innerHTML=fbButtons(ev.id);
+    $('sayText').textContent=o.sentence||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=''; $('sayReason').innerHTML=o.based_on?`<span>🌟 ${escapeHtml(o.based_on)}</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
     if(o.customer_state){ S.custState=o.customer_state; const c=$('custState'); c.style.display=''; c.innerHTML='<b>מצב הלקוח:</b> '+escapeHtml(o.customer_state); }
     const sn=$('saynow'); sn.classList.toggle('custom',mode!=='quick'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
     S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
