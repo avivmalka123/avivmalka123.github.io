@@ -33,6 +33,8 @@
   .tl .ev .et{font-size:14px;font-weight:600}
   .tl .ev .er{margin-top:6px;display:grid;grid-template-columns:1fr;gap:3px;font-size:12px;color:var(--text-muted);background:rgba(0,0,0,.2);border-radius:10px;padding:8px 10px}
   .tl .ev .er b{color:var(--text)}
+  .ctxl{margin-top:6px;background:rgba(0,0,0,.18);border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.5}.ctxl b{color:#c4b5fd;display:block;margin-bottom:3px;font-size:11px}
+  .ctxl .cl span{font-weight:800;color:var(--text-muted)}.ctxl .cl.cust span{color:var(--gold)}.ctxl .cl.rep span{color:var(--accent3)}
   .tl .ev .teach{margin-top:8px;display:flex;gap:6px}
   .tl .ev .teach textarea{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;min-height:38px;resize:vertical}
   .tl .ev .fixed{margin-top:6px;font-size:12.5px;color:#6ee7b7}
@@ -240,7 +242,7 @@ const TEMP={cold:'קר ❄️',warm:'פושר 🌤️',hot:'חם 🔥'};
 const b64u={dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
 let CFG={}, ROWS=[], SEL=null, pollIv=null, TRAIN=[], REPS=[], VIEW='live', SCOPE='general';
 const SCOPES={general:'כללי',opening:'פתיחת שיחה',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע רכישה',solution:'הצגת מוצר',close:'סגירה',simulation:'סימולציה',motivation:'מוטיבציה'};
-const KIND={auto:'המלצה בזמן אמת',listen:'ניתוח בהאזנה',custom:'משפט לפי בקשה',lead:'הובלה',ask:'מה לשאול עכשיו',insight:'תובנה',card:'כרטיס',precheck:'לבדיקה לפני סגירה',sim:'סימולציה'};
+const KIND={quick:'משפט 40 השניות',auto:'המלצה בזמן אמת',listen:'ניתוח בהאזנה',custom:'משפט לפי בקשה',lead:'הובלה',ask:'מה לשאול עכשיו',insight:'תובנה',card:'כרטיס',precheck:'לבדיקה לפני סגירה',sim:'סימולציה'};
 function hdr(extra={}){ const k=CFG.sbKey||''; return {'Content-Type':'application/json','apikey':k,...(k.startsWith('eyJ')?{'Authorization':'Bearer '+k}:{}),...extra}; }
 async function sb(method,path,body,prefer){ const r=await fetch(CFG.sbUrl+'/rest/v1/'+path,{method,headers:hdr(prefer?{'Prefer':prefer}:{}),body:body?JSON.stringify(body):undefined}); if(!r.ok) throw new Error(r.status+' '+(await r.text()).slice(0,160)); return r; }
 
@@ -300,9 +302,10 @@ function evHtml(e,r,opts={}){
   const t=new Date(e.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); const rs=e.reasoning||{};
   return `<div class="ev ${e.kind||''}" id="ev_${e.id}"><div class="eh"><span>🤖 ${KIND[e.kind]||e.kind||'המלצה'}</span><span>· ${t}</span><span>· שלב: ${STAGES.find(s=>s.id===e.stage)?.l||e.stage||''}</span>${e.request?`<span>· בקשה: "${esc(String(e.request).slice(0,60))}"</span>`:''}${opts.showCall?`<span>· <a href="#" onclick="openDetail('${r.id}');return false" style="color:#c4b5fd">${esc(r.rep)} · ${new Date(r.started_at).toLocaleDateString('he-IL')}</a></span>`:''}<span class="fbm">${e.fb==='like'?'👍':e.fb==='dislike'?'👎':''}</span></div>
     ${e.quote?`<div class="hint">"${esc(e.quote)}"</div>`:''}<div class="et">${esc(e.text||'')}</div>${e.why?`<div class="hint">למה: ${esc(e.why)}</div>`:''}${(e.plan&&e.plan.length)?`<div class="hint">🧭 ${esc(e.plan.join(' ← '))}</div>`:''}
-    <div class="er"><div><b>למה עכשיו:</b> ${esc(rs.why_now||'—')}</div><div><b>עיקרון:</b> ${esc(rs.principle||'—')}</div><div><b>מה ניסיתי להשיג:</b> ${esc(rs.goal||'—')}</div></div>
+    ${(e.ctx&&e.ctx.length)?`<div class="ctxl"><b>מה נאמר רגע לפני:</b>${e.ctx.map(l=>`<div class="cl ${l.who}"><span>${l.who==='rep'?'נציג':l.who==='cust'?'לקוח':'?'}:</span> ${esc(l.t)}</div>`).join('')}</div>`:''}
+    <div class="er"><div><b>המצב:</b> שלב ${STAGES.find(s=>s.id===e.stage)?.l||e.stage||'—'}${e.stage_goal?' · מטרת השלב: '+esc(e.stage_goal):''}${e.cust_state?' · הלקוח: '+esc(e.cust_state):''}</div>${(e.missing&&e.missing.length)?`<div><b>מה עוד היה חסר בשלב:</b> ${esc(e.missing.join(' | '))}</div>`:''}<div><b>למה עכשיו:</b> ${esc(rs.why_now||'—')}</div><div><b>עיקרון:</b> ${esc(rs.principle||'—')}</div><div><b>מה ניסיתי להשיג:</b> ${esc(rs.goal||'—')}</div></div>
     ${fixFor(e)?`<div class="fixed">✅ לימדת: ${esc(fixFor(e))}</div>`:''}
-    <div class="teach"><textarea id="fix_${e.id}" placeholder="למד אותי: מה היה נכון לעשות כאן ואיך לפעול פעם הבאה…">${e.fix?'':''}</textarea><button class="btn btn-sm btn-primary" onclick="teach('${r.id}','${e.id}')">שמור</button></div></div>`;
+    <div class="teach"><textarea id="fix_${e.id}" placeholder="למד אותי: מה היה נכון להגיד כאן במקום, ולמה. למשל: 'הלקוח עוד לא נגע בכאב, היית צריך לשאול מה זה עולה לו, לא לקפוץ לחסם'">${e.fix?'':''}</textarea><button class="btn btn-sm btn-primary" onclick="teach('${r.id}','${e.id}')">שמור</button></div></div>`;
 }
 window.teach=async(callId,evId)=>{
   const ta=$('fix_'+evId); const txt=(ta.value||'').trim(); if(!txt) return toast('כתוב מה היה נכון');
