@@ -416,6 +416,7 @@
   <div class="field"><label class="field-label">עקרונות המכירה (המאמן פועל לפיהם)</label><textarea class="field-input" id="sPrinciples" style="min-height:220px"></textarea><div class="hint">ניתן לערוך חופשי. השאר ריק כדי לחזור לברירת המחדל.</div></div>
   <div class="field" style="display:grid;grid-template-columns:1fr auto;gap:8px"><div><label class="field-label">שם הנציג</label><input class="field-input" id="sRepName" placeholder="יובל"></div><div><label class="field-label">פנייה לנציג</label><select class="field-input" id="sRepGender"><option value="m">זכר</option><option value="f">נקבה</option></select></div></div>
   <div class="field"><label class="field-label">שם הלקוח (אופציונלי)</label><input class="field-input" id="sCustName" placeholder="דנה"></div>
+  <div class="field"><label class="field-label">משפט חדש ב"אמור עכשיו" כל כמה שניות</label><input class="field-input" id="sSayEvery" type="number" min="15" max="180" placeholder="40"><div class="hint">ברירת מחדל 40. כפתורי "מה לשאול" ו"תן משפט" תמיד מיידיים.</div></div>
   <div class="field"><label class="field-label">רמת חשיבה של המאמן</label>
     <select class="field-input" id="sEffort"><option value="low">מהיר (מומלץ לזמן אמת)</option><option value="medium">מאוזן</option><option value="high">מעמיק (איטי יותר)</option></select>
   </div>
@@ -537,7 +538,7 @@ function loadSettings(){
   if(s.principles&&s.principles.startsWith('PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה')) s.principles=''; // the previous built-in playbook was saved verbatim; follow the new default instead
   $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES;
   $('sRepName').value=s.repName||''; $('sRepGender').value=s.repGender||'m'; refreshKeysBanner(); $('sCustName').value=s.custName||'';
-  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low';
+  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||40;
   syncAudioUI();
 }
 const cleanKey=v=>(v||'').replace(/[^\x21-\x7E]/g,''); // keep printable ASCII only: strips Hebrew, RTL marks, zero-width chars, spaces
@@ -551,7 +552,7 @@ function saveSettings(){
   S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:customOnly($('sContext').value,DEFAULT_CONTEXT),
     principles:customOnly($('sPrinciples').value,DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),repGender:$('sRepGender').value,custName:$('sCustName').value.trim(),
     mic:$('sMic').value,mode:$('sMode').value,custSrc:$('sCustSrc').value,custDev:$('sCustDev').value,sttModel:$('sSttModel').value,effort:$('sEffort').value,
-    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
+    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,sayEverySec:Math.min(180,Math.max(15,parseInt($('sSayEvery').value)||40)),goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
   syncModeSeg(); refreshKeysBanner(); $('whoName').textContent=S.settings.repName||'ללא שם';
   localStorage.setItem('lc_settings',JSON.stringify(S.settings));
   S.anthropic=null;
@@ -1230,7 +1231,8 @@ function applyCoach(o,opt={}){
   if(o.stage) setStage(o.stage);
   if(o.temperature){S.temp=o.temperature;renderStages()}
   // a faster "quick" line may have landed while this analysis was in flight: keep the newer sentence on screen
-  const staleSay=!!(opt.startedAt&&S.sayAt&&S.sayAt>opt.startedAt);
+  const tooSoon=!!(S.sayAt&&Date.now()-S.sayAt<sayEveryMs()-2000&&!(Array.isArray(o.close_check)&&o.close_check.length));
+  const staleSay=!!(opt.startedAt&&S.sayAt&&S.sayAt>opt.startedAt)||tooSoon;
   if(!staleSay){
     const ev=addEvent({kind:S.single?'listen':'auto',text:o.say_now||'',why:o.why||'',avoid:o.avoid||'',reasoning:o.reasoning||null,close_check:o.close_check||[]});
     $('sayText').textContent=o.say_now||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
@@ -1339,9 +1341,10 @@ ${transcript}
 $('btnReq').onclick=()=>requestSentence(false); $('btnAsk').onclick=()=>requestSentence(true); $('reqInput').addEventListener('keydown',e=>{if(e.key==='Enter')requestSentence(false)});
 
 /* ───────────────────────── fast lane: "say now" every 10s + instant ask/sentence (small model, last 3 minutes) ───────────────────────── */
-const QUICK_MODELS=['claude-haiku-4-5-20251001','claude-sonnet-5'];
+const QUICK_MODELS=['claude-opus-5','claude-haiku-4-5-20251001'];
 const QUICK_SYS=`אתה מאמן מכירות בזמן אמת שיושב ליד נציג במועדון האיקומרס של אביב מלכה, בשיחת טלפון חיה. אנחנו לא משכנעים לקנות קורס, אנחנו מובילים בן אדם לשינוי: אמונה → החלטה → פעולה → תוצאה.
 שבעת השלבים והמטרה של כל אחד: 1 KYC: אמון, מי האדם ולמה עכשיו, ולתפוס קצוות חוט (טון, מילים עם רגש, נקודות אדומות, אמונות, רצונות); שאלת סיפור, לא חקירה. 2 כאב: להאיר את המחיר של להישאר; להרחיב, לפרק מילים ("מה זה תקוע בשבילך?"), השפעה על הסביבה, רגע ספציפי, ציר זמן, מחיר, השלכה; אחרי שאלה קשה, שתיקה. 3 חסם: לחשוף את האמונה שעוצרת אותו, לסדק בסתירה מהחיים שלו, שאלת החזרה בזמן ("היית מתחיל אז? אז מה באמת עצר אותך?"). 4 מטרה: הזהות החדשה, לקלף מ"כסף" לרגש ("למה זה חשוב לך?"), דמיון עתידי, פער. 5 מניע רכישה: מה ייתן לו ביטחון שזה יעבוד בשבילו; לתרגם מנטור/קהילה/סדר לביטחון/שייכות/פוקוס ולהדהד את המילים שלו. 6 הצגת מוצר כגשר: רק מה שרלוונטי למניעים שנתן, דיאלוג עם שאלות הסכמה, מסע לא רשימה. 7 סגירה: להזכיר את הפער, 3 "כן" קטנים, שאלת המפתח בלי לבקש רשות.
+המשימה: פעם ב-40 שניות אתה נותן לנציג משפט אחד, הכי חזק שאפשר, לא הכי נעים. משפט שמזיז את השיחה: שאלה חדה או שיקוף שנוגע בדיוק במה שחסר בצ'ק-ליסט של השלב, שמשתמש במילים, במספרים וברגעים שהלקוח עצמו נתן, ושהלקוח יזכור אחרי השיחה. לא "איך זה מרגיש לך" גנרי, לא פרפרזה מנומסת, לא הסבר. אם השלב הוא כאב: משפט שמאיר את המחיר. אם חסם: משפט שמסדק את האמונה או שאלת החזרה בזמן. אם מטרה: קילוף למה זה חשוב לו. אם סגירה: להזכיר את הפער ולבקש החלטה בלי לבקש רשות. ב-why כתוב איזה פריט חסר בשלב המשפט סוגר.
 חוקים: עברית מדוברת וחמה. משפט אחד (לכל היותר שניים) שהנציג מקריא מהמסך מיד. הלקוח מדבר 60%; אם הנציג הרצה, המשפט הבא הוא שאלה קצרה. לא לפתור ולא להציג מוצר לפני שהכאב, החסם והמטרה ברורים. משתמשים במילים, במספרים וברגעים שהלקוח עצמו נתן. נציג חזק שואל ושותק; נציג חלש מסביר ומרגיע.
 לשון: קבע מגדר לפי ההנחיה בהודעה ושמור על לשון אחת לאורך כל המשפט. אסור לערבב זכר ונקבה, אסור לוכסנים (ספר/י). אם לא ידוע, ניטרלי.
 פלט: JSON בלבד, בלי טקסט לפני או אחרי, בלי גדרות קוד: {"sentence":"המשפט להגיד עכשיו","why":"למה, עד 12 מילים","customer_state":"משפט אחד: מה הלקוח מרגיש/רוצה/חושש עכשיו"}`;
@@ -1364,9 +1367,10 @@ function recentTranscript(sec=180,minLines=6,maxLines=40){
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   return {count:finals.length,text:win.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n')||'(אין תמלול עדיין)'};
 }
+const sayEveryMs=()=>(parseInt(S.settings.sayEverySec)||40)*1000;
 function quickTick(now){
   if(!S.running||S.quickInFlight||!S.settings.anthropic) return;
-  if(now-(S.lastQuickAt||S.startedAt)<10000) return;
+  if(now-(S.lastQuickAt||S.startedAt)<sayEveryMs()) return;
   const n=S.lines.filter(l=>l.final&&l.text.trim()).length;
   if(!n||n===S.lastQuickCount) return;
   quickSay('quick','');
@@ -1381,7 +1385,7 @@ async function quickSay(mode,q){
   const ammo=(S.ammo||[]).slice(0,5).map((a,i)=>(i+1)+'. '+a.text).join(' | ')||'—';
   const ask=mode==='ask'?`הנציג לחץ "מה לשאול?". תן את השאלה האחת שמקדמת את השיחה שלב אחד: לפי מה שחסר בצ'ק-ליסט ולפי קצה החוט הכי חזק שהלקוח נתן ועוד לא נפתח.`
     :mode==='custom'?`הנציג מבקש משפט ספציפי: "${q}". כתוב אותו עם הפרטים של הלקוח הזה, לא גנרי.`
-    :`עברו כמה שניות בשיחה. מה המשפט הבא של הנציג, בתגובה למה שנאמר הרגע ובהקשר של כל מה שלמעלה?`;
+    :`עברו ${Math.round(sayEveryMs()/1000)} שניות מהמשפט הקודם. תן את המשפט הכי חזק שהנציג יכול להגיד עכשיו: מכוון למה שחסר בצ'ק-ליסט, בנוי מהמילים של הלקוח, ומזיז את השיחה צעד אחד קדימה.`;
   const user=`${S.single?'מצב: האזנה לשיחה.':'מצב: הנציג בשיחה חיה וקורא מהמסך.'}
 שלב: ${st.l}. מטרת השלב: ${st.h}
 חסר בצ'ק-ליסט של השלב: ${missing.join(' | ')||'הושלם'}
@@ -1397,7 +1401,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS){
     try{
-      const res=await getClient().messages.create({model,max_tokens:420,system:QUICK_SYS,messages:[{role:'user',content:user}]},{timeout:9000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:420,system:QUICK_SYS,...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
