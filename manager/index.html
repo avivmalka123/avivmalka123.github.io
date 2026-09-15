@@ -43,6 +43,17 @@
   .note{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
   .note .sc{font-size:10.5px;font-weight:800;color:#c4b5fd;white-space:nowrap;padding-top:2px;min-width:70px}
   .note .tx{flex:1;white-space:pre-wrap}.note .meta{font-size:11px;color:var(--text-muted);margin-top:4px}
+  .mbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+  .mgrid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .ins{border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.55;border:1px solid var(--border);background:var(--surface)}
+  .ins.good{border-right:4px solid var(--accent4)}.ins.warn{border-right:4px solid var(--red)}.ins.info{border-right:4px solid var(--blue)}
+  .mtable{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .mtable th,.mtable td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}.mtable th{font-size:11px;color:var(--text-muted);background:var(--surface2);cursor:pointer}
+  .mtable tr:last-child td{border:none}.mtable td.num{font-variant-numeric:tabular-nums}
+  .bars{display:flex;align-items:flex-end;gap:3px;height:90px;padding:6px 0}.bars i{flex:1;background:var(--surface3);border-radius:3px 3px 0 0;position:relative;min-width:6px}.bars i.c{background:var(--accent4)}.bars i span{position:absolute;bottom:-16px;left:0;right:0;font-size:9px;color:var(--text-muted);text-align:center}
+  .lead-row{cursor:pointer}.lead-row:hover{background:var(--surface2)}
+  .lead-detail{background:var(--surface2);padding:12px;border-radius:10px;font-size:13px;line-height:1.55;white-space:pre-wrap}
+  .narr{white-space:pre-wrap;line-height:1.7;font-size:14px;background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(236,72,153,.08));border:1px solid rgba(168,85,247,.35);border-radius:14px;padding:16px}
   .train-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:1000px){.train-grid{grid-template-columns:1fr}}
   .train-form textarea{width:100%;min-height:140px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-family:inherit;font-size:14px;line-height:1.6;resize:vertical}
   .scopes{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.scopes button{font-family:inherit;font-size:12px;font-weight:700;padding:6px 10px;border-radius:99px;border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);cursor:pointer}.scopes button.on{background:rgba(124,58,237,.3);color:#fff;border-color:var(--neon)}
@@ -110,7 +121,7 @@
   <div class="logo"><div class="logo-icon">📊</div><div>בורד מנהל<small>LiveCoach · שיחות בלייב, תחמושת וציונים</small></div></div>
   <span class="pill" id="pConn"><i class="dot"></i>חיבור לנתונים</span>
   <span class="pill" id="pPoll"><i class="dot"></i>רענון כל 4 שניות</span>
-  <nav class="tabs" id="navTabs"><button data-view="live" class="on">🔴 לייב וביצועים</button><button data-view="log">📚 יומן שיחות</button><button data-view="dislikes">👎 דיסלייקים <span id="dlCount" class="cnt"></span></button><button data-view="train">🎓 מרכז אימון</button></nav>
+  <nav class="tabs" id="navTabs"><button data-view="live" class="on">🔴 לייב וביצועים</button><button data-view="log">📚 יומן שיחות</button><button data-view="dislikes">👎 דיסלייקים <span id="dlCount" class="cnt"></span></button><button data-view="train">🎓 מרכז אימון</button><button data-view="metrics">📊 מדדים</button></nav>
   <div class="spacer"></div>
   <select class="btn" id="dayPick" style="direction:rtl"><option value="today">היום</option><option value="yesterday">אתמול</option><option value="week">7 ימים</option></select>
   <button class="btn" id="btnSetup">⚙️ חיבור</button>
@@ -122,6 +133,7 @@
     <div class="field"><label class="field-label">Supabase URL</label><input class="field-input" id="cfgUrl" placeholder="https://xxxx.supabase.co"></div>
     <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><input class="field-input" id="cfgKey" type="password" placeholder="sb_publishable_..."></div>
     <div class="hint">אותם פרטים שהגדרת ב-LiveCoach תחת "צוות ובורד מנהל". נשמרים בדפדפן הזה בלבד.</div>
+    <div class="field"><label class="field-label">Anthropic API Key (אופציונלי: ניתוח AI של המדדים)</label><input class="field-input" id="cfgAnth" type="password" placeholder="sk-ant-..."></div>
     <button class="btn btn-primary" id="btnSaveCfg" style="margin-top:12px">שמור והתחבר</button>
   </section>
 
@@ -167,6 +179,27 @@
     </div>
   </section>
 
+  <section id="metricsSec" style="display:none">
+    <h2>📊 מדדים: מה עבד, מה לא, ואיפה לשים את הכסף <span class="spacer"></span><select class="field-input sm" id="mMonth" style="width:auto"></select><button class="btn btn-sm" id="btnMUpload">⬆️ עדכן חודש</button></h2>
+    <div id="mUpload" class="mbox" style="display:none">
+      <div class="hint" style="margin-bottom:10px">העלה את שלושת הייצואים של החודש. הכל מחושב בדפדפן ונשמר לבורד. אפשר גם לייבא קובץ JSON מוכן.</div>
+      <div class="mgrid3">
+        <div class="field"><label class="field-label">1. ToChat: לידים כללי (xlsx)</label><input type="file" id="fGeneral" accept=".xlsx,.xls,.csv"></div>
+        <div class="field"><label class="field-label">2. ToChat: שיחות עם סיכומים וסטטוס (xlsx)</label><input type="file" id="fCalls" accept=".xlsx,.xls,.csv"></div>
+        <div class="field"><label class="field-label">3. Fireberry: לידים שעודכנו (csv)</label><input type="file" id="fFire" accept=".csv,.xlsx"></div>
+      </div>
+      <div class="mgrid3">
+        <div class="field"><label class="field-label">חודש (YYYY-MM)</label><input class="field-input sm" id="mMonthIn" placeholder="2026-09"></div>
+        <div class="field"><label class="field-label">הוצאה: וובינר ($)</label><input class="field-input sm" id="spWeb" type="number" placeholder="0"></div>
+        <div class="field"><label class="field-label">הוצאה: הדרכה חינמית ($)</label><input class="field-input sm" id="spTrain" type="number" placeholder="0"></div>
+        <div class="field"><label class="field-label">הוצאה: ליד ישיר ($)</label><input class="field-input sm" id="spDirect" type="number" placeholder="0"></div>
+      </div>
+      <div class="field"><label class="field-label">הכנסה בפועל לכל נציג (₪), שורה לכל נציג: שם, סכום</label><textarea class="field-input" id="mRevenue" style="min-height:90px;direction:rtl;text-align:right" placeholder="ראם מלול, 71700&#10;סער רחמימוב, 59300"></textarea></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" id="btnMCompute">חשב ושמור</button><label class="btn" style="cursor:pointer">📄 ייבא JSON מוכן <input type="file" id="fJson" accept=".json" style="display:none"></label><span class="hint" id="mStatus"></span></div>
+    </div>
+    <div id="mBody"><div class="empty">אין עדיין נתוני מדדים. לחץ "⬆️ עדכן חודש" והעלה את הקבצים, או ייבא JSON.</div></div>
+  </section>
+
   <section id="recentSec">
     <h2>📋 סיכומי שיחות <span id="recentCount" style="font-weight:500;text-transform:none"></span></h2>
     <div class="grid" id="recentGrid"></div>
@@ -184,6 +217,8 @@
 </aside>
 <div class="toast" id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="metrics.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -204,12 +239,12 @@ async function sb(method,path,body,prefer){ const r=await fetch(CFG.sbUrl+'/rest
   const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/);
   if(m){ try{ const c=b64u.dec(m[1]); if(c.sbUrl&&c.sbKey){ localStorage.setItem('lc_mgr',JSON.stringify({sbUrl:c.sbUrl,sbKey:c.sbKey})); history.replaceState(null,'',location.pathname); } }catch(e){} }
   try{CFG=JSON.parse(localStorage.getItem('lc_mgr')||'{}')}catch(e){CFG={}}
-  $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||'';
+  $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||''; $('cfgAnth').value=CFG.anth||'';
   if(!CFG.sbUrl||!CFG.sbKey){ showSetup(true); } else { start(); }
 })();
 function showSetup(v){ $('setup').style.display=v?'':'none'; for(const id of ['liveSec','daySec','recentSec']) $(id).style.display=v?'none':''; }
 $('btnSetup').onclick=()=>showSetup($('setup').style.display==='none');
-$('btnSaveCfg').onclick=()=>{ CFG={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim()}; localStorage.setItem('lc_mgr',JSON.stringify(CFG)); showSetup(false); start(); };
+$('btnSaveCfg').onclick=()=>{ CFG={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim(),anth:$('cfgAnth').value.trim().replace(/[^\x21-\x7E]/g,'')}; localStorage.setItem('lc_mgr',JSON.stringify(CFG)); showSetup(false); start(); };
 $('dayPick').onchange=()=>render();
 
 /* ── data ── */
@@ -241,7 +276,7 @@ const openBarriers=r=>(r.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='res
 function stagesHtml(r){ const i=stageIdx(r); return '<div class="stages">'+STAGES.map((s,k)=>`<i class="${k<i?'d':k===i?'a':''}" title="${s.l}"></i>`).join('')+'</div>'; }
 
 /* ── render ── */
-function setView(v){ VIEW=v; for(const b of $('navTabs').querySelectorAll('button')) b.classList.toggle('on',b.dataset.view===v); $('liveSec').style.display=v==='live'?'':'none'; $('daySec').style.display=v==='live'?'':'none'; $('recentSec').style.display=v==='live'?'':'none'; $('logSec').style.display=v==='log'?'':'none'; $('dlSec').style.display=v==='dislikes'?'':'none'; $('trainSec').style.display=v==='train'?'':'none'; render(); }
+function setView(v){ VIEW=v; for(const b of $('navTabs').querySelectorAll('button')) b.classList.toggle('on',b.dataset.view===v); $('liveSec').style.display=v==='live'?'':'none'; $('daySec').style.display=v==='live'?'':'none'; $('recentSec').style.display=v==='live'?'':'none'; $('logSec').style.display=v==='log'?'':'none'; $('dlSec').style.display=v==='dislikes'?'':'none'; $('trainSec').style.display=v==='train'?'':'none'; $('metricsSec').style.display=v==='metrics'?'':'none'; if(v==='metrics') initMetrics(); render(); }
 $('navTabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setView(b.dataset.view); };
 for(const id of ['fRep','fMode','fFb','fText','fScope','fSource']) $(id).addEventListener('input',()=>render());
 $('scopes').innerHTML=Object.entries(SCOPES).map(([k,l])=>`<button data-sc="${k}" class="${k==='general'?'on':''}">${l}</button>`).join('');
@@ -271,7 +306,7 @@ window.teach=async(callId,evId)=>{
 function render(){
   $('fRep').innerHTML='<option value="">כל הנציגים</option>'+[...new Set(ROWS.map(r=>r.rep))].map(n=>`<option value="${esc(n)}" ${$('fRep').value===n?'selected':''}>${esc(n)}</option>`).join('');
   const dls=allEvents().filter(e=>e.fb==='dislike'&&!e.fix); $('dlCount').textContent=dls.length; $('dlCount').classList.toggle('show',dls.length>0);
-  if(VIEW==='log'){ renderLog(); return; } if(VIEW==='dislikes'){ renderDislikes(); return; } if(VIEW==='train'){ renderTrain(); return; }
+  if(VIEW==='log'){ renderLog(); return; } if(VIEW==='dislikes'){ renderDislikes(); return; } if(VIEW==='train'){ renderTrain(); return; } if(VIEW==='metrics'){ return; }
   const live=ROWS.filter(r=>r.status==='live').sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at));
   $('liveCount').textContent=live.filter(isLive).length?live.filter(isLive).length+' שיחות פעילות':'';
   $('liveGrid').innerHTML=live.length?live.map(r=>{
@@ -359,6 +394,76 @@ window.openDetail=async function(id,refresh){
 };
 $('btnClose').onclick=$('overlay').onclick=()=>{ $('drawer').classList.remove('open'); $('overlay').classList.remove('show'); SEL=null; };
 $('btnCopy').onclick=()=>{ const r=ROWS.find(x=>x.id===SEL); if(r&&r.summary){ navigator.clipboard.writeText(r.summary); toast('הסיכום הועתק'); } else toast('אין סיכום עדיין'); };
+/* ═══════════ metrics tab ═══════════ */
+let MDOC=null, MLEADS=[], MMONTHS=[], MINIT=false;
+const FL={webinar:'וובינר',training:'הדרכה חינמית',direct:'ליד ישיר',course48:'קורס 48',unknown:'לא משויך'};
+const nf=v=>v==null||isNaN(v)?'—':Number(v).toLocaleString('he-IL');
+async function initMetrics(){ if(MINIT) return; MINIT=true; await loadMonths(); }
+async function loadMonths(){ try{ const r=await fetch(CFG.sbUrl+'/rest/v1/metrics?select=month,updated_at&order=month.desc',{headers:hdr()}); if(!r.ok){ $('mBody').innerHTML='<div class="empty">טבלת המדדים לא קיימת עדיין. הרץ את supabase.sql המעודכן ב-SQL Editor, ואז חזור לכאן.</div>'; return; } MMONTHS=await r.json(); $('mMonth').innerHTML=MMONTHS.map(m=>`<option value="${m.month}">${m.month}</option>`).join('')||'<option value="">אין חודשים</option>'; if(MMONTHS.length) loadMonth(MMONTHS[0].month); }catch(e){ $('mBody').innerHTML='<div class="empty">שגיאה: '+esc(e.message)+'</div>'; } }
+$('mMonth').onchange=()=>loadMonth($('mMonth').value);
+$('btnMUpload').onclick=()=>{ const u=$('mUpload'); u.style.display=u.style.display==='none'?'':'none'; if(!$('mMonthIn').value){ const d=new Date(); d.setMonth(d.getMonth()-1); $('mMonthIn').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); } };
+async function loadMonth(month){ if(!month) return; $('mBody').innerHTML='<div class="empty">טוען '+month+'…</div>'; try{ const r=await fetch(CFG.sbUrl+'/rest/v1/metrics?select=data&month=eq.'+encodeURIComponent(month),{headers:hdr()}); const a=await r.json(); if(!a[0]) return; MDOC=a[0].data; MLEADS=[]; renderMetrics(); const lr=await fetch(CFG.sbUrl+'/rest/v1/metric_leads?select=*&month=eq.'+encodeURIComponent(month)+'&order=closed.desc,calls.desc&limit=3000',{headers:hdr()}); if(lr.ok){ MLEADS=await lr.json(); renderLeads(); } }catch(e){ $('mBody').innerHTML='<div class="empty">שגיאה: '+esc(e.message)+'</div>'; } }
+function readFile(file){ return new Promise((res,rej)=>{ if(!file) return res(null); const fr=new FileReader(); fr.onerror=rej; fr.onload=()=>{ try{ const wb=XLSX.read(fr.result,{type:'array',raw:true}); const ws=wb.Sheets[wb.SheetNames[0]]; res(XLSX.utils.sheet_to_json(ws,{defval:''})); }catch(e){ rej(e); } }; fr.readAsArrayBuffer(file); }); }
+function parseRevenue(t){ const out={}; for(const line of (t||'').split(/\n/)){ const m=line.split(/[,\t:]+/).map(x=>x.trim()).filter(Boolean); if(m.length>=2){ const v=parseInt(m[m.length-1].replace(/\D/g,'')); if(v) out[m.slice(0,-1).join(' ')]=v; } } return out; }
+$('btnMCompute').onclick=async()=>{
+  const month=$('mMonthIn').value.trim(); if(!/^\d{4}-\d{2}$/.test(month)) return toast('חודש בפורמט YYYY-MM');
+  const st=$('mStatus'); $('btnMCompute').disabled=true;
+  try{
+    st.textContent='קורא קבצים…'; const [general,calls,fire]=await Promise.all([readFile($('fGeneral').files[0]),readFile($('fCalls').files[0]),readFile($('fFire').files[0])]);
+    if(!calls) throw new Error('חסר קובץ השיחות (2)');
+    st.textContent='מחשב…'; const doc=LCMetrics.build({month,general:general||[],calls,fireberry:fire||[],spend:{webinar:+$('spWeb').value||0,training:+$('spTrain').value||0,direct:+$('spDirect').value||0},revenue:parseRevenue($('mRevenue').value)});
+    await saveDoc(doc,st);
+  }catch(e){ st.textContent='❌ '+(e.message||e); } finally{ $('btnMCompute').disabled=false; }
+};
+$('fJson').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; const st=$('mStatus'); try{ const doc=JSON.parse(await f.text()); if(!doc.month||!doc.kpis) throw new Error('קובץ לא תקין'); await saveDoc(doc,st); }catch(err){ st.textContent='❌ '+(err.message||err); } e.target.value=''; };
+async function saveDoc(doc,st){
+  const {leads,...rest}=doc; st.textContent='שומר מדדים…';
+  await sb('POST','metrics?on_conflict=month',{month:doc.month,data:rest,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal');
+  await sb('DELETE','metric_leads?month=eq.'+encodeURIComponent(doc.month));
+  const rows=(leads||[]).map(l=>({month:doc.month,phone:l.phone,name:l.name,funnel:l.funnel,channel:l.channel,ref:l.ref,level:l.level,created:l.created,fb_status:l.fb_status,fb_manager:l.fb_manager,tc_status:l.tc_status,reason:l.reason,calls:l.calls,talk_min:l.talk_min,first_call:l.first_call,last_call:l.last_call,reps:l.reps,closer:l.closer,closed:!!l.closed,closed_at:l.closed_at,close_reason:l.close_reason,close_funnel:l.close_funnel,new_in_month:!!l.new_in_month,summaries:(l.summaries||[]).slice(0,3).map(s=>({...s,text:String(s.text||'').slice(0,1500)}))}));
+  for(let i=0;i<rows.length;i+=250){ st.textContent='שומר לידים '+Math.min(rows.length,i+250)+'/'+rows.length+'…'; await sb('POST','metric_leads?on_conflict=month,phone',rows.slice(i,i+250),'resolution=merge-duplicates,return=minimal'); }
+  st.textContent='✅ נשמר: '+doc.month+' ('+rows.length+' לידים)'; MINIT=false; await initMetrics(); $('mMonth').value=doc.month; loadMonth(doc.month); $('mUpload').style.display='none';
+}
+function renderMetrics(){
+  const d=MDOC; if(!d) return; const k=d.kpis;
+  const kpi=(v,l,sub='')=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div>${sub?`<div class="hint">${sub}</div>`:''}</div>`;
+  const F=d.funnels.filter(f=>f.leads||f.spend); const R=d.reps; const usd=v=>v==null?'—':'$'+nf(v);
+  const maxCalls=Math.max(1,...d.days.map(x=>x.calls));
+  $('mBody').innerHTML=`
+  <div class="kpis">${kpi(nf(k.new_leads),'לידים חדשים בחודש',nf(k.leads_total)+' סה״כ במאגר')}${kpi(nf(k.called_leads),'לידים שקיבלו שיחה',nf(k.calls)+' שיחות · '+nf(k.talk_h)+' שעות')}${kpi(nf(k.closes),'סגירות (ייחודיות)',k.close_rate+'% מהלידים שנוגעו')}${kpi(usd(k.cost_per_close),'עלות לסגירה','הוצאה '+usd(k.spend_total))}${kpi('₪'+nf(k.revenue_total),'הכנסה מדווחת',k.roas?'≈ פי '+k.roas+' על ההוצאה':'')}${kpi(nf(k.follow_up),'ב-Follow Up',nf(k.irrelevant)+' לא רלוונטי')}${kpi(k.avg_calls_to_close,'שיחות עד סגירה',k.avg_talk_to_close_min+' דק׳ שיחה')}${kpi(nf(k.untouched_new),'חדשים בלי שיחה','')}</div>
+  <div class="mbox"><h2 style="margin-bottom:10px">🧠 תובנות</h2><div style="display:grid;gap:8px">${d.insights.map(i=>`<div class="ins ${i.type}">${esc(i.t)}</div>`).join('')}</div>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center"><button class="btn btn-primary btn-sm" id="btnNarr">🧠 ניתוח מנהל מלא (AI)</button><span class="hint">${CFG.anth?'':'הוסף מפתח Anthropic ב"⚙️ חיבור" כדי להפעיל'}</span></div><div id="narr" style="margin-top:10px">${d.narrative?`<div class="narr">${esc(d.narrative)}</div>`:''}</div></div>
+  <div class="mbox"><h2>🧭 משפכים: איפה הכסף עובד</h2><div style="overflow-x:auto"><table class="mtable"><thead><tr><th>משפך</th><th>לידים חדשים</th><th>נוגעו</th><th>שיחות</th><th>Follow Up</th><th>לא רלוונטי</th><th>סגירות</th><th>% סגירה</th><th>הוצאה</th><th>עלות לליד</th><th>עלות לסגירה</th><th>שיחות עד סגירה</th></tr></thead><tbody>${F.map(f=>`<tr><td><b>${f.label}</b></td><td class="num">${nf(f.new_leads)}</td><td class="num">${nf(f.called)}</td><td class="num">${nf(f.calls)}</td><td class="num">${nf(f.follow_up)}</td><td class="num">${nf(f.irrelevant)}</td><td class="num"><b>${nf(f.closes)}</b></td><td class="num">${f.close_rate}%</td><td class="num">${usd(f.spend)}</td><td class="num">${usd(f.cpl)}</td><td class="num"><b>${usd(f.cpa)}</b></td><td class="num">${f.avg_calls_to_close||'—'}</td></tr>`).join('')}</tbody></table></div></div>
+  <div class="mbox"><h2>👥 נציגים</h2><div style="overflow-x:auto"><table class="mtable"><thead><tr><th>נציג</th><th>שיחות</th><th>לידים</th><th>שעות</th><th>דק׳/שיחה</th><th>שיחות 3+ דק׳</th><th>Follow Up</th><th>לא רלוונטי</th><th>סגירות</th><th>% סגירה</th><th>וובינר/הדרכה</th><th>הכנסה ₪</th><th>₪ לסגירה</th><th>שיחות לסגירה</th><th>לידים משותפים</th></tr></thead><tbody>${R.map(r=>`<tr><td><b>${esc(r.rep)}</b></td><td class="num">${nf(r.calls)}</td><td class="num">${nf(r.leads)}</td><td class="num">${r.talk_h}</td><td class="num">${r.avg_len_min}</td><td class="num">${r.long_calls}</td><td class="num">${r.follow_up}</td><td class="num">${r.irrelevant}</td><td class="num"><b>${r.closes}</b></td><td class="num">${r.close_rate}%</td><td class="num">${r.closes_webinar}/${r.closes_training}</td><td class="num">${nf(r.revenue)}</td><td class="num">${nf(r.rev_per_close)}</td><td class="num">${r.calls_per_close||'—'}</td><td class="num">${r.shared_leads}</td></tr>`).join('')}</tbody></table></div></div>
+  <div class="mgrid3" style="grid-template-columns:2fr 1fr">
+    <div class="mbox"><h2>📣 ערוצים (לפי REF)</h2><table class="mtable"><thead><tr><th>ערוץ</th><th>לידים</th><th>חדשים</th><th>נוגעו</th><th>סגירות</th></tr></thead><tbody>${d.channels.slice(0,12).map(c=>`<tr><td>${esc(c.channel)}</td><td class="num">${nf(c.leads)}</td><td class="num">${nf(c.new_leads)}</td><td class="num">${nf(c.called)}</td><td class="num"><b>${c.closes}</b></td></tr>`).join('')}</tbody></table></div>
+    <div class="mbox"><h2>🚫 למה "לא רלוונטי"</h2><table class="mtable"><tbody>${d.reasons.slice(0,8).map(r=>`<tr><td>${esc(r.reason)}</td><td class="num"><b>${nf(r.n)}</b></td></tr>`).join('')}</tbody></table></div>
+  </div>
+  <div class="mbox"><h2>📅 שיחות לפי יום (ירוק = יום עם סגירה)</h2><div class="bars">${d.days.map(x=>`<i class="${x.closes?'c':''}" style="height:${Math.max(2,x.calls/maxCalls*80)}px" title="${x.d}: ${x.calls} שיחות, ${x.closes} סגירות"><span>${x.d}</span></i>`).join('')}</div></div>
+  <div class="mbox" id="leadsBox"><h2>🧑‍💼 מסע הלקוח: כל ליד, כל שיחה, מי סגר <span class="spacer"></span><input class="field-input sm" id="lq" placeholder="חיפוש: שם / טלפון / נציג" style="width:220px"><select class="field-input sm" id="lf" style="width:auto"><option value="">הכל</option><option value="closed">נסגרו</option><option value="fu">Follow Up</option><option value="hot">3+ שיחות ולא נסגר</option><option value="webinar">וובינר</option><option value="training">הדרכה</option></select></h2><div id="leadsList"><div class="hint">טוען לידים…</div></div></div>`;
+  $('btnNarr').onclick=narrative; $('lq').oninput=renderLeads; $('lf').onchange=renderLeads;
+}
+function renderLeads(){
+  const box=$('leadsList'); if(!box) return; const q=($('lq')?.value||'').trim(), f=$('lf')?.value||'';
+  let ls=MLEADS.filter(l=>l.calls>0); if(f==='closed') ls=ls.filter(l=>l.closed); if(f==='fu') ls=ls.filter(l=>l.tc_status==='Follow Up'); if(f==='hot') ls=ls.filter(l=>l.calls>=3&&!l.closed); if(f==='webinar'||f==='training') ls=ls.filter(l=>l.funnel===f);
+  if(q) ls=ls.filter(l=>(l.name||'').includes(q)||(l.phone||'').includes(q.replace(/\D/g,''))||(l.reps||[]).join(' ').includes(q)||(l.closer||'').includes(q));
+  ls=ls.slice(0,300);
+  box.innerHTML=`<div class="hint" style="margin-bottom:6px">${ls.length} לידים${MLEADS.length>=3000?' (מוצגים עד 300)':''}</div><table class="mtable"><thead><tr><th>שם</th><th>טלפון</th><th>משפך</th><th>ערוץ</th><th>נוצר</th><th>שיחות</th><th>דק׳</th><th>נציגים</th><th>סטטוס</th><th>סגר</th></tr></thead><tbody>${ls.map((l,i)=>`<tr class="lead-row" onclick="toggleLead(${i})"><td><b>${esc(l.name||'—')}</b></td><td class="num">${esc(l.phone)}</td><td>${FL[l.funnel]||l.funnel}</td><td>${esc(l.channel||'')}</td><td>${(l.created||'').slice(0,10)}</td><td class="num">${l.calls}</td><td class="num">${l.talk_min}</td><td>${esc((l.reps||[]).join(', '))}</td><td>${l.closed?'✅ נסגר':esc(l.tc_status||l.fb_status||'')}</td><td>${esc(l.closer||'')}</td></tr><tr id="ld_${i}" style="display:none"><td colspan="10"><div class="lead-detail" id="ldc_${i}"></div></td></tr>`).join('')}</tbody></table>`;
+  window.__ls=ls;
+}
+window.toggleLead=i=>{ const tr=$('ld_'+i); const l=window.__ls[i]; if(!tr) return; if(tr.style.display==='none'){ tr.style.display=''; $('ldc_'+i).innerHTML=`<b>${esc(l.name)}</b> · ${esc(l.phone)} · משפך: ${FL[l.funnel]||l.funnel} · REF: ${esc(l.ref||'—')} · רמה: ${esc(l.level||'—')} · נוצר: ${l.created||'—'} · פיירברי: ${esc(l.fb_status||'—')} (${esc(l.fb_manager||'')}) · טוצ׳אט: ${esc(l.tc_status||'—')}${l.reason?' ('+esc(l.reason)+')':''}\nשיחות: ${l.calls} · ${l.talk_min} דק׳ · ראשונה ${l.first_call||'—'} · אחרונה ${l.last_call||'—'} · נציגים: ${esc((l.reps||[]).join(', '))}${l.closed?`\n✅ נסגר ע״י ${esc(l.closer)} ב-${l.closed_at||''} · ${esc(l.close_reason||'')}`:''}\n\n${(l.summaries||[]).map(s=>`── ${s.ts||''} · ${esc(s.rep)} · ${Math.round((s.sec||0)/60)} דק׳ ──\n${esc(s.text)}`).join('\n\n')||'אין סיכומי שיחה'}`; } else tr.style.display='none'; };
+async function narrative(){
+  if(!CFG.anth) return toast('הוסף מפתח Anthropic ב"⚙️ חיבור"');
+  const btn=$('btnNarr'); btn.disabled=true; $('narr').innerHTML='<div class="hint">מנתח…</div>';
+  const {leads,narrative:_n,...agg}=MDOC; const closedJ=MLEADS.filter(l=>l.closed).slice(0,26).map(l=>({name:l.name,funnel:l.funnel,calls:l.calls,talk_min:l.talk_min,reps:l.reps,closer:l.closer,summary:(l.summaries[0]||{}).text?.slice(0,500)}));
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.anth,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','anthropic-beta':'server-side-fallback-2026-07-01'},body:JSON.stringify({model:'claude-opus-5',max_tokens:3000,fallbacks:'default',output_config:{effort:'medium'},
+      system:'אתה אנליסט מכירות ושיווק של מועדון האיקומרס של אביב מלכה (מכירת מסלול ליווי להקמת עסק איקומרס, שיחות טלפון של נציגים על לידים ממשפך וובינר, משפך הדרכה חינמית וליד ישיר). כתוב למנהל בעברית, ישיר, בלי Markdown, עם כותרות קצרות ומספרים. אל תמציא נתונים.',
+      messages:[{role:'user',content:'הנה המדדים של החודש (JSON), ואחריהם סיכומי השיחות של העסקאות שנסגרו. כתוב: 1) מה עבד ומה לא, בקצרה. 2) איפה לשים את תקציב הפרסום החודש הבא ולמה (מספרים). 3) לכל נציג: משפט אחד, מה הוא עושה טוב ומה לתקן, ולאיזה אווטאר של לקוח הוא הכי מתאים לפי הסגירות שלו. 4) מי האווטאר שסוגר הכי הרבה (מהסיכומים) ואיך לזהות אותו בשיחה. 5) 3 פעולות לחודש הבא. עד 450 מילים.\n\nמדדים:\n'+JSON.stringify(agg)+'\n\nסגירות:\n'+JSON.stringify(closedJ)}]})});
+    const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||r.status); const t=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    MDOC.narrative=t; $('narr').innerHTML='<div class="narr">'+esc(t)+'</div>'; await sb('PATCH','metrics?month=eq.'+encodeURIComponent(MDOC.month),{data:MDOC,updated_at:new Date().toISOString()},'return=minimal');
+  }catch(e){ $('narr').innerHTML='<div class="hint">שגיאה: '+esc(e.message||e)+'</div>'; } finally{ btn.disabled=false; }
+}
 setInterval(()=>{ if(ROWS.some(isLive)) render(); },1000); // live timers
 window.__mgr={setRows:rows=>{ROWS=rows;render()}};
 </script>

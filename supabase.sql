@@ -86,3 +86,57 @@ drop policy if exists "team update" on public.reps;
 create policy "team read"   on public.reps for select to anon using (true);
 create policy "team write"  on public.reps for insert to anon with check (true);
 create policy "team update" on public.reps for update to anon using (true) with check (true);
+
+-- Monthly metrics documents (computed in the manager board from the ToChat/Fireberry exports).
+create table if not exists public.metrics (
+  month       text primary key,                   -- YYYY-MM
+  data        jsonb not null,
+  created_at  timestamptz default now(),
+  updated_at  timestamptz default now()
+);
+alter table public.metrics enable row level security;
+drop policy if exists "team read"   on public.metrics;
+drop policy if exists "team write"  on public.metrics;
+drop policy if exists "team update" on public.metrics;
+create policy "team read"   on public.metrics for select to anon using (true);
+create policy "team write"  on public.metrics for insert to anon with check (true);
+create policy "team update" on public.metrics for update to anon using (true) with check (true);
+
+-- One row per lead per month (journeys + call summaries), queried by the metrics tab.
+create table if not exists public.metric_leads (
+  month        text not null,
+  phone        text not null,
+  name         text,
+  funnel       text,
+  channel      text,
+  ref          text,
+  level        text,
+  created      text,
+  fb_status    text,
+  fb_manager   text,
+  tc_status    text,
+  reason       text,
+  calls        integer default 0,
+  talk_min     numeric default 0,
+  first_call   text,
+  last_call    text,
+  reps         jsonb default '[]'::jsonb,
+  closer       text,
+  closed       boolean default false,
+  closed_at    text,
+  close_reason text,
+  close_funnel text,
+  new_in_month boolean default false,
+  summaries    jsonb default '[]'::jsonb,
+  primary key (month, phone)
+);
+create index if not exists metric_leads_month_idx on public.metric_leads (month);
+alter table public.metric_leads enable row level security;
+drop policy if exists "team read"   on public.metric_leads;
+drop policy if exists "team write"  on public.metric_leads;
+drop policy if exists "team update" on public.metric_leads;
+drop policy if exists "team delete" on public.metric_leads;
+create policy "team read"   on public.metric_leads for select to anon using (true);
+create policy "team write"  on public.metric_leads for insert to anon with check (true);
+create policy "team update" on public.metric_leads for update to anon using (true) with check (true);
+create policy "team delete" on public.metric_leads for delete to anon using (true);
