@@ -604,6 +604,7 @@ function mergeTeamCfg(cfg){ let cur={}; try{cur=JSON.parse(localStorage.getItem(
     localStorage.setItem('lc_settings',JSON.stringify(merged)); history.replaceState(null,'',location.pathname+location.search); S.anthropic=null; }
 function applyHashConfig(){ const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/); if(!m) return false; try{ mergeTeamCfg(b64u.dec(m[1])); return true; }catch(e){ console.warn('bad cfg',e); return false; } }
 async function importTeamToken(tok){ // short team link: #t=<token> → settings fetched from the link store
+  try{ localStorage.setItem('lc_team_token',tok); }catch(e){}
   try{ const r=await fetch(LINK_API+'/links/'+encodeURIComponent(tok),{cache:'no-store'}); if(!r.ok) throw new Error(r.status===404?'הלינק כבר לא בתוקף':'שגיאה '+r.status);
     mergeTeamCfg(await r.json()); loadSettings();
     if(S.settings.anthropic&&S.settings.openai) toast('הגדרות הצוות יובאו ✓ אפשר ללחוץ "התחל יום"','t-ok'); else toast('הלינק נפתח אבל לא הכיל מפתחות. בקש לינק חדש מהמנהל.','t-error'); }
@@ -1653,7 +1654,10 @@ function postImportChecks(){
   if(!S.settings.anthropic||(!S.settings.openai&&!S.settings.speechmatics)) setTimeout(openDrawer,900);
 }
 const teamTok=location.hash.match(/(?:^#|[#&])t=([A-Za-z0-9_-]{6,64})/);
-if(teamTok){ S.importing=true; importTeamToken(teamTok[1]); } else postImportChecks();
+let savedTok=null; try{ savedTok=localStorage.getItem('lc_team_token'); }catch(e){}
+if(teamTok){ S.importing=true; importTeamToken(teamTok[1]); }
+else if(savedTok&&(!S.settings.anthropic||!S.settings.openai)){ S.importing=true; log('המפתחות חסרים בדפדפן, טוען מחדש מלינק הצוות…'); importTeamToken(savedTok); }
+else postImportChecks();
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
 window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis}; // debug hooks
 $('ammoHead').onclick=()=>{ const w=$('ammoWrap'); w.classList.toggle('collapsed'); try{localStorage.setItem('lc_ammo_collapsed',w.classList.contains('collapsed')?'1':'')}catch(e){} };
