@@ -1105,7 +1105,7 @@ function systemPrompt(){
 מנוע התחמושת (השדה ammo):
 ${AMMO_RULES}
 - close_check: כשהנציג עובר להצגת מוצר או לסגירה ויש חסם שהלקוח לא אישר שנפתר, פריט צ'ק-ליסט קריטי חסר, או הסכמה שלא נלקחה, החזר רשימה קצרה "לבדיקה לפני סגירה". זו הארה בלבד, לא עצירה.
-- reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך. אם נשענת על הנחיית מנהל או על דוגמה מהשטח, כתוב את זה ב-reasoning.principle (למשל: "שיחת מופת: שאלת המחיר של ראם").
+- reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך. אם נשענת על דוגמה מהשטח, פתח את reasoning.principle ב-"🌟" בלי לציין שם של נציג. שמות של נציגים אחרים לא מופיעים בשום שדה שהנציג רואה.
 ${trainingBlock()}
 - Latency-sensitive; begin your visible answer immediately.
 - בכל שדה טקסט: עברית מדוברת בלבד. בלי Markdown, בלי כוכביות, בלי קוד, בלי שמות שדות באנגלית, בלי סוגריים מסולסלים. כל משפט צריך להיקרא בקול כמו שהוא.
@@ -1134,7 +1134,7 @@ function trainingBlock(){
   const groups={}; for(const n of notes){ (groups[n.scope||'general']=groups[n.scope||'general']||[]).push(n); }
   let out='\nהנחיות המנהל (אימון שנצבר, עדיפות עליונה על כל כלל אחר, החדש גובר על הישן):\n';
   for(const [sc,arr] of Object.entries(groups)){
-    out+='['+(SCOPE_LABEL[sc]||sc)+']\n'+arr.slice(0,40).map(n=>'- '+(n.source==='correction'&&n.context?'תיקון על המלצה קודמת ("'+String(n.context).slice(0,120)+'"): ':n.source==='exemplar'&&n.context?'דוגמה מצוינת מהשטח, נציג אמר: "'+String(n.context).slice(0,160)+'". ':'')+String(n.text).slice(0,600)).join('\n')+'\n';
+    out+='['+(SCOPE_LABEL[sc]||sc)+']\n'+arr.slice(0,40).map(n=>'- '+(n.source==='correction'&&n.context?'תיקון על המלצה קודמת ("'+String(n.context).slice(0,120)+'"): ':n.source==='exemplar'&&n.context?'🌟 דוגמה מהשטח (שיחה חסויה), הנציג אמר: "'+String(n.context).slice(0,160)+'". ':'')+String(n.text).slice(0,600)).join('\n')+'\n';
   }
   return out;
 }
@@ -1402,7 +1402,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS){
     try{
-      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+'\nאם השתמשת בהנחיית מנהל או בדוגמה מהשטח, כתוב ב-based_on במילים ספורות על מה נשענת (למשל: "שיחת מופת של ראם, שאלת המחיר"). אחרת השאר ריק.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+'\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -1413,7 +1413,7 @@ ${tr.text}`;
     if(S.callId!==runCall) return;
     const kind=mode==='quick'?'quick':mode;
     const ev=addEvent({kind,request:mode==='ask'?'מה לשאול עכשיו':mode==='custom'?q.slice(0,200):'',text:o.sentence||'',why:o.why||'',reasoning:null});
-    $('sayText').textContent=o.sentence||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=''; $('sayReason').innerHTML=o.based_on?`<span>🌟 ${escapeHtml(o.based_on)}</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
+    $('sayText').textContent=o.sentence||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=''; $('sayReason').innerHTML=/מופת|הנחיה/.test(o.based_on||'')?`<span title="מבוסס על ${/מופת/.test(o.based_on)?'שיחת מופת':'הנחיית מנהל'}">🌟</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
     if(o.customer_state){ S.custState=o.customer_state; const c=$('custState'); c.style.display=''; c.innerHTML='<b>מצב הלקוח:</b> '+escapeHtml(o.customer_state); }
     const sn=$('saynow'); sn.classList.toggle('custom',mode!=='quick'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
     S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
