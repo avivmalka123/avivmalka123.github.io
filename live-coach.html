@@ -7,24 +7,24 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
   :root{
-    --bg:#080810; --surface:#10101c; --surface2:#16162a; --surface3:#1e1e38;
-    --border:rgba(255,255,255,0.07); --text:#e8e8f0; --text-muted:#6b6b8a;
-    --accent:#7c3aed; --accent2:#ec4899; --accent3:#06b6d4; --accent4:#10b981;
-    --accent5:#f59e0b; --neon:#a855f7; --red:#ef4444; --glow:rgba(124,58,237,0.4);
-    --gold:#f5b342; --blue:#4f8ef7; --teal:#2dd4bf;
+    --bg:#f6f1e7; --surface:#fffdf9; --surface2:#f3ede1; --surface3:#e8e0cf;
+    --border:rgba(70,55,30,0.13); --text:#1f1a13; --text-muted:#6b6355;
+    --accent:#7c3aed; --accent2:#ec4899; --accent3:#0891b2; --accent4:#0f9d6e;
+    --accent5:#d97706; --neon:#7c3aed; --red:#dc2626; --glow:rgba(124,58,237,0.16);
+    --gold:#b7791f; --blue:#2563eb; --teal:#0f9488; --purple:#6d28d9;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;direction:rtl;overflow-x:hidden}
   ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
 
   /* ── header ── */
-  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(8,8,16,0.85);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(255,252,246,0.88);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
   .logo{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800;letter-spacing:-0.5px}
   .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px var(--glow)}
   .logo small{display:block;font-size:11px;font-weight:500;color:var(--text-muted);letter-spacing:0}
   .pills{display:flex;gap:8px;flex-wrap:wrap}
   .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:99px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted)}
-  .pill .dot{width:7px;height:7px;border-radius:50%;background:#444}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:#c9c1b0}
   .pill.on{color:var(--text)}.pill.on .dot{background:var(--accent4);box-shadow:0 0 8px var(--accent4)}
   .pill.busy .dot{background:var(--accent5);animation:pulse 1s infinite}
   .pill.err .dot{background:var(--red)}
@@ -35,7 +35,7 @@
   .idbar .k{font-size:11px;font-weight:800;color:var(--teal);letter-spacing:.5px;margin-bottom:6px}
   .idbar .q{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:10px}
   .idbar .b{display:flex;gap:8px}
-  .idbar .b button{flex:1;font-family:inherit;font-size:14px;font-weight:800;padding:10px;border-radius:10px;border:1px solid var(--border);cursor:pointer;color:#fff}
+  .idbar .b button{flex:1;font-family:inherit;font-size:14px;font-weight:800;padding:10px;border-radius:10px;border:1px solid var(--border);cursor:pointer;color:var(--text)}
   .idbar .b .rep{background:rgba(6,182,212,.35)}.idbar .b .cust{background:rgba(245,179,66,.35)}
   .idbar .b button:hover{filter:brightness(1.2)}
   .sync{font-size:11px;color:var(--text-muted)}.sync.on{color:var(--accent4)}
@@ -44,7 +44,7 @@
   .bubble:hover{transform:scale(1.06)}.bubble svg{display:block;width:64px;height:64px}
   .bubble .badge{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;background:var(--red);border:2px solid var(--bg);display:none}
   .bubble.ping .badge{display:block;animation:pulse 1.2s infinite}
-  .coach-panel{position:fixed;left:22px;bottom:96px;width:min(440px,calc(100vw - 44px));height:min(640px,calc(100vh - 130px));background:var(--surface);border:1px solid rgba(168,85,247,.35);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.6);z-index:46;display:none;flex-direction:column;overflow:hidden}
+  .coach-panel{position:fixed;left:22px;bottom:96px;width:min(440px,calc(100vw - 44px));height:min(640px,calc(100vh - 130px));background:var(--surface);border:1px solid rgba(168,85,247,.35);border-radius:18px;box-shadow:0 20px 60px rgba(40,30,10,.18);z-index:46;display:none;flex-direction:column;overflow:hidden}
   .coach-panel.open{display:flex}
   .cp-h{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface2)}
   .cp-tabs{display:flex;gap:4px;flex:1}.cp-tabs button{font-family:inherit;font-size:12.5px;font-weight:700;padding:7px 10px;border-radius:9px;border:1px solid transparent;background:transparent;color:var(--text-muted);cursor:pointer}
@@ -61,7 +61,7 @@
   .d-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   .d-kpi{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}.d-kpi .v{font-size:22px;font-weight:900}.d-kpi .l{font-size:10.5px;color:var(--text-muted);font-weight:700}
   .d-box{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.5}
-  .d-box .k{font-size:11px;font-weight:800;color:#c4b5fd;margin-bottom:5px}
+  .d-box .k{font-size:11px;font-weight:800;color:#6d28d9;margin-bottom:5px}
   .goal-bar{height:10px;background:var(--surface3);border-radius:5px;overflow:hidden;margin:6px 0}.goal-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .motiv{background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(236,72,153,.12));border:1px solid rgba(245,158,11,.4);border-radius:12px;padding:10px 12px;font-weight:700;font-size:13.5px;line-height:1.5}
   .goal-form{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:end}
@@ -73,9 +73,9 @@
   .timer.live{border-color:var(--red);box-shadow:0 0 14px rgba(239,68,68,.35)}
   .btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:10px;border:none;cursor:pointer;font-family:'Heebo',sans-serif;font-size:14px;font-weight:600;transition:all .2s;white-space:nowrap;color:var(--text);background:var(--surface2);border:1px solid var(--border)}
   .btn:hover{background:var(--surface3)}
-  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;box-shadow:0 0 18px var(--glow)}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;box-shadow:0 0 18px var(--glow)}
   .btn-primary:hover{filter:brightness(1.1)}
-  .btn-danger{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#fca5a5}
+  .btn-danger{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#b91c1c}
   .btn-sm{padding:6px 12px;font-size:12px;border-radius:8px}
   .btn:disabled{opacity:.45;cursor:not-allowed}
 
@@ -86,25 +86,25 @@
   .stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;cursor:default}
   .stage .c{width:24px;height:24px;border-radius:50%;background:var(--surface3);border:2px solid var(--surface3);transition:all .3s;display:flex;align-items:center;justify-content:center;font-size:11px}
   .stage .l{font-size:12px;color:var(--text-muted);font-weight:600;white-space:nowrap}
-  .stage.done .c{background:var(--accent4);border-color:var(--accent4)}
+  .stage.done .c{background:var(--accent4);border-color:var(--accent4);color:#fff}
   .stage.done .l{color:var(--text)}
-  .stage.active .c{background:var(--blue);border-color:#9cc0ff;box-shadow:0 0 0 5px rgba(79,142,247,.25),0 0 18px rgba(79,142,247,.6);transform:scale(1.15)}
-  .stage.active .l{color:#fff;font-weight:800}
+  .stage.active .c{background:var(--blue);border-color:#93b4f7;color:#fff;box-shadow:0 0 0 5px rgba(37,99,235,.18),0 0 18px rgba(37,99,235,.35);transform:scale(1.15)}
+  .stage.active .l{color:var(--text);font-weight:800}
   .stage .n{font-size:10px;color:var(--text-muted);font-weight:700;margin-top:-4px}
   .stage{cursor:pointer}.stage.view .l{text-decoration:underline;text-underline-offset:3px}
   .ck-wrap{margin-top:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px}
-  .ck-h{font-size:12px;font-weight:800;color:#c4b5fd;margin-bottom:8px}.ck-h span{font-weight:500;color:var(--text-muted)}
+  .ck-h{font-size:12px;font-weight:800;color:#6d28d9;margin-bottom:8px}.ck-h span{font-weight:500;color:var(--text-muted)}
   .ck-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 16px}
   .ck{font-size:12.5px;color:var(--text-muted);display:flex;gap:8px;align-items:flex-start;line-height:1.45;padding:2px 0}
   .ck i{font-style:normal;font-weight:900;color:var(--text-muted);width:14px;flex:none}.ck.on{color:var(--text)}.ck.on i{color:var(--accent4)}
-  .ck-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ck-btns .btn.hot{border-color:rgba(239,68,68,.5);color:#fca5a5}
+  .ck-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ck-btns .btn.hot{border-color:rgba(239,68,68,.5);color:#b91c1c}
   .stage-meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:12px;color:var(--text-muted);gap:12px;flex-wrap:wrap}
   .temp{display:inline-flex;gap:6px;align-items:center;font-weight:700}
   .temp b{padding:2px 10px;border-radius:99px;font-size:11px}
-  .t-cold b{background:rgba(79,142,247,.2);color:#9cc0ff}.t-warm b{background:rgba(245,179,66,.2);color:var(--gold)}.t-hot b{background:rgba(239,68,68,.2);color:#fca5a5}
+  .t-cold b{background:rgba(37,99,235,.12);color:#1d4ed8}.t-warm b{background:rgba(183,121,31,.14);color:var(--gold)}.t-hot b{background:rgba(220,38,38,.12);color:#b91c1c}
 
   /* ── main grid ── */
-  main{display:grid;grid-template-columns:1.15fr 0.85fr 1.1fr;gap:16px;padding:16px 22px 40px;align-items:start}
+  main{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;padding:16px 22px 40px;align-items:start}
   @media(max-width:1250px){main{grid-template-columns:1fr 1fr}}
   @media(max-width:860px){main{grid-template-columns:1fr}}
   .panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;min-height:420px;max-height:calc(100vh - 230px)}
@@ -123,33 +123,33 @@
   .msg.cust{align-self:flex-start;background:rgba(245,179,66,.08);border:1px solid rgba(245,179,66,.18);border-bottom-left-radius:4px}
   .msg.cust .who i{background:var(--gold)}
   .msg.partial{opacity:.6;font-style:italic}
-  .msg.unk{align-self:center;background:var(--surface2);border:1px dashed rgba(255,255,255,.15);max-width:94%}
+  .msg.unk{align-self:center;background:var(--surface2);border:1px dashed rgba(0,0,0,.18);max-width:94%}
   .msg.unk .who i{background:#888}
   .spk{display:inline-flex;gap:4px;margin-right:auto}
   .spk button{font-family:inherit;font-size:10px;font-weight:700;padding:1px 8px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer}
-  .spk button.on{background:var(--surface3);color:var(--text);border-color:rgba(255,255,255,.2)}
+  .spk button.on{background:var(--surface3);color:var(--text);border-color:rgba(0,0,0,.22)}
   .spk button:hover{color:var(--text)}
   .reqbar{display:flex;gap:8px;margin-top:10px}
-  .reqbar input{flex:1;background:rgba(0,0,0,.25);border:1px solid rgba(168,85,247,.35);border-radius:10px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none}
+  .reqbar input{flex:1;background:#fff;border:1px solid rgba(124,58,237,.35);border-radius:10px;padding:8px 12px;color:var(--text);font-family:inherit;font-size:13px;outline:none}
   .reqbar input:focus{border-color:var(--neon)}
   .saynow.custom{border-color:var(--teal);box-shadow:0 0 30px rgba(45,212,191,.25)}
   .profile{font-size:13px;line-height:1.6;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px}
-  .profile b{color:#c4b5fd}
-  .ammo{border-radius:12px;padding:9px 12px;border:1px solid var(--border);background:var(--surface2);border-right:3px solid var(--a,#888);font-size:13.5px;line-height:1.5;animation:in .3s ease}
+  .profile b{color:#6d28d9}
+  .ammo{border-radius:8px;padding:4px 8px;border:1px solid var(--border);background:var(--surface2);border-right:3px solid var(--a,#888);font-size:12px;line-height:1.3;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}
   .ammo .at{font-size:10.5px;font-weight:800;color:var(--a);margin-bottom:2px}
   .a-fact{--a:#94a3b8}.a-quote{--a:var(--neon)}.a-pain{--a:var(--gold)}.a-goal{--a:var(--accent4)}.a-objection{--a:#f87171}.a-motive{--a:var(--teal)}.a-personal{--a:var(--blue)}.a-commitment{--a:#34d399}.a-number{--a:#fb923c}
   .mode-tag{font-size:11px;color:var(--text-muted);background:var(--surface2);border:1px solid var(--border);padding:3px 10px;border-radius:99px}
   .empty{color:var(--text-muted);font-size:13px;text-align:center;padding:40px 20px;border:1px dashed var(--border);border-radius:12px;line-height:1.7}
 
   /* coach */
-  .saynow{background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(236,72,153,.15));border:1px solid rgba(168,85,247,.45);border-radius:16px;padding:16px 18px;box-shadow:0 0 30px rgba(124,58,237,.25);animation:in .3s ease}
-  .saynow .k{font-size:11px;font-weight:800;letter-spacing:.6px;color:#d8b4fe;display:flex;align-items:center;gap:8px;margin-bottom:8px}
-  .saynow .k .spin{width:12px;height:12px;border:2px solid #d8b4fe;border-top-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:none}
+  .saynow{background:linear-gradient(135deg,rgba(124,58,237,.10),rgba(236,72,153,.06));border:1px solid rgba(124,58,237,.35);border-radius:16px;padding:16px 18px;box-shadow:0 0 30px rgba(124,58,237,.10);animation:in .3s ease}
+  .saynow .k{font-size:11px;font-weight:800;letter-spacing:.6px;color:#6d28d9;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .saynow .k .spin{width:12px;height:12px;border:2px solid #6d28d9;border-top-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:none}
   .saynow.thinking .k .spin{display:inline-block}
   @keyframes rot{to{transform:rotate(360deg)}}
-  .saynow .t{font-size:19px;font-weight:700;line-height:1.5;color:#fff}
-  .saynow .w{font-size:12.5px;color:#c4b5fd;margin-top:8px;line-height:1.5}
-  .saynow .avoid{font-size:12px;color:#fca5a5;margin-top:6px}
+  .saynow .t{font-size:19px;font-weight:700;line-height:1.5;color:var(--text)}
+  .saynow .w{font-size:12.5px;color:#6d28d9;margin-top:8px;line-height:1.5}
+  .saynow .avoid{font-size:12px;color:#b91c1c;margin-top:6px}
   .card{border-radius:14px;padding:12px 14px;border:1px solid var(--border);background:var(--surface2);border-right:4px solid var(--c,#888);animation:in .3s ease}
   .card .ct{font-size:12px;font-weight:800;color:var(--c);display:flex;align-items:center;gap:8px;margin-bottom:5px}
   .card .ct span{font-weight:500;color:var(--text-muted);font-size:10.5px;margin-right:auto}
@@ -158,12 +158,12 @@
   .fb{display:inline-flex;gap:4px}.fb button{font-family:inherit;font-size:13px;line-height:1;padding:4px 8px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;opacity:.7}
   .fb button:hover{opacity:1;background:var(--surface3)}.fb button.on{opacity:1;background:rgba(124,58,237,.3);border-color:var(--neon)}
   .card .card-fb{position:absolute;left:10px;bottom:8px}.card{position:relative;padding-bottom:34px}
-  .saynow .reason{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:#c4b5fd;margin-top:8px}
+  .saynow .reason{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:#6d28d9;margin-top:8px}
   .saynow .sayfoot{display:flex;justify-content:flex-end;margin-top:6px}
   .c-insight{--c:var(--teal);background:rgba(45,212,191,.06)}
   .c-insight .q{font-style:italic;color:var(--text-muted);font-size:13px;margin-bottom:4px}
-  .ammo .an{font-size:12px;color:var(--text-muted);margin-top:2px;line-height:1.45}
-  .ammo .au{font-size:12px;color:#c4b5fd;margin-top:5px;line-height:1.45;border-top:1px dashed var(--border);padding-top:5px}
+  .ammo .an{display:none}
+  .ammo .au{display:none}
   .ammo .rank{display:inline-block;min-width:18px;font-weight:800;color:var(--text-muted);margin-left:4px}
   .ammo.empty{opacity:.45;border-right-color:var(--surface3)}
   .s-hot{--a:#ef4444}.s-high{--a:#fb923c}.s-medium{--a:#facc15}.s-low{--a:#22c55e}.s-resolved{--a:#6b6b8a;opacity:.6}
@@ -183,7 +183,7 @@
   .field-input.ltr{direction:ltr;text-align:left}
   textarea.field-input{min-height:120px;resize:vertical;line-height:1.55}
   .hint{font-size:11.5px;color:var(--text-muted);line-height:1.5}
-  .sec{font-size:13px;font-weight:800;margin:20px 0 10px;color:#c4b5fd;border-bottom:1px solid var(--border);padding-bottom:6px}
+  .sec{font-size:13px;font-weight:800;margin:20px 0 10px;color:#6d28d9;border-bottom:1px solid var(--border);padding-bottom:6px}
 
   /* summary modal */
   .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:20px}
@@ -193,10 +193,10 @@
   .modal .box .bb{padding:20px;overflow-y:auto;line-height:1.6;font-size:14px}
   .modal .box-wide{width:min(1100px,100%)}
   .db-top{display:grid;grid-template-columns:220px 1fr;gap:14px;margin-bottom:14px}
-  .db-score{background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(236,72,153,.18));border:1px solid rgba(168,85,247,.45);border-radius:16px;padding:18px;text-align:center}
-  .db-score .big{font-size:56px;font-weight:900;line-height:1}.db-score .big small{font-size:18px;color:#c4b5fd}.db-score .lbl{font-size:12px;font-weight:700;color:#d8b4fe;margin-top:4px}.db-score .sub{font-size:12px;color:var(--text-muted);margin-top:8px}
+  .db-score{background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(236,72,153,.07));border:1px solid rgba(124,58,237,.35);border-radius:16px;padding:18px;text-align:center}
+  .db-score .big{font-size:56px;font-weight:900;line-height:1}.db-score .big small{font-size:18px;color:#6d28d9}.db-score .lbl{font-size:12px;font-weight:700;color:#6d28d9;margin-top:4px}.db-score .sub{font-size:12px;color:var(--text-muted);margin-top:8px}
   .db-one{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:16px}
-  .db-one .k,.db-box .k{font-size:11px;font-weight:800;color:#c4b5fd;letter-spacing:.4px;margin-bottom:6px}
+  .db-one .k,.db-box .k{font-size:11px;font-weight:800;color:#6d28d9;letter-spacing:.4px;margin-bottom:6px}
   .db-one .t{font-size:18px;font-weight:700;line-height:1.45}.db-one .s{font-size:13.5px;color:var(--text);line-height:1.5}
   .db-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
   @media(max-width:900px){.db-top,.db-grid{grid-template-columns:1fr}}
@@ -204,17 +204,17 @@
   .db-box ul,.db-box ol{padding-right:18px;margin:0}.db-box li{margin:4px 0;line-height:1.45}
   .pm{display:grid;grid-template-columns:70px 1fr 24px;align-items:center;gap:8px;margin:5px 0;font-size:12px}
   .pb{height:8px;background:var(--surface3);border-radius:4px;overflow:hidden}.pb i{display:block;height:100%;border-radius:4px}.pv{font-weight:800;text-align:left}
-  .imp{border-right:3px solid var(--accent5);padding:4px 10px;margin:8px 0}.imp .q{font-style:italic;color:var(--text-muted);font-size:12.5px}.imp .b{margin-top:3px;font-weight:600}.imp .p{font-size:11px;color:#c4b5fd;margin-top:2px}
+  .imp{border-right:3px solid var(--accent5);padding:4px 10px;margin:8px 0}.imp .q{font-style:italic;color:var(--text-muted);font-size:12.5px}.imp .b{margin-top:3px;font-weight:600}.imp .p{font-size:11px;color:#6d28d9;margin-top:2px}
   .db-crm{margin-top:14px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px}.db-crm summary{cursor:pointer;font-weight:700;font-size:13px}.db-crm pre{white-space:pre-wrap;font-family:inherit;font-size:13px;margin-top:10px;line-height:1.6}
   .db-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
 
   /* toast */
-  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface3);border:1px solid var(--border);padding:12px 20px;border-radius:12px;font-size:14px;z-index:60;box-shadow:0 10px 40px rgba(0,0,0,.5);opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--surface3);border:1px solid var(--border);padding:12px 20px;border-radius:12px;font-size:14px;z-index:60;box-shadow:0 10px 40px rgba(40,30,10,.15);opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw}
   .toast.show{opacity:1}.toast.t-error{border-color:var(--red)}.toast.t-ok{border-color:var(--accent4)}
   .meter{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-top:4px}
   .meter i{display:block;height:100%;width:0;background:var(--accent4);transition:width .08s}
   /* ── polish: consistent controls, spacing, accessibility ── */
-  :root{--text-muted:#8b8bab}
+  :root{--text-muted:#6b6355}
   .btn{min-height:36px;line-height:1;gap:6px}
   .btn-sm{min-height:30px}
   .grp{display:inline-flex;gap:6px;padding:4px;background:var(--surface2);border:1px solid var(--border);border-radius:12px}
@@ -236,14 +236,32 @@
   .btn.lead i{font-style:normal;font-size:20px;width:28px;text-align:center;flex:none}
   .btn.lead span{display:flex;flex-direction:column;gap:2px;font-size:13.5px;font-weight:800;line-height:1.2}
   .btn.lead span small{font-size:11px;font-weight:500;color:var(--text-muted)}
-  .btn.lead.hot{border-color:rgba(239,68,68,.55)}.btn.lead.hot span small{color:#fca5a5}
+  .btn.lead.hot{border-color:rgba(239,68,68,.55)}.btn.lead.hot span small{color:#b91c1c}
   .btn.lead:disabled{opacity:.4}
   .ck-wrap{padding:12px 16px}.ck-items{gap:6px 18px}.ck{font-size:13px}
-  .saynow{padding:18px 20px}.saynow .t{font-size:21px}
+  .saynow{padding:20px 22px}.saynow .t{font-size:27px;line-height:1.45}
   .card{border-radius:14px}
   .stagebar{padding:18px 22px 14px}
   .msg{font-size:14.5px}
   .empty{padding:32px 20px}
+  /* ── compact ammo (bottom-left), say-now log, cream extras ── */
+  .ammo-mini{position:fixed;left:96px;bottom:22px;width:300px;min-height:0;max-height:206px;z-index:44;box-shadow:0 12px 32px rgba(40,30,10,.14)}
+  .ammo-mini .panel-h{padding:6px 12px;min-height:30px;font-size:11px}
+  .ammo-mini .panel-b{padding:6px 8px;gap:3px}
+  .ammo-mini .ammo{padding:2px 7px;font-size:11.5px}
+  .ammo-mini .empty{padding:10px;font-size:11.5px}
+  .ammo .txt{flex:1;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+  .ammo .at{margin:0;font-size:10px;white-space:nowrap}
+  .ammo .rank{min-width:14px;margin-left:2px}
+  .saylog{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:8px 12px;max-height:260px;overflow-y:auto;font-size:12.5px}
+  .saylog .sl-h{font-size:11px;font-weight:800;color:var(--purple);margin-bottom:4px;display:flex;justify-content:space-between}
+  .saylog .sl-h span{color:var(--text-muted);font-weight:600}
+  .saylog .sl-row{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:start;padding:5px 0;border-top:1px dashed var(--border);line-height:1.45}
+  .saylog .sl-t{font-variant-numeric:tabular-nums;color:var(--text-muted);font-size:11px;white-space:nowrap}
+  .saylog .sl-k{font-size:12px}
+  .saylog .sl-x{color:var(--text)}
+  @media(min-width:1251px){ .tr-panel{max-height:calc(100vh - 720px);min-height:240px} .tr-panel .panel-b{padding-bottom:40px} main{padding-bottom:240px} }
+  @media(max-width:1250px){ .ammo-mini{position:static;width:auto;max-height:260px;box-shadow:none;grid-column:1 / -1} }
 </style>
 </head>
 <body>
@@ -298,24 +316,25 @@
         <div class="reqbar"><input id="reqInput" placeholder="בקש משפט: 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-primary" id="btnReq">✨ תן משפט</button><button class="btn" id="btnAsk" title="בלי הנחיה: המאמן מבין מההיסטוריה מה לשאול עכשיו" style="border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול?</button></div>
       </div>
       <div class="cust-state" id="custState" style="display:none"></div>
+      <div class="saylog" id="sayLog"></div>
+      <div class="profile" id="profile" style="display:none"></div>
       <div id="cards"></div>
     </div>
   </section>
 
-  <section class="panel">
-    <div class="panel-h">🔥 תחמושת <span class="spacer"></span><span id="ammoCount" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
-    <div class="panel-b" id="ammoPanel">
-      <div class="profile" id="profile" style="display:none"></div>
-      <div class="empty" id="emptyA">כאן נאספים כל הפרטים שהלקוח מסר: מספרים, ציטוטים, כאבים, מטרות, פרטים אישיים והתחייבויות. הכל זמין לשימוש בהמשך השיחה ובסגירה.</div>
-      <div id="ammo"></div>
-    </div>
-  </section>
-
-  <section class="panel">
+  <section class="panel tr-panel">
     <div class="panel-h">💬 תמלול חי <span class="live" id="liveTag" style="display:none">LIVE</span><span class="mode-tag" id="modeTag" style="display:none">ערוץ אחד · בחר דובר לכל משפט</span><span class="spacer"></span><button class="btn btn-sm" id="btnAnalyze" title="נתח עכשיו">🔄</button><button class="btn btn-sm" id="btnClear">נקה</button></div>
     <div id="idbarWrap" style="padding:12px 16px 0;display:none"></div>
     <div class="panel-b" id="transcript">
       <div class="empty" id="emptyT">התמלול יופיע כאן.<br>הנציג בצד שמאל, הלקוח בצד ימין. כל משפט שמסתיים נשלח למאמן.</div>
+    </div>
+  </section>
+
+  <section class="panel ammo-mini" id="ammoWrap">
+    <div class="panel-h">🔥 תחמושת <span class="spacer"></span><span id="ammoCount" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
+    <div class="panel-b" id="ammoPanel">
+      <div class="empty" id="emptyA">8 הדברים החזקים ביותר שהלקוח אמר ייאספו כאן.</div>
+      <div id="ammo"></div>
     </div>
   </section>
 </main>
@@ -379,7 +398,7 @@
   <div class="sec">👥 צוות ובורד מנהל</div>
   <div class="field"><label class="field-label">Supabase URL</label><input class="field-input ltr" id="sSbUrl" placeholder="https://xxxx.supabase.co"></div>
   <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><input class="field-input ltr" id="sSbKey" type="password" placeholder="sb_publishable_..."></div>
-  <div class="hint">כשמוגדר, כל שיחה נשלחת בלייב לבורד המנהל. ההגדרה נכללת בלינק לצוות. <a href="../manager/" target="_blank" style="color:#c4b5fd">פתח את בורד המנהל ↗</a></div>
+  <div class="hint">כשמוגדר, כל שיחה נשלחת בלייב לבורד המנהל. ההגדרה נכללת בלינק לצוות. <a href="../manager/" target="_blank" style="color:#6d28d9">פתח את בורד המנהל ↗</a></div>
   <div class="field" style="margin-top:10px"><button class="btn" id="btnInvite" style="width:100%;justify-content:center">🔗 צור לינק לצוות (כולל מפתחות והגדרות)</button><div class="hint">הלינק מכיל את המפתחות בחלק שאחרי ה-#, שלא נשלח לשרת. שלח אותו רק לנציגים שלך, בערוץ פרטי.</div><input class="field-input ltr" id="inviteOut" readonly style="margin-top:6px;font-size:11px" placeholder="הלינק יופיע כאן"></div>
   <button class="btn btn-primary" id="btnSave" style="width:100%;justify-content:center;margin-top:8px">שמור הגדרות</button>
 </aside>
@@ -429,7 +448,7 @@ const STAGE_CHECKS = {"kyc": ["הלקוח פתוח ומספר, לא נחקר", "
 const CARD_LABEL = {pain:'כאב זוהה',objection:'חסם זוהה',motive:'מניע רכישה זוהה',goal:'מטרה זוהתה',shift:'שינוי טון',warning:'אזהרה',opportunity:'הזדמנות',close:'סימן קנייה',kyc:'מידע על הלקוח'};
 
 const DEFAULT_PRINCIPLES = "PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה (שיטת אביתר ענקי, כפי שמיושמת במועדון האיקומרס)\n\nפילוסופיה: אנחנו לא מוכרים קורס. הלקוח לא מתעורר בבוקר ורוצה \"קורס דרופשיפינג\". הוא רוצה שינוי: ביטחון, חופש, מסוגלות, מימוש עצמי, ערך, שליטה על החיים, שייכות, יציבות, נחת. הקורס הוא הכלי. מודל שינוי התוצאות: אמונות → החלטות → פעולות → תוצאות. אם האמונה לא משתנה, התוצאה לא משתנה. לכן המכירה היא שינוי תפיסה וזהות, לא שכנוע. איש המכירות מקשיב, מזהה, שואל, מוביל, יוצר בהירות. המטרה: שהלקוח יבין בעצמו \"אם אמשיך לקבל את אותן החלטות אקבל את אותן תוצאות, ואני בוחר אחרת\".\n\nעיקרון על: כל שלב חייב ליצור את הצורך בשלב הבא. אין מעבר טכני. KYC טוב מייצר קצות חוט לכאב. כאב עמוק מוביל לחסמים. חשיפת החסם מסבירה למה לא היה שינוי עד היום. רצון לשינוי פותח מקום למטרה. מטרה עמוקה יוצרת מניע. המניע הופך את הצגת המוצר לרלוונטית. הסגירה היא המשך טבעי.\n\nשלב 1, KYC: \"ב-KYC אני לא מחפש תשובות, אני מחפש דלתות\". אנשים נפתחים למי שבאמת רואה אותם. שלושה יעדים: ראפור ואתוס (הקשבה, קצב, זכירת פרטים וחזרה אליהם), להבין מי האדם (גיל, מאיפה, עיסוק, רקע, מה הביא אותו, מצב כלכלי, מי עוד מעורב בהחלטה, איך מקבל החלטות), ולזהות קצות חוט. סוגי קצות חוט: שינוי טונציה, מילים רגשיות (\"נמאס לי\", \"תקוע\", \"חייב שינוי\", \"מבזבז זמן\"), נקודות אדומות (\"צריך להתייעץ עם אח שלי\", \"אשתי מחליטה איתי\", \"אין לי כסף\", \"לא מבין בטכנולוגיה\"), אמונות (\"אי אפשר להצליח בישראל\", \"אני לא בנוי לזה\", \"אני לא מתמיד\"), רצונות (\"רוצה חופש\", \"לעזוב את העבודה\", \"לעזור למשפחה\"). לא שאלה אחת בכל פעם כמו חקירה, אלא שאלת סיפור אחת: \"בשביל שנוכל לדייק את המסלול הנכון עבורך, ספר לי קצת על עצמך: בן כמה אתה, מאיפה, במה אתה עוסק היום ומה בכלל הביא אותך להתעניין בלהרוויח דרך האינטרנט?\" לפני ששואלים נותנים סיבה. כשעולה קצה חוט: לחזור על המילה ולעצור (\"12 שעות ביום?\") ואז \"איך זה משפיע עליך?\". טעויות: חקירה, להפריע, להכניס את עצמי, לקפוץ למטרה. סיימנו כשהלקוח פתוח, יש תמונה כללית, זיהינו קצות חוט והוא כבר נוגע בעצמו בבעיה.\n\nשלב 2, כאב: \"אני לא מסיים את שלב הכאב כשהבנתי את הבעיה, אלא כשהלקוח התחבר אליה\". אנשים לא משתנים כי הבינו שיש בעיה, אלא כשהם מרגישים את המחיר של להישאר. המטרה: לא לגלות בעיה (הוא יודע אותה) ולא ליצור כאב חדש, אלא להאיר כאב קיים עד שהוא לא מוכן להמשיך ככה. כאב הוא לא הבעיה הטכנית אלא המשמעות הרגשית: \"אין כסף\" = אין ביטחון, לא יכול לעזור למשפחה, פחד מהעתיד. \"עובד הרבה\" = אין חיים, מפספס את הילדים, מבזבז שנים. השאלה המרכזית: \"מה המחיר של להישאר בדיוק במקום הזה?\" חוק הזהב: אל תאסוף מידע, תעמיק במשמעות. כלי העמקה: 1) הרחבה: \"מה בדיוק אתה מרגיש שאתה לא מרוצה ממנו?\" 2) פירוק מילה רגשית: \"כשאתה אומר תקוע, למה אתה מתכוון?\" 3) השפעה: \"איך זה משפיע עליך? על מה עוד? על מי עוד? ואיך זה משפיע עליהם?\" 4) סיטואציה ספציפית: \"קח אותי לרגע ספציפי שזה הורגש. מה קרה שם? מה עבר לך בראש?\" 5) זמן: \"כמה זמן אתה כבר מרגיש ככה? מה גרם לך דווקא עכשיו לחפש שינוי?\" 6) מחיר: \"מה המחיר שאתה משלם? אם שום דבר לא ישתנה בחצי שנה, מה יקרה?\" 7) השלכה: \"אם המצב יישאר, איפה תהיה בעוד חצי שנה?\" טונציה: להאט, שתיקות, רגוע, נוכח. אחרי תשובה ראשונית יש עוד שכבה: לחזור על המילה ולשתוק (\"לא משהו?\"). אסור: להאשים, לשפוט, להתווכח, להסביר, לשכנע, לתת פתרון, לתת עצות, להביא את עצמנו, לפתור מוקדם (\"בדיוק בשביל זה הקורס שלנו\" = טעות). סיימנו כשהלקוח מרגיש את המחיר, מבין את ההשפעה על העתיד והסביבה, יש שיא רגשי, ומבין שאי אפשר להמשיך. נקודת המעבר לחסמים, רק אחרי מספיק כאב: \"מה ניסית לעשות עד היום כדי לשנות את המצב?\"\n\nשלב 3, חסמי קנייה: \"אל תנסה לנצח את האמונה של הלקוח, תעזור לו לראות אותה מחדש\". חסם הוא לא התנגדות. התנגדות היא המשפט ברגע ההחלטה (\"צריך לחשוב\", \"אין כסף\", \"אין זמן\"). חסם הוא האמונה או הפחד מתחת, שמונע פעולה והוא המקור שנותן לבעיה חיים. סוגים: כלפי עצמי (\"לא מתמיד\", \"לא טכנולוגי\", \"לא מספיק חכם\"), כלפי התחום (\"השוק רווי\", \"רק עם מזל\"), כלפי הדרך (\"קורסים לא עובדים\", \"צריך ללמוד לבד קודם\"), רגשיים (פחד מכישלון, לאבד כסף, לגלות שלא מסוגל). \"מה ניסית עד היום?\" חושף: לא ניסה (למה? מה עצר?) או ניסה ונכשל (מה למד? איזו אמונה נוצרה?). לא \"בגלל זה הקורס שלנו יותר טוב\" אלא \"מה אתה חושב שגרם לזה לא להצליח?\" העמקה: שלב 1 להבין את האמונה (\"מה גורם לך לחשוב שאתה לא מתמיד? מאיפה זה מגיע?\"), שלב 2 למצוא סתירה (\"יש דברים שאתה כן מתמיד בהם? אז אתה כן מסוגל, פשוט היו מקומות שזה לא קרה?\"). כלי: שאלת החזרה בזמן: \"אם הייתי מחזיר אותך שנה אחורה עם כל מה שאתה יודע היום, מה היית עושה אחרת?\" → \"הייתי מתחיל\" → \"למה? מה השתנה?\" מראה שההזדמנות הייתה קיימת ומה שעצר היה פנימי. על \"לא היה לי זמן\": \"אם לפני חצי שנה היית משקיע שעה ביום והיום היית עם עוד 40,000 ש\"ח בחודש, היית מוצא שעה ביום? אז מה בכל זאת מעבר לזמן? מה הפחיד אותך?\" סימנים שמצאנו את החסם: עוצר לחשוב, טונציה משתנה, לוקח אחריות, מפסיק להאשים. אסור: לשכנע בכוח, להוכיח צדק, להקטין, \"זה רק בראש שלך\", \"כולם מצליחים\", ולא להשתמש במילים כמו \"חסם\" או \"אמונה מגבילה\". סיימנו כשהלקוח מבין מה האמונה שעצרה אותו, איך היא יצרה את המציאות שלו, לקח אחריות, ונפתח לאפשרות חדשה.\n\nשלב 4, מטרה: \"כאב יוצר רצון לברוח מהמצב הקיים, מטרה יוצרת רצון לרוץ לעבר משהו חדש\". אנשים לא קונים בגלל מה שהם רוצים לקבל אלא בגלל מי שהם רוצים להפוך להיות. כאב לבד לא מספיק: צריך מצוי מספיק כואב ורצוי מספיק מושך, הפער יוצר תנועה. \"להרוויח כסף\" זו תוצאה, לא מטרה. שאלת הזהב, לקלף שכבות: \"למה זה חשוב לך?\" → \"מה זה יאפשר לך?\" → \"מה זה אומר עבורך?\" → \"איך זה יגרום לך להרגיש?\" עד שמגיעים לרגש. דמיון עתידי: \"נניח שעברה שנה והדברים הסתדרו בדיוק כמו שאתה רוצה. מה השתנה? איך נראה היום שלך? מי סביבך רואה את השינוי?\" זהות: \"איזה אדם היית צריך להפוך להיות כדי להגיע לשם? מה האדם הזה עושה היום שאתה עדיין לא?\" חשוב: המטרה היא לא \"הצלחה עם המוצר\" אלא זהות: \"אדם שמסוגל ללמוד, לבצע, להתמיד וליצור לעצמו\". טעות קריטית: לדבר על כסף או פתרון מוקדם (\"מעולה, הקורס יביא לך הכנסה\"). לא להתלהב במקום הלקוח, לא דעה אישית. שאלת סיום לפני מעבר: \"ומה אם זה לא יקרה?\" סיימנו כשהלקוח יודע לאן, למה זה חשוב, מרגיש את המשמעות, מתאר עתיד, ויש פער ברור.\n\nשלב 5, מניע רכישה: \"אני לא מציג את המוצר, אני מחבר אותו למה שהלקוח כבר אמר שהוא צריך כדי להצליח\". מניע רכישה = מה הלקוח מאמין שהוא צריך לקבל כדי לעבור מהמצוי לרצוי. אנשים לא קונים פתרון, הם קונים ביטחון שהפתרון יעזור להם להשתנות. מפת תרגום: \"צריך מנטור\" = ביטחון והכוונה. \"צריך קהילה\" = שייכות, לא לבד. \"משהו קצר ותכל'ס\" = להתקדם מהר בלי לטבוע במידע. \"הרבה תמיכה\" = גב, לא להיכשל לבד. \"צריך סדר\" = פחד ללכת לאיבוד. שאלות: \"מה לדעתך הכי יעזור לבנאדם לעבור מהמקום שהוא נמצא היום למקום שהוא רוצה?\" \"מה חשוב לך לקבל בתוך התהליך?\" \"אם היית בונה לעצמך את התהליך המושלם, מה היה חייב להיות בו?\" \"מה היה חסר לך בניסיונות קודמים?\" \"מה יעזור לך להמשיך גם כשיהיה קשה?\" לא להניח ולא להבטיח מהר (\"מעולה יש לנו ליווי\" = טעות; קודם \"איזה ליווי? למה?\"). לחפש דפוסים מכל השיחה: אם חזר על \"שמישהו יכוון אותי\", \"מפחד לטעות\", המניע הוא ביטחון והכוונה. הידהוד שפה: להשתמש במילים שלו עצמו. סיימנו כשיודעים מה חשוב לו בתהליך, מה ייתן ביטחון, איך רוצה להרגיש, באילו מילים משתמש, ואיך לחבר את ההצגה אליו.\n\nשלב 6, הצגת מוצר: \"אל תציג את מה שיש במוצר, תציג את הדרך שהלקוח בעצמו אמר שהוא צריך לעבור\". מותר להגיע רק אחרי: כאב אמיתי, אחריות, חסם, מטרה, מניע, דחיפות, ראפור. מעבר: \"ממה ששמעתי ממך, אמרת לי שחשוב לך ___ ושאתה רוצה להגיע ל___, אז אני רוצה להראות לך איך בדיוק בנינו את הדרך לשם.\" לא \"יש לנו קהילה, מנטורים, שיעורים\" אלא \"אמרת לי שהכי חשוב לך לא להרגיש לבד ושיהיה מי שיכוון אותך כשאתה נתקע, בגלל זה אחד הדברים המרכזיים בתהליך הוא הקהילה והליווי\". דיאלוג לא מונולוג: הסבר קצר → חיבור אליו → שאלה → הסכמה. הצגת המסע לא הפיצ'רים: \"השלב הראשון הוא לבנות לך בסיס כדי שלא תירה באוויר\" במקום \"מודול מחקר מוצרים\". לפנות לזהות החדשה. שאלות דמיון שימוש: \"איך לדעתך תיעזר בקהילה?\" \"אתה יותר אחד שבא לשאול או גם אוהב לעזור לאחרים?\" פחות = יותר: עודף מידע מעביר מהלב לראש. לבנות 3-4 הסכמות קטנות. סוגסטיה: \"כשתראה את המוצר הראשון עולה לאוויר, התחושה היא שאתה כבר לא רק לומד, אתה בונה משהו\" (להמחיש תהליך, לא להבטיח תוצאה). טונציה: יותר אנרגיה וביטחון, ביחס ללקוח. בסוף ההצגה הלקוח מרגיש \"זה בדיוק מה שחיפשתי\".\n\nשלב 7, סגירה: \"בסגירה אני לא מוכר מוצר. אני עוזר ללקוח לבחור אם להמשיך מהזהות הישנה או מהחדשה שהוא כבר בנה\". אם צריך לשכנע בסגירה, משהו קודם לא נבנה. סגירה היא החלטה: איזה אדם אני בוחר להיות. תנאים: ראפור, כאב עמוק, אחריות, אמונה שעורערה, מטרה, מניע, הצגה מותאמת, 3-4 הסכמות. אם חסר משהו, חוזרים אחורה. הסגירה חייבת להיות המשך של השיחה, לא \"טוב, אז המחיר הוא\". לפני המחיר, להחזיר אותו לזהות החדשה: \"מבין כל הדברים שעברנו עליהם, מה הדבר שתשתמש בו הכי הרבה בדרך למטרה שלך?\" \"חשוב לך באמת להצליח?\" \"אתה תעשה מה שצריך?\" \"אתה מרגיש שסוף סוף הגיע הזמן לצאת מ___ ולהגיע ל___?\" סגירה היא רצף של הסכמות. אין נאומים: מדברים פחות, שואלים יותר, קצר, חד, בביטחון מלא, בלי התנצלות ובלי לחץ. התנגדות היא לא אויב: או משהו לא נסגר, או בדיקת ביטחון. לא מתווכחים, בודקים ומובילים. \"אני צריך לחשוב\": לא להסביר. \"יש את האדם שמבין בדיוק מה נכון עבורו אבל ברגע האמת דוחה, ויש את האדם שמבין, לוקח אחריות ופועל. מי מהם יגיע למטרה? ואיזה מהם אתה רוצה להיות? אז מה ההחלטה שתקרב אותך לאדם הזה כבר היום?\" משפטי סגירה: \"אתה רוצה להגיע ל___?\" \"אתה מוכן לעשות את מה שהאדם החדש הזה היה עושה?\"\n\nכללים חוצי-שלבים: יחס דיבור, הלקוח 60% הנציג 40%. אם הנציג מרצה יותר מ-3 משפטים ברצף, עצור ושאל. אל תמציא את הכאב, גלה אותו. לא מוכרים כסף קל, כפתור קסם או הכנסה פסיבית. תמיד להשתמש בתחמושת: המילים, המספרים והרגעים שהלקוח עצמו נתן.";
-const AMMO_RULES = "SALES AMMO ENGINE. אתה מנהל באופן רציף אזור בשם \"תחמושת\": מידע מתוך השיחה שאיש המכירות יכול להשתמש בו כדי לקדם את הלקוח להחלטה. בכל רגע תציג בדיוק 8 פריטים, מדורגים מהחזק והרלוונטי ביותר כרגע ועד לפחות רלוונטי, כדי שאיש המכירות יסתכל לשנייה ויבין: מה הדבר הכי חזק שיש לי כרגע מול הלקוח?\n\nהתחמושת דינמית, לוח תוצאות חי (Leaderboard). אל תיצור רשימה בתחילת השיחה ותשאיר אותה קבועה. מידע חדש יכול להיכנס למקום הראשון, לדחוף פריט למטה, לחזק פריט, להפוך פריט לפחות רלוונטי, להעלים פריט, או לסמן חסם כפתור ולהוציא אותו מהתחמושת הפעילה.\n\nמה נחשב תחמושת חזקה: מידע שהלקוח עצמו נתן ושמחבר בין המצב שלו, החסם שעוצר אותו, וההחלטה להתקדם. חפש במיוחד: כאב (בעיה אמיתית), פער (בין איפה שהוא לאיפה שרוצה), מניע (למה בכלל איקומרס), למה עכשיו (אירוע שהופך את זה לרלוונטי), מחיר אי העשייה, ניסיון עבר (ניסה ולא הגיע לתוצאה), חסם (מה מונע כרגע), פחד (מה חושש שיקרה אם יתחיל), רצון (תוצאה שאמר במפורש), סתירה (רוצה X אבל ההחלטה הנוכחית מנוגדת), דחיפות (סיבה אמיתית לפתור עכשיו), אמונה או חוסר אמונה (מאמין באיקומרס אבל לא שמסוגל לבד).\n\nחוק הזהב: התחמושת הטובה ביותר מגיעה מהפה של הלקוח. אל תמציא כאבים, אל תניח מניעים, אל תכניס משפטים שיווקיים. אם הלקוח לא אמר או רמז בצורה חזקה, אל תציג כעובדה. שמור את הניסוח המקורי שלו: \"שנתיים רוצה להתחיל ולא מתקדם\" ולא \"הלקוח סובל מחוסר מימוש עצמי\".\n\nדירוג: ציון פנימי לפי עוצמת הכאב, רלוונטיות לרגע הנוכחי, קשר להצעה (כמה ההצעה פותרת את זה), הוכחה מהשיחה (כמה ברור שהלקוח אמר), עוצמה רגשית, דחיפות, וסטטוס החסם (פתוח או נפתר). המקום הראשון = הדבר שהכי נכון לאיש המכירות להיות מודע אליו כרגע.\n\nחסמים ופתרונם, קריטי: אתה לא רק מזהה חסמים, אתה עוקב האם נפתרו. \"אין לי זמן\" → חסם זמן. אם אחר כך הלקוח אמר \"אם זה שעה ביום אני כן יכול\", החסם נפתר: הורד משמעותית או הסר. אם אמר \"עדיין לא יודע מאיפה אביא זמן\", החסם לא נפתר ונשאר גבוה. אל תבלבל בין תשובה של הנציג לבין פתרון: חסם נפתר רק כשיש אינדיקציה מהלקוח שקיבל (\"אוקיי זה דווקא פותר לי\", \"ככה זה נשמע אחרת\", \"אם זה ככה אין לי בעיה\", \"הבנתי\", או מעבר ברור מההתנגדות). בלי אינדיקציה, החסם נשאר פתוח.\n\nדעיכה: פריט שהיה מספר 1 בדקה 8 לא חייב להישאר בדקה 30. נחשף חזק יותר → הורד. נפתר → הורד משמעותית. לא רלוונטי להחלטה → הסר. הלקוח חזר אליו → העלה מחדש.\n\nבדיוק 8 פריטים כשיש מספיק מידע אמיתי. אל תמציא כדי למלא. אם אין 8, החזר פחות (המערכת תציג \"עדיין אין מספיק מידע\" במקומות הריקים).\n\nפורמט: קצר מאוד. text = כותרת במילים של הלקוח (עד 10 מילים). note = שורה אחת של הקשר וסטטוס (עד 15 מילים), למשל \"אמר שניסה לבד ותמיד נעצר. חסם עדיין פתוח.\" status: hot=🔴 חזק מאוד / חסם משמעותי / דורש טיפול, high=🟠 רלוונטי מאוד, medium=🟡 רלוונטי, low=🟢 משני או כמעט פתור, resolved=✅ נפתר (לא תופס מקום לאורך זמן).\n\nהתאמה לשלב: בתחילת השיחה תעדף גילוי של מניע, מצב קיים, מטרה, כאב, פער. באמצע: עומק הכאב, ניסיונות עבר, חסמים, מחיר אי העשייה, למה עכשיו. לקראת הצעה וסגירה: חסמים שעדיין לא נפתרו, סיבות אישיות לפעול, פער משמעותי, התוצאה הרצויה, סתירות בין מה שרוצה לבין הסיבה שנמנע מהחלטה. לקראת סגירה שאל: איזה חסם עדיין פתוח? חסם משמעותי שלא נפתר עולה למעלה. אל תאפשר לנציג להגיע לסגירה כשיש התנגדות מרכזית שהלקוח העלה ואף אחד לא חזר אליה. המטרה היא לא \"לנצח התנגדויות\" אלא להבין מה באמת מונע החלטה ולבדוק אם אפשר לפתור באמת.\n\nשימוש: כשמתאים, use = משפט או שאלה טבעיים, לא מניפולטיביים ולא אגרסיביים, שהנציג יכול להגיד עכשיו. למשל: \"אמרת לי משהו קודם שאני רוצה לחזור אליו. כבר שנתיים אתה רוצה להיכנס לזה. מה לדעתך יקרה אם גם הפעם תחליט להסתדר עם זה לבד?\" או \"קודם אמרת שהפחד המרכזי שלך הוא לשרוף כסף על פרסום. מה עדיין חסר לך כדי להרגיש שקיבלת תשובה על זה?\"\n\nכלל אחרון: אל תחשוב כמו מסכם שיחות. תחשוב כמו אסטרטג שיושב ליד איש המכירות בזמן אמת: מה למדתי עכשיו על האדם? מה באמת חשוב לו? מה השתנה? מה עדיין פתוח? איזה חסם נפתר? איזה חסם אנחנו בטעות חושבים שנפתר? מה התחמושת הכי חזקה כרגע? ומה הדבר הכי נכון שאיש המכירות יתייחס אליו עכשיו? רשימת ה-8 היא התשובה לשאלה: אם איש המכירות יכול לראות רק 8 דברים מהשיחה עד עכשיו, מהם 8 הדברים שהכי יעזרו לו לנהל נכון את ההמשך ולהביא את הלקוח להחלטה שמתאימה לו?";
+const AMMO_RULES = "SALES AMMO ENGINE. אתה מנהל באופן רציף אזור בשם \"תחמושת\": מידע מתוך השיחה שאיש המכירות יכול להשתמש בו כדי לקדם את הלקוח להחלטה. בכל רגע תציג בדיוק 8 פריטים, מדורגים מהחזק והרלוונטי ביותר כרגע ועד לפחות רלוונטי, כדי שאיש המכירות יסתכל לשנייה ויבין: מה הדבר הכי חזק שיש לי כרגע מול הלקוח?\n\nהתחמושת דינמית, לוח תוצאות חי (Leaderboard). אל תיצור רשימה בתחילת השיחה ותשאיר אותה קבועה. מידע חדש יכול להיכנס למקום הראשון, לדחוף פריט למטה, לחזק פריט, להפוך פריט לפחות רלוונטי, להעלים פריט, או לסמן חסם כפתור ולהוציא אותו מהתחמושת הפעילה.\n\nמה נחשב תחמושת חזקה: מידע שהלקוח עצמו נתן ושמחבר בין המצב שלו, החסם שעוצר אותו, וההחלטה להתקדם. חפש במיוחד: כאב (בעיה אמיתית), פער (בין איפה שהוא לאיפה שרוצה), מניע (למה בכלל איקומרס), למה עכשיו (אירוע שהופך את זה לרלוונטי), מחיר אי העשייה, ניסיון עבר (ניסה ולא הגיע לתוצאה), חסם (מה מונע כרגע), פחד (מה חושש שיקרה אם יתחיל), רצון (תוצאה שאמר במפורש), סתירה (רוצה X אבל ההחלטה הנוכחית מנוגדת), דחיפות (סיבה אמיתית לפתור עכשיו), אמונה או חוסר אמונה (מאמין באיקומרס אבל לא שמסוגל לבד).\n\nחוק הזהב: התחמושת הטובה ביותר מגיעה מהפה של הלקוח. אל תמציא כאבים, אל תניח מניעים, אל תכניס משפטים שיווקיים. אם הלקוח לא אמר או רמז בצורה חזקה, אל תציג כעובדה. שמור את הניסוח המקורי שלו: \"שנתיים רוצה להתחיל ולא מתקדם\" ולא \"הלקוח סובל מחוסר מימוש עצמי\".\n\nדירוג: ציון פנימי לפי עוצמת הכאב, רלוונטיות לרגע הנוכחי, קשר להצעה (כמה ההצעה פותרת את זה), הוכחה מהשיחה (כמה ברור שהלקוח אמר), עוצמה רגשית, דחיפות, וסטטוס החסם (פתוח או נפתר). המקום הראשון = הדבר שהכי נכון לאיש המכירות להיות מודע אליו כרגע.\n\nחסמים ופתרונם, קריטי: אתה לא רק מזהה חסמים, אתה עוקב האם נפתרו. \"אין לי זמן\" → חסם זמן. אם אחר כך הלקוח אמר \"אם זה שעה ביום אני כן יכול\", החסם נפתר: הורד משמעותית או הסר. אם אמר \"עדיין לא יודע מאיפה אביא זמן\", החסם לא נפתר ונשאר גבוה. אל תבלבל בין תשובה של הנציג לבין פתרון: חסם נפתר רק כשיש אינדיקציה מהלקוח שקיבל (\"אוקיי זה דווקא פותר לי\", \"ככה זה נשמע אחרת\", \"אם זה ככה אין לי בעיה\", \"הבנתי\", או מעבר ברור מההתנגדות). בלי אינדיקציה, החסם נשאר פתוח.\n\nדעיכה: פריט שהיה מספר 1 בדקה 8 לא חייב להישאר בדקה 30. נחשף חזק יותר → הורד. נפתר → הורד משמעותית. לא רלוונטי להחלטה → הסר. הלקוח חזר אליו → העלה מחדש.\n\nבדיוק 8 פריטים כשיש מספיק מידע אמיתי. אל תמציא כדי למלא. אם אין 8, החזר פחות (המערכת תציג \"עדיין אין מספיק מידע\" במקומות הריקים).\n\nפורמט: קצר מאוד. text = כותרת במילים של הלקוח, עד 6 מילים (לעולם לא יותר מ-7). note = שורה אחת של הקשר וסטטוס (עד 15 מילים), למשל \"אמר שניסה לבד ותמיד נעצר. חסם עדיין פתוח.\" status: hot=🔴 חזק מאוד / חסם משמעותי / דורש טיפול, high=🟠 רלוונטי מאוד, medium=🟡 רלוונטי, low=🟢 משני או כמעט פתור, resolved=✅ נפתר (לא תופס מקום לאורך זמן).\n\nהתאמה לשלב: בתחילת השיחה תעדף גילוי של מניע, מצב קיים, מטרה, כאב, פער. באמצע: עומק הכאב, ניסיונות עבר, חסמים, מחיר אי העשייה, למה עכשיו. לקראת הצעה וסגירה: חסמים שעדיין לא נפתרו, סיבות אישיות לפעול, פער משמעותי, התוצאה הרצויה, סתירות בין מה שרוצה לבין הסיבה שנמנע מהחלטה. לקראת סגירה שאל: איזה חסם עדיין פתוח? חסם משמעותי שלא נפתר עולה למעלה. אל תאפשר לנציג להגיע לסגירה כשיש התנגדות מרכזית שהלקוח העלה ואף אחד לא חזר אליה. המטרה היא לא \"לנצח התנגדויות\" אלא להבין מה באמת מונע החלטה ולבדוק אם אפשר לפתור באמת.\n\nשימוש: כשמתאים, use = משפט או שאלה טבעיים, לא מניפולטיביים ולא אגרסיביים, שהנציג יכול להגיד עכשיו. למשל: \"אמרת לי משהו קודם שאני רוצה לחזור אליו. כבר שנתיים אתה רוצה להיכנס לזה. מה לדעתך יקרה אם גם הפעם תחליט להסתדר עם זה לבד?\" או \"קודם אמרת שהפחד המרכזי שלך הוא לשרוף כסף על פרסום. מה עדיין חסר לך כדי להרגיש שקיבלת תשובה על זה?\"\n\nכלל אחרון: אל תחשוב כמו מסכם שיחות. תחשוב כמו אסטרטג שיושב ליד איש המכירות בזמן אמת: מה למדתי עכשיו על האדם? מה באמת חשוב לו? מה השתנה? מה עדיין פתוח? איזה חסם נפתר? איזה חסם אנחנו בטעות חושבים שנפתר? מה התחמושת הכי חזקה כרגע? ומה הדבר הכי נכון שאיש המכירות יתייחס אליו עכשיו? רשימת ה-8 היא התשובה לשאלה: אם איש המכירות יכול לראות רק 8 דברים מהשיחה עד עכשיו, מהם 8 הדברים שהכי יעזרו לו לנהל נכון את ההמשך ולהביא את הלקוח להחלטה שמתאימה לו?";
 
 const DEFAULT_CONTEXT = "מועדון האיקומרס של אביב מלכה.\n\nמה אנחנו מוכרים באמת: לא \"קורס דרופשיפינג\" אלא מסלול מעשי להקמת עסק איקומרס מאפס, עם מעטפת שמלווה את הלקוח מהרגע שהוא רוצה להיכנס לתחום ועד שיש לו חנות אמיתית, מוצרים, שיווק, קמפיינים ויכולת לייצר תוצאות. המטרה היא שהוא יעשה: יקים, ישיק, ימכור, ינהל וישפר, ויחזיק בנכס איקומרס שהוא יודע להפעיל. אנחנו הדרך הקצרה והמסודרת בין \"אני רוצה להיכנס לאיקומרס\" לבין \"יש לי עסק איקומרס אמיתי ואני יודע מה אני עושה\".\n\nהאווטאר: אדם שרוצה להיכנס לעולם האיקומרס ולהקים עסק או מקור הכנסה דרך האינטרנט. אין דמוגרפיה אחת: שכיר, עצמאי, סטודנט, חייל משוחרר, בין עבודות, בעל עסק שמחפש אפיק נוסף, בן 22 או בן 45, מרוויח טוב ורוצה משהו משלו או מחפש לשפר משמעותית את המצב הכלכלי. לכן אסור להמציא את הכאב מראש: לא כולם שונאים את העבודה, לא כולם רוצים לעזוב בוס, לא כולם בחובות, לא כולם חולמים על \"הכנסה פסיבית\". מה שמשותף: הרצון להיכנס לאיקומרס והפער בין הרצון לבין היכולת לעשות את זה נכון בפועל. הפער מגיע מ: חוסר ידע, עודף מידע ובלבול, פחד לבחור מוצר לא נכון, פחד להפסיד כסף, חוסר ניסיון, חוסר ביטחון, חוסר זמן, קושי טכנולוגי, ניסיון קודם שנכשל, חוסר יכולת להתמיד לבד, ואין לידו מישהו שכבר עשה את הדרך.\n\nשאלות גילוי שחייבים לברר עם כל אדם: למה דווקא איקומרס? למה עכשיו? מה הוא רוצה שהאיקומרס יאפשר לו? איפה הוא היום? לאן רוצה להגיע? מה ניסה עד היום? מה עצר אותו? מה מפחיד אותו? למה עדיין לא עשה את זה לבד? מה המשמעות מבחינתו אם בעוד שנה הוא באותו מקום?\n\nמה הלקוח מקבל: 1) הכשרה דיגיטלית מלאה מאפס: מוצרים, נישות, הקמת חנות, דפי מוצר, ספקים, קריאייטיבים, שיווק, Meta Ads, ניתוח נתונים, אופטימיזציה, מכירות, סקייל, ומעבר מדרופשיפינג בסיסי למותג איקומרס אמיתי. 2) AI כחלק מהשיטה: מחקר, כתיבה, בניית חנות, קריאייטיבים, ניתוח, רעיונות, שיווק, אוטומציות, כדי לתת למתחיל יכולות של צוות מנוסה. 3) מנטורינג אישי: לא נשאר לבד מול קורס. 4) ליווי ארוך טווח גם אחרי שהחנות באוויר: השקות, נתונים, קמפיינים, טעויות, שיפורים, סקייל. 5) 4 עד 8 מפגשי לייב בחודש על מה שקורה עכשיו בשטח. 6) קהילה של אנשים שעובדים על אותה מטרה. 7) תמיכה שוטפת כדי שלא יהיה תקוע ימים על שאלה אחת. 8) חשיפה למה שעובד עכשיו: אנחנו עסק איקומרס פעיל.\n\nההצעה: הדרך, המערכת והמעטפת להקים עסק איקומרס מאפס גם בלי ניסיון, עם ידע, AI, מנטורינג, תמיכה וקהילה, במקום להרכיב לבד את הפאזל מיוטיוב ומקורסים. לא צריך להבין הכל לפני שמתחילים, לא צריך להיות מומחה בכל תחום, לא צריך לעבור לבד את כל הטעויות שאנחנו כבר עברנו.\n\nהבידול: 1) לא קורס אלא מעטפת ביצוע: האינטרנט מלא בידע, הבעיה היא המעבר מידע לביצוע. ידע + מערכת + מנטורינג + תמיכה + קהילה + ניסיון + AI + יישום. 2) מגיעים מהשטח: אביב מלכה, כ-15 שנות ניסיון, עשרות מיליוני דולרים במכירות איקומרס, מיליוני דולרים בפרסום, מותגים וחנויות אמיתיים, מאות תלמידים. 3) מראים את התהליך: מוצרים, חנויות, מספרים, מה עבד ומה לא, קמפיינים והחשיבה מאחורי ההחלטות. התלמיד לומד איך איש איקומרס חושב. 4) המועדון חי: Meta, AI, קריאייטיבים, מוצרים וכלים משתנים, לכן לייבים, עדכונים וקהילה. 5) AI הוא חלק מהשיטה, לא גימיק.\n\nמה אנחנו לא מוכרים: לא כסף קל, לא כפתור קסם, לא הבטחה שכל אחד יתעשר, לא \"הכנסה פסיבית בלי לעבוד\". איקומרס הוא עסק: צריך ללמוד, לבצע, לבדוק, לטעות, להשתפר. היתרון: לא עושים את הדרך לבד.\n\nהמסר המרכזי: אתה יכול לנסות ללמוד הכל לבד, לחבר מידע מעשרות מקומות ולעבור את הטעויות בעצמך, או להיכנס למערכת שכבר בנויה סביב המטרה הזאת ולקבל דרך מסודרת, מנטורינג, כלים, AI, קהילה ותמיכה מאנשים שעושים איקומרס בפועל. ברמה העמוקה הלקוח קונה יכולת: מרעיון למוצר, ממוצר להצעה, מהצעה לתנועה, מתנועה למכירות, לקרוא נתונים, לשפר, למצוא את המוצר הבא.";
 
@@ -461,7 +480,7 @@ const $ = id=>document.getElementById(id);
 const escapeHtml=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const toast=(m,c='')=>{const t=$('toast');t.textContent=m;t.className='toast show '+c;clearTimeout(t._h);t._h=setTimeout(()=>t.className='toast',3200)};
 const setPill=(id,st)=>{const p=$(id);p.className='pill '+st};
-const LOG=[];function log(m,kind=''){const t=new Date().toLocaleTimeString('he-IL');LOG.push(`${t} ${kind==='err'?'❌':kind==='ok'?'✅':'•'} ${m}`);if(LOG.length>12)LOG.shift();const el=$('status');el.style.display='';el.innerHTML=LOG.map(escapeHtml).join('<br>');const sl=$('statusLast');if(sl){sl.textContent='· '+m.slice(0,90);sl.style.color=kind==='err'?'#fca5a5':''} if(kind==='err'){$('statusWrap').open=true} console.log('[LiveCoach]',m)}
+const LOG=[];function log(m,kind=''){const t=new Date().toLocaleTimeString('he-IL');LOG.push(`${t} ${kind==='err'?'❌':kind==='ok'?'✅':'•'} ${m}`);if(LOG.length>12)LOG.shift();const el=$('status');el.style.display='';el.innerHTML=LOG.map(escapeHtml).join('<br>');const sl=$('statusLast');if(sl){sl.textContent='· '+m.slice(0,90);sl.style.color=kind==='err'?'#b91c1c':''} if(kind==='err'){$('statusWrap').open=true} console.log('[LiveCoach]',m)}
 
 /* ───────────────────────── settings ───────────────────────── */
 function loadSettings(){
@@ -512,7 +531,11 @@ $('pWho').onclick=()=>{ let n=null; try{ n=prompt('מה השם שלך? (יופי
 const b64u={enc:o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
 $('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.openai,anthropic:S.settings.anthropic,speechmatics:S.settings.speechmatics,sbUrl:S.settings.sbUrl,sbKey:S.settings.sbKey,mode:'rep',custSrc:'tab',sttModel:S.settings.sttModel,effort:S.settings.effort,
     context:(S.settings.context!==DEFAULT_CONTEXT?S.settings.context:undefined),principles:(S.settings.principles!==DEFAULT_PRINCIPLES?S.settings.principles:undefined)};
-  const url=location.origin+location.pathname+'#cfg='+b64u.enc(cfg); $('inviteOut').value=url; navigator.clipboard?.writeText(url).then(()=>toast('הלינק הועתק','t-ok')).catch(()=>{}); };
+  // the team link must always point at the public site, even when this page is opened locally (localhost / file://)
+  const PUBLIC_BASE='https://avivmalka123.github.io/live-coach/';
+  const isLocal=location.protocol==='file:'||/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
+  const base=(isLocal||/github\.io$/.test(location.hostname))?PUBLIC_BASE:location.origin+location.pathname.replace(/live-coach\.html$/,'live-coach/');
+  const url=base+'#cfg='+b64u.enc(cfg); $('inviteOut').value=url; navigator.clipboard?.writeText(url).then(()=>toast('הלינק הועתק','t-ok')).catch(()=>{}); };
 function saveSettingsSilent(){ const keep=S.settings; S.settings={...keep,openai:cleanKey($('sOpenai').value),anthropic:cleanKey($('sAnthropic').value),speechmatics:cleanKey($('sSm').value),sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),sttModel:$('sSttModel').value,effort:$('sEffort').value,context:($('sContext').value.trim()||DEFAULT_CONTEXT),principles:($('sPrinciples').value.trim()||DEFAULT_PRINCIPLES)}; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); }
 function applyHashConfig(){ const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/); if(!m) return false; try{ const cfg=b64u.dec(m[1]); let cur={}; try{cur=JSON.parse(localStorage.getItem('lc_settings')||'{}')}catch(e){}
     const merged={...cur}; for(const k of ['openai','anthropic','speechmatics','sbUrl','sbKey','sttModel','effort','context','principles']) if(cfg[k]) merged[k]=cfg[k]; if(!merged.mode) merged.mode=cfg.mode||'rep'; if(!merged.custSrc) merged.custSrc=cfg.custSrc||'tab';
@@ -594,6 +617,7 @@ function tick(){
   if(S.day&&!S.running&&!S.autoStarting){ const lvl=S.lastPeak||{}; const st=$('dayState'); if(st&&now-(S.dayUiAt||0)>1000){ S.dayUiAt=now; st.textContent='🟢 מאזין · לקוח '+(now-(S.act.cust||0)<1500?'🔊':'·')+' נציג '+(now-(S.act.rep||0)<1500?'🔊':'·')+' · תמלול '+((S.ws.cust&&S.ws.cust.readyState===1)?'מחובר':'מתחבר…'); } return; }
   if(S.day&&S.running&&!S.demo){ const last=Math.max(S.act.rep||0,S.act.cust||0); const endSec=parseInt(S.settings.autoEndSec)||25; if(now-S.startedAt>20000&&now-last>endSec*1000){ log('שקט '+endSec+' שניות בשני הערוצים: השיחה הסתיימה'); stopCall(); return; } }
   if(!S.running) return;
+  quickTick(now);
   if(S.analysisInFlight&&now-(S.inFlightAt||now)>75000){ S.analysisInFlight=false; log('המאמן לא ענה 75 שניות, מאפס וממשיך','err'); }
   if(S.simActive&&S.simPendingReply&&now-(S.simRepAt||0)>=900){ S.simPendingReply=false; simCustomerTurn(false); }
   if(!S.single&&S.analysisPending&&!S.analysisInFlight&&now-(S.lastCustFinalAt||0)>=1400) scheduleAnalysis();
@@ -630,7 +654,7 @@ function renderLine(ln){
 }
 $('btnAnalyze').onclick=()=>{S.lastAnalyzedCount=-1;scheduleAnalysis()};
 const EMPTY_EL=$('emptyT');
-$('btnClear').onclick=()=>{S.lines=[];S.shownCards=[];S.ammo=[];S.profile='';S.lastAnalyzedCount=0;$('transcript').innerHTML='';$('transcript').appendChild(EMPTY_EL);EMPTY_EL.style.display='';$('cards').innerHTML='';$('custState').style.display='none';$('ammo').innerHTML='';$('emptyA').style.display='';$('profile').style.display='none';$('ammoCount').textContent='';};
+$('btnClear').onclick=()=>{S.lines=[];S.shownCards=[];S.ammo=[];S.profile='';S.lastAnalyzedCount=0;$('transcript').innerHTML='';$('transcript').appendChild(EMPTY_EL);EMPTY_EL.style.display='';$('cards').innerHTML='';$('sayLog').innerHTML='';$('custState').style.display='none';$('ammo').innerHTML='';$('emptyA').style.display='';$('profile').style.display='none';$('ammoCount').textContent='';};
 
 /* ───────────────────────── audio capture → OpenAI realtime STT ───────────────────────── */
 const WORKLET_SRC=`class P extends AudioWorkletProcessor{constructor(){super();this.buf=[];this.n=0}
@@ -889,14 +913,15 @@ function beginSession(demo){
   clearInterval(S.syncIv); S.syncIv=setInterval(()=>{ if(S.running) syncCall(); },15000); if(!demo) syncCall();
   clearInterval(S.insightIv);
   S.lastInsightAt=Date.now(); S.lastSyncAt=Date.now(); S.lastTick=0; S.analysisInFlight=false; S.analysisPending=false;
+  S.lastQuickAt=Date.now(); S.lastQuickCount=0; S.quickInFlight=false; S.sayAt=0; clearInterval(S.quickIv); S.quickIv=setInterval(()=>quickTick(Date.now()),2000);
   S.insightIv=setInterval(()=>{ if(!S.single||!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(n&&n!==S.lastAnalyzedCount){ S.lastInsightAt=Date.now(); scheduleAnalysis(); } },20000);
 }
 function stopCall(){
-  S.running=false; S.endedSim=!!S.simActive; S.endedAt=Date.now(); S.burst=[]; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); if(S.day){ try{smFinalize()}catch(e){} } else { teardownAudio(); } S.demoAbort=true; renderIdBar();
+  S.running=false; S.endedSim=!!S.simActive; S.endedAt=Date.now(); S.burst=[]; clearInterval(S.timerIv); clearInterval(S.insightIv); clearInterval(S.syncIv); clearInterval(S.quickIv); if(S.day){ try{smFinalize()}catch(e){} } else { teardownAudio(); } S.demoAbort=true; renderIdBar();
   const nFinal=S.lines.filter(l=>l.final&&l.text.trim()).length;
   if(S.day&&nFinal<2){ syncCall({status:'void',ended_at:new Date().toISOString()}); log('לא זוהה דיבור אמיתי (צלצול/רעש), השיחה בוטלה'); }
   else syncCall({status:'ended',ended_at:new Date().toISOString()});
-  if(nFinal>=6&&S.settings.anthropic) setTimeout(()=>runSummary(true),1500);
+  if(nFinal>=6&&S.settings.anthropic){ const snap=snapshotCall(); setTimeout(()=>runSummary(true,snap),1500); }
   $('btnStart').style.display=S.day?'none':''; $('btnStop').style.display='none'; $('btnDemo').disabled=false; $('liveTag').style.display='none'; $('timer').classList.remove('live');
   if(!S.day){ setPill('pRep','');setPill('pCust',''); } else { setPill('pRep','busy'); setPill('pCust','busy'); $('dayState').textContent='🟢 ממתין לשיחה הבאה…'; }
   if(S.simActive){ S.simActive=false; $('simState').textContent='הסימולציה הסתיימה. הסיכום ייפתח מיד.'; $('btnSimStart').style.display=''; $('btnSimStop').style.display='none'; }
@@ -983,7 +1008,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
     ammo:{type:'array',items:{type:'object',additionalProperties:false,properties:{
       type:{type:'string',enum:['pain','gap','motive','why_now','cost_of_inaction','past','barrier','fear','desire','contradiction','urgency','belief','personal','number','commitment']},
       status:{type:'string',enum:['hot','high','medium','low','resolved'],description:'hot=🔴 חזק מאוד/חסם משמעותי, high=🟠, medium=🟡, low=🟢 משני או כמעט פתור, resolved=✅ נפתר'},
-      text:{type:'string',description:'כותרת קצרה במילים של הלקוח, עד 10 מילים. לא ניסוח שיווקי ולא פרשנות'},
+      text:{type:'string',description:'כותרת קצרה במילים של הלקוח, עד 6 מילים (מקסימום 7). לא ניסוח שיווקי ולא פרשנות'},
       note:{type:'string',description:'שורה אחת: הקשר, מה זה מחזק, האם החסם פתוח או נפתר, עד 15 מילים'},
       use:{type:'string',description:'משפט או שאלה טבעיים שהנציג יכול להגיד עכשיו בעזרת הפריט, או מחרוזת ריקה'}},
       required:['type','status','text','note','use']},
@@ -1089,7 +1114,7 @@ ${transcript}
     const txt=res.content.filter(b=>b.type==='text').map(b=>b.text).join('');
     const out=JSON.parse(txt);
     if(S.callId!==runCall||S.runId!==runId){ return; } // the call changed (or the watchdog started a newer run) while this one was in flight
-    applyCoach(out); syncCall();
+    applyCoach(out,{startedAt:S.inFlightAt}); syncCall();
     S.lastAnalyzedCount=analyzedCount;
     $('aiLatency').textContent=((performance.now()-t0)/1000).toFixed(1)+'s'; setPill('pAI','on');
   }catch(e){
@@ -1101,15 +1126,16 @@ ${transcript}
     if(S.analysisPending) runAnalysis(); // only if new lines arrived mid-flight; an error waits for the next line (no retry storm)
   }
 }
-function applyCoach(o){
+function applyCoach(o,opt={}){
   for(const sl of (o.speaker_labels||[])) setSpeaker(sl.id,sl.who,false);
   if(o.profile){S.profile=o.profile;const p=$('profile');p.style.display='';p.innerHTML='<b>פרופיל הלקוח:</b> '+escapeHtml(o.profile)}
   if(Array.isArray(o.ammo)){
     S.ammo=o.ammo.slice(0,8);
     const AL={pain:'כאב',gap:'פער',motive:'מניע',why_now:'למה עכשיו',cost_of_inaction:'מחיר אי-עשייה',past:'ניסיון עבר',barrier:'חסם',fear:'פחד',desire:'רצון',contradiction:'סתירה',urgency:'דחיפות',belief:'אמונה',personal:'אישי',number:'מספר',commitment:'התחייבות'};
     const SE={hot:'🔴',high:'🟠',medium:'🟡',low:'🟢',resolved:'✅'};
-    let html=S.ammo.map((a,i)=>`<div class="ammo s-${SE[a.status]?a.status:'medium'}"><div class="at">${SE[a.status]||'🟡'} <span class="rank">${i+1}.</span>${AL[a.type]||a.type}</div><div>${escapeHtml(a.text)}</div>${a.note?`<div class="an">${escapeHtml(a.note)}</div>`:''}${a.use?`<div class="au">💬 ${escapeHtml(a.use)}</div>`:''}</div>`).join('');
-    for(let i=S.ammo.length;i<8;i++) html+=`<div class="ammo empty"><div class="at"><span class="rank">${i+1}.</span></div><div style="font-size:12.5px;color:var(--text-muted)">עדיין אין מספיק מידע</div></div>`;
+    const short=t=>{const w=String(t||'').trim().split(/\s+/); return w.length>7?w.slice(0,7).join(' ')+'…':w.join(' ');};
+    let html=S.ammo.map((a,i)=>`<div class="ammo s-${SE[a.status]?a.status:'medium'}" title="${escapeHtml((AL[a.type]||a.type)+(a.note?' · '+a.note:'')+(a.use?'\n💬 '+a.use:''))}"><span class="at">${SE[a.status]||'🟡'}<span class="rank">${i+1}.</span></span><span class="txt">${escapeHtml(short(a.text))}</span></div>`).join('');
+    for(let i=S.ammo.length;i<8;i++) html+=`<div class="ammo empty"><span class="at"><span class="rank">${i+1}.</span></span><span class="txt" style="font-weight:500;color:var(--text-muted)">—</span></div>`;
     $('ammo').innerHTML=html;
     $('emptyA').style.display='none'; const open=S.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length; $('ammoCount').textContent=S.ammo.length+'/8'+(open?' · '+open+' חסמים פתוחים':'');
   }
@@ -1125,10 +1151,15 @@ function applyCoach(o){
   if(Array.isArray(o.checks)){ for(const c of o.checks){ if(c&&typeof c.id==='string'&&STAGE_CHECKS[c.id.split('.')[0]]) S.checks[c.id]=!!c.done; } }
   if(o.stage) setStage(o.stage);
   if(o.temperature){S.temp=o.temperature;renderStages()}
-  const ev=addEvent({kind:S.single?'listen':'auto',text:o.say_now||'',why:o.why||'',avoid:o.avoid||'',reasoning:o.reasoning||null,close_check:o.close_check||[]});
-  $('sayText').textContent=o.say_now||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
-  $('sayReason').innerHTML=o.reasoning?`<span>🧠 ${escapeHtml(o.reasoning.principle||'')}</span><span>🎯 ${escapeHtml(o.reasoning.goal||'')}</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
-  const sn=$('saynow'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
+  // a faster "quick" line may have landed while this analysis was in flight: keep the newer sentence on screen
+  const staleSay=!!(opt.startedAt&&S.sayAt&&S.sayAt>opt.startedAt);
+  if(!staleSay){
+    const ev=addEvent({kind:S.single?'listen':'auto',text:o.say_now||'',why:o.why||'',avoid:o.avoid||'',reasoning:o.reasoning||null,close_check:o.close_check||[]});
+    $('sayText').textContent=o.say_now||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
+    $('sayReason').innerHTML=o.reasoning?`<span>🧠 ${escapeHtml(o.reasoning.principle||'')}</span><span>🎯 ${escapeHtml(o.reasoning.goal||'')}</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
+    const sn=$('saynow'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
+    S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
+  }
   if(Array.isArray(o.close_check)&&o.close_check.length){
     const key='PC:'+o.close_check.join('|'); if(!S.shownCards.includes(key)){ S.shownCards.push(key);
       const pe=addEvent({kind:'precheck',text:o.close_check.join(' · '),reasoning:{why_now:'הנציג מתקדם לסגירה עם פריטים פתוחים',principle:'תנאי הסגירה בפלייבוק',goal:'לוודא שלא נשאר חסם פתוח לפני ההחלטה'}});
@@ -1197,6 +1228,7 @@ const REQ_SCHEMA={type:'object',additionalProperties:false,properties:{sentence:
 async function requestSentence(auto){
   const q=auto?'AUTO':$('reqInput').value.trim(); if(!q) return toast('כתוב מה אתה צריך, למשל: משפט סגירה','t-error');
   if(!S.settings.anthropic){openDrawer();return}
+  if(auto||!q.startsWith('תוביל אותי')) return quickSay(auto?'ask':'custom',q); // fast lane: last 3 minutes, small model
   const finals=S.lines.filter(l=>l.final&&l.text.trim());
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   const transcript=finals.slice(-400).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n')||'(אין תמלול עדיין)';
@@ -1222,11 +1254,84 @@ ${transcript}
     $('sayText').textContent=o.sentence; $('sayWhy').textContent='למה: '+o.why+(o.alt?' · חלופה: '+o.alt:''); $('sayAvoid').textContent=(o.plan&&o.plan.length)?'🧭 '+o.plan.join(' ← '):'';
     $('sayReason').innerHTML=o.reasoning?`<span>🧠 ${escapeHtml(o.reasoning.principle||'')}</span><span>🎯 ${escapeHtml(o.reasoning.goal||'')}</span>`:''; $('sayFb').innerHTML=fbButtons(ce.id);
     const sn=$('saynow'); sn.classList.add('custom'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
-    setPill('pAI','on'); $('reqInput').value='';
+    setPill('pAI','on'); $('reqInput').value=''; S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
   }catch(e){console.error(e);setPill('pAI','err');toast('שגיאה: '+(e.error?.error?.message||e.message||e).slice(0,140),'t-error')}
   finally{$('btnReq').disabled=false;$('btnAsk').disabled=false;$('saynow').classList.remove('thinking')}
 }
 $('btnReq').onclick=()=>requestSentence(false); $('btnAsk').onclick=()=>requestSentence(true); $('reqInput').addEventListener('keydown',e=>{if(e.key==='Enter')requestSentence(false)});
+
+/* ───────────────────────── fast lane: "say now" every 10s + instant ask/sentence (small model, last 3 minutes) ───────────────────────── */
+const QUICK_MODELS=['claude-haiku-4-5-20251001','claude-sonnet-5'];
+const QUICK_SYS=`אתה מאמן מכירות בזמן אמת שיושב ליד נציג במועדון האיקומרס של אביב מלכה, בשיחת טלפון חיה. השיטה: KYC → כאב → חסם → מטרה → מניע רכישה → הצגת פתרון → סגירה; כל שלב יוצר את הצורך בשלב הבא.
+חוקים: עברית מדוברת וחמה. משפט אחד (לכל היותר שניים) שהנציג מקריא מהמסך מיד. הלקוח מדבר 60%. לא לפתור ולא להציג מוצר מוקדם. כאב הופכים למחיר: כסף, זמן, משפחה, שנים. חסם: לא מתווכחים, מוצאים את האמונה או הפחד מתחתיו ומחפשים סתירה. משתמשים במילים, במספרים וברגעים שהלקוח עצמו נתן. אחרי שהכאב והמטרה ברורים, מובילים בביטחון לצעד הבא. אם הנציג מרצה, המשפט הבא הוא שאלה קצרה.
+החזר JSON בלבד, בלי טקסט נוסף: {"sentence":"המשפט להגיד עכשיו","why":"למה, עד 12 מילים","customer_state":"משפט אחד: מה הלקוח מרגיש/רוצה/חושש עכשיו"}`;
+function parseLooseJson(txt){ try{ return JSON.parse(txt); }catch(e){} const m=String(txt).match(/\{[\s\S]*\}/); if(m){ try{ return JSON.parse(m[0]); }catch(e){} } return {sentence:String(txt).trim().slice(0,300),why:'',customer_state:''}; }
+function recentTranscript(sec=180,minLines=6,maxLines=40){
+  const finals=S.lines.filter(l=>l.final&&l.text.trim()); const cut=Date.now()-sec*1000;
+  let win=finals.filter(l=>l.ts>=cut); if(win.length<minLines) win=finals.slice(-minLines); win=win.slice(-maxLines);
+  const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
+  return {count:finals.length,text:win.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n')||'(אין תמלול עדיין)'};
+}
+function quickTick(now){
+  if(!S.running||S.quickInFlight||!S.settings.anthropic) return;
+  if(now-(S.lastQuickAt||S.startedAt)<10000) return;
+  const n=S.lines.filter(l=>l.final&&l.text.trim()).length;
+  if(!n||n===S.lastQuickCount) return;
+  quickSay('quick','');
+}
+async function quickSay(mode,q){
+  if(!S.settings.anthropic){openDrawer();return}
+  if(S.quickInFlight) return;
+  S.quickInFlight=true; const t0=performance.now(); const runCall=S.callId;
+  const tr=recentTranscript(); S.lastQuickCount=tr.count; S.lastQuickAt=Date.now();
+  const st=STAGES.find(x=>x.id===S.stage)||STAGES[0];
+  const missing=(STAGE_CHECKS[S.stage]||[]).map((t,i)=>S.checks[S.stage+'.'+(i+1)]?null:t).filter(Boolean);
+  const ammo=(S.ammo||[]).slice(0,5).map((a,i)=>(i+1)+'. '+a.text).join(' | ')||'—';
+  const ask=mode==='ask'?`הנציג לחץ "מה לשאול?". תן את השאלה האחת שמקדמת את השיחה שלב אחד: לפי מה שחסר בצ'ק-ליסט ולפי קצה החוט הכי חזק שהלקוח נתן ועוד לא נפתח.`
+    :mode==='custom'?`הנציג מבקש משפט ספציפי: "${q}". כתוב אותו עם הפרטים של הלקוח הזה, לא גנרי.`
+    :`עברו כמה שניות בשיחה. מה המשפט הבא של הנציג, בתגובה למה שנאמר הרגע ובהקשר של כל מה שלמעלה?`;
+  const user=`${S.single?'מצב: האזנה לשיחה.':'מצב: הנציג בשיחה חיה וקורא מהמסך.'}
+שלב: ${st.l}. חסר בצ'ק-ליסט: ${missing.join(' | ')||'הושלם'}
+פרופיל: ${S.profile||'—'}
+תחמושת (חזק→חלש): ${ammo}
+${ask}
+
+תמלול 3 הדקות האחרונות:
+${tr.text}`;
+  if(mode!=='quick'){ $('btnReq').disabled=true; $('btnAsk').disabled=true; }
+  $('saynow').classList.add('thinking'); setPill('pAI','busy');
+  let o=null, lastErr=null;
+  for(const model of QUICK_MODELS){
+    try{
+      const res=await getClient().messages.create({model,max_tokens:220,system:QUICK_SYS,messages:[{role:'user',content:user}]},{timeout:9000,maxRetries:0});
+      o=parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')); break;
+    }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
+  }
+  const sec=((performance.now()-t0)/1000).toFixed(1);
+  try{
+    if(!o) throw lastErr||new Error('אין תשובה');
+    if(S.callId!==runCall) return;
+    const kind=mode==='quick'?'quick':mode;
+    const ev=addEvent({kind,request:mode==='ask'?'מה לשאול עכשיו':mode==='custom'?q.slice(0,200):'',text:o.sentence||'',why:o.why||'',reasoning:null});
+    $('sayText').textContent=o.sentence||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=''; $('sayReason').innerHTML=''; $('sayFb').innerHTML=fbButtons(ev.id);
+    if(o.customer_state){ S.custState=o.customer_state; const c=$('custState'); c.style.display=''; c.innerHTML='<b>מצב הלקוח:</b> '+escapeHtml(o.customer_state); }
+    const sn=$('saynow'); sn.classList.toggle('custom',mode!=='quick'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
+    S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
+    $('aiLatency').textContent='⚡ '+sec+'s'; setPill('pAI','on'); if(mode==='custom') $('reqInput').value='';
+  }catch(e){ console.error(e); setPill('pAI','err'); toast('שגיאה: '+(e.error?.error?.message||e.message||e).slice(0,140),'t-error'); log('Claude (מהיר): '+(e.status?e.status+' ':'')+String(e.message||e).slice(0,160),'err'); }
+  finally{ S.quickInFlight=false; $('saynow').classList.remove('thinking'); $('btnReq').disabled=false; $('btnAsk').disabled=false; }
+}
+const SAYLOG_KINDS={quick:'⚡',auto:'🧠',listen:'👂',ask:'🎯',custom:'✨',lead:'🧭'};
+function renderSayLog(){
+  const el=$('sayLog'); if(!el) return;
+  const evs=(S.events||[]).filter(e=>SAYLOG_KINDS[e.kind]&&e.text).slice().sort((a,b)=>b.ts-a.ts);
+  if(!evs.length){ el.innerHTML=''; return; }
+  el.innerHTML=`<div class="sl-h">🕒 יומן המשפטים <span>${evs.length}</span></div>`+evs.map(e=>`<div class="sl-row"><span class="sl-t">${new Date(e.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</span><span class="sl-k" title="${e.kind}">${SAYLOG_KINDS[e.kind]}</span><span class="sl-x">${escapeHtml(e.text)}</span></div>`).join('');
+}
+function snapshotCall(){
+  const finals=S.lines.filter(l=>l.final&&l.text.trim()).map(l=>({...l}));
+  return {lines:finals, summarizing:false, ctx:{id:S.callId,startedAt:S.startedAt,endedAt:S.endedAt||Date.now(),single:S.single,sim:!!(S.simActive||S.endedSim),demo:!!S.demo,rep:S.settings.repName||'ללא שם',events:S.events.slice(),ammo:S.ammo.slice(),profile:S.profile,checks:{...S.checks},stage:S.stage,stageIdx:S.stageIdx,temp:S.temp,custState:S.custState,transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})),insights:(S.insights||[]).slice()}};
+}
 
 /* ───────────────────────── summary ───────────────────────── */
 const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
@@ -1243,12 +1348,14 @@ const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
   improvements:{type:'array',items:{type:'object',additionalProperties:false,properties:{quote:{type:'string'},better:{type:'string',description:'מה היה עדיף להגיד'},principle:{type:'string'}},required:['quote','better','principle']},description:'3 נקודות לשיפור קונקרטיות'},
   crm_text:{type:'string',description:'סיכום מנהלים מלא מוכן להדבקה ב-CRM, ללא Markdown, כותרות עם אימוג׳י: תמצית, פרופיל ופרטים שמסר, חום ליד ושלב, כאבים, התנגדויות ואיך טופלו, מטרה ומניע, הוסכם/צעד הבא, ציון ו-3 שיפורים'}
 },required:['summary','outcome','next_step','score','stage_reached','strengths','improvements','crm_text','scores','opening_feedback','lessons','one_thing']};
-async function runSummary(auto){
-  const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length) return;
+async function runSummary(auto,snap){
+  // snap = state frozen at call end. In day mode the next call auto-starts inside the 1.5s delay and used to wipe
+  // S.lines / swap S.callId under this function, so the ended call got no summary or the wrong call got it.
+  const src=snap||snapshotCall(); const finals=src.lines; if(!finals.length) return;
   if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום…'; }
-  else if(S.summary){ return; }
-  if(S.demo) { /* demo runs get a debrief but are never stored */ }
-  const ctx={id:S.callId,startedAt:S.startedAt,endedAt:S.endedAt||Date.now(),single:S.single,sim:!!(S.simActive||S.endedSim),demo:!!S.demo,rep:S.settings.repName||'ללא שם',events:S.events.slice(),ammo:S.ammo.slice(),profile:S.profile,checks:{...S.checks},stage:S.stage,stageIdx:S.stageIdx,temp:S.temp,custState:S.custState,transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})),insights:(S.insights||[]).slice()};
+  else if(!snap&&S.summary){ return; }
+  if(src.summarizing) return; src.summarizing=true;
+  const ctx=src.ctx;
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   const transcript=finals.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
   try{
@@ -1256,7 +1363,7 @@ async function runSummary(auto){
       model:'claude-opus-5', max_tokens:6000, betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
       output_config:{effort:'medium',format:{type:'json_schema',schema:SUMMARY_SCHEMA}},
       system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
-      messages:[{role:'user',content:`השיחה הסתיימה. פרופיל הלקוח: ${S.profile||'—'}. תחמושת: ${S.ammo.map((a,i)=>(i+1)+'. ['+a.status+'] '+a.type+': '+a.text+' ('+a.note+')').join(' | ')||'—'}.
+      messages:[{role:'user',content:`השיחה הסתיימה. פרופיל הלקוח: ${ctx.profile||'—'}. תחמושת: ${(ctx.ammo||[]).map((a,i)=>(i+1)+'. ['+a.status+'] '+a.type+': '+a.text+' ('+a.note+')').join(' | ')||'—'}.
 דרג את הנציג לפי הפלייבוק (איכות KYC, העמקת כאב, טיפול בחסם, מטרה, מניע, הצגה מותאמת, סגירה, יחס דיבור). ציון 10 = שיחה לפי הספר. כתוב גם crm_text מלא.
 
 התמלול המלא:
@@ -1267,12 +1374,18 @@ ${transcript}`}],
     const sumFields={summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o};
     if(!ctx.demo){ if(S.callId===ctx.id){ syncCall(sumFields); } else { syncRow({id:ctx.id,rep:ctx.rep,mode:ctx.sim?'sim':(ctx.single?'listen':'rep'),sim:ctx.sim,status:'ended',started_at:new Date(ctx.startedAt).toISOString(),updated_at:new Date().toISOString(),ended_at:new Date(ctx.endedAt).toISOString(),duration_sec:Math.round((ctx.endedAt-ctx.startedAt)/1000),stage:ctx.stage,stage_idx:ctx.stageIdx,temperature:ctx.temp,profile:ctx.profile||'',customer_state:ctx.custState||'',checks:ctx.checks,events:ctx.events,ammo:ctx.ammo,transcript:ctx.transcript,insights:ctx.insights,open_barriers:ctx.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length,...sumFields}); } }
     if(!ctx.demo) saveLocalHistory(o,ctx);
+    S.lastSummary={o,ctx};
     if(S.callId===ctx.id||!S.running){ S.summary=o; renderDebrief(o,ctx); $('modal').classList.add('show'); if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok'); }
     else { toast('סיכום השיחה הקודמת מוכן (ציון '+o.score+'/10). יופיע בבורד.','t-ok'); }
     if(!ctx.demo) afterCallHooks(ctx);
   }catch(e){ const msg='שגיאה: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||e); if(!auto) $('modalBody').textContent=msg; log('Claude (סיכום): '+msg.slice(0,200),'err'); }
 }
-$('btnSummary').onclick=()=>{ if(S.summary){ renderDebrief(S.summary); $('modal').classList.add('show'); } else runSummary(false); };
+$('btnSummary').onclick=()=>{
+  if(S.summary){ renderDebrief(S.summary,(S.lastSummary&&S.lastSummary.o===S.summary)?S.lastSummary.ctx:null); $('modal').classList.add('show'); }
+  else if(S.lines.some(l=>l.final&&l.text.trim())) runSummary(false);
+  else if(S.lastSummary){ renderDebrief(S.lastSummary.o,S.lastSummary.ctx); $('modal').classList.add('show'); toast('זה סיכום השיחה הקודמת','t-ok'); }
+  else toast('אין עדיין שיחה לסכם','t-error');
+};
 $('btnCloseModal').onclick=()=>$('modal').classList.remove('show');
 $('btnCopy').onclick=()=>{navigator.clipboard.writeText((S.summary&&S.summary.crm_text)||$('modalBody').textContent);toast('הסיכום ל-CRM הועתק','t-ok')};
 const PARAM_LABEL={opening:'פתיחה',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע',solution:'הצגה',close:'סגירה',talk_ratio:'יחס דיבור'};
@@ -1281,7 +1394,7 @@ function renderDebrief(o,ctx){
   const bar=(k)=>{const v=sc[k]||0; const c=v>=8?'#10b981':v>=6?'#f5b342':'#ef4444'; return `<div class="pm"><div class="pl">${PARAM_LABEL[k]}</div><div class="pb"><i style="width:${v*10}%;background:${c}"></i></div><div class="pv">${v}</div></div>`};
   $('modalBody').innerHTML=`
   <div class="db-top">
-    <div class="db-score"><div class="big">${o.score}<small>/10</small></div><div class="lbl">ציון השיחה</div><div class="sub">${{closed:'✅ נסגר',follow_up:'📅 המשך טיפול',lost:'❌ לא נסגר',unknown:'—'}[o.outcome]||''} · ${STAGES.find(x=>x.id===o.stage_reached)?.l||''} · ${String(Math.floor(dur/60)).padStart(2,'0')}:${String(dur%60).padStart(2,'0')}</div></div>
+    <div class="db-score"><div class="big">${o.score??'—'}<small>/10</small></div><div class="lbl">ציון השיחה</div><div class="sub">${{closed:'✅ נסגר',follow_up:'📅 המשך טיפול',lost:'❌ לא נסגר',unknown:'—'}[o.outcome]||''} · ${STAGES.find(x=>x.id===o.stage_reached)?.l||''} · ${String(Math.floor(dur/60)).padStart(2,'0')}:${String(dur%60).padStart(2,'0')}</div></div>
     <div class="db-one"><div class="k">🎯 הדבר האחד לשיחה הבאה</div><div class="t">${escapeHtml(o.one_thing||'')}</div><div class="k" style="margin-top:10px">🗣️ פתיחת השיחה</div><div class="s">${escapeHtml(o.opening_feedback||'')}</div></div>
   </div>
   <div class="db-grid">
