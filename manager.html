@@ -133,6 +133,7 @@
     <div class="field"><label class="field-label">Supabase URL</label><input class="field-input" id="cfgUrl" placeholder="https://xxxx.supabase.co"></div>
     <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><input class="field-input" id="cfgKey" type="password" placeholder="sb_publishable_..."></div>
     <div class="hint">אותם פרטים שהגדרת ב-LiveCoach תחת "צוות ובורד מנהל". נשמרים בדפדפן הזה בלבד.</div>
+    <div class="field"><label class="field-label">OpenAI API Key (אופציונלי: תמלול הקלטות של שיחות מופת)</label><input class="field-input" id="cfgOai" type="password" placeholder="sk-..."></div>
     <div class="field"><label class="field-label">Anthropic API Key (אופציונלי: ניתוח AI של המדדים)</label><input class="field-input" id="cfgAnth" type="password" placeholder="sk-ant-..."></div>
     <button class="btn btn-primary" id="btnSaveCfg" style="margin-top:12px">שמור והתחבר</button>
   </section>
@@ -170,10 +171,18 @@
           <div class="train-form"><textarea id="trainText" placeholder="למשל: בפתיחת שיחה תמיד תן לנציג לשאול קודם מה הביא את הלקוח דווקא עכשיו. אל תציע פתרון לפני שהלקוח אמר מספר…"></textarea></div>
           <div style="display:flex;gap:8px;margin-top:8px;align-items:center"><button class="btn btn-primary" id="btnTrainSave">שמור הנחיה</button><span class="hint" id="trainStatus"></span></div>
         </div>
+        <div class="mbox" style="margin-top:14px;background:linear-gradient(135deg,rgba(245,179,66,.10),rgba(124,58,237,.08));border-color:rgba(245,179,66,.4)">
+          <h2 style="margin-bottom:8px">🌟 שיחות מופת: תן למאמן ללמוד משיחה טובה</h2>
+          <div class="hint" style="margin-bottom:10px">הקלטה מ-ToChat (MP3), תמלול מודבק, או שיחה מהיומן (כפתור 🌟 בפרטי השיחה). המאמן מוציא את המהלכים הטובים עם ציטוטים, לפי שלב, ומכניס אותם להנחיות של כל הנציגים.</div>
+          <div class="mgrid3"><div class="field"><label class="field-label">נציג</label><input class="field-input sm" id="exRep" placeholder="שם הנציג"></div><div class="field"><label class="field-label">מה היה מצוין בשיחה (המילים שלך)</label><input class="field-input sm" id="exNote" placeholder="למשל: אכפתיות אמיתית בשלב החסם, לא ויתר על הכאב…"></div></div>
+          <div class="mgrid3"><div class="field"><label class="field-label">הקלטה (mp3/m4a/wav, עד 25MB)</label><input type="file" id="exAudio" accept="audio/*"></div><div class="field"><label class="field-label">או תמלול מודבק</label><textarea class="field-input" id="exText" style="min-height:70px;direction:rtl;text-align:right" placeholder="הדבק כאן תמלול של השיחה…"></textarea></div></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" id="btnExRun">🌟 נתח ולמד מהשיחה</button><span class="hint" id="exStatus"></span></div>
+          <div id="exList" style="display:flex;flex-direction:column;gap:6px;margin-top:10px"></div>
+        </div>
         <div style="margin-top:14px"><h2 style="margin-bottom:8px">🎯 יעדים חודשיים של הנציגים</h2><div id="repsGoals" style="display:flex;flex-direction:column;gap:6px"></div></div>
       </div>
       <div>
-        <div class="filters"><select class="field-input sm" id="fScope" style="width:auto"><option value="">כל הנושאים</option></select><select class="field-input sm" id="fSource" style="width:auto"><option value="">הכל</option><option value="manager">הנחיות</option><option value="correction">תיקונים</option></select></div>
+        <div class="filters"><select class="field-input sm" id="fScope" style="width:auto"><option value="">כל הנושאים</option></select><select class="field-input sm" id="fSource" style="width:auto"><option value="">הכל</option><option value="manager">הנחיות</option><option value="correction">תיקונים</option><option value="exemplar">שיחות מופת</option></select></div>
         <div id="trainList" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
     </div>
@@ -209,7 +218,7 @@
 
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer">
-  <div class="dh"><div class="av" id="dAv">?</div><div class="nm" id="dName">—<small id="dMeta"></small></div><span class="tag" id="dStatus"></span><div class="spacer"></div><button class="btn btn-sm" id="btnCopy">העתק סיכום</button><button class="btn btn-sm" id="btnClose">✕</button></div>
+  <div class="dh"><div class="av" id="dAv">?</div><div class="nm" id="dName">—<small id="dMeta"></small></div><span class="tag" id="dStatus"></span><div class="spacer"></div><button class="btn btn-sm" id="btnExemplar" title="למד את המאמן מהשיחה הזו">🌟 שיחת מופת</button><button class="btn btn-sm" id="btnCopy">העתק סיכום</button><button class="btn btn-sm" id="btnClose">✕</button></div>
   <div class="db">
     <div class="col" style="grid-column:span 1"><h3>💬 השיחה כפי שקרתה: תמלול + כל פעולה של המאמן, בסדר ובזמן שהיא קרתה</h3><div id="dTranscript" class="tl"></div></div>
     <div class="col"><h3>🔥 תחמושת</h3><div id="dAmmo" style="display:flex;flex-direction:column;gap:8px"></div></div>
@@ -240,12 +249,12 @@ async function sb(method,path,body,prefer){ const r=await fetch(CFG.sbUrl+'/rest
   const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/);
   if(m){ try{ const c=b64u.dec(m[1]); if(c.sbUrl&&c.sbKey){ localStorage.setItem('lc_mgr',JSON.stringify({sbUrl:c.sbUrl,sbKey:c.sbKey})); history.replaceState(null,'',location.pathname); } }catch(e){} }
   try{CFG=JSON.parse(localStorage.getItem('lc_mgr')||'{}')}catch(e){CFG={}}
-  $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||''; $('cfgAnth').value=CFG.anth||'';
+  $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||''; $('cfgAnth').value=CFG.anth||''; $('cfgOai').value=CFG.oai||'';
   if(!CFG.sbUrl||!CFG.sbKey){ showSetup(true); } else { start(); }
 })();
 function showSetup(v){ $('setup').style.display=v?'':'none'; for(const id of ['liveSec','daySec','recentSec']) $(id).style.display=v?'none':''; }
 $('btnSetup').onclick=()=>showSetup($('setup').style.display==='none');
-$('btnSaveCfg').onclick=()=>{ CFG={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim(),anth:$('cfgAnth').value.trim().replace(/[^\x21-\x7E]/g,'')}; localStorage.setItem('lc_mgr',JSON.stringify(CFG)); showSetup(false); start(); };
+$('btnSaveCfg').onclick=()=>{ CFG={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim(),anth:$('cfgAnth').value.trim().replace(/[^\x21-\x7E]/g,''),oai:$('cfgOai').value.trim().replace(/[^\x21-\x7E]/g,'')}; localStorage.setItem('lc_mgr',JSON.stringify(CFG)); showSetup(false); start(); };
 $('dayPick').onchange=()=>render();
 
 /* ── data ── */
@@ -358,9 +367,10 @@ function renderDislikes(){
   $('dlList').innerHTML=list.length?list.map(e=>evHtml(e,e.call,{showCall:true})).join(''):'<div class="empty">אין דיסלייקים. או שהמאמן מדויק, או שהנציגים לא לוחצים 👎. תזכיר להם.</div>';
 }
 function renderTrain(){
+  if(!renderTrain._ex){ renderTrain._ex=1; loadExemplars(); }
   const sc=$('fScope').value, so=$('fSource').value;
   let list=TRAIN.slice(); if(sc) list=list.filter(n=>(n.scope||'general')===sc); if(so) list=list.filter(n=>(n.source||'manager')===so);
-  $('trainList').innerHTML=list.length?list.map(n=>`<div class="note"><div class="sc">${SCOPES[n.scope]||n.scope||'כללי'}<br><span style="color:var(--text-muted);font-weight:500">${n.source==='correction'?'תיקון':'הנחיה'}</span></div><div class="tx">${n.context?`<div class="hint">על ההמלצה: "${esc(String(n.context).slice(0,140))}"</div>`:''}${esc(n.text)}<div class="meta">${new Date(n.created_at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}${n.rep?' · נציג: '+esc(n.rep):''}${n.call_id?` · <a href="#" onclick="openDetail('${n.call_id}');return false" style="color:#c4b5fd">לשיחה</a>`:''}</div></div><button class="btn btn-sm" onclick="delTrain('${n.id}')">מחק</button></div>`).join(''):'<div class="empty">עדיין אין הנחיות. כתוב את הראשונה משמאל.</div>';
+  $('trainList').innerHTML=list.length?list.map(n=>`<div class="note"><div class="sc">${SCOPES[n.scope]||n.scope||'כללי'}<br><span style="color:var(--text-muted);font-weight:500">${n.source==='correction'?'תיקון':n.source==='exemplar'?'🌟 מופת':'הנחיה'}</span></div><div class="tx">${n.context?`<div class="hint">${n.source==='exemplar'?'ציטוט מהשיחה':'על ההמלצה'}: "${esc(String(n.context).slice(0,200))}"</div>`:''}${esc(n.text)}<div class="meta">${new Date(n.created_at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}${n.rep?' · נציג: '+esc(n.rep):''}${n.call_id?` · <a href="#" onclick="openDetail('${n.call_id}');return false" style="color:#c4b5fd">לשיחה</a>`:''}</div></div><button class="btn btn-sm" onclick="delTrain('${n.id}')">מחק</button></div>`).join(''):'<div class="empty">עדיין אין הנחיות. כתוב את הראשונה משמאל.</div>';
   const mk=new Date(); const month=mk.getFullYear()+'-'+String(mk.getMonth()+1).padStart(2,'0');
   const reps=REPS.filter(r=>r.month===month); $('repsGoals').innerHTML=reps.length?reps.map(r=>`<div class="note"><div class="sc">${esc(r.name)}</div><div class="tx">${r.achieved}/${r.target} סגירות<div class="goal-bar" style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${Math.min(100,r.target?r.achieved/r.target*100:0)}%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></i></div></div></div>`).join(''):'<div class="hint">הנציגים מגדירים יעד בתחילת החודש דרך "📈 היום שלי". כאן תראה את ההתקדמות.</div>';
 }
@@ -473,6 +483,39 @@ function renderLeads(){
   window.__ls=ls;
 }
 window.toggleLead=i=>{ const tr=$('ld_'+i); const l=window.__ls[i]; if(!tr) return; if(tr.style.display==='none'){ tr.style.display=''; $('ldc_'+i).innerHTML=`<b>${esc(l.name)}</b> · ${esc(l.phone)} · משפך: ${FL[l.funnel]||l.funnel} · REF: ${esc(l.ref||'—')} · רמה: ${esc(l.level||'—')} · נוצר: ${l.created||'—'} · פיירברי: ${esc(l.fb_status||'—')} (${esc(l.fb_manager||'')}) · טוצ׳אט: ${esc(l.tc_status||'—')}${l.reason?' ('+esc(l.reason)+')':''}\nשיחות: ${l.calls} · ${l.talk_min} דק׳ · ראשונה ${l.first_call||'—'} · אחרונה ${l.last_call||'—'} · נציגים: ${esc((l.reps||[]).join(', '))}${l.closed?`\n✅ נסגר ע״י ${esc(l.closer)} ב-${l.closed_at||''} · ${esc(l.close_reason||'')}`:''}\n\n${(l.summaries||[]).map(s=>`── ${s.ts||''} · ${esc(s.rep)} · ${Math.round((s.sec||0)/60)} דק׳ ──\n${esc(s.text)}`).join('\n\n')||'אין סיכומי שיחה'}`; } else tr.style.display='none'; };
+/* ═══════════ exemplar calls: learn the good moves from a great call ═══════════ */
+const EX_SCHEMA={type:'object',additionalProperties:false,properties:{title:{type:'string',description:'כותרת קצרה לשיחה, עד 8 מילים'},avatar:{type:'string',description:'מי הלקוח בשיחה: אווטאר במשפט'},lessons:{type:'array',items:{type:'object',additionalProperties:false,properties:{stage:{type:'string',enum:['opening','kyc','pain','objection','goal','motive','solution','close','general']},quote:{type:'string',description:'ציטוט מדויק של הנציג מהשיחה, עד 40 מילים'},what_worked:{type:'string',description:'מה בדיוק עבד כאן ולמה, לפי הפלייבוק, עד 30 מילים'},reuse:{type:'string',description:'הנחיה לנציגים: איך לעשות את זה בשיחה הבאה, עד 30 מילים'}},required:['stage','quote','what_worked','reuse']}}},required:['title','avatar','lessons']};
+async function transcribeAudio(file){
+  if(!CFG.oai) throw new Error('להעלאת הקלטה צריך מפתח OpenAI ב"⚙️ חיבור" (או הדבק תמלול)');
+  if(file.size>25*1024*1024) throw new Error('הקובץ גדול מ-25MB. חתוך אותו או הדבק תמלול');
+  const fd=new FormData(); fd.append('file',file); fd.append('model','gpt-4o-transcribe'); fd.append('language','he'); fd.append('response_format','json');
+  const r=await fetch('https://api.openai.com/v1/audio/transcriptions',{method:'POST',headers:{'Authorization':'Bearer '+CFG.oai},body:fd});
+  const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||('תמלול נכשל '+r.status)); return j.text||'';
+}
+async function learnFromCall({transcript,rep,note,callId,st}){
+  if(!CFG.anth) throw new Error('צריך מפתח Anthropic ב"⚙️ חיבור"');
+  if(!transcript||transcript.length<200) throw new Error('התמלול קצר מדי');
+  st.textContent='המאמן קורא את השיחה…';
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.anth,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','anthropic-beta':'server-side-fallback-2026-07-01'},body:JSON.stringify({model:'claude-opus-5',max_tokens:3000,fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema:EX_SCHEMA}},
+    system:'אתה מאמן מכירות של מועדון האיקומרס של אביב מלכה. השיטה: 7 שלבים (KYC, כאב, חסם, מטרה, מניע רכישה, הצגת מוצר כגשר, סגירה), הובלת הלקוח לשינוי ולא שכנוע, קצות חוט, העמקת כאב עד מחיר, סידוק אמונה, קילוף למטרה זהותית, הידהוד המילים של הלקוח, סגירה אחרי 3 "כן". המנהל מסמן שיחה כמצוינת. תפקידך: למצוא 3-6 מהלכים ספציפיים של הנציג שעבדו, עם ציטוט מדויק מהשיחה לכל אחד, להסביר למה זה עבד לפי השיטה, ולנסח הנחיה שנציגים אחרים יכולים ליישם. עברית בלבד, בלי Markdown. אל תמציא ציטוטים.',
+    messages:[{role:'user',content:`הערת המנהל על מה שהיה מצוין: "${note||'לא צוין'}"${rep?' · הנציג: '+rep:''}
+
+התמלול:
+${transcript.slice(0,60000)}`}]})});
+  const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||r.status); const o=JSON.parse((j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''));
+  st.textContent='שומר '+o.lessons.length+' לקחים…';
+  const exId=(crypto.randomUUID?crypto.randomUUID():'ex_'+Date.now());
+  try{ await sb('POST','exemplars',{id:exId,title:o.title,avatar:o.avatar,rep:rep||null,note:note||null,call_id:callId||null,transcript:transcript.slice(0,120000),lessons:o.lessons},'return=minimal'); }catch(e){ if(!/exemplars/.test(e.message)) throw e; }
+  const rows=o.lessons.map(l=>({scope:l.stage||'general',source:'exemplar',text:l.what_worked+' → '+l.reuse,context:l.quote,rep:rep||null,call_id:callId||null,event_id:exId}));
+  await sb('POST','training',rows,'return=minimal');
+  await fetchTraining(); render(); loadExemplars();
+  st.textContent='✅ "'+o.title+'": '+o.lessons.length+' מהלכים נכנסו להנחיות המאמן. נציגים יקבלו אותם מהשיחה הבאה.';
+  return o;
+}
+$('btnExRun').onclick=async()=>{ const st=$('exStatus'); const btn=$('btnExRun'); btn.disabled=true; try{ let t=$('exText').value.trim(); const f=$('exAudio').files[0]; if(!t&&f){ st.textContent='מתמלל את ההקלטה (יכול לקחת דקה)…'; t=await transcribeAudio(f); } await learnFromCall({transcript:t,rep:$('exRep').value.trim(),note:$('exNote').value.trim(),st}); $('exText').value=''; $('exAudio').value=''; }catch(e){ st.textContent='❌ '+(e.message||e); } finally{ btn.disabled=false; } };
+$('btnExemplar').onclick=async()=>{ const r=ROWS.find(x=>x.id===SEL); if(!r) return; let note=''; try{ note=prompt('מה היה מצוין בשיחה הזו? (משפט אחד, במילים שלך)','')||''; }catch(e){} if(note===null) return; const st={set textContent(v){ toast(v); }}; try{ $('btnExemplar').disabled=true; const tr=(r.transcript||[]).map(l=>(l.who==='rep'?'נציג':'לקוח')+': '+l.t).join('\n'); await learnFromCall({transcript:tr,rep:r.rep,note,callId:r.id,st}); }catch(e){ toast('❌ '+(e.message||e)); } finally{ $('btnExemplar').disabled=false; } };
+async function loadExemplars(){ try{ const r=await fetch(CFG.sbUrl+'/rest/v1/exemplars?select=id,title,avatar,rep,note,created_at,lessons&order=created_at.desc&limit=50',{headers:hdr()}); if(!r.ok) return; const list=await r.json(); $('exList').innerHTML=list.map(x=>`<div class="note"><div class="sc">🌟</div><div class="tx"><b>${esc(x.title)}</b>${x.rep?' · '+esc(x.rep):''}<div class="hint">${esc(x.avatar||'')}${x.note?' · "'+esc(x.note)+'"':''} · ${(x.lessons||[]).length} מהלכים · ${new Date(x.created_at).toLocaleDateString('he-IL')}</div></div><button class="btn btn-sm" onclick="delExemplar('${x.id}')">מחק</button></div>`).join('')||'<div class="hint">עדיין אין שיחות מופת.</div>'; }catch(e){} }
+window.delExemplar=async id=>{ if(!confirm('למחוק את שיחת המופת והלקחים שלה?')) return; try{ await sb('DELETE','training?event_id=eq.'+encodeURIComponent(id)); await sb('DELETE','exemplars?id=eq.'+encodeURIComponent(id)); await fetchTraining(); render(); loadExemplars(); }catch(e){ toast('שגיאה: '+e.message); } };
 async function narrative(){
   if(!CFG.anth) return toast('הוסף מפתח Anthropic ב"⚙️ חיבור"');
   const btn=$('btnNarr'); btn.disabled=true; $('narr').innerHTML='<div class="hint">מנתח…</div>';

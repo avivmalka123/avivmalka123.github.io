@@ -1132,7 +1132,7 @@ function trainingBlock(){
   const groups={}; for(const n of notes){ (groups[n.scope||'general']=groups[n.scope||'general']||[]).push(n); }
   let out='\nהנחיות המנהל (אימון שנצבר, עדיפות עליונה על כל כלל אחר, החדש גובר על הישן):\n';
   for(const [sc,arr] of Object.entries(groups)){
-    out+='['+(SCOPE_LABEL[sc]||sc)+']\n'+arr.slice(0,40).map(n=>'- '+(n.source==='correction'&&n.context?'תיקון על המלצה קודמת ("'+String(n.context).slice(0,120)+'"): ':'')+String(n.text).slice(0,600)).join('\n')+'\n';
+    out+='['+(SCOPE_LABEL[sc]||sc)+']\n'+arr.slice(0,40).map(n=>'- '+(n.source==='correction'&&n.context?'תיקון על המלצה קודמת ("'+String(n.context).slice(0,120)+'"): ':n.source==='exemplar'&&n.context?'דוגמה מצוינת מהשטח, נציג אמר: "'+String(n.context).slice(0,160)+'". ':'')+String(n.text).slice(0,600)).join('\n')+'\n';
   }
   return out;
 }

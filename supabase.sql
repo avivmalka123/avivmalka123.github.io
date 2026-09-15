@@ -140,3 +140,23 @@ create policy "team read"   on public.metric_leads for select to anon using (tru
 create policy "team write"  on public.metric_leads for insert to anon with check (true);
 create policy "team update" on public.metric_leads for update to anon using (true) with check (true);
 create policy "team delete" on public.metric_leads for delete to anon using (true);
+
+-- Exemplary calls the manager marks: the coach extracts the good moves into `training` (source = exemplar).
+create table if not exists public.exemplars (
+  id          text primary key,
+  created_at  timestamptz default now(),
+  title       text,
+  avatar      text,
+  rep         text,
+  note        text,
+  call_id     text,
+  transcript  text,
+  lessons     jsonb default '[]'::jsonb
+);
+alter table public.exemplars enable row level security;
+drop policy if exists "team read"   on public.exemplars;
+drop policy if exists "team write"  on public.exemplars;
+drop policy if exists "team delete" on public.exemplars;
+create policy "team read"   on public.exemplars for select to anon using (true);
+create policy "team write"  on public.exemplars for insert to anon with check (true);
+create policy "team delete" on public.exemplars for delete to anon using (true);
