@@ -1,0 +1,11 @@
+name = "livecoach-link"
+main = "src/index.js"
+compatibility_date = "2026-01-15"
+
+# Team-link store for LiveCoach: the settings (API keys etc.) live here under a random token,
+# so the link a rep gets is short and carries no secrets.
+[[kv_namespaces]]
+binding = "LINKS"
+id = "47e7dd10828a47e3839bcefc646ada8b"
+
+# Secret (set once): npx wrangler secret put ADMIN_PASSWORD
