@@ -531,6 +531,8 @@ $('pWho').onclick=()=>{ let n=null; try{ n=prompt('מה השם שלך? (יופי
 const b64u={enc:o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
 $('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.openai,anthropic:S.settings.anthropic,speechmatics:S.settings.speechmatics,sbUrl:S.settings.sbUrl,sbKey:S.settings.sbKey,mode:'rep',custSrc:'tab',sttModel:S.settings.sttModel,effort:S.settings.effort,
     context:(S.settings.context!==DEFAULT_CONTEXT?S.settings.context:undefined),principles:(S.settings.principles!==DEFAULT_PRINCIPLES?S.settings.principles:undefined)};
+  // the link carries whatever THIS browser has saved; an empty link silently leaves every rep without keys
+  if(!cfg.anthropic||!cfg.openai){ toast('בדפדפן הזה חסרים מפתחות (OpenAI/Anthropic), הלינק ייצא ריק. הזן אותם כאן ושמור, או צור את הלינק מהדפדפן שבו הם שמורים.','t-error'); return; }
   // the team link must always point at the public site, even when this page is opened locally (localhost / file://)
   const PUBLIC_BASE='https://avivmalka123.github.io/live-coach/';
   const isLocal=location.protocol==='file:'||/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
@@ -1548,6 +1550,7 @@ ${(S.training||[]).filter(n=>n.scope==='simulation').slice(0,10).map(n=>'הנח�
 /* ───────────────────────── init ───────────────────────── */
 const fromLink=applyHashConfig();
 loadSettings(); renderStages(); loadTraining(); loadRecentProfiles();
+if(fromLink){ if(S.settings.anthropic&&S.settings.openai) toast('הגדרות הצוות יובאו ✓ אפשר ללחוץ "התחל יום"','t-ok'); else toast('הלינק נפתח אבל לא הכיל מפתחות. בקש לינק חדש מהמנהל.','t-error'); }
 if(fromLink){ toast('ההגדרות מהלינק נטענו','t-ok'); }
 if(!S.settings.repName){ setTimeout(()=>{ let n=null; try{ n=prompt('ברוך הבא ל-LiveCoach. מה השם שלך? (יופיע בבורד המנהל)','') }catch(e){} if(n&&n.trim()){ S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); } },600); }
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
