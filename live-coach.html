@@ -1438,9 +1438,9 @@ const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
   summary:{type:'string',description:'תמצית ב-2 משפטים'},
   outcome:{type:'string',enum:['closed','follow_up','lost','unknown'],description:'תוצאת השיחה'},
   next_step:{type:'string',description:'מה הוסכם / הצעד הבא, משפט אחד'},
-  score:{type:'integer',minimum:1,maximum:10,description:'ציון ביצוע הנציג לפי הפלייבוק, 1-10'},
+  score:{type:'integer',description:'1 עד 10. ציון ביצוע הנציג לפי הפלייבוק, 1-10'},
   stage_reached:{type:'string',enum:STAGES.map(x=>x.id)},
-  scores:{type:'object',additionalProperties:false,properties:{opening:{type:'integer',minimum:1,maximum:10,description:'פתיחת השיחה וראפור'},kyc:{type:'integer',minimum:1,maximum:10},pain:{type:'integer',minimum:1,maximum:10},objection:{type:'integer',minimum:1,maximum:10},goal:{type:'integer',minimum:1,maximum:10},motive:{type:'integer',minimum:1,maximum:10},solution:{type:'integer',minimum:1,maximum:10},close:{type:'integer',minimum:1,maximum:10},talk_ratio:{type:'integer',minimum:1,maximum:10,description:'יחס דיבור: 10 = הלקוח דיבר כ-60%'}},required:['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'],description:'ציון לכל פרמטר. שלב שלא הגיעו אליו: 1'},
+  scores:{type:'object',additionalProperties:false,properties:{opening:{type:'integer',description:'1 עד 10. פתיחת השיחה וראפור'},kyc:{type:'integer',description:'1 עד 10'},pain:{type:'integer',description:'1 עד 10'},objection:{type:'integer',description:'1 עד 10'},goal:{type:'integer',description:'1 עד 10'},motive:{type:'integer',description:'1 עד 10'},solution:{type:'integer',description:'1 עד 10'},close:{type:'integer',description:'1 עד 10'},talk_ratio:{type:'integer',description:'1 עד 10. יחס דיבור: 10 = הלקוח דיבר כ-60%'}},required:['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'],description:'ציון לכל פרמטר. שלב שלא הגיעו אליו: 1'},
   opening_feedback:{type:'string',description:'משפט אחד על פתיחת השיחה: מה עבד ומה לשפר בפעם הבאה'},
   lessons:{type:'array',items:{type:'string'},description:'3 לקחים עמוקים מהשיחה שהנציג לוקח לשיחה הבאה, עד 20 מילים כל אחד'},
   one_thing:{type:'string',description:'הדבר האחד שאם הנציג ישנה בשיחה הבאה ישפר הכי הרבה, משפט אחד'},
@@ -1471,6 +1471,7 @@ ${transcript}`}],
     },{timeout:180000,maxRetries:1});
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לסכם');
     const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
+    const clamp=v=>Math.max(1,Math.min(10,Math.round(Number(v)||1))); o.score=clamp(o.score); if(o.scores) for(const k of Object.keys(o.scores)) o.scores[k]=clamp(o.scores[k]);
     const sumFields={summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o};
     if(!ctx.demo){ if(S.callId===ctx.id){ syncCall(sumFields); } else { syncRow({id:ctx.id,rep:ctx.rep,mode:ctx.sim?'sim':(ctx.single?'listen':'rep'),sim:ctx.sim,status:'ended',started_at:new Date(ctx.startedAt).toISOString(),updated_at:new Date().toISOString(),ended_at:new Date(ctx.endedAt).toISOString(),duration_sec:Math.round((ctx.endedAt-ctx.startedAt)/1000),stage:ctx.stage,stage_idx:ctx.stageIdx,temperature:ctx.temp,profile:ctx.profile||'',customer_state:ctx.custState||'',checks:ctx.checks,events:ctx.events,ammo:ctx.ammo,transcript:ctx.transcript,insights:ctx.insights,open_barriers:ctx.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length,...sumFields}); } }
     if(!ctx.demo) saveLocalHistory(o,ctx);
