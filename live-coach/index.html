@@ -38,6 +38,8 @@
   .idbar .b button{flex:1;font-family:inherit;font-size:14px;font-weight:800;padding:10px;border-radius:10px;border:1px solid var(--border);cursor:pointer;color:var(--text)}
   .idbar .b .rep{background:rgba(6,182,212,.35)}.idbar .b .cust{background:rgba(245,179,66,.35)}
   .idbar .b button:hover{filter:brightness(1.2)}
+  .kbanner{margin:12px 22px 0;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:var(--text);border-radius:12px;padding:10px 14px;font-size:13.5px;font-weight:600}
+  .kbanner a{color:var(--neon);text-decoration:underline}
   .sync{font-size:11px;color:var(--text-muted)}.sync.on{color:var(--accent4)}
   /* coach bubble + panel */
   .bubble{position:fixed;left:22px;bottom:22px;width:64px;height:64px;border-radius:50%;border:none;background:transparent;cursor:pointer;z-index:45;padding:0;box-shadow:0 10px 30px rgba(124,58,237,.45);transition:transform .2s}
@@ -106,7 +108,7 @@
   /* ── main grid ── */
   main{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;padding:16px 22px 40px;align-items:start}
   @media(max-width:1250px){main{grid-template-columns:1fr 1fr}}
-  @media(max-width:860px){main{grid-template-columns:1fr}}
+  @media(max-width:860px){main{grid-template-columns:1fr;padding-bottom:120px} .panel{max-height:none;min-height:0} .panel-b{overflow:visible} .saylog{max-height:55vh;min-height:0} .ammo-mini{position:static!important;width:auto!important;max-height:none!important;box-shadow:none;left:auto;bottom:auto} .ammo-mini.collapsed .panel-b{display:block} .ammo-mini .ammo{font-size:13px;padding:4px 8px} .coach-panel{left:8px;width:calc(100vw - 16px);bottom:88px;height:min(600px,calc(100vh - 100px))} .bubble{left:12px;bottom:12px}}
   .panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;min-height:420px;max-height:calc(100vh - 230px)}
   .panel-h{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
   .panel-h .live{display:inline-flex;align-items:center;gap:5px;color:var(--red);font-size:11px}
@@ -266,6 +268,23 @@
   .saylog .sl-x{color:var(--text)}
   @media(min-width:1251px){ .tr-panel{max-height:calc(100vh - 720px);min-height:240px} .tr-panel .panel-b{padding-bottom:40px} main{padding-bottom:240px} }
   @media(max-width:1250px){ .ammo-mini{left:96px;bottom:22px;width:min(300px,calc(100vw - 108px))} }
+  /* ── phone layout (last, wins) ── */
+  @media(max-width:860px){
+    body{overflow-x:hidden}
+    header{padding:10px 12px;gap:8px} .logo{font-size:17px} .logo small{display:none} .pills{width:100%;order:5} .pill{font-size:11px;padding:4px 8px} .pill .lvl{display:none}
+    .grp{padding:3px;gap:4px} .btn{padding:7px 10px;font-size:12.5px;min-height:34px} .seg button{padding:5px 8px;font-size:11.5px} .timer{font-size:18px;min-width:70px;padding:3px 8px}
+    #winHint,#modeTag{display:none!important}
+    .stagebar{margin:10px 12px 0;padding:12px 10px 10px} .stage .l{font-size:10px;white-space:normal;text-align:center;line-height:1.1} .stage .c{width:18px;height:18px} .stages::before{top:8px} .stage .n{font-size:9px}
+    .ck-wrap{padding:10px} .ck-items{grid-template-columns:1fr} .ck{font-size:12px} .ck-btns{grid-template-columns:1fr 1fr} .btn.lead{min-height:44px;padding:6px 8px} .btn.lead span{font-size:12px} .btn.lead span small{display:none} .btn.lead i{font-size:16px;width:22px}
+    main{padding:10px 12px 130px;gap:12px}
+    .panel{max-height:none!important;min-height:0!important} .panel-b{overflow:visible!important;padding:10px 12px}
+    .saynow{padding:12px 14px} .saynow .t{font-size:18px} .reqbar{grid-template-columns:1fr;gap:6px} .reqbar .btn{width:100%;justify-content:center}
+    .saylog{max-height:55vh!important;min-height:0!important}
+    .ammo-mini{position:static!important;width:auto!important;max-height:none!important;box-shadow:none;left:auto;bottom:auto} .ammo-mini.collapsed .panel-b{display:block} .ammo-mini .panel-h{font-size:12px;min-height:36px} .ammo-mini .ammo{font-size:13px;padding:4px 8px} .ammo .txt{white-space:normal}
+    .coach-panel{left:8px;width:calc(100vw - 16px);bottom:88px;height:min(600px,calc(100vh - 100px))} .bubble{left:12px;bottom:12px}
+    .kbanner{margin:10px 12px 0;font-size:12.5px}
+    .logfoot{margin:0 12px 100px}
+  }
 </style>
 </head>
 <body>
@@ -293,6 +312,7 @@
     <button class="btn" id="btnSettings" title="הגדרות">⚙️ הגדרות</button>
   </div>
 </header>
+<div id="keysBanner" class="kbanner" style="display:none">🔑 בדפדפן הזה חסרים מפתחות, לכן המאמן, הסימולציה והצ'אט לא יעבדו. פתח את הלינק שקיבלת מהמנהל, או <a href="#" onclick="openDrawer();return false">הזן מפתחות בהגדרות</a>.</div>
 
 <section class="stagebar">
   <div class="stages" id="stages"></div>
@@ -394,7 +414,7 @@
   <div class="sec">🧠 המאמן <span id="ctxTag" style="font-weight:500;font-size:11px;color:var(--text-muted)"></span></div>
   <div class="field"><label class="field-label">על העסק והמוצר</label><textarea class="field-input" id="sContext" style="min-height:160px" placeholder="מה אתה מוכר, למי, מחיר, מה ההצעה, מה הבידול…"></textarea><div class="hint">ברירת המחדל: מועדון האיקומרס של אביב מלכה (מוטמע בכלי). ערוך חופשי, השאר ריק כדי לחזור לברירת המחדל.</div></div>
   <div class="field"><label class="field-label">עקרונות המכירה (המאמן פועל לפיהם)</label><textarea class="field-input" id="sPrinciples" style="min-height:220px"></textarea><div class="hint">ניתן לערוך חופשי. השאר ריק כדי לחזור לברירת המחדל.</div></div>
-  <div class="field"><label class="field-label">שם הנציג</label><input class="field-input" id="sRepName" placeholder="יובל"></div>
+  <div class="field" style="display:grid;grid-template-columns:1fr auto;gap:8px"><div><label class="field-label">שם הנציג</label><input class="field-input" id="sRepName" placeholder="יובל"></div><div><label class="field-label">פנייה לנציג</label><select class="field-input" id="sRepGender"><option value="m">זכר</option><option value="f">נקבה</option></select></div></div>
   <div class="field"><label class="field-label">שם הלקוח (אופציונלי)</label><input class="field-input" id="sCustName" placeholder="דנה"></div>
   <div class="field"><label class="field-label">רמת חשיבה של המאמן</label>
     <select class="field-input" id="sEffort"><option value="low">מהיר (מומלץ לזמן אמת)</option><option value="medium">מאוזן</option><option value="high">מעמיק (איטי יותר)</option></select>
@@ -516,7 +536,7 @@ function loadSettings(){
   $('sOpenai').value=s.openai||''; $('sAnthropic').value=s.anthropic||''; $('sSm').value=s.speechmatics||''; renderEnrolled();
   if(s.principles&&s.principles.startsWith('PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה')) s.principles=''; // the previous built-in playbook was saved verbatim; follow the new default instead
   $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES;
-  $('sRepName').value=s.repName||''; $('sCustName').value=s.custName||'';
+  $('sRepName').value=s.repName||''; $('sRepGender').value=s.repGender||'m'; refreshKeysBanner(); $('sCustName').value=s.custName||'';
   $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low';
   syncAudioUI();
 }
@@ -529,10 +549,10 @@ function saveSettings(){
   // built-in texts are stored as '' so future updates to the defaults reach everyone; only real edits are kept
   const customOnly=(v,def)=>{ v=v.trim(); return (!v||v===def)?'':v; };
   S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:customOnly($('sContext').value,DEFAULT_CONTEXT),
-    principles:customOnly($('sPrinciples').value,DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),custName:$('sCustName').value.trim(),
+    principles:customOnly($('sPrinciples').value,DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),repGender:$('sRepGender').value,custName:$('sCustName').value.trim(),
     mic:$('sMic').value,mode:$('sMode').value,custSrc:$('sCustSrc').value,custDev:$('sCustDev').value,sttModel:$('sSttModel').value,effort:$('sEffort').value,
     sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
-  syncModeSeg(); $('whoName').textContent=S.settings.repName||'ללא שם';
+  syncModeSeg(); refreshKeysBanner(); $('whoName').textContent=S.settings.repName||'ללא שם';
   localStorage.setItem('lc_settings',JSON.stringify(S.settings));
   S.anthropic=null;
   toast('ההגדרות נשמרו','t-ok'); closeDrawer();
@@ -552,6 +572,7 @@ async function listDevices(){
 }
 const openDrawer=()=>{$('drawer').classList.add('open');$('overlay').classList.add('show');listDevices()};
 const closeDrawer=()=>{$('drawer').classList.remove('open');$('overlay').classList.remove('show')};
+function refreshKeysBanner(){ const b=$('keysBanner'); if(!b) return; const ok=S.settings.anthropic&&(S.settings.openai||S.settings.speechmatics); b.style.display=ok?'none':''; }
 function syncModeSeg(){ const m=S.settings.mode||'rep'; for(const b of $('modeSeg').querySelectorAll('button')) b.classList.toggle('on',b.dataset.mode===m); }
 $('modeSeg').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; if(S.running) return toast('אפשר להחליף מצב רק כשאין שיחה פעילה','t-error');
   S.settings.mode=b.dataset.mode; $('sMode').value=S.settings.mode; syncAudioUI(); localStorage.setItem('lc_settings',JSON.stringify(S.settings)); syncModeSeg();
@@ -1085,6 +1106,9 @@ ${AMMO_RULES}
 - reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך.
 ${trainingBlock()}
 - Latency-sensitive; begin your visible answer immediately.
+- בכל שדה טקסט: עברית מדוברת בלבד. בלי Markdown, בלי כוכביות, בלי קוד, בלי שמות שדות באנגלית, בלי סוגריים מסולסלים. כל משפט צריך להיקרא בקול כמו שהוא.
+- ammo: ברגע שהלקוח אמר משפט אחד, הרשימה לא ריקה: לפחות עובדה, רצון או מניע שהוא נתן, במילים שלו.
+- פנה לנציג בלשון ${S.settings.repGender==='f'?'נקבה':'זכר'} (הנציג הוא מי שקורא את המסך).
 - ענה אך ורק ב-JSON לפי הסכמה.
 
 שלבי השיחה (התקדם לפי מה שקרה בפועל, אפשר גם לחזור אחורה):
@@ -1163,7 +1187,7 @@ ${transcript}
     });
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לנתח את הקטע הזה');
     const txt=res.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const out=JSON.parse(txt);
+    const out=scrub(JSON.parse(txt));
     if(S.callId!==runCall||S.runId!==runId){ return; } // the call changed (or the watchdog started a newer run) while this one was in flight
     applyCoach(out,{startedAt:S.inFlightAt}); syncCall();
     S.lastAnalyzedCount=analyzedCount;
@@ -1178,6 +1202,7 @@ ${transcript}
   }
 }
 function applyCoach(o,opt={}){
+  o=scrub(o);
   for(const sl of (o.speaker_labels||[])) setSpeaker(sl.id,sl.who,false);
   if(o.customer_gender&&o.customer_gender!=='unknown') S.custGender=o.customer_gender;
   if(o.profile){S.profile=o.profile;const p=$('profile');p.style.display='';p.innerHTML='<b>פרופיל הלקוח:</b> '+escapeHtml(o.profile)}
@@ -1190,6 +1215,7 @@ function applyCoach(o,opt={}){
     for(let i=S.ammo.length;i<8;i++) html+=`<div class="ammo empty"><span class="at"><span class="rank">${i+1}.</span></span><span class="txt"></span></div>`;
     $('ammo').innerHTML=S.ammo.length?html:'';
     $('emptyA').style.display=S.ammo.length?'none':''; const open=S.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length; $('ammoCount').textContent=S.ammo.length+'/8'+(open?' · '+open+' חסמים פתוחים':'');
+    if(S.ammo.length!==(S._ammoN||0)){ S._ammoN=S.ammo.length; log('תחמושת: '+S.ammo.length+' פריטים'); }
   }
   if(o.insight&&o.insight.quote&&!S.shownCards.includes('Q:'+o.insight.quote)){
     S.shownCards.push('Q:'+o.insight.quote); (S.insights=S.insights||[]).push({...o.insight,ts:Date.now()});
@@ -1300,7 +1326,7 @@ ${transcript}
 כתוב משפט שמשתמש בפרטים הספציפיים של הלקוח הזה (שמות, מספרים, מילים שלו). לא גנרי.`}],
     });
     if(res.stop_reason==='refusal') throw new Error('המודל סירב');
-    const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
+    const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
     const kind=auto?'ask':(q.startsWith('תוביל אותי')?'lead':'custom');
     const ce=addEvent({kind,request:q==='AUTO'?'מה לשאול עכשיו':q.slice(0,200),text:o.sentence,why:o.why,plan:o.plan||[],reasoning:o.reasoning||null});
     $('sayText').textContent=o.sentence; $('sayWhy').textContent='למה: '+o.why+(o.alt?' · חלופה: '+o.alt:''); $('sayAvoid').textContent=(o.plan&&o.plan.length)?'🧭 '+o.plan.join(' ← '):'';
@@ -1319,6 +1345,8 @@ const QUICK_SYS=`אתה מאמן מכירות בזמן אמת שיושב ליד 
 חוקים: עברית מדוברת וחמה. משפט אחד (לכל היותר שניים) שהנציג מקריא מהמסך מיד. הלקוח מדבר 60%; אם הנציג הרצה, המשפט הבא הוא שאלה קצרה. לא לפתור ולא להציג מוצר לפני שהכאב, החסם והמטרה ברורים. משתמשים במילים, במספרים וברגעים שהלקוח עצמו נתן. נציג חזק שואל ושותק; נציג חלש מסביר ומרגיע.
 לשון: קבע מגדר לפי ההנחיה בהודעה ושמור על לשון אחת לאורך כל המשפט. אסור לערבב זכר ונקבה, אסור לוכסנים (ספר/י). אם לא ידוע, ניטרלי.
 פלט: JSON בלבד, בלי טקסט לפני או אחרי, בלי גדרות קוד: {"sentence":"המשפט להגיד עכשיו","why":"למה, עד 12 מילים","customer_state":"משפט אחד: מה הלקוח מרגיש/רוצה/חושש עכשיו"}`;
+const scrubText=t=>String(t==null?'':t).replace(/```[a-z]*/gi,'').replace(/[`*_#]+/g,'').replace(/\\n/g,' ').replace(/^\s*"(.*)"\s*$/s,'$1').replace(/^[a-z_]{2,20}\s*:\s*/i,'').replace(/[{}\[\]<>]/g,'').replace(/\s{2,}/g,' ').trim();
+function scrub(o){ if(typeof o==='string') return scrubText(o); if(Array.isArray(o)) return o.map(scrub); if(o&&typeof o==='object'){ const r={}; for(const k of Object.keys(o)) r[k]=(k==='id'||k==='type'||k==='status'||k==='stage'||k==='temperature'||k==='who'||k==='outcome'||k==='stage_reached'||k==='customer_gender')?o[k]:scrub(o[k]); return r; } return o; }
 function parseLooseJson(raw){
   let txt=String(raw||'').replace(/```(?:json)?/gi,'').trim();
   try{ return JSON.parse(txt); }catch(e){}
@@ -1370,7 +1398,7 @@ ${tr.text}`;
   for(const model of QUICK_MODELS){
     try{
       const res=await getClient().messages.create({model,max_tokens:420,system:QUICK_SYS,messages:[{role:'user',content:user}]},{timeout:9000,maxRetries:0});
-      o=parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')); break;
+      o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
   const sec=((performance.now()-t0)/1000).toFixed(1);
@@ -1437,7 +1465,7 @@ async function runSummary(auto,snap){
 ${transcript}`}],
     },{timeout:180000,maxRetries:1});
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לסכם');
-    const o=JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''));
+    const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
     const sumFields={summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o};
     if(!ctx.demo){ if(S.callId===ctx.id){ syncCall(sumFields); } else { syncRow({id:ctx.id,rep:ctx.rep,mode:ctx.sim?'sim':(ctx.single?'listen':'rep'),sim:ctx.sim,status:'ended',started_at:new Date(ctx.startedAt).toISOString(),updated_at:new Date().toISOString(),ended_at:new Date(ctx.endedAt).toISOString(),duration_sec:Math.round((ctx.endedAt-ctx.startedAt)/1000),stage:ctx.stage,stage_idx:ctx.stageIdx,temperature:ctx.temp,profile:ctx.profile||'',customer_state:ctx.custState||'',checks:ctx.checks,events:ctx.events,ammo:ctx.ammo,transcript:ctx.transcript,insights:ctx.insights,open_barriers:ctx.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length,...sumFields}); } }
     if(!ctx.demo) saveLocalHistory(o,ctx);
