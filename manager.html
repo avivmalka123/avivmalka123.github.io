@@ -130,7 +130,7 @@
   <div class="logo"><div class="logo-icon">📊</div><div>בורד מנהל<small>LiveCoach · שיחות בלייב, תחמושת וציונים</small></div></div>
   <span class="pill" id="pConn"><i class="dot"></i>חיבור לנתונים</span>
   <span class="pill" id="pPoll"><i class="dot"></i>רענון כל 4 שניות</span>
-  <nav class="tabs" id="navTabs"><button data-view="live" class="on">🔴 לייב וביצועים</button><button data-view="daily">☀️ סיכום יום</button><button data-view="log">📚 יומן שיחות</button><button data-view="dislikes">👎 דיסלייקים <span id="dlCount" class="cnt"></span></button><button data-view="train">🎓 מרכז אימון</button><button data-view="metrics">📊 מדדים</button></nav>
+  <nav class="tabs" id="navTabs"><button data-view="live" class="on">🔴 לייב וביצועים</button><button data-view="daily">☀️ סיכום יום</button><button data-view="rep">👤 מבט נציג</button><button data-view="log">📚 יומן שיחות</button><button data-view="dislikes">👎 דיסלייקים <span id="dlCount" class="cnt"></span></button><button data-view="train">🎓 מרכז אימון</button><button data-view="metrics">📊 מדדים</button></nav>
   <div class="spacer"></div>
   <select class="btn" id="dayPick" style="direction:rtl"><option value="today">היום</option><option value="yesterday">אתמול</option><option value="week">7 ימים</option></select>
   <button class="btn" id="btnSetup">⚙️ חיבור</button>
@@ -176,6 +176,10 @@
     <div id="dlList" class="tl"></div>
   </section>
 
+  <section id="repSec" style="display:none">
+    <h2>👤 מבט נציג: מה הוא רואה, ומה מחכה לו מחר <span class="spacer"></span><select class="field-input sm" id="rvRep" style="width:auto"></select><input class="field-input sm" id="rvRepFree" placeholder="או הקלד שם נציג" style="width:180px"><button class="btn btn-sm" id="btnRvLoad">טען</button></h2>
+    <div id="rvBody"><div class="empty">בחר נציג. תראה את ההתחייבות של היום, השיחות והסיכומים שלו, סיכום היום שלו (אפשר גם להפיק אותו כאן והוא יקפוץ לו בבוקר), ואת מסך הבוקר של מחר.</div></div>
+  </section>
   <section id="trainSec" style="display:none">
     <h2>🎓 מרכז אימון: כאן אתה מלמד את המאמן</h2>
     <div class="train-grid">
@@ -383,6 +387,56 @@ $('btnDAi').onclick=async()=>{
     try{ await sb('POST','daily_digests?on_conflict=date',{date:DAILY.from,data:a,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal'); }catch(e){ console.warn('daily save',e); }
   }catch(e){ $('dAi').innerHTML='<div class="empty">שגיאה: '+esc(e.message||e)+'</div>'; } finally{ btn.disabled=false; }
 };
+/* ── rep view ── */
+let RV=null;
+function initRepView(){ const sel=$('rvRep'); const names=[...new Set(ROWS.map(r=>r.rep).filter(Boolean))].sort(); sel.innerHTML='<option value="">בחר…</option>'+names.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join(''); if(!initRepView._b){ initRepView._b=1; $('btnRvLoad').onclick=()=>loadRepView($('rvRepFree').value.trim()||$('rvRep').value); sel.onchange=()=>{ $('rvRepFree').value=''; loadRepView(sel.value); }; } }
+async function loadRepView(rep){
+  if(!rep) return toast('בחר נציג'); const body=$('rvBody'); body.innerHTML='<div class="empty">טוען את היום של '+esc(rep)+'…</div>';
+  const today=new Date().toISOString().slice(0,10); const yday=new Date(Date.now()-864e5).toISOString().slice(0,10);
+  const get=async(path)=>{ try{ const r=await fetch(CFG.sbUrl+'/rest/v1/'+path,{headers:hdr()}); return r.ok?await r.json():[]; }catch(e){ return []; } };
+  const [commits,reviews,plans,fus,calls]=await Promise.all([get('day_commits?select=day,data&rep=eq.'+encodeURIComponent(rep)+'&order=day.desc&limit=3'),get('day_reviews?select=day,data,seen&rep=eq.'+encodeURIComponent(rep)+'&order=day.desc&limit=3'),get('morning_plans?select=day,data&rep=eq.'+encodeURIComponent(rep)+'&order=day.desc&limit=2'),get('followups?select=phone,name,plan,next_at,status,updated_at&rep=eq.'+encodeURIComponent(rep)+'&status=eq.open&order=next_at.asc&limit=40'),get('calls?select=id,started_at,duration_sec,score,outcome,stage_reached,summary_json,lead_name,lead_phone,readiness,status,mode&rep=eq.'+encodeURIComponent(rep)+'&started_at=gte.'+today+'T00:00:00&order=started_at.desc&limit=60')]);
+  RV={rep,today,yday,commit:commits.find(c=>c.day===today),review:reviews.find(r=>r.day===today)||reviews.find(r=>r.day===yday),reviews,plan:plans.find(p=>p.day===today),fus,calls:calls.filter(c=>c.mode!=='sim')};
+  renderRepView();
+}
+function renderRepView(){
+  const v=RV; const body=$('rvBody'); const c=v.commit&&v.commit.data; const L=v.calls; const full=L.filter(x=>(x.duration_sec||0)>=420).length, closes=L.filter(x=>x.outcome==='closed').length; const avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1):'—';
+  const kpi=(x,l)=>`<div class="kpi"><div class="v">${x}</div><div class="l">${l}</div></div>`;
+  const rv=v.review; const rvd=rv&&rv.data;
+  body.innerHTML=`<div class="kpis">${kpi(L.length,'שיחות היום')}${kpi(c?full+'/'+c.fullCalls:full,'שיחות מלאות'+(c?' מול ההתחייבות':''))}${kpi(c?closes+'/'+c.closes:closes,'סליקות'+(c?' מול ההתחייבות':''))}${kpi(avg(L.map(x=>x.score).filter(x=>x!=null)),'ציון ממוצע')}${kpi(v.fus.length,'תוכניות פולואפ פתוחות')}</div>
+  <div class="mgrid3">
+    <div class="mbox"><h2>✊ ההתחייבות של היום</h2>${c?`<div><b>${c.fullCalls}</b> שיחות מלאות · <b>${c.closes}</b> סליקות</div><div class="hint" style="margin-top:6px">למה: ${esc(c.why||'—')}</div><div class="hint">אם-אז: ${esc(c.ifThen||'—')}</div>`:'<div class="hint">לא התחייב היום (או שלא רענן את האפליקציה לגרסה החדשה).</div>'}</div>
+    <div class="mbox"><h2>🌙 סיכום היום ${rv?'('+rv.day+')':''}</h2>${rvd?`<div style="font-size:16px;font-weight:900">${esc(rvd.headline)}</div><div class="hint">ציון היום ${rvd.day_score}/10 · ${rv.seen?'✅ צפה':'⏳ עוד לא צפה, ייפתח לו בבוקר'}</div><div style="margin-top:6px;font-size:13px">${esc(rvd.how_was)}</div><div class="hint" style="margin-top:6px"><b>לעבוד על:</b> ${esc((rvd.work_on||[]).join(' · '))}</div><div class="hint"><b>מחר:</b> ${esc((rvd.tomorrow||[]).join(' · '))}</div>`:'<div class="hint">עדיין אין סיכום יום.</div>'}<div style="margin-top:8px"><button class="btn btn-sm btn-primary" onclick="rvReview()">🌙 ${rvd?'הפק מחדש':'הפק סיכום יום'} מהשיחות של היום</button><div class="hint" style="margin-top:4px">נשמר עבורו ויקפוץ לו מחר בבוקר לפני "התחל יום", עד שיסמן "צפיתי".</div></div></div>
+    <div class="mbox"><h2>☀️ מסך הבוקר של מחר</h2>${v.plan?`<div class="hint">הוכן ${new Date(v.plan.data.generated||Date.now()).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} · ${(v.plan.data.items||[]).length} לקוחות</div>`:'<div class="hint">עדיין לא הוכן. הנציג יקבל אותו אוטומטית כשילחץ "התחל יום", או שתכין לו כאן עכשיו.</div>'}<div style="margin-top:8px"><button class="btn btn-sm btn-primary" onclick="rvMorning()">☀️ הכן / הצג את מסך הבוקר</button></div><div id="rvMorning" style="margin-top:10px"></div></div>
+  </div>
+  <div class="mbox"><h2>📞 השיחות שלו היום (${L.length})</h2>${L.length?`<div style="overflow-x:auto"><table class="mtable"><thead><tr><th>שעה</th><th>ליד</th><th>אורך</th><th>ציון</th><th>תוצאה</th><th>שלב</th><th>הדבר האחד</th><th>לא נפתר</th><th></th></tr></thead><tbody>${L.map(x=>{ const sj=x.summary_json||{}; return `<tr><td>${new Date(x.started_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</td><td><b>${esc(x.lead_name||'')}</b><br><span class="hint">${esc(x.lead_phone||'')}</span></td><td class="num">${fmtDur(x.duration_sec)}</td><td class="num"><span class="score ${scoreCls(x.score)}">${x.score??'—'}</span></td><td>${{closed:'✅ נסגר',follow_up:'📅 המשך',lost:'❌',unknown:'—'}[x.outcome]||'—'}</td><td>${STAGES.find(s=>s.id===x.stage_reached)?.l||''}</td><td class="hint">${esc(sj.one_thing||'')}</td><td class="hint">${esc((sj.unresolved||[]).join(' · '))}</td><td><a href="#" onclick="openDetail('${x.id}');return false">פתח</a></td></tr>`; }).join('')}</tbody></table></div>`:'<div class="hint">אין שיחות היום.</div>'}</div>
+  <div class="mbox"><h2>🗓️ תוכניות פולואפ פתוחות (${v.fus.length})</h2>${v.fus.length?`<div class="dgrid">${v.fus.slice(0,30).map(f=>{ const p=f.plan||{}; const st=(p.plan||[])[0]||{}; return `<div class="dcard"><h4>${esc(f.name||'')} <span class="hint">${esc(f.phone||'')}</span></h4><div class="hint">הצעד הבא: ${f.next_at?fmtDT(f.next_at):'—'} · ${esc(st.channel||'')} · ${esc(st.goal||'')}</div><div style="font-size:12.5px;margin-top:4px">${esc(p.summary||'')}</div>${(p.unresolved||[]).length?`<div class="hint">🧱 ${esc(p.unresolved.join(' · '))}</div>`:''}${p.interest_hook?`<div class="hint">💛 ${esc(p.interest_hook)}</div>`:''}<div style="margin-top:6px"><a href="#" onclick="openJourney('${esc(f.phone||'')}');return false">🧭 מסע</a></div></div>`; }).join('')}</div>`:'<div class="hint">אין תוכניות פולואפ שמורות עדיין (נוצרות אחרי כל שיחה בגרסה החדשה).</div>'}</div>`;
+  if(v.plan) renderRvMorning(v.plan.data);
+}
+window.rvReview=async()=>{
+  const v=RV; if(!v) return; const L=v.calls; if(!L.length) return toast('אין שיחות היום לסכם'); const c=v.commit&&v.commit.data; const btn=event&&event.target; if(btn) btn.disabled=true;
+  try{
+    const schema={type:'object',additionalProperties:false,required:['headline','day_score','how_was','wins','work_on','tomorrow','note'],properties:{headline:{type:'string'},day_score:{type:'integer'},how_was:{type:'string'},wins:{type:'array',items:{type:'string'}},work_on:{type:'array',items:{type:'string'}},tomorrow:{type:'array',items:{type:'string'}},note:{type:'string'}}};
+    const r=await claudeJson(`אתה המאמן האישי של ${v.rep} במועדון האיקומרס. סוף יום: סיכום כן, חם וישיר של היום שלו, מבוסס רק על הנתונים. בלי Markdown, בלי קלישאות. headline עד 12 מילים; how_was 3-4 משפטים; wins 2-3 עם דוגמה; work_on 3 עם הכלי מהפלייבוק; tomorrow 3 פעולות קונקרטיות (כולל מי לחזור אליו); note משפט אישי אחד.`,
+      `התחייבות: ${c?c.fullCalls+' מלאות, '+c.closes+' סליקות. למה: '+c.why:'לא התחייב'}.\nביצוע: ${L.length} שיחות, ${L.filter(x=>(x.duration_sec||0)>=420).length} מלאות, ${L.filter(x=>x.outcome==='closed').length} סליקות.\nהשיחות:\n${L.slice(0,25).map(x=>{ const sj=x.summary_json||{}; return `- ${new Date(x.started_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} ${Math.floor((x.duration_sec||0)/60)} דק' ציון ${x.score} ${x.outcome} שלב ${x.stage_reached}. ${x.lead_name?'ליד: '+x.lead_name+'. ':''}הדבר האחד: ${sj.one_thing||''}. ${(sj.unresolved||[]).length?'לא נפתר: '+sj.unresolved.join('; ')+'. ':''}${(sj.skipped||[]).length?'דילג: '+sj.skipped.join('; ')+'.':''}`; }).join('\n')}`,schema,2000);
+    await sb('POST','day_reviews?on_conflict=rep,day',{rep:v.rep,day:v.today,data:r,seen:false,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal');
+    toast('סיכום היום נשמר. ייפתח לו בבוקר.'); loadRepView(v.rep);
+  }catch(e){ toast('שגיאה: '+(e.message||e)); if(btn) btn.disabled=false; }
+};
+function renderRvMorning(out){ const box=$('rvMorning'); if(!box) return; const items=(out.items||[]).slice().sort((a,b)=>a.priority-b.priority); box.innerHTML=`<div style="font-weight:800;margin-bottom:6px">${esc(out.headline||'')}</div><div class="dgrid">${items.map(x=>`<div class="dcard ${x.priority<=3?'hot':''}"><h4>${esc(x.name||x.phone)} <span class="hint">${esc(x.phone)}</span> <span class="tag">${esc(x.group)}</span></h4><div class="why">${esc(x.why)} · <b>${esc(x.next_move)}</b> ${esc(x.time||'')}</div><div class="say" style="white-space:pre-wrap">${esc(x.message)}</div><div style="margin-top:6px"><a href="#" onclick="openJourney('${esc(x.phone)}');return false">🧭 מסע</a></div></div>`).join('')}</div>`; }
+window.rvMorning=async()=>{
+  const v=RV; if(!v) return; if(v.plan){ renderRvMorning(v.plan.data); } const box=$('rvMorning'); if(v.plan&&!confirm('כבר יש מסך בוקר להיום. להכין מחדש?')) return; box.innerHTML='<div class="hint">מושך את הפולואפים של '+esc(v.rep)+' ומכין הודעות…</div>';
+  try{
+    const d=await dataApi('/followups?rep='+encodeURIComponent(v.rep)); const byPhone={}; for(const x of d.items||[]) byPhone[x.phone]=x; for(const p of v.fus){ const k=p.phone; byPhone[k]=byPhone[k]||{phone:k,name:p.name,score:2,why:'תוכנית פולואפ',n_calls:0}; byPhone[k].plan=p.plan; byPhone[k].plan_next=p.next_at; byPhone[k].score=(byPhone[k].score||0)+2; }
+    const items=Object.values(byPhone).sort((a,b)=>(b.score||0)-(a.score||0)).slice(0,40);
+    const compact=items.map(x=>({phone:x.phone,name:x.name,score:x.score,why:x.why,followDate:x.followDate,comment:x.comment,fb_status:x.fb_status,content:x.content,n_calls:x.n_calls,talk_min:x.talk_min,last_call:x.last_call&&{rep:x.last_call.rep,t:x.last_call.t,dur:x.last_call.dur,summary:(x.last_call.ai||'').slice(0,350)},plan:x.plan&&{next_step:x.plan.next_step,unresolved:x.plan.unresolved,facts:x.plan.facts,interest_hook:x.plan.interest_hook,first_step:(x.plan.plan||[])[0]},plan_next:x.plan_next}));
+    const schema={type:'object',additionalProperties:false,required:['headline','items'],properties:{headline:{type:'string'},items:{type:'array',items:{type:'object',additionalProperties:false,required:['phone','name','priority','group','why','status','next_move','time','message'],properties:{phone:{type:'string'},name:{type:'string'},priority:{type:'integer'},group:{type:'string',enum:['פולואפ להיום','לבדוק הבוקר','איפה זה עומד','ליד שמחכה']},why:{type:'string'},status:{type:'string'},next_move:{type:'string',enum:['הודעה','שיחה','הודעה ואז שיחה']},time:{type:'string'},message:{type:'string'}}}}}};
+    const out=await claudeJson(`אתה המאמן האישי של ${v.rep} במועדון האיקומרס. בוקר: בנה לו את היום מהפולואפים והלידים שלו. עדיפות ללקוחות משמעותיים (שיחה ארוכה, כמה שיחות, 2+ תכנים, פולואפ שנקבע להיום, חסם פתוח שאפשר לפתור) על פני לידים שנדחו אחרי דקה. קבץ: "פולואפ להיום", "לבדוק הבוקר", "איפה זה עומד", "ליד שמחכה". בחר 8-14 לקוחות. ההודעות: אישיות, אכפתיות, מתייחסות למשהו ספציפי שהלקוח אמר או עשה, קצרות, ירידות שורה, לכל היותר אימוג׳י אחד, בלי Markdown, חתומות "${v.rep}". אל תמציא עובדות.`,`היום: ${v.today} (מסך הבוקר של מחר). הלקוחות (JSON):\n${JSON.stringify(compact)}`,schema,9000);
+    out.total=d.total; out.generated=new Date().toISOString(); const day=new Date(Date.now()+864e5).toISOString().slice(0,10);
+    await sb('POST','morning_plans?on_conflict=rep,day',{rep:v.rep,day,data:out,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal');
+    await sb('POST','morning_plans?on_conflict=rep,day',{rep:v.rep,day:v.today,data:out,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal');
+    renderRvMorning(out); toast('מסך הבוקר הוכן ונשמר ל-'+v.rep+' (להיום ולמחר)');
+  }catch(e){ box.innerHTML='<div class="hint">שגיאה: '+esc(e.message||e)+'</div>'; }
+};
 /* ── journeys (time to conversion) ── */
 let JROWS={}, JMONTH=null;
 function monthList(){ const out=[]; const d=new Date(); for(let i=0;i<12;i++){ out.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')); d.setMonth(d.getMonth()-1); } return out; }
@@ -457,7 +511,7 @@ const openBarriers=r=>(r.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='res
 function stagesHtml(r){ const i=stageIdx(r); return '<div class="stages">'+STAGES.map((s,k)=>`<i class="${k<i?'d':k===i?'a':''}" title="${s.l}"></i>`).join('')+'</div>'; }
 
 /* ── render ── */
-function setView(v){ VIEW=v; for(const b of $('navTabs').querySelectorAll('button')) b.classList.toggle('on',b.dataset.view===v); $('dailySec').style.display=v==='daily'?'':'none'; if(v==='daily') initDaily(); $('liveSec').style.display=v==='live'?'':'none'; $('daySec').style.display=v==='live'?'':'none'; $('recentSec').style.display=v==='live'?'':'none'; $('logSec').style.display=v==='log'?'':'none'; $('dlSec').style.display=v==='dislikes'?'':'none'; $('trainSec').style.display=v==='train'?'':'none'; $('metricsSec').style.display=v==='metrics'?'':'none'; if(v==='metrics') initMetrics(); render(); }
+function setView(v){ VIEW=v; for(const b of $('navTabs').querySelectorAll('button')) b.classList.toggle('on',b.dataset.view===v); $('dailySec').style.display=v==='daily'?'':'none'; if(v==='daily') initDaily(); $('repSec').style.display=v==='rep'?'':'none'; if(v==='rep') initRepView(); $('liveSec').style.display=v==='live'?'':'none'; $('daySec').style.display=v==='live'?'':'none'; $('recentSec').style.display=v==='live'?'':'none'; $('logSec').style.display=v==='log'?'':'none'; $('dlSec').style.display=v==='dislikes'?'':'none'; $('trainSec').style.display=v==='train'?'':'none'; $('metricsSec').style.display=v==='metrics'?'':'none'; if(v==='metrics') initMetrics(); render(); }
 $('navTabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setView(b.dataset.view); };
 for(const id of ['fRep','fMode','fFb','fText','fScope','fSource']) $(id).addEventListener('input',()=>render());
 $('scopes').innerHTML=Object.entries(SCOPES).map(([k,l])=>`<button data-sc="${k}" class="${k==='general'?'on':''}">${l}</button>`).join('');

@@ -260,3 +260,17 @@ do $$ begin
   if not exists (select 1 from pg_policies where tablename='day_reviews' and policyname='anon all day_reviews') then
     create policy "anon all day_reviews" on day_reviews for all to anon using (true) with check (true); end if;
 end $$;
+
+-- ── per-rep day state shared between the rep app and the manager's "rep view" (2026-09-16 night) ──
+create table if not exists day_commits (
+  rep text not null, day date not null, data jsonb not null, updated_at timestamptz default now(), primary key (rep, day));
+create table if not exists morning_plans (
+  rep text not null, day date not null, data jsonb not null, updated_at timestamptz default now(), primary key (rep, day));
+alter table day_commits enable row level security;
+alter table morning_plans enable row level security;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='day_commits' and policyname='anon all day_commits') then
+    create policy "anon all day_commits" on day_commits for all to anon using (true) with check (true); end if;
+  if not exists (select 1 from pg_policies where tablename='morning_plans' and policyname='anon all morning_plans') then
+    create policy "anon all morning_plans" on morning_plans for all to anon using (true) with check (true); end if;
+end $$;
