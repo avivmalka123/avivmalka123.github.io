@@ -895,18 +895,24 @@ function smWords(m,final){
 }
 function smStart(spk){ if(spk&&spk!=='UU'&&!S.spkSeen.includes(spk)) S.spkSeen.push(spk); SMW.cur={id:'sm_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),spk,text:'',end:0}; }
 // "Who said this?" banner: the first final sentence of every unlabeled voice (or unlabeled line) is put in front of the listener with two big buttons.
+window.resetSpeakers=()=>{ S.spkMap={}; for(const l of S.lines){ if(l.spk||l.manual){ l.manual=false; l.who='unk'; renderLine(l); } } S.lastAnalyzedCount=-1; renderIdBar(); renderMiniTr(); scheduleAnalysis(); toast('הזיהוי אופס. סמן משפט אחד ארוך והשאר יסתדר.','t-ok'); };
 function renderMiniTr(){
   const m=$('miniTr'); if(!m) return; if(!S.single||!S.running){ m.style.display='none'; return; }
   const last=S.lines.filter(l=>l.text.trim()&&l.text!=='…').slice(-6); m.style.display='';
-  m.innerHTML='<div class="k">🎧 מי מדבר? (האזנה) · לחץ כדי לתקן</div>'+last.map(ln=>`<div class="msg ${ln.who}${ln.final?'':' partial'}"><div class="who"><b>${ln.who==='rep'?'נציג':ln.who==='cust'?'לקוח':'?'}</b>${ln.spk?'<span>קול '+escapeHtml(ln.spk)+'</span>':''}<span class="spk"><button class="${ln.who==='cust'?'on':''}" onclick="setSpeaker('${ln.id}','cust',true)">לקוח</button><button class="${ln.who==='rep'?'on':''}" onclick="setSpeaker('${ln.id}','rep',true)">נציג</button></span></div>${escapeHtml(ln.text.slice(0,160))}</div>`).join('');
+  m.innerHTML='<div class="k" style="display:flex;justify-content:space-between;align-items:center">🎧 מי מדבר? (האזנה) · לחץ כדי לתקן <button onclick="resetSpeakers()" style="font:inherit;font-size:11px;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:1px 8px;cursor:pointer">🔁 בדוק שוב</button></div>'+last.map(ln=>`<div class="msg ${ln.who}${ln.final?'':' partial'}"><div class="who"><b>${ln.who==='rep'?'נציג':ln.who==='cust'?'לקוח':'?'}</b>${ln.spk?'<span>קול '+escapeHtml(ln.spk)+'</span>':''}<span class="spk"><button class="${ln.who==='cust'?'on':''}" onclick="setSpeaker('${ln.id}','cust',true)">לקוח</button><button class="${ln.who==='rep'?'on':''}" onclick="setSpeaker('${ln.id}','rep',true)">נציג</button></span></div>${escapeHtml(ln.text.slice(0,160))}</div>`).join('');
   m.scrollTop=m.scrollHeight;
 }
 function renderIdBar(){
   const w=$('idbarWrap'); if(!S.single||!S.running){ w.style.display='none'; return; }
-  const cand=S.lines.find(l=>l.final&&l.text.trim()&&l.text!=='…'&&l.who==='unk'&&(!l.spk||!S.spkMap[l.spk]));
+  if(Date.now()-(S.startedAt||0)<5000){ w.style.display='none'; return; } // give the call 5 seconds before asking
+  // ask only about a real sentence (5+ words): "טוב" or "כן" can be either side. Prefer the longest unlabeled sentence of the newest unknown voice.
+  const unk=S.lines.filter(l=>l.final&&l.text.trim()&&l.text!=='…'&&l.who==='unk'&&(!l.spk||!S.spkMap[l.spk]));
+  const words=t=>t.trim().split(/\s+/).filter(Boolean).length;
+  const voice=unk.length?unk[unk.length-1].spk:null; const pool=voice?unk.filter(l=>l.spk===voice):unk;
+  const cand=pool.filter(l=>words(l.text)>=5).sort((a,b)=>words(b.text)-words(a.text))[0];
   if(!cand){ w.style.display='none'; return; }
-  const voice=cand.spk?`קול ${cand.spk}`:'המשפט הזה'; const known=Object.entries(S.spkMap).filter(([k,v])=>v.manual).map(([k,v])=>k+'='+(v.who==='rep'?'נציג':'לקוח')).join(', ');
-  w.style.display=''; w.innerHTML=`<div class="idbar"><div class="k">🎤 ${cand.spk?'קול חדש זוהה':'מי מדבר?'}${known?' · כבר סומן: '+known:''}</div><div class="q">מי אמר: "${escapeHtml(cand.text.slice(0,140))}"</div><div class="b"><button class="rep" onclick="setSpeaker('${cand.id}','rep',true)">🎧 הנציג</button><button class="cust" onclick="setSpeaker('${cand.id}','cust',true)">👤 הלקוח</button></div><div class="hint" style="margin-top:8px">${cand.spk?'הבחירה תחול על כל המשפטים של הקול הזה, אחורה וקדימה. הקול השני יסומן הפוך אוטומטית.':'ה-AI מתייג את השאר לפי התוכן. אפשר לתקן כל משפט בכפתורים שלידו.'}</div></div>`;
+  const known=Object.entries(S.spkMap).filter(([k,v])=>v.manual).map(([k,v])=>k+'='+(v.who==='rep'?'נציג':'לקוח')).join(', ');
+  w.style.display=''; w.innerHTML=`<div class="idbar"><div class="k">🎤 ${cand.spk?'קול חדש זוהה':'מי מדבר?'}${known?' · כבר סומן: '+known:''}</div><div class="q">מי אמר: "${escapeHtml(cand.text.slice(0,180))}"</div><div class="b"><button class="rep" onclick="setSpeaker('${cand.id}','rep',true)">🎧 הנציג</button><button class="cust" onclick="setSpeaker('${cand.id}','cust',true)">👤 הלקוח</button><button onclick="resetSpeakers()" title="מנקה את הזיהוי ונותן ל-AI ולך לזהות מחדש" style="background:var(--surface2);border:1px solid var(--border);color:var(--text)">🔁 בדוק שוב</button></div><div class="hint" style="margin-top:8px">${cand.spk?'הבחירה תחול על כל המשפטים של הקול הזה, אחורה וקדימה. הקול השני יסומן הפוך אוטומטית.':'ה-AI מתייג את השאר לפי התוכן. אפשר לתקן כל משפט בכפתורים שלידו.'}</div></div>`;
 }
 function smRender(final){ const c=SMW.cur; if(!c) return; const t=(c.text+(final?'':(SMW.partial?' '+SMW.partial:''))).trim(); if(!t) return; let ln=S.lines.find(l=>l.id===c.id); if(!ln){ upsertLine(c.id,smRole(c.spk),t,false); ln=S.lines.find(l=>l.id===c.id); if(ln) ln.spk=(c.spk&&c.spk!=='UU')?c.spk:null; } const who=(ln&&ln.manual)?ln.who:smRole(c.spk); upsertLine(c.id,who,t,final); }
 function smFinalize(){ if(!SMW.cur) return; if(SMW.cur.text.trim()) smRender(true); else { const el=document.getElementById('ln_'+SMW.cur.id); if(el) el.remove(); S.lines=S.lines.filter(l=>l.id!==SMW.cur.id); } SMW.cur=null; SMW.partial=''; }
