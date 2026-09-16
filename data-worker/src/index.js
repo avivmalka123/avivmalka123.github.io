@@ -145,7 +145,7 @@ export default {
     const h=cors(req); if(req.method==='OPTIONS') return new Response(null,{status:204,headers:h});
     const url=new URL(req.url); const key=req.headers.get('x-app-key')||url.searchParams.get('key')||'';
     if(url.pathname==='/health') return json({ok:true},200,h);
-    if(url.pathname==='/diag'){ if(!env.APP_KEY||!safeEq(key,env.APP_KEY)) return json({error:'unauthorized'},401,h); const k=env.SUPABASE_KEY||''; let probe=null; try{ const r=await fetch(env.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/tc_events?select=id&limit=1',{headers:{apikey:k,...(k.startsWith('eyJ')?{Authorization:'Bearer '+k}:{})}}); probe=r.status+' '+(await r.text()).slice(0,160); }catch(e){ probe=String(e.message); }
+    if(url.pathname==='/diag'){ if(!env.APP_KEY||!safeEq(key,env.APP_KEY)) return json({error:'unauthorized'},401,h); const k=env.SUPABASE_KEY||''; let probe=null; try{ const r=await fetch(env.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/tc_events?select=id&limit=1',{headers:{apikey:k,...(k.startsWith('eyJ')?{Authorization:'Bearer '+k}:{})}}); probe=r.status+' '+(await r.text()).slice(0,160); const r2=await fetch(env.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/calls?select=say_a,readiness,whisper,lead_phone&limit=1',{headers:{apikey:k,...(k.startsWith('eyJ')?{Authorization:'Bearer '+k}:{})}}); probe+=' | calls columns: '+r2.status+' '+(await r2.text()).slice(0,120); }catch(e){ probe=String(e.message); }
       return json({supabase_url:env.SUPABASE_URL,key_prefix:k.slice(0,15),key_len:k.length,key_has_ws:/\s/.test(k),key_charset_ok:/^[A-Za-z0-9_\-.]+$/.test(k),probe},200,h); }
     const hm=url.pathname.match(/^\/hook\/([a-f0-9]{24})\/([A-Za-z]+)\/?$/);
     if(hm){ if(hm[1]!==await hookToken(env)) return json({error:'bad token'},401,h);
