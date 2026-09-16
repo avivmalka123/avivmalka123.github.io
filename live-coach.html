@@ -227,6 +227,10 @@
   .modal .box .bh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:800}
   .modal .box .bb{padding:20px;overflow-y:auto;line-height:1.6;font-size:14px}
   .modal .box-wide{width:min(1100px,100%)}
+  .cm-breath{text-align:center;padding:10px 0}.cm-ring{width:120px;height:120px;border-radius:50%;margin:0 auto 12px;border:6px solid var(--accent);display:grid;place-items:center;animation:breathe 8s ease-in-out infinite}.cm-ring b{font-size:40px}@keyframes breathe{0%,100%{transform:scale(.8);border-color:var(--accent3)}50%{transform:scale(1.15);border-color:var(--accent)}}.cm-txt{font-size:16px;font-weight:700}
+  .cm-form{display:grid;gap:10px}.cm-q{font-size:18px;font-weight:900}.cm-row{display:grid;gap:4px}.cm-row label{font-size:12px;font-weight:700;color:var(--text-muted)}.cm-row input{font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--text)}
+  .daykick{margin-top:14px;background:linear-gradient(135deg,rgba(217,119,6,.12),rgba(236,72,153,.08));border:1px solid rgba(217,119,6,.35);border-radius:16px;padding:16px 18px}.daykick .k{font-size:12px;font-weight:800;color:var(--accent5);letter-spacing:.5px}.dk-head{font-size:24px;font-weight:900;line-height:1.3;margin:6px 0 10px}.dk-progs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}.dk-prog{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:13px}.dk-prog b{font-size:15px}.dk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:13.5px;line-height:1.5}.dk-grid b{display:block;font-size:11.5px;color:var(--text-muted)}.dk-kick{margin-top:12px;font-size:17px;font-weight:800;background:var(--surface);border-radius:12px;padding:12px 14px;border-right:4px solid var(--accent2)}
+  @media(max-width:700px){.dk-progs,.dk-grid{grid-template-columns:1fr}.dk-head{font-size:20px}}
   .db-top{display:grid;grid-template-columns:220px 1fr;gap:14px;margin-bottom:14px}
   .db-score{background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(236,72,153,.07));border:1px solid rgba(124,58,237,.35);border-radius:16px;padding:18px;text-align:center}
   .db-score .big{font-size:56px;font-weight:900;line-height:1}.db-score .big small{font-size:18px;color:#6d28d9}.db-score .lbl{font-size:12px;font-weight:700;color:#6d28d9;margin-top:4px}.db-score .sub{font-size:12px;color:var(--text-muted);margin-top:8px}
@@ -332,6 +336,7 @@
   <div class="seg" id="modeSeg" title="מצב עבודה"><button data-mode="rep" class="on">🎧 אני הנציג</button><button data-mode="listen">👂 האזנה לשיחה</button></div>
   <span class="pill" id="pWho" style="cursor:pointer" title="לחץ לשינוי שם">👤 <b id="whoName">—</b></span>
   <span class="pill on" id="dayState" style="display:none"></span>
+  <span class="pill" id="dayGoalPill" style="display:none;cursor:pointer" title="ההתחייבות של היום. לחץ לעדכן" onclick="openCommit(null)"></span>
   <div class="spacer"></div>
   <div class="timer" id="timer">00:00</div>
   <div class="grp">
@@ -484,6 +489,7 @@
   <button class="btn btn-primary" id="btnSave" style="width:100%;justify-content:center;margin-top:8px">שמור הגדרות</button>
 </aside>
 
+<div class="modal" id="commitModal"><div class="box"><div class="bh">✊ ההתחייבות של היום <span class="spacer"></span><button class="btn btn-sm" onclick="skipCommit()">דלג הפעם</button></div><div class="bb" id="commitBody"></div></div></div>
 <div class="modal" id="modal"><div class="box box-wide"><div class="bh">🏁 סיום שיחה: תובנות וציון <span><button class="btn btn-sm" id="btnCopy">העתק</button> <button class="btn btn-sm" id="btnCloseModal">✕</button></span></div><div class="bb" id="modalBody"></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -1064,7 +1070,7 @@ function stopCall(){
   if(S.lines.length) toast(S.day?'השיחה הסתיימה ונשלחת לסיכום. ממשיך להאזין.':'השיחה הסתיימה. הסיכום ייפתח מיד.','t-ok');
 }
 /* ── day mode ── */
-async function startDay(){
+async function startDayNow(){
   if(S.running||S.simActive) return toast('סיים קודם את השיחה הנוכחית','t-error');
   if(S.settings.mode==='listen') return toast('מצב יום עובד במצב "אני הנציג"','t-error');
   if(!S.settings.openai) {openDrawer();return toast('נדרש OpenAI API Key','t-error')}
@@ -1515,6 +1521,14 @@ function snapshotCall(){
 }
 
 /* ───────────────────────── summary ───────────────────────── */
+const FAST_SUMMARY_SCHEMA={type:'object',additionalProperties:false,required:['summary','outcome','next_step','score','stage_reached','opening_feedback','lessons','one_thing','strengths'],properties:{
+  summary:{type:'string',description:'תמצית ב-2 משפטים'},outcome:{type:'string',enum:['closed','follow_up','lost','unknown']},next_step:{type:'string',description:'מה הוסכם / הצעד הבא, משפט אחד'},
+  score:{type:'integer',description:'1 עד 10 לפי הפלייבוק'},stage_reached:{type:'string',enum:STAGES.map(x=>x.id)},opening_feedback:{type:'string',description:'משפט אחד על הפתיחה'},
+  lessons:{type:'array',items:{type:'string'},description:'3 לקחים, עד 18 מילים כל אחד'},one_thing:{type:'string',description:'הדבר האחד לשיחה הבאה, משפט אחד'},strengths:{type:'array',items:{type:'string'},description:'2 דברים שעבדו, עם ציטוט קצר'}}};
+const DEEP_SUMMARY_SCHEMA={type:'object',additionalProperties:false,required:['scores','improvements','crm_text'],properties:{
+  scores:{type:'object',additionalProperties:false,required:['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'],properties:{opening:{type:'integer'},kyc:{type:'integer'},pain:{type:'integer'},objection:{type:'integer'},goal:{type:'integer'},motive:{type:'integer'},solution:{type:'integer'},close:{type:'integer'},talk_ratio:{type:'integer',description:'10 = הלקוח דיבר 60%'}}},
+  improvements:{type:'array',items:{type:'object',additionalProperties:false,required:['quote','better','principle'],properties:{quote:{type:'string'},better:{type:'string'},principle:{type:'string'}}},description:'3 ציטוטים של הנציג ומה היה עדיף'},
+  crm_text:{type:'string',description:'סיכום מנהלים מלא ל-CRM, ללא Markdown, כותרות עם אימוג׳י: תמצית, פרופיל, חום ליד ושלב, כאבים, התנגדויות, מטרה ומניע, הוסכם/צעד הבא, 3 שיפורים'}}};
 const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
   summary:{type:'string',description:'תמצית ב-2 משפטים'},
   outcome:{type:'string',enum:['closed','follow_up','lost','unknown'],description:'תוצאת השיחה'},
@@ -1539,17 +1553,20 @@ async function runSummary(auto,snap){
   const ctx=src.ctx;
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   const transcript=finals.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
+  const shortTr=finals.slice(-260).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
+  const t0=performance.now();
   try{
+    // phase 1 (fast, ~5-8s): the debrief the rep reads. phase 2 (background): parameter scores, quotes, CRM text.
     const res=await getClient().beta.messages.create({
-      model:'claude-opus-5', max_tokens:6000, betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
-      output_config:{effort:'medium',format:{type:'json_schema',schema:SUMMARY_SCHEMA}},
+      model:coachModel(), max_tokens:1400, betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
+      output_config:{effort:'low',format:{type:'json_schema',schema:FAST_SUMMARY_SCHEMA}},
       system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
       messages:[{role:'user',content:`השיחה הסתיימה. פרופיל הלקוח: ${ctx.profile||'—'}. תחמושת: ${(ctx.ammo||[]).map((a,i)=>(i+1)+'. ['+a.status+'] '+a.type+': '+a.text+' ('+a.note+')').join(' | ')||'—'}.
-דרג את הנציג לפי הפלייבוק (איכות KYC, העמקת כאב, טיפול בחסם, מטרה, מניע, הצגה מותאמת, סגירה, יחס דיבור). ציון 10 = שיחה לפי הספר. כתוב גם crm_text מלא.
+דרג את הנציג לפי הפלייבוק. ציון 10 = שיחה לפי הספר. קצר וחד: הנציג קורא את זה 20 שניות אחרי שניתק.
 
-התמלול המלא:
-${transcript}`}],
-    },{timeout:180000,maxRetries:1}).catch(async e=>{
+התמלול:
+${shortTr}`}],
+    },{timeout:60000,maxRetries:1}).catch(async e=>{
       if(e.status!==400) throw e; log('סיכום: הפורמט המובנה נדחה ('+String(e.error?.error?.message||e.message).slice(0,120)+'), מנסה בלי סכמה');
       return getClient().beta.messages.create({ model:'claude-opus-5', max_tokens:6000, betas:['server-side-fallback-2026-07-01'], fallbacks:'default', output_config:{effort:'medium'},
         system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
@@ -1558,13 +1575,25 @@ ${transcript}`}],
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לסכם');
     const o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
     if(!o||!o.crm_text&&!o.summary) throw new Error('הסיכום חזר ריק, לחץ שוב');
-    o.scores=o.scores||{}; o.strengths=o.strengths||[]; o.improvements=o.improvements||[]; o.lessons=o.lessons||[]; o.crm_text=o.crm_text||o.summary||'';
+    o.scores=o.scores||{}; o.strengths=o.strengths||[]; o.improvements=o.improvements||[]; o.lessons=o.lessons||[]; o.crm_text=o.crm_text||o.summary||''; o.phase=1;
+    log('סיכום מהיר מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות');
+    // phase 2 in the background: parameter scores, quotes to fix, full CRM text
+    (async()=>{ try{
+      const r2=await getClient().beta.messages.create({ model:coachModel(), max_tokens:2600, betas:['server-side-fallback-2026-07-01'], fallbacks:'default', output_config:{effort:'low',format:{type:'json_schema',schema:DEEP_SUMMARY_SCHEMA}},
+        system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
+        messages:[{role:'user',content:`השיחה הסתיימה. תמצית: ${o.summary}. תוצאה: ${o.outcome}. תן ציוני פרמטרים, 3 ציטוטים לשיפור, וסיכום מלא ל-CRM.\n\nהתמלול:\n${transcript}`}] },{timeout:120000,maxRetries:1});
+      const o2=scrub(parseLooseJson(r2.content.filter(b=>b.type==='text').map(b=>b.text).join('')))||{};
+      const clamp2=v=>Math.max(1,Math.min(10,Math.round(Number(v)||1))); if(o2.scores) for(const k of Object.keys(o2.scores)) o2.scores[k]=clamp2(o2.scores[k]);
+      Object.assign(o,{scores:o2.scores||o.scores,improvements:o2.improvements||o.improvements,crm_text:o2.crm_text||o.crm_text,phase:2});
+      if(!ctx.demo){ const sf={summary:o.crm_text,summary_json:o}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); saveLocalHistory(o,ctx); }
+      if(S.lastSummary&&S.lastSummary.ctx===ctx&&$('modal').classList.contains('show')) renderDebrief(o,ctx);
+    }catch(e){ log('סיכום מעמיק: '+(e.message||e),'err'); } })();
     const clamp=v=>Math.max(1,Math.min(10,Math.round(Number(v)||1))); o.score=clamp(o.score); if(o.scores) for(const k of Object.keys(o.scores)) o.scores[k]=clamp(o.scores[k]);
     const sumFields={summary:o.crm_text,score:o.score,outcome:o.outcome,next_step:o.next_step,stage_reached:o.stage_reached,summary_json:o};
     if(!ctx.demo){ if(S.callId===ctx.id){ syncCall(sumFields); } else { syncRow({id:ctx.id,rep:ctx.rep,mode:ctx.sim?'sim':(ctx.single?'listen':'rep'),sim:ctx.sim,status:'ended',started_at:new Date(ctx.startedAt).toISOString(),updated_at:new Date().toISOString(),ended_at:new Date(ctx.endedAt).toISOString(),duration_sec:Math.round((ctx.endedAt-ctx.startedAt)/1000),stage:ctx.stage,stage_idx:ctx.stageIdx,temperature:ctx.temp,profile:ctx.profile||'',customer_state:ctx.custState||'',checks:ctx.checks,events:ctx.events,ammo:ctx.ammo,transcript:ctx.transcript,insights:ctx.insights,open_barriers:ctx.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length,...sumFields}); } }
     if(!ctx.demo) saveLocalHistory(o,ctx);
     S.lastSummary={o,ctx};
-    if(S.callId===ctx.id||!S.running){ S.summary=o; renderDebrief(o,ctx); $('modal').classList.add('show'); if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok'); }
+    if(S.callId===ctx.id||!S.running){ S.summary=o; renderDebrief(o,ctx); $('modal').classList.add('show'); if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok'); dayKick(ctx,o); }
     else { toast('סיכום השיחה הקודמת מוכן (ציון '+o.score+'/10). יופיע בבורד.','t-ok'); }
     if(!ctx.demo) afterCallHooks(ctx);
   }catch(e){ const msg='שגיאה: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||e); if(!auto){ $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } log('Claude (סיכום): '+msg.slice(0,200),'err'); }
@@ -1588,18 +1617,65 @@ function renderDebrief(o,ctx){
     <div class="db-one"><div class="k">🎯 הדבר האחד לשיחה הבאה</div><div class="t">${escapeHtml(o.one_thing||'')}</div><div class="k" style="margin-top:10px">🗣️ פתיחת השיחה</div><div class="s">${escapeHtml(o.opening_feedback||'')}</div></div>
   </div>
   <div class="db-grid">
-    <div class="db-box"><div class="k">📊 פרמטרים</div>${['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'].map(bar).join('')}</div>
+    <div class="db-box"><div class="k">📊 פרמטרים${o.phase===1?' <span class="hint">(מחושב ברקע…)</span>':''}</div>${Object.keys(sc).length?['opening','kyc','pain','objection','goal','motive','solution','close','talk_ratio'].map(bar).join(''):'<div class="hint">עוד כמה שניות</div>'}</div>
     <div class="db-box"><div class="k">💪 מה עבד</div><ul>${(o.strengths||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul><div class="k" style="margin-top:10px">📚 3 לקחים</div><ol>${(o.lessons||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ol></div>
     <div class="db-box"><div class="k">🔧 לשפר, עם ציטוט</div>${(o.improvements||[]).map(i=>`<div class="imp"><div class="q">"${escapeHtml(i.quote)}"</div><div class="b">👉 ${escapeHtml(i.better)}</div><div class="p">${escapeHtml(i.principle)}</div></div>`).join('')}</div>
   </div>
-  <details class="db-crm"><summary>📋 סיכום ל-CRM (לחץ להרחבה)</summary><pre>${escapeHtml(o.crm_text||'')}</pre></details>
+  <details class="db-crm"><summary>📋 סיכום ל-CRM (לחץ להרחבה)${o.phase===1?' · מתמלא ברקע…':''}</summary><pre>${escapeHtml(o.crm_text||'')}</pre></details>
+  <div class="daykick" id="dayKick">${S.dayKick&&S.dayKick.callId===(ctx&&ctx.id)?S.dayKick.html:'<div class="k">🔥 היום שלך</div><div class="hint">המאמן מסתכל על כל השיחות שלך היום…</div>'}</div>
   <div class="db-actions"><button class="btn" onclick="openCoach('sim')">🎭 להתאמן על זה בסימולציה</button><button class="btn" onclick="openCoach('chat')">💬 לדבר עם המאמן על השיחה</button></div>`;
 }
 
+/* ── the rep's day: commitment, progress, and a kick ── */
+const todayKey=()=>new Date().toDateString();
+function dayCommit(){ const c=S.settings.dayCommit; return (c&&c.day===todayKey())?c:null; }
+function todayCalls(){ return localHistory().filter(x=>new Date(x.ts).toDateString()===todayKey()&&x.mode!=='sim'); }
+function dayStats(){ const L=todayCalls(); const full=L.filter(x=>(x.dur||0)>=420||['solution','close'].includes(x.stage)); const closes=L.filter(x=>x.outcome==='closed'); const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+  const imps={}; for(const c of L) for(const p of (c.improvements||[])) imps[p]=(imps[p]||0)+1;
+  return {n:L.length,full:full.length,closes:closes.length,fu:L.filter(x=>x.outcome==='follow_up').length,avgScore:avg(L.map(x=>x.score).filter(Boolean)),avgOpen:avg(L.map(x=>x.scores&&x.scores.opening).filter(Boolean)),avgClose:avg(L.map(x=>x.scores&&x.scores.close).filter(Boolean)),avgPain:avg(L.map(x=>x.scores&&x.scores.pain).filter(Boolean)),avgDur:avg(L.map(x=>x.dur||0)),stages:L.map(x=>x.stage),topMiss:Object.entries(imps).sort((a,b)=>b[1]-a[1]).slice(0,3),ones:L.map(x=>x.one_thing).filter(Boolean).slice(-4)}; }
+function renderDayPill(){ const el=$('dayGoalPill'); if(!el) return; const c=dayCommit(); const st=dayStats(); if(!c){ el.style.display='none'; return; } el.style.display=''; el.innerHTML=`🎯 היום: <b>${st.full}/${c.fullCalls}</b> מלאות · <b>${st.closes}/${c.closes}</b> סליקות`; el.classList.toggle('on',st.closes>=c.closes); }
+const KICK_SCHEMA={type:'object',additionalProperties:false,required:['headline','reality','pattern','tool','kick','next_call'],properties:{headline:{type:'string',description:'כותרת ענקית, עד 12 מילים, ישירה, בגובה העיניים'},reality:{type:'string',description:'המספרים של היום מול ההתחייבות, עד 30 מילים'},pattern:{type:'string',description:'מה חוזר היום: בפתיחה, באמצע או בסגירה. עד 30 מילים'},tool:{type:'string',description:'הכלי מהפלייבוק שהוא לא משתמש בו / צריך להשתמש בו בשיחה הבאה, עד 20 מילים'},kick:{type:'string',description:'בעיטה בתחת: משפט אנרגטי, אישי, בלי קלישאות, עד 30 מילים, שמחזיר אותו להתחייבות'},next_call:{type:'string',description:'פעולה אחת קונקרטית לשיחה הבאה, עד 18 מילים'}}};
+async function dayKick(ctx,o){
+  const box=$('dayKick'); if(!box) return; const st=dayStats(); const c=dayCommit(); const rep=S.settings.repName||'הנציג';
+  try{
+    const res=await getClient().beta.messages.create({model:coachModel(),max_tokens:600,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:KICK_SCHEMA}},
+      system:`אתה המאמן האישי של ${rep}, נציג מכירות במועדון האיקומרס. אתה קורא את הסטטיסטיקה של היום שלו אחרי כל שיחה ומחזיר אותו להתחייבות היומית. סגנון: ישיר, חם, אנרגטי, בלי קלישאות ובלי לנזוף. כמו מאמן כושר טוב: מראה את המספר, מראה את הדפוס, נותן כלי אחד, ודוחף. ${GENDER_RULE[S.settings.repGender==='f'?'f':'m']||''} בלי Markdown.`,
+      messages:[{role:'user',content:`ההתחייבות של היום: ${c?`${c.fullCalls} שיחות מלאות, ${c.closes} סליקות. למה זה חשוב לו היום: "${c.why||''}". תרגיל אם-אז שלו: "${c.ifThen||''}"`:'לא התחייב היום (הצע לו להתחייב: לפחות סליקה אחת)'}.
+היום עד עכשיו: ${st.n} שיחות, ${st.full} מלאות (7+ דקות או הגיעו להצגה/סגירה), ${st.closes} סליקות, ${st.fu} להמשך טיפול. ציון ממוצע ${st.avgScore?st.avgScore.toFixed(1):'—'}, פתיחות ${st.avgOpen?st.avgOpen.toFixed(1):'—'}, כאב ${st.avgPain?st.avgPain.toFixed(1):'—'}, סגירה ${st.avgClose?st.avgClose.toFixed(1):'—'}, אורך ממוצע ${st.avgDur?Math.round(st.avgDur/60):0} דק'. שלבים שהגיע אליהם: ${st.stages.join(', ')||'—'}.
+מה חוזר בשיפורים היום: ${st.topMiss.map(([k,v])=>k+' ('+v+')').join(' | ')||'—'}. "הדבר האחד" מהשיחות האחרונות: ${st.ones.join(' | ')||'—'}.
+השיחה שהרגע נגמרה: ציון ${o.score}, תוצאה ${o.outcome}, הגיע לשלב ${o.stage_reached}, הדבר האחד: ${o.one_thing||''}. שעה עכשיו: ${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}.`}]},{timeout:40000,maxRetries:1});
+    const k=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
+    const prog=(v,t,l)=>`<div class="dk-prog"><span>${l}</span><div class="goal-bar"><i style="width:${Math.min(100,t?v/t*100:0)}%"></i></div><b>${v}/${t}</b></div>`;
+    const html=`<div class="k">🔥 היום שלך, ${escapeHtml(rep)}</div><div class="dk-head">${escapeHtml(k.headline)}</div>
+      ${c?`<div class="dk-progs">${prog(st.full,c.fullCalls,'שיחות מלאות')}${prog(st.closes,c.closes,'סליקות')}</div>`:'<div class="hint">לא התחייבת היום. מחר בבוקר, כשתלחץ "התחל יום", תחליט: כמה שיחות מלאות וכמה סליקות.</div>'}
+      <div class="dk-grid"><div><b>📊 המציאות</b>${escapeHtml(k.reality)}</div><div><b>🔁 מה חוזר</b>${escapeHtml(k.pattern)}</div><div><b>🧰 הכלי</b>${escapeHtml(k.tool)}</div><div><b>⚡ לשיחה הבאה</b>${escapeHtml(k.next_call)}</div></div>
+      <div class="dk-kick">${escapeHtml(k.kick)}</div>`;
+    S.dayKick={callId:ctx&&ctx.id,html}; box.innerHTML=html; renderDayPill();
+  }catch(e){ box.innerHTML='<div class="k">🔥 היום שלך</div><div class="hint">'+escapeHtml(e.message||e)+'</div>'; }
+}
+/* ── morning commitment ── */
+function openCommit(onDone){
+  const prev=S.settings.dayCommit||{}; const m=$('commitModal'); m.classList.add('show'); S.commitDone=onDone; let n=3;
+  $('commitBody').innerHTML=`<div class="cm-breath"><div class="cm-ring" id="cmRing"><b id="cmNum">3</b></div><div class="cm-txt" id="cmTxt">לפני שמרימים טלפון: שלוש נשימות. שאיפה ארבע שניות, נשיפה ארבע שניות.</div></div>
+    <div class="cm-form" id="cmForm" style="display:none">
+      <div class="cm-q">היום, ${new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'})}, אני מתחייב ל:</div>
+      <div class="cm-row"><label>שיחות מלאות (7+ דקות, עד הצגת המסלול)</label><input type="number" id="cmFull" min="1" max="40" value="${prev.fullCalls||8}"></div>
+      <div class="cm-row"><label>סליקות</label><input type="number" id="cmClose" min="1" max="10" value="${prev.closes||1}"></div>
+      <div class="cm-row"><label>למה זה חשוב לי דווקא היום (משפט אחד, כנה)</label><input id="cmWhy" placeholder="למשל: כי אני רוצה לסגור את החודש ב-12 ולהוכיח לעצמי" value="${escapeHtml(prev.why||'')}"></div>
+      <div class="cm-row"><label>אם-אז: כשלקוח יגיד "אני צריך לחשוב", אני…</label><input id="cmIf" placeholder='למשל: שואל "מה הדבר המרכזי שאתה עדיין מתלבט לגביו?" ושותק' value="${escapeHtml(prev.ifThen||'')}"></div>
+      <div class="hint">קרא את ההתחייבות בקול, פעם אחת, לפני שאתה לוחץ. זה לא בשביל המערכת, זה בשביל המוח שלך.</div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:16px;padding:12px" onclick="saveCommit()">✊ אני מתחייב. מתחילים.</button>
+    </div>`;
+  const iv=setInterval(()=>{ n--; if(n<=0){ clearInterval(iv); $('cmRing').style.display='none'; $('cmTxt').textContent='יופי. עכשיו ההתחייבות.'; $('cmForm').style.display=''; $('cmFull').focus(); } else { $('cmNum').textContent=n; } },4000);
+}
+window.saveCommit=()=>{ const c={day:todayKey(),fullCalls:Math.max(1,parseInt($('cmFull').value)||8),closes:Math.max(1,parseInt($('cmClose').value)||1),why:$('cmWhy').value.trim(),ifThen:$('cmIf').value.trim(),ts:Date.now()}; S.settings.dayCommit=c; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); $('commitModal').classList.remove('show'); renderDayPill(); toast('התחייבת: '+c.fullCalls+' שיחות מלאות ו-'+c.closes+' סליקות. יאללה.','t-ok'); try{ addEvent({kind:'custom',request:'התחייבות יומית',text:`${c.fullCalls} מלאות · ${c.closes} סליקות · ${c.why}`,why:'',reasoning:null}); }catch(e){} const f=S.commitDone; S.commitDone=null; if(f) f(); };
+window.skipCommit=()=>{ $('commitModal').classList.remove('show'); const f=S.commitDone; S.commitDone=null; if(f) f(); };
+async function startDay(){ if(S.running||S.simActive) return toast('סיים קודם את השיחה הנוכחית','t-error'); if(!dayCommit()) return openCommit(startDayNow); return startDayNow(); }
+window.openCommit=openCommit; window.renderDebrief=renderDebrief; window.dayKick=dayKick;
 function saveLocalHistory(o,ctx){
   try{ const h=JSON.parse(localStorage.getItem('lc_history')||'[]'); h.unshift({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),score:o.score,scores:o.scores,outcome:o.outcome,stage:o.stage_reached,improvements:(o.improvements||[]).map(i=>i.principle),one_thing:o.one_thing,mode:ctx.sim?'sim':(ctx.single?'listen':'rep')}); localStorage.setItem('lc_history',JSON.stringify(h.slice(0,300))); }catch(e){}
 }
-function afterCallHooks(ctx){ try{ const sim=!!(ctx&&ctx.sim); const n=(parseInt(localStorage.getItem('lc_calls_since_sim')||'0')+ (sim?0:1)); localStorage.setItem('lc_calls_since_sim',sim?'0':String(n)); if(!sim&&n>=5){ setTimeout(()=>{ toast('🎭 5 שיחות מאז הסימולציה האחרונה. זמן לאימון קצר עם המאמן.','t-ok'); $('coachBubble').classList.add('ping'); },4000); } detectPatterns(); }catch(e){} }
+function afterCallHooks(ctx){ renderDayPill(); try{ const sim=!!(ctx&&ctx.sim); const n=(parseInt(localStorage.getItem('lc_calls_since_sim')||'0')+ (sim?0:1)); localStorage.setItem('lc_calls_since_sim',sim?'0':String(n)); if(!sim&&n>=5){ setTimeout(()=>{ toast('🎭 5 שיחות מאז הסימולציה האחרונה. זמן לאימון קצר עם המאמן.','t-ok'); $('coachBubble').classList.add('ping'); },4000); } detectPatterns(); }catch(e){} }
 
 /* ───────────────────────── coach panel: chat / simulation / daily ───────────────────────── */
 const MOTIV=['החודש הזה לא נגמר בסוף החודש. הוא נגמר כשהיעד כבוש.','רק ווינרים מגיעים לסוף החודש עם תוצאות. פראיירים מגיעים עם תירוצים.','כל שיחה היא הזדמנות שמישהו אחר היה משלם עליה. אל תבזבז אותה.','אתה לא מוכר קורס. אתה משנה למישהו את החיים. תתנהג בהתאם.','הלקוח מרגיש את הביטחון שלך לפני שהוא שומע את המילים שלך.','היעד לא כובש את עצמו. עוד שיחה. עוד העמקה. עוד סגירה.','מי שמתאמץ היום, סוגר מחר. מי שלא, מסביר בסוף החודש.','אל תסיים שיחה בלי צעד הבא. לעולם.','60% הלקוח, 40% אתה. שאל, שתוק, הקשב.','הכי טוב שיש זה לא סיסמה. זה החלטה שמתחילה בשיחה הבאה.','ווינר לא שואל אם הלקוח יקנה. הוא עוזר לו להחליט מי הוא רוצה להיות.','היום שלך נמדד בסגירות, לא בשעות.'];
@@ -1749,7 +1825,7 @@ if(teamTok){ S.importing=true; importTeamToken(teamTok[1]); }
 else if(savedTok&&(!S.settings.anthropic||!S.settings.openai)){ S.importing=true; log('המפתחות חסרים בדפדפן, טוען מחדש מלינק הצוות…'); importTeamToken(savedTok); }
 else postImportChecks();
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
-renderBarriers(); try{ $('coach').prepend($('idbarWrap')); }catch(e){}
+renderBarriers(); try{ $('coach').prepend($('idbarWrap')); }catch(e){} renderDayPill();
 window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis,setReadiness,showSay}; // debug hooks
 /* ── lead journey panel: who is this lead, what happened, what to say ── */
 const LEARNINGS=`מה למדנו מ-104 סגירות (יולי-ספטמבר 2026): כמעט אף אחד לא סוגר מנגיעה אחת (חציון 4 שיחות ו-90 דקות מצטברות). הנציג שעשה את השיחה הארוכה הוא זה שסוגר (73 מתוך 83). חצי מהסגירות הן לידים שחזרו אחרי פנייה חוזרת או הרשמה חדשה לוובינר, ורבע נסגרו אחרי יותר מ-60 יום במאגר. לידים שצרכו שני תכנים (וובינר + הדרכה חינמית או מיני-קורס) סוגרים הכי הרבה; ליד שצרך תוכן אחד בלבד צריך קודם את התוכן השני. ליד מהדרכה חינמית סוגר מהר (חציון 7 ימים) ולכן צריך שיחה מלאה מיד. ליד שנרשם לוובינר ולא הגיע הוא לא ליד מת: הוא נסגר בשיחה שמחזירה אותו להקלטה או לוובינר הבא. "לא רלוונטי" אחרי שיחה של דקה הוא לרוב טעות של הנציג.`;
