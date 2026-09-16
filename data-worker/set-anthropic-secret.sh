@@ -12,5 +12,5 @@ done
 printf '%s' "$KEY" | npx wrangler secret put ANTHROPIC_API_KEY
 echo "✅ נשמר. מפעיל הכנה ראשונה לכל הנציגים (יכול לקחת כמה דקות)…"
 set -a; source ~/.config/livecoach/.env; set +a
-curl -s -H "x-app-key: $LC_APP_KEY" "https://livecoach-data.aviv1988.workers.dev/prepare?rep=all&what=review,morning" | head -c 1500
+for i in 1 2 3 4 5 6 7 8 9 10; do R=$(curl -s --max-time 290 -H "x-app-key: $LC_APP_KEY" "https://livecoach-data.aviv1988.workers.dev/prepare?rep=all&what=review,morning"); echo "$R" | head -c 300; echo; echo "$R" | grep -q '"pending":0' && break; done
 echo ""

@@ -17,6 +17,6 @@ id = "079622a22e9844c2aecec6136e1fba77"
 [vars]
 SUPABASE_URL = "https://vxbtazbmisgrfirdepej.supabase.co"
 
-# nightly (18:30 UTC = 21:30 Israel): day reviews + tomorrow's morning screens; 03:00 UTC = 06:00 Israel: refresh morning screens
+# every 4 minutes 18:00-19:59 UTC (21:00-22:59 Israel): one rep per run → day review + tomorrow's morning screen; 03:00-04:59 UTC (06:00-07:59 Israel): morning refresh
 [triggers]
-crons = ["30 18 * * *", "0 3 * * *"]
+crons = ["*/4 18-19 * * *", "*/4 3-4 * * *"]

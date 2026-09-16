@@ -189,10 +189,14 @@ async function prepareRep(env,repName,what){
   return out;
 }
 async function activeReps(env){ const names=new Set(); try{ for(const r of await sb(env,'calls?select=rep&started_at=gte.'+new Date(Date.now()-14*864e5).toISOString()+'&limit=1000')) if(r.rep&&r.rep!=='ללא שם') names.add(r.rep); }catch(e){} try{ for(const r of await sb(env,'tc_events?select=agent&ts=gte.'+new Date(Date.now()-7*864e5).toISOString()+'&limit=1000')) if(r.agent) names.add(r.agent); }catch(e){} const junk=/טסט|test|SYSTEM|בדיקה|ללא שם/i; const arr=[...names].filter(n=>n&&!junk.test(n)).sort((a,b)=>b.length-a.length); const kept=[]; for(const n of arr){ const nn=normName(n); if(kept.some(k=>{ const kk=normName(k); return kk!==nn&&(kk.includes(nn)||nn.includes(kk)); })) continue; kept.push(n); } return kept; }
-async function prepareAll(env,what,selfUrl){ const reps=await activeReps(env); const results=[]; for(const r of reps){ try{ const res=await fetch(selfUrl+'/prepare?rep='+encodeURIComponent(r)+'&what='+what,{headers:{'x-app-key':env.APP_KEY}}); results.push(await res.json()); }catch(e){ results.push({rep:r,error:String(e.message||e)}); } } return {reps:reps.length,results}; }
+async function pendingReps(env,what){ const reps=await activeReps(env); const today=ilDate(); const tomorrow=ilDate(new Date(Date.now()+864e5)); const out=[];
+  let plans=[],reviews=[]; try{ plans=await sb(env,'morning_plans?select=rep,day,updated_at&day=eq.'+tomorrow); }catch(e){} try{ reviews=await sb(env,'day_reviews?select=rep,day&day=eq.'+today); }catch(e){}
+  for(const r of reps){ const needM=what.includes('morning')&&!plans.some(p=>p.rep===r&&(Date.now()-new Date(p.updated_at).getTime())<10*3600e3); const needR=what.includes('review')&&!reviews.some(x=>x.rep===r); if(needM||needR) out.push({rep:r,what:[needR?'review':null,needM?'morning':null].filter(Boolean).join(',')}); }
+  return {reps,pending:out}; }
+async function prepareNext(env,what,max=1){ const {reps,pending}=await pendingReps(env,what); const results=[]; for(const p of pending.slice(0,max)){ try{ results.push(await prepareRep(env,p.rep,p.what)); }catch(e){ results.push({rep:p.rep,error:String(e.message||e).slice(0,200)}); } } return {reps:reps.length,pending:pending.length,done:results}; }
 
 export default {
-  async scheduled(event,env,ctx){ const self='https://livecoach-data.aviv1988.workers.dev'; const h=new Date(event.scheduledTime).getUTCHours(); const what=h>=15?'review,morning':'morning'; ctx.waitUntil(prepareAll(env,what,self)); },
+  async scheduled(event,env,ctx){ const h=new Date(event.scheduledTime).getUTCHours(); const what=h>=15?'review,morning':'morning'; ctx.waitUntil(prepareNext(env,what,1)); },
   async fetch(req,env){
     const h=cors(req); if(req.method==='OPTIONS') return new Response(null,{status:204,headers:h});
     const url=new URL(req.url); const key=req.headers.get('x-app-key')||url.searchParams.get('key')||'';
@@ -221,7 +225,7 @@ export default {
     const cache=async(k,ttl,fn)=>{ if(url.searchParams.get('fresh')!=='1'){ try{ const v=await env.CACHE.get(k); if(v) return JSON.parse(v); }catch(e){} } const d=await fn(); await kvPutSafe(env,k,JSON.stringify(d),{expirationTtl:ttl}); return d; };
     try{
       if(url.pathname==='/campaigns') return json(await campaigns(env),200,h);
-      if(url.pathname==='/prepare'){ const rep=url.searchParams.get('rep')||''; const what=url.searchParams.get('what')||'morning,review'; if(!rep) return json({error:'rep'},400,h); if(rep==='all') return json(await prepareAll(env,what,url.origin),200,h); return json(await prepareRep(env,rep,what),200,h); }
+      if(url.pathname==='/prepare'){ const rep=url.searchParams.get('rep')||''; const what=url.searchParams.get('what')||'morning,review'; if(!rep) return json({error:'rep'},400,h); if(rep==='all') return json(await prepareNext(env,what,1),200,h); if(rep==='status') return json(await pendingReps(env,what),200,h); try{ return json(await prepareRep(env,rep,what),200,h); }catch(e){ return json({rep,error:String(e.message||e).slice(0,300)},500,h); } }
       if(url.pathname==='/reps') return json({reps:await activeReps(env)},200,h);
       if(url.pathname==='/hooks/purge'){ const agent=url.searchParams.get('agent')||''; if(!agent||!sbReady(env)) return json({error:'agent'},400,h); for(const t of ['tc_events','tc_calls']) await sb(env,t+'?'+(t==='tc_events'?'agent':'rep')+'=eq.'+encodeURIComponent(agent),'DELETE'); await sb(env,'tc_active?agent=eq.'+encodeURIComponent(agent),'DELETE'); return json({ok:true},200,h); }
       if(url.pathname==='/hooks/log'){ let events=[]; if(sbReady(env)){ try{ events=(await sb(env,'tc_events?select=ts,type,phone,agent,name,raw&order=ts.desc&limit=40')).map(e=>({...e,raw:JSON.stringify(e.raw).slice(0,4000)})); }catch(e){ events=[{error:String(e.message)}]; } } return json({token:await hookToken(env),store:sbReady(env)?'supabase':'kv',events},200,h); }
