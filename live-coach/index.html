@@ -182,6 +182,8 @@
   @media(max-width:700px){.sayopts{grid-template-columns:1fr}}
   #coach #idbarWrap{grid-column:1/-1;padding:0!important}#coach #miniTr{grid-column:2;grid-row:7/span 3}.minitr{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:8px 10px;max-height:260px;overflow:auto;font-size:12.5px}.minitr .k{font-size:11px;font-weight:800;color:var(--text-muted);margin-bottom:4px}.minitr .msg{padding:4px 0;border-top:1px dashed var(--border)}.minitr .msg .who{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--text-muted)}.minitr .msg.rep .who b{color:var(--accent3)}.minitr .msg.cust .who b{color:var(--gold)}.minitr .spk button{font:inherit;font-size:11px;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:1px 8px;cursor:pointer}.minitr .spk button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
   @media(max-width:860px){#coach #miniTr{grid-column:1;grid-row:auto}}
+  .fchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px}.fchips .k{font-size:11px;font-weight:800;color:var(--text-muted);margin-right:4px}.fchip{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:3px 10px;font-weight:700;cursor:pointer;user-select:none}.fchip.on{background:var(--accent);color:#fff;border-color:var(--accent)}.fchips .sep{width:1px;height:16px;background:var(--border);margin:0 2px}
+  .wbar{background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(8,145,178,.08));border:1px solid rgba(37,99,235,.4);border-radius:12px;padding:10px 14px;font-size:15px;font-weight:700;display:flex;gap:10px;align-items:center;animation:in .3s}.wbar .k{font-size:11px;color:var(--blue);font-weight:900;white-space:nowrap}.wbar .x{margin-right:auto;border:none;background:transparent;cursor:pointer;font-size:16px;color:var(--text-muted)}
   .bchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}.bchips .k{font-size:11px;font-weight:800;color:var(--text-muted)}.bchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:3px 6px 3px 10px;font-size:12.5px;font-weight:700;cursor:pointer;user-select:none}.bchip.open{border-color:rgba(15,157,110,.5);background:rgba(15,157,110,.08)}.bchip .q{border:1px solid rgba(124,58,237,.35);background:var(--surface2);border-radius:999px;padding:2px 9px;font:inherit;font-size:11.5px;font-weight:800;cursor:pointer;color:var(--purple)}.bchip .q:hover{background:var(--surface3)}
   .saynow .w{font-size:12.5px;color:#6d28d9;margin-top:8px;line-height:1.5}
   .saynow .avoid{font-size:12px;color:#b91c1c;margin-top:6px}
@@ -368,6 +370,8 @@
   <section class="panel main-coach" id="coachWrap">
     <div class="panel-h">🧠 מה להגיד עכשיו <span class="spacer"></span><span id="aiLatency" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
     <div class="panel-b" id="coach">
+      <div class="fchips" id="fchips"></div>
+      <div class="wbar" id="whisperBar" style="display:none"></div>
       <div class="saynow" id="saynow">
         <div class="k"><i class="spin"></i>אמור עכשיו</div>
         <div class="sayopts"><div class="sayopt on" id="optA" onclick="pickSay('a')"><span class="lbl">א <em id="sayAngleA"></em></span><div class="t" id="sayText">התחל שיחה או הרץ הדגמה. ברגע שהלקוח מדבר, המאמן יגיד לך בדיוק מה להגיד.</div></div><div class="sayopt" id="optB" onclick="pickSay('b')" style="display:none"><span class="lbl">ב <em id="sayAngleB"></em></span><div class="t" id="sayTextB"></div></div></div>
@@ -533,6 +537,7 @@ const STAGES = [
 ];
 const STAGE_CHECKS = {"kyc":["יודעים מי הוא ומה המצב שלו היום","יודעים למה פנה דווקא עכשיו","נתפס קצה חוט אחד: רגש, רצון או אמונה"],"pain":["הלקוח אמר במילים שלו מה מפריע לו","הכאב קיבל מחיר: כסף, זמן או תחושה","הנציג שתק ונתן לו לדבר"],"objection":["ההתנגדות נאמרה במפורש","נמצא החשש או האמונה שמאחוריה","הלקוח אישר שזה כבר לא עוצר אותו"],"goal":["הלקוח תיאר איך נראית ההצלחה בשבילו","המטרה נוגעת במי שהוא רוצה להיות, לא רק בכסף","הלקוח אמר למה זה חשוב לו"],"motive":["ברור מה הלקוח מאמין שהוא צריך: ליווי, קהילה או סדר","הנציג החזיר את זה במילים של הלקוח","הלקוח אישר"],"solution":["המסלול הוצג כגשר מהמצב היום למטרה שלו","הוצג במילים של הלקוח","התקבלו 2-3 הסכמות קטנות"],"close":["הוזכר הפער בין היום לבין מה שהוא רוצה","שאלת ההחלטה נשאלה ישירות","הצעד הבא נסגר: תשלום או מועד"]};
 const BARRIERS=[['money','כסף'],['spouse','אישה / בן זוג'],['finance','מצב פיננסי'],['time','זמן'],['decision','קבלת החלטה'],['certainty','עיגון וודאי']];
+const FACTS={gender:[['m','👨 גבר'],['f','👩 אישה']],age:[['<25','עד 25'],['25-40','25-40'],['40+','40+']],situation:[['employee','שכיר'],['self','עצמאי'],['student','סטודנט'],['none','בלי עבודה']]};
 const CARD_LABEL = {pain:'כאב זוהה',objection:'חסם זוהה',motive:'מניע רכישה זוהה',goal:'מטרה זוהתה',shift:'שינוי טון',warning:'אזהרה',opportunity:'הזדמנות',close:'סימן קנייה',kyc:'מידע על הלקוח'};
 const LINK_API='https://livecoach-link.aviv1988.workers.dev'; // team-link store (link-worker/): settings live there under a short token
 
@@ -1048,7 +1053,7 @@ function teardownAudio(){
 }
 function beginSession(demo){
   S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.custGender='unknown'; S.insights=[]; S.summary=null; S.events=[]; S.lastEventId=null;
-  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.barriers={}; renderBarriers(); if(!(S.ready&&S.ready.pre)) S.ready=null;
+  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.barriers={}; renderBarriers(); S.facts={}; S.custGenderManual=false; renderFacts(); S.whispers=[]; S.lastWhisperAt=null; $('whisperBar').style.display='none'; if(!(S.ready&&S.ready.pre)) S.ready=null;
   setTimeout(()=>{ if(S.running&&!S.ready) setReadiness({score:1,line:'תחילת שיחה: קודם אמון ומי הוא, למה עכשיו, ולתפוס קצה חוט אחד',solved:'',to_solve:'להכיר את הלקוח ולפתוח את הכאב',next_move:'kyc'}); else if(S.running&&S.ready) renderJoker(); },300); S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
   if(!S.simActive) $('liveTag').textContent='LIVE';
@@ -1268,7 +1273,7 @@ ${transcript}
       model:coachModel(), max_tokens:1800,
       betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
       output_config:{effort:S.settings.effort||'low',format:{type:'json_schema',schema:COACH_SCHEMA}},
-      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()}],
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()}],
       messages:[{role:'user',content:user}],
     });
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לנתח את הקטע הזה');
@@ -1291,7 +1296,7 @@ function applyCoach(o,opt={}){
   o=scrub(o);
   if(o.readiness!=null) setReadiness({score:o.readiness,line:o.bottom_line,solved:o.solved,to_solve:o.to_solve,next_move:o.next_move});
   for(const sl of (o.speaker_labels||[])) setSpeaker(sl.id,sl.who,false);
-  if(o.customer_gender&&o.customer_gender!=='unknown') S.custGender=o.customer_gender;
+  if(o.customer_gender&&o.customer_gender!=='unknown'&&!S.custGenderManual) S.custGender=o.customer_gender;
   if(o.profile){S.profile=o.profile;const p=$('profile');p.style.display='';p.innerHTML='<b>פרופיל הלקוח:</b> '+escapeHtml(o.profile)}
   if(Array.isArray(o.ammo)){
     S.ammo=o.ammo.slice(0,8);
@@ -1372,7 +1377,8 @@ function callRow(extra){
   return {id:S.callId, rep:S.settings.repName||'ללא שם', mode:sim?'sim':(S.single?'listen':'rep'), status:S.running?'live':'ended',
     started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round(((S.running?Date.now():(S.endedAt||Date.now()))-S.startedAt)/1000), sim,
     stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
-    checks:S.checks||{}, events:S.events||[], ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length, ...extra};
+    checks:S.checks||{}, events:S.events||[], ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length,
+    say_a:$('sayText').textContent||'', say_b:($('sayTextB')&&$('sayTextB').textContent)||'', readiness:(S.ready&&S.ready.score!=null)?S.ready.score:null, bottom_line:(S.ready&&S.ready.line)||'', solved:(S.ready&&S.ready.solved)||'', to_solve:(S.ready&&S.ready.to_solve)||'', barriers:S.barriers||{}, facts:S.facts||{}, lead_phone:(S.lead&&S.lead.phone)||null, lead_name:(S.lead&&S.lead.name)||null, ...extra};
 }
 async function syncRow(row){
   if(!sbReady()) return;
@@ -1493,7 +1499,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS()){
     try{
-      const res=await getClient().messages.create({model,max_tokens:520,system:[{type:'text',text:QUICK_SYS+trainingBlock(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.'}],...(model.startsWith('claude-opus')||model.startsWith('claude-sonnet')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-haiku')?9000:20000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:[{type:'text',text:QUICK_SYS+trainingBlock(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.'}],...(model.startsWith('claude-opus')||model.startsWith('claude-sonnet')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-haiku')?9000:20000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -1830,7 +1836,7 @@ if(teamTok){ S.importing=true; importTeamToken(teamTok[1]); }
 else if(savedTok&&(!S.settings.anthropic||!S.settings.openai)){ S.importing=true; log('המפתחות חסרים בדפדפן, טוען מחדש מלינק הצוות…'); importTeamToken(savedTok); }
 else postImportChecks();
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
-renderBarriers(); try{ $('coach').prepend($('idbarWrap')); }catch(e){} renderDayPill();
+renderBarriers(); renderFacts(); try{ $('coach').prepend($('idbarWrap')); }catch(e){} renderDayPill();
 try{ $('miniTr').addEventListener('mouseenter',()=>S.miniHover=true); $('miniTr').addEventListener('mouseleave',()=>S.miniHover=false); }catch(e){}
 window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis,setReadiness,showSay}; // debug hooks
 /* ── lead journey panel: who is this lead, what happened, what to say ── */
@@ -1902,6 +1908,23 @@ function instantOpener(j){
 /* ── say-now: two options ── */
 function showSay(a,b,angleA,angleB){ $('sayText').textContent=a||''; const ob=$('optB'); if(b&&b.trim()&&b.trim()!==(a||'').trim()){ $('sayTextB').textContent=b; ob.style.display=''; } else { ob.style.display='none'; $('sayTextB').textContent=''; } $('sayAngleA').textContent=angleA||''; $('sayAngleB').textContent=angleB||''; $('optA').classList.add('on'); $('optB').classList.remove('on'); }
 window.pickSay=w=>{ $('optA').classList.toggle('on',w==='a'); $('optB').classList.toggle('on',w==='b'); const t=w==='a'?$('sayText').textContent:$('sayTextB').textContent; try{ addEvent({kind:'custom',request:'הנציג בחר אפשרות '+(w==='a'?'א':'ב'),text:t,why:'',reasoning:null}); }catch(e){} };
+/* ── manual facts chips (gender / age / situation) ── */
+const FACT_LABEL=(g,v)=>{ const x=(FACTS[g]||[]).find(a=>a[0]===v); return x?x[1].replace(/^[^ ]+ /,''):v; };
+function factsBlock(){ const f=S.facts||{}; const parts=[]; if(f.gender) parts.push('הלקוח/ה: '+(f.gender==='f'?'אישה. כל הפעלים והכינויים בלשון נקבה בלבד':'גבר. לשון זכר בלבד')); if(f.age) parts.push('גיל: '+f.age); if(f.situation) parts.push('מצב: '+FACT_LABEL('situation',f.situation)); return parts.length?'\nנתונים שהנציג סימן ידנית (ודאיים, גוברים על ניחוש מהתמלול): '+parts.join('. ')+'.\n':''; }
+function renderFacts(){ const box=$('fchips'); if(!box) return; const f=S.facts||{}; box.innerHTML='<span class="k">הלקוח:</span>'+Object.entries(FACTS).map(([g,opts],i)=>(i?'<span class="sep"></span>':'')+opts.map(([v,l])=>`<span class="fchip ${f[g]===v?'on':''}" onclick="setFact('${g}','${v}')">${l}</span>`).join('')).join(''); }
+window.setFact=(g,v)=>{ S.facts=S.facts||{}; const was=S.facts[g]; S.facts[g]=was===v?null:v; if(!S.facts[g]) delete S.facts[g]; renderFacts();
+  if(g==='gender'){ S.custGenderManual=!!S.facts.gender; S.custGender=S.facts.gender||'unknown'; if(S.running&&!S.quickInFlight&&S.lines.some(l=>l.final)){ S.lastQuickAt=0; quickSay('quick',''); } }
+  try{ addEvent({kind:'custom',request:'סימון נתון',text:g+': '+(S.facts[g]?FACT_LABEL(g,S.facts[g]):'נוקה'),why:'',reasoning:null}); }catch(e){} };
+/* ── manager whisper (live instruction from the board) ── */
+async function pollWhisper(){
+  if(!S.running||!sbReady()||!S.callId||S.demo) return;
+  try{ const r=await fetch(S.settings.sbUrl+'/rest/v1/calls?select=whisper,whisper_at,whisper_by&id=eq.'+encodeURIComponent(S.callId),{headers:sbHdr()}); if(!r.ok) return; const a=await r.json(); const w=a[0]; if(!w||!w.whisper||!w.whisper_at) return;
+    if(w.whisper_at!==S.lastWhisperAt){ S.lastWhisperAt=w.whisper_at; S.whispers=(S.whispers||[]).concat([w.whisper]).slice(-5); const b=$('whisperBar'); b.style.display=''; b.innerHTML=`<span class="k">👔 ${escapeHtml(w.whisper_by||'המנהל')}:</span><span>${escapeHtml(w.whisper)}</span><button class="x" onclick="this.parentNode.style.display='none'">✕</button>`; toast('הנחיה מהמנהל: '+w.whisper.slice(0,80),'t-ok'); try{ addEvent({kind:'custom',request:'לחישת מנהל',text:w.whisper,why:'',reasoning:null}); }catch(e){}
+      if(!S.quickInFlight){ $('reqInput').value=w.whisper; quickSay('custom',w.whisper); } }
+  }catch(e){}
+}
+setInterval(pollWhisper,6000);
+function whisperBlock(){ const w=S.whispers||[]; return w.length?'\nהנחיות המנהל בזמן אמת (עדיפות עליונה, החדשה גוברת): '+w.map(x=>'"'+x+'"').join(' | ')+'\n':''; }
 /* ── manual barrier chips ── */
 const BARRIER_SYS=`אתה מאמן מכירות בזמן אמת לנציגים שמוכרים ליווי אישי להקמת חנות איקומרס.
 כשאני כותב מילת מפתח או מתאר חסם בשיחה, החזר בדיוק שתי אפשרויות לשאלה שאוכל לשאול מיד את הלקוח.
@@ -1932,7 +1955,7 @@ window.askBarrier=k=>{ const l=(BARRIERS.find(x=>x[0]===k)||[])[1]; S.barriers=S
 async function barrierQuestions(q){
   const tr=recentTranscript(240,6,40); const runCall=S.callId; $('saynow').classList.add('thinking'); setPill('pAI','busy'); $('btnReq').disabled=true; $('btnAsk').disabled=true;
   try{
-    const res=await getClient().messages.create({model:coachModel(),max_tokens:300,system:BARRIER_SYS+barrierBlock(),messages:[{role:'user',content:`חסם: ${q}\nמגדר הלקוח: ${GENDER_RULE[S.custGender]||'לא ידוע'}\nפרופיל: ${S.profile||'—'}\nתמלול אחרון:\n${tr.text||'(אין תמלול עדיין)'}`}]},{timeout:20000,maxRetries:0});
+    const res=await getClient().messages.create({model:coachModel(),max_tokens:300,system:BARRIER_SYS+barrierBlock()+factsBlock(),messages:[{role:'user',content:`חסם: ${q}\nמגדר הלקוח: ${GENDER_RULE[S.custGender]||'לא ידוע'}\nפרופיל: ${S.profile||'—'}\nתמלול אחרון:\n${tr.text||'(אין תמלול עדיין)'}`}]},{timeout:20000,maxRetries:0});
     const txt=res.content.filter(b=>b.type==='text').map(b=>b.text).join('\n'); const qs=txt.split(/\n+/).map(x=>x.replace(/^\s*[12][.)]\s*/,'').replace(/[`*"]/g,'').trim()).filter(Boolean).slice(0,2);
     if(S.callId!==runCall) return; if(!qs.length) throw new Error('לא התקבלו שאלות');
     const ev=addEvent({kind:'custom',request:'חסם: '+q,text:qs[0]+(qs[1]?' | '+qs[1]:''),why:'',reasoning:null});

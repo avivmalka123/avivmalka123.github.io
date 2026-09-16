@@ -46,6 +46,7 @@
   .note .sc{font-size:10.5px;font-weight:800;color:var(--purple);white-space:nowrap;padding-top:2px;min-width:70px}
   .note .tx{flex:1;white-space:pre-wrap}.note .meta{font-size:11px;color:var(--text-muted);margin-top:4px}
   .mbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+  .war{background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(217,119,6,.06));border:1px solid rgba(124,58,237,.3);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}.wr-top{display:flex;gap:12px;align-items:center}.wr-ring{width:64px;height:64px;border-radius:50%;flex:none;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--surface3) 0);display:grid;place-items:center;position:relative}.wr-ring::before{content:'';position:absolute;inset:6px;border-radius:50%;background:var(--surface)}.wr-ring b,.wr-ring small{position:relative;z-index:1}.wr-ring b{font-size:22px;font-weight:900}.wr-ring small{font-size:10px;color:var(--text-muted)}.wr-line{font-size:14px;font-weight:800;line-height:1.35}.wr-sub{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;margin-top:3px}.wr-whisper{background:var(--surface);border:1px solid rgba(37,99,235,.35);border-radius:12px;padding:10px}.wr-whisper b{font-size:13px;color:var(--blue)}
   .jstrip{display:flex;gap:6px;overflow-x:auto;padding:6px 0;align-items:stretch}.jst{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:6px 10px;min-width:112px;text-align:center;font-size:12px;opacity:0;transform:translateY(6px);animation:jpop .4s forwards;display:flex;flex-direction:column;align-items:center;justify-content:center}.jst em{font-style:normal;font-size:18px;display:block}.jst b{font-size:12px}.jst small{display:block;color:var(--text-muted);font-size:11px}.jarr{align-self:center;color:var(--text-muted)}@keyframes jpop{to{opacity:1;transform:none}}
   .jtl{max-height:420px;overflow:auto;font-size:12.5px}.jev{display:grid;grid-template-columns:105px 20px 1fr;gap:6px;padding:4px 0;border-bottom:1px dashed var(--border)}.jev .t{color:var(--text-muted);font-variant-numeric:tabular-nums}.jev.call{color:var(--accent3)}.jev.closed,.jev.tc_closed{color:var(--accent4);font-weight:700}.jev.inquiry{color:var(--neon)}.jev.webinar_reg{color:var(--accent5)}
   .jmodal{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}.jmodal.on{display:flex}.jmodal .in{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:min(1100px,100%);padding:16px}
@@ -428,7 +429,7 @@ $('dayPick').onchange=()=>render();
 function range(){ const now=new Date(); const d=$('dayPick').value; const s=new Date(now); s.setHours(0,0,0,0); if(d==='yesterday'){ s.setDate(s.getDate()-1); const e=new Date(s); e.setDate(e.getDate()+1); return [s,e]; } if(d==='week'){ s.setDate(s.getDate()-6); } return [s,new Date(now.getTime()+3600e3)]; }
 async function fetchRows(){
   const since=new Date(); since.setDate(since.getDate()-8);
-  const LIGHT='id,rep,mode,sim,status,started_at,updated_at,ended_at,duration_sec,stage,stage_idx,stage_reached,temperature,profile,customer_state,say_now,ammo,checks,open_barriers,summary,summary_json,score,outcome,next_step,events';
+  const LIGHT='id,rep,mode,sim,status,started_at,updated_at,ended_at,duration_sec,stage,stage_idx,stage_reached,temperature,profile,customer_state,say_now,say_a,say_b,readiness,bottom_line,to_solve,solved,barriers,facts,lead_phone,lead_name,whisper,whisper_at,ammo,checks,open_barriers,summary,summary_json,score,outcome,next_step,events';
   const url=CFG.sbUrl+'/rest/v1/calls?select='+LIGHT+'&status=neq.void&order=updated_at.desc&limit=400&started_at=gte.'+encodeURIComponent(since.toISOString());
   const r=await fetch(url,{headers:{'apikey':CFG.sbKey,...(CFG.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+CFG.sbKey}:{})}});
   if(!r.ok){ throw new Error(r.status+' '+(await r.text()).slice(0,140)); }
@@ -492,7 +493,8 @@ function render(){
     return `<div class="card ${isLive(r)?'live':'stale'}" onclick="openDetail('${r.id}')">
       <div class="ch"><div class="av">${esc(initials(r.rep))}</div><div class="nm">${esc(r.rep)}<small>${isLive(r)?'בשיחה עכשיו':'נותק לפני '+fmtDur((Date.now()-new Date(r.updated_at))/1000)} · ${r.mode==='listen'?'האזנה':'נציג'}</small></div><div class="tm">${liveDur(r)}</div></div>
       ${stagesHtml(r)}
-      <div class="meta"><span class="tag">${STAGES[stageIdx(r)]?.l||r.stage||''}</span><span class="tag ${'t-'+(r.temperature||'cold')}">${TEMP[r.temperature]||'—'}</span><span>${(r.transcript||[]).length} משפטים</span></div>
+      <div class="meta"><span class="tag">${STAGES[stageIdx(r)]?.l||r.stage||''}</span><span class="tag ${'t-'+(r.temperature||'cold')}">${TEMP[r.temperature]||'—'}</span>${r.readiness!=null?`<span class="tag" style="color:${r.readiness>=8?'var(--accent4)':r.readiness>=5?'var(--accent5)':'var(--red)'}">מוכנות ${r.readiness}/10</span>`:''}${r.lead_name?`<span class="tag">🧭 ${esc(r.lead_name)}</span>`:''}</div>
+      ${r.bottom_line?`<div class="prof">${esc(r.bottom_line)}</div>`:''}
       ${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · ')).slice(0,120)}</div>`:''}
       ${r.customer_state?`<div class="prof"><b style="color:var(--text)">מצב הלקוח:</b> ${esc(r.customer_state)}</div>`:''}
       ${r.say_now?`<div class="say"><b>המאמן מציע עכשיו</b>${esc(r.say_now)}</div>`:''}
@@ -564,13 +566,26 @@ window.openDetail=async function(id,refresh){
   const ob=openBarriers(r);
   const CKN={kyc:5,pain:5,objection:5,goal:5,motive:4,solution:5,close:5}; const ck=r.checks||{};
   const ckLine=STAGES.map(s=>{let d=0;for(let i=1;i<=CKN[s.id];i++) if(ck[s.id+'.'+i]) d++; return `<span class="tag" style="${d===CKN[s.id]?'color:#0f9d6e':d?'color:var(--gold)':''}">${s.l} ${d}/${CKN[s.id]}</span>`}).join(' ');
-  $('dCoach').innerHTML=`<div class="meta" style="margin-bottom:6px">${ckLine}</div>${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · '))}</div>`:''}
+  const manualB=Object.entries(r.barriers||{}).filter(([k,v])=>v==='open').map(([k])=>({money:'כסף',spouse:'אישה / בן זוג',finance:'מצב פיננסי',time:'זמן',decision:'קבלת החלטה',certainty:'עיגון וודאי'}[k]||k));
+  const facts=r.facts||{}; const factTxt=[facts.gender?(facts.gender==='f'?'👩 אישה':'👨 גבר'):'',facts.age?'גיל '+facts.age:'',facts.situation?({employee:'שכיר',self:'עצמאי',student:'סטודנט',none:'בלי עבודה'}[facts.situation]||facts.situation):''].filter(Boolean).join(' · ');
+  const live=isLive(r); const rc=r.readiness!=null?r.readiness:null; const rcol=rc>=8?'var(--accent4)':rc>=5?'var(--accent5)':'var(--red)';
+  const warRoom=live?`<div class="war">
+      <div class="wr-top"><div class="wr-ring" style="--p:${(rc||0)*10};--c:${rcol}"><b>${rc!=null?rc:'–'}</b><small>/10</small></div><div class="wr-txt"><div class="wr-line">${esc(r.bottom_line||'המאמן עוד לא נתן שורה תחתונה')}</div><div class="wr-sub"><span style="color:var(--accent4)">✅ ${esc(r.solved||'—')}</span><span style="color:var(--accent5)">🧱 ${esc(r.to_solve||'—')}</span></div></div></div>
+      ${(manualB.length||ob.length)?`<div class="bar">🧱 חסמים: ${esc([...manualB,...ob.map(a=>a.text)].join(' · '))}</div>`:''}
+      ${factTxt?`<div class="meta">🧾 ${factTxt}</div>`:''}
+      ${(r.say_a||r.say_now)?`<div class="say"><b>המאמן מציע עכשיו · א</b>${esc(r.say_a||r.say_now)}</div>`:''}${r.say_b?`<div class="say"><b>אפשרות ב</b>${esc(r.say_b)}</div>`:''}
+      <div class="wr-lead" id="wrLead">${r.lead_phone?`<div class="hint">🧭 ${esc(r.lead_name||'')} ${esc(r.lead_phone)} · <a href="#" onclick="openJourney('${esc(r.lead_phone)}');return false">המסע המלא</a></div><div id="wrLeadStrip"></div>`:'<div class="hint">אין ליד מזוהה לשיחה הזו (הנציג לא הזין טלפון ולא זוהתה שיחה בטוצ׳אט)</div>'}</div>
+      <div class="wr-whisper"><b>🎙️ לחש לנציג</b><div class="hint">מופיע לו על המסך תוך 6 שניות, והמאמן מנסח מזה משפט מיידי.</div><div style="display:flex;gap:6px;margin-top:6px"><input class="field-input" id="wrText" placeholder='למשל: "תשאל אותו מה קורה אם הוא לא עושה כלום עוד שנה", או "תעצור, תן לה לדבר"' style="flex:1"><button class="btn btn-primary btn-sm" onclick="sendWhisper('${r.id}')">שלח</button></div>${r.whisper?`<div class="hint" style="margin-top:6px">אחרון: "${esc(r.whisper)}" · ${r.whisper_at?new Date(r.whisper_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}):''}</div>`:''}</div>
+    </div>`:'';
+  $('dCoach').innerHTML=warRoom+`<div class="meta" style="margin-bottom:6px">${ckLine}</div>${!live&&ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · '))}</div>`:''}
     ${r.profile?`<div class="prof"><b style="color:var(--text)">פרופיל:</b> ${esc(r.profile)}</div>`:''}
     ${r.customer_state?`<div class="prof"><b style="color:var(--text)">מצב הלקוח:</b> ${esc(r.customer_state)}</div>`:''}
-    ${r.say_now?`<div class="say"><b>המאמן מציע עכשיו</b>${esc(r.say_now)}</div>`:''}
+    ${!live&&r.say_now?`<div class="say"><b>המאמן מציע עכשיו</b>${esc(r.say_now)}</div>`:''}
     ${(r.insights||[]).slice().reverse().map(i=>`<div class="ins"><b>💡 ${esc(i.principle||'')}</b><div class="q">"${esc(i.quote||'')}"</div>${esc(i.lesson||'')}</div>`).join('')}
     ${r.summary?`<h3 style="margin-top:6px">📋 סיכום · ציון ${r.score??'—'}/10</h3><div class="sum">${esc(r.summary)}</div>`:''}`;
+  if(live&&r.lead_phone&&$('wrLeadStrip')){ const ph=r.lead_phone; if(JCACHE[ph]) $('wrLeadStrip').innerHTML=jStrip(JCACHE[ph])+`<div class="hint">${JCACHE[ph].last_call?'שיחה אחרונה: '+esc(JCACHE[ph].last_call.rep)+' לפני '+JCACHE[ph].last_call.days_ago+' ימים ('+esc(JCACHE[ph].last_call.dur)+')':'לא דיברו איתו קודם'}${JCACHE[ph].fb_status?' · פיירברי: '+esc(JCACHE[ph].fb_status):''}</div>`; else if(dataReady()&&!JCACHE['_loading_'+ph]){ JCACHE['_loading_'+ph]=1; dataApi('/lead?phone='+encodeURIComponent(ph)).then(j=>{ JCACHE[ph]=j; if(SEL===r.id) openDetail(r.id,true); }).catch(()=>{}); } }
 };
+window.sendWhisper=async id=>{ const t=($('wrText').value||'').trim(); if(!t) return toast('כתוב מה ללחוש'); try{ await sb('PATCH','calls?id=eq.'+encodeURIComponent(id),{whisper:t,whisper_at:new Date().toISOString(),whisper_by:'המנהל'},'return=minimal'); toast('נשלח לנציג'); $('wrText').value=''; }catch(e){ toast('לא נשלח: '+(e.message||e)); } };
 $('btnClose').onclick=$('overlay').onclick=()=>{ $('drawer').classList.remove('open'); $('overlay').classList.remove('show'); SEL=null; };
 $('btnCopy').onclick=()=>{ const r=ROWS.find(x=>x.id===SEL); if(r&&r.summary){ navigator.clipboard.writeText(r.summary); toast('הסיכום הועתק'); } else toast('אין סיכום עדיין'); };
 /* ═══════════ metrics tab ═══════════ */

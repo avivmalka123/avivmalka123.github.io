@@ -216,3 +216,18 @@ do $$ begin
   if not exists (select 1 from pg_policies where tablename='tc_calls' and policyname='anon all tc_calls') then
     create policy "anon all tc_calls" on tc_calls for all to anon using (true) with check (true); end if;
 end $$;
+
+-- ── live war-room columns on calls (2026-09-16 evening): readiness, manual facts/barriers, A/B, lead, manager whisper ──
+alter table calls add column if not exists say_a text;
+alter table calls add column if not exists say_b text;
+alter table calls add column if not exists readiness int;
+alter table calls add column if not exists bottom_line text;
+alter table calls add column if not exists solved text;
+alter table calls add column if not exists to_solve text;
+alter table calls add column if not exists barriers jsonb;
+alter table calls add column if not exists facts jsonb;
+alter table calls add column if not exists lead_phone text;
+alter table calls add column if not exists lead_name text;
+alter table calls add column if not exists whisper text;
+alter table calls add column if not exists whisper_at timestamptz;
+alter table calls add column if not exists whisper_by text;
