@@ -139,7 +139,7 @@
   <section id="setup" class="setup" style="display:none">
     <h2>חיבור לבורד</h2>
     <div class="field"><label class="field-label">Supabase URL</label><input class="field-input" id="cfgUrl" placeholder="https://xxxx.supabase.co"></div>
-    <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><input class="field-input" id="cfgKey" type="password" placeholder="sb_publishable_..."></div>
+    <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><div style="display:flex;gap:6px"><input class="field-input" id="cfgKey" type="password" placeholder="sb_publishable_..." style="flex:1"><button class="btn btn-sm" type="button" onclick="copyKey()" title="מעתיק את המפתח ללוח (משדה סיסמה אי אפשר להעתיק ידנית)">📋 העתק</button></div></div>
     <div class="hint">אותם פרטים שהגדרת ב-LiveCoach תחת "צוות ובורד מנהל". נשמרים בדפדפן הזה בלבד.</div>
     <div class="field"><label class="field-label">OpenAI API Key (אופציונלי: תמלול הקלטות של שיחות מופת)</label><input class="field-input" id="cfgOai" type="password" placeholder="sk-..."></div>
     <div class="field"><label class="field-label">Anthropic API Key (אופציונלי: ניתוח AI של המדדים)</label><input class="field-input" id="cfgAnth" type="password" placeholder="sk-ant-..."></div>
@@ -273,6 +273,7 @@ async function sb(method,path,body,prefer){ const r=await fetch(CFG.sbUrl+'/rest
   $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||''; $('cfgAnth').value=CFG.anth||''; $('cfgOai').value=CFG.oai||''; $('cfgData').value=CFG.dataUrl||'https://livecoach-data.aviv1988.workers.dev'; $('cfgDataKey').value=CFG.dataKey||'';
   if(!CFG.sbUrl||!CFG.sbKey){ showSetup(true); } else { start(); }
 })();
+window.copyKey=async()=>{ const v=($('cfgKey').value||'').trim(); if(!v) return toast('השדה ריק'); try{ await navigator.clipboard.writeText(v); toast('המפתח הועתק ('+v.length+' תווים). עכשיו הדבק בטרמינל.'); }catch(e){ const i=$('cfgKey'); i.type='text'; i.select(); document.execCommand('copy'); i.type='password'; toast('המפתח הועתק. עכשיו הדבק בטרמינל.'); } };
 function showSetup(v){ $('setup').style.display=v?'':'none'; for(const id of ['liveSec','daySec','recentSec']) $(id).style.display=v?'none':''; }
 /* ── data bridge (ToChat + Fireberry via the livecoach-data worker) ── */
 function dataReady(){ return !!(CFG.dataUrl&&CFG.dataKey); }
