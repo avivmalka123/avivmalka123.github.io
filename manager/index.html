@@ -6,11 +6,11 @@
 <title>LiveCoach ✦ בורד מנהל</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
-  :root{--bg:#080810;--surface:#10101c;--surface2:#16162a;--surface3:#1e1e38;--border:rgba(255,255,255,0.07);--text:#e8e8f0;--text-muted:#6b6b8a;--accent:#7c3aed;--accent2:#ec4899;--accent3:#06b6d4;--accent4:#10b981;--accent5:#f59e0b;--neon:#a855f7;--red:#ef4444;--glow:rgba(124,58,237,0.4);--gold:#f5b342;--blue:#4f8ef7;--teal:#2dd4bf}
+  :root{--bg:#f6f1e7;--surface:#fffdf9;--surface2:#f3ede1;--surface3:#e8e0cf;--border:rgba(70,55,30,0.13);--text:#1f1a13;--text-muted:#6b6355;--accent:#7c3aed;--accent2:#ec4899;--accent3:#0891b2;--accent4:#0f9d6e;--accent5:#d97706;--neon:#7c3aed;--red:#dc2626;--glow:rgba(124,58,237,0.16);--gold:#b7791f;--blue:#2563eb;--teal:#0f9488;--purple:#6d28d9}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--text);font-family:'Heebo',sans-serif;min-height:100vh;direction:rtl}
   ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
-  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(8,8,16,.85);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(246,241,231,.9);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   .logo{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:800}
   .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px var(--glow)}
   .logo small{display:block;font-size:11px;font-weight:500;color:var(--text-muted)}
@@ -29,26 +29,26 @@
   .tl .msg{max-width:78%}
   .tl .ev{align-self:stretch;background:rgba(124,58,237,.10);border:1px solid rgba(168,85,247,.35);border-radius:14px;padding:10px 14px;font-size:13px;line-height:1.5}
   .tl .ev.precheck{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.4)}.tl .ev.insight{background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.35)}.tl .ev.card{background:rgba(245,179,66,.07);border-color:rgba(245,179,66,.3)}.tl .ev.lead,.tl .ev.custom,.tl .ev.ask{background:rgba(6,182,212,.08);border-color:rgba(6,182,212,.35)}
-  .tl .ev .eh{display:flex;gap:8px;align-items:center;font-size:11px;font-weight:800;color:#c4b5fd;margin-bottom:4px;flex-wrap:wrap}.tl .ev .eh .fbm{margin-right:auto;font-size:14px}
+  .tl .ev .eh{display:flex;gap:8px;align-items:center;font-size:11px;font-weight:800;color:var(--purple);margin-bottom:4px;flex-wrap:wrap}.tl .ev .eh .fbm{margin-right:auto;font-size:14px}
   .tl .ev .et{font-size:14px;font-weight:600}
-  .tl .ev .er{margin-top:6px;display:grid;grid-template-columns:1fr;gap:3px;font-size:12px;color:var(--text-muted);background:rgba(0,0,0,.2);border-radius:10px;padding:8px 10px}
+  .tl .ev .er{margin-top:6px;display:grid;grid-template-columns:1fr;gap:3px;font-size:12px;color:var(--text-muted);background:rgba(0,0,0,.06);border-radius:10px;padding:8px 10px}
   .tl .ev .er b{color:var(--text)}
-  .ctxl{margin-top:6px;background:rgba(0,0,0,.18);border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.5}.ctxl b{color:#c4b5fd;display:block;margin-bottom:3px;font-size:11px}
+  .ctxl{margin-top:6px;background:rgba(0,0,0,.05);border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.5}.ctxl b{color:var(--purple);display:block;margin-bottom:3px;font-size:11px}
   .ctxl .cl span{font-weight:800;color:var(--text-muted)}.ctxl .cl.cust span{color:var(--gold)}.ctxl .cl.rep span{color:var(--accent3)}
   .tl .ev .teach{margin-top:8px;display:flex;gap:6px}
   .tl .ev .teach textarea{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;min-height:38px;resize:vertical}
-  .tl .ev .fixed{margin-top:6px;font-size:12.5px;color:#6ee7b7}
+  .tl .ev .fixed{margin-top:6px;font-size:12.5px;color:#0f9d6e}
   .logrow{display:grid;grid-template-columns:60px 1fr 90px 70px 110px 90px;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px}
   .logrow:hover{background:var(--surface2)}.logrow.h{font-size:11px;color:var(--text-muted);font-weight:800;cursor:default;text-transform:uppercase}
   .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
   .field-input.sm{padding:7px 10px;font-size:13px;direction:rtl;text-align:right}
   .note{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.5;display:flex;gap:10px;align-items:flex-start}
-  .note .sc{font-size:10.5px;font-weight:800;color:#c4b5fd;white-space:nowrap;padding-top:2px;min-width:70px}
+  .note .sc{font-size:10.5px;font-weight:800;color:var(--purple);white-space:nowrap;padding-top:2px;min-width:70px}
   .note .tx{flex:1;white-space:pre-wrap}.note .meta{font-size:11px;color:var(--text-muted);margin-top:4px}
   .mbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
   .jstrip{display:flex;gap:6px;overflow-x:auto;padding:6px 0;align-items:stretch}.jst{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:6px 10px;min-width:112px;text-align:center;font-size:12px;opacity:0;transform:translateY(6px);animation:jpop .4s forwards;display:flex;flex-direction:column;align-items:center;justify-content:center}.jst em{font-style:normal;font-size:18px;display:block}.jst b{font-size:12px}.jst small{display:block;color:var(--text-muted);font-size:11px}.jarr{align-self:center;color:var(--text-muted)}@keyframes jpop{to{opacity:1;transform:none}}
   .jtl{max-height:420px;overflow:auto;font-size:12.5px}.jev{display:grid;grid-template-columns:105px 20px 1fr;gap:6px;padding:4px 0;border-bottom:1px dashed var(--border)}.jev .t{color:var(--text-muted);font-variant-numeric:tabular-nums}.jev.call{color:var(--accent3)}.jev.closed,.jev.tc_closed{color:var(--accent4);font-weight:700}.jev.inquiry{color:var(--neon)}.jev.webinar_reg{color:var(--accent5)}
-  .jmodal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:none;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}.jmodal.on{display:flex}.jmodal .in{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:min(1100px,100%);padding:16px}
+  .jmodal{position:fixed;inset:0;background:rgba(30,20,10,.5);z-index:60;display:none;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}.jmodal.on{display:flex}.jmodal .in{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:min(1100px,100%);padding:16px}
   .bar{display:grid;grid-template-columns:150px 1fr 70px;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}.bar .bl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bar i{display:block;height:10px;border-radius:6px;background:var(--accent);min-width:3px}.bar.g i{background:var(--accent4)}.bar.y i{background:var(--accent5)}.bar.b i{background:var(--accent3)}.bar.p i{background:var(--accent2)}.bar b{font-weight:700}.bar small{color:var(--text-muted);font-weight:400}
   .dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}.dcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:13px}.dcard.hot{border-right:4px solid var(--accent5)}.dcard.rescue{border-right:4px solid var(--accent3)}.dcard h4{margin:0 0 6px;font-size:14px}.dcard .say{background:rgba(124,58,237,.12);border:1px solid rgba(168,85,247,.35);border-radius:10px;padding:8px 10px;margin-top:8px;font-size:13px}.dcard .why{color:var(--text-muted);font-size:12.5px}
   .jgrid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:900px){.jgrid2{grid-template-columns:1fr}}
@@ -83,10 +83,10 @@
   .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11.5px;color:var(--text-muted);margin-bottom:8px}
   .meta b{color:var(--text)}
   .tag{padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;background:var(--surface2);border:1px solid var(--border)}
-  .t-cold{color:#9cc0ff}.t-warm{color:var(--gold)}.t-hot{color:#fca5a5}
-  .bar{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:6px 10px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:8px}
+  .t-cold{color:var(--blue)}.t-warm{color:var(--gold)}.t-hot{color:#b91c1c}
+  .bar{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#b91c1c;padding:6px 10px;border-radius:10px;font-size:12px;font-weight:700;margin-bottom:8px}
   .say{font-size:13px;line-height:1.5;background:rgba(124,58,237,.12);border:1px solid rgba(168,85,247,.3);border-radius:10px;padding:8px 10px;margin-bottom:8px}
-  .say b{color:#d8b4fe;font-size:10.5px;display:block;margin-bottom:2px}
+  .say b{color:var(--purple);font-size:10.5px;display:block;margin-bottom:2px}
   .am{font-size:12.5px;line-height:1.5;color:var(--text)}.am div{padding:3px 0;border-bottom:1px dashed var(--border)}.am div:last-child{border:none}
   .prof{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:8px}
   .empty{color:var(--text-muted);font-size:13px;text-align:center;padding:30px;border:1px dashed var(--border);border-radius:12px;line-height:1.7}
@@ -95,12 +95,12 @@
   th{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;background:var(--surface2)}
   tr:last-child td{border:none}
   .score{display:inline-block;min-width:44px;text-align:center;padding:3px 10px;border-radius:99px;font-weight:800}
-  .s-g{background:rgba(16,185,129,.2);color:#6ee7b7}.s-y{background:rgba(245,179,66,.2);color:var(--gold)}.s-r{background:rgba(239,68,68,.2);color:#fca5a5}.s-n{background:var(--surface2);color:var(--text-muted)}
+  .s-g{background:rgba(16,185,129,.2);color:#0f9d6e}.s-y{background:rgba(245,179,66,.2);color:var(--gold)}.s-r{background:rgba(239,68,68,.2);color:#b91c1c}.s-n{background:var(--surface2);color:var(--text-muted)}
   .kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:14px}
   .kpi{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px}
   .kpi .v{font-size:26px;font-weight:900}.kpi .l{font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
   /* detail drawer */
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;display:none}.overlay.show{display:block}
+  .overlay{position:fixed;inset:0;background:rgba(30,20,10,.45);z-index:30;display:none}.overlay.show{display:block}
   .drawer{position:fixed;top:0;left:0;bottom:0;width:min(1400px,100%);background:var(--surface);border-right:1px solid var(--border);z-index:40;transform:translateX(-100%);transition:transform .3s;display:flex;flex-direction:column}
   .drawer.open{transform:none}
   .dh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
@@ -112,8 +112,8 @@
   .msg .who{font-size:10.5px;color:var(--text-muted);font-weight:700;margin-bottom:2px}
   .msg.rep{align-self:flex-end;background:var(--surface3)}.msg.cust{align-self:flex-start;background:rgba(245,179,66,.08);border:1px solid rgba(245,179,66,.18)}.msg.unk{align-self:center;background:var(--surface2)}
   .ammo{border-radius:12px;padding:9px 12px;border:1px solid var(--border);background:var(--surface2);border-right:3px solid var(--a,#888);font-size:13px;line-height:1.5}
-  .ammo .at{font-size:10.5px;font-weight:800;color:var(--a);margin-bottom:2px}.ammo .an{font-size:12px;color:var(--text-muted)}.ammo .au{font-size:12px;color:#c4b5fd;margin-top:4px}
-  .s-hot{--a:#ef4444}.s-high{--a:#fb923c}.s-medium{--a:#facc15}.s-low{--a:#22c55e}.s-resolved{--a:#6b6b8a;opacity:.6}
+  .ammo .at{font-size:10.5px;font-weight:800;color:var(--a);margin-bottom:2px}.ammo .an{font-size:12px;color:var(--text-muted)}.ammo .au{font-size:12px;color:var(--purple);margin-top:4px}
+  .s-hot{--a:#ef4444}.s-high{--a:#c2410c}.s-medium{--a:var(--gold)}.s-low{--a:#22c55e}.s-resolved{--a:var(--text-muted);opacity:.6}
   .ins{border-radius:12px;padding:10px 12px;border:1px solid rgba(45,212,191,.3);background:rgba(45,212,191,.06);font-size:13px;line-height:1.5}
   .ins .q{font-style:italic;color:var(--text-muted);font-size:12px}.ins b{color:var(--teal);font-size:11px;display:block}
   .sum{white-space:pre-wrap;font-size:13px;line-height:1.65;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px}
@@ -160,7 +160,7 @@
   </section>
 
   <section id="dailySec" style="display:none">
-    <h2>☀️ סיכום יום: מה קרה, מי חם, ומה להציל היום <span class="spacer"></span><input type="date" class="field-input sm" id="dDate" style="width:auto"><button class="btn btn-sm" id="btnDLoad">טען</button><button class="btn btn-primary btn-sm" id="btnDAi">🧠 סיכום יום מלא (AI)</button></h2>
+    <h2>☀️ סיכום יום: מה קרה, מי חם, ומה להציל היום <span class="spacer"></span><select class="field-input sm" id="dRange" style="width:auto"><option value="1">אתמול</option><option value="0">היום</option><option value="3">3 ימים אחרונים</option><option value="7">7 ימים אחרונים</option><option value="14">14 יום</option><option value="custom">תאריך</option></select><input type="date" class="field-input sm" id="dDate" style="width:auto;display:none"><button class="btn btn-sm" id="btnDLoad">טען</button><button class="btn btn-primary btn-sm" id="btnDAi">🧠 סיכום יום מלא (AI)</button></h2>
     <div id="dBody"><div class="empty">בחר תאריך ולחץ "טען". ברירת המחדל: אתמול.</div></div>
   </section>
   <section id="logSec" style="display:none">
@@ -280,7 +280,8 @@ async function dataApi(path){ if(!dataReady()) throw new Error('חסר שרת נ
 async function claudeJson(system,user,schema,max=4000){
   if(!CFG.anth) throw new Error('הוסף מפתח Anthropic ב"⚙️ חיבור"');
   const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.anth,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','anthropic-beta':'server-side-fallback-2026-07-01'},body:JSON.stringify({model:'claude-opus-5',max_tokens:max,fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema}},system,messages:[{role:'user',content:user}]})});
-  const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||r.status); return JSON.parse((j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''));
+  const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||r.status); const txt=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+  try{ return JSON.parse(txt); }catch(e){ if(j.stop_reason==='max_tokens') throw new Error('התשובה נחתכה (max_tokens). נסה טווח קצר יותר.'); const m=txt.match(/\{[\s\S]*\}/); if(m){ try{ return JSON.parse(m[0]); }catch(e2){} } throw new Error('JSON לא תקין מהמודל: '+e.message); }
 }
 const fmtD=iso=>{ if(!iso) return '?'; const d=new Date(String(iso).slice(0,19)); return isNaN(d)?String(iso).slice(0,10):d.toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit'}); };
 const fmtDT=iso=>{ if(!iso) return '?'; const d=new Date(String(iso).slice(0,19)); return isNaN(d)?String(iso).slice(0,16):d.toLocaleString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}); };
@@ -312,13 +313,30 @@ async function openJourney(phone,pre){
 window.openJourney=openJourney;
 /* ── daily digest ── */
 let DAILY=null, DINIT=false;
-function initDaily(){ if(DINIT) return; DINIT=true; const d=new Date(Date.now()-864e5); $('dDate').value=d.toISOString().slice(0,10); loadDaily(); }
+function initDaily(){ if(DINIT) return; DINIT=true; const d=new Date(Date.now()-864e5); $('dDate').value=d.toISOString().slice(0,10); $('dRange').onchange=()=>{ $('dDate').style.display=$('dRange').value==='custom'?'':'none'; }; loadDaily(); }
 $('btnDLoad').onclick=()=>loadDaily();
+function dailyRange(){ const v=$('dRange').value; const iso=d=>d.toISOString().slice(0,10); if(v==='custom'){ const d=$('dDate').value; return {from:d,to:d,days:1}; } const n=parseInt(v); if(n===0){ const t=iso(new Date()); return {from:t,to:t,days:1}; } if(n===1){ const y=iso(new Date(Date.now()-864e5)); return {from:y,to:y,days:1}; } return {from:iso(new Date(Date.now()-n*864e5)),to:iso(new Date(Date.now()-864e5)),days:n}; }
+let RESCUE=null;
+let DSEQ=0;
 async function loadDaily(){
-  const date=$('dDate').value; $('dBody').innerHTML='<div class="empty">מושך את היום '+date+' מטוצ\'אט ופיירברי…</div>';
-  try{ DAILY=await dataApi('/daily?date='+date); let saved=null; try{ const r=await fetch(CFG.sbUrl+'/rest/v1/daily_digests?select=data&date=eq.'+date,{headers:hdr()}); if(r.ok){ const a=await r.json(); saved=a[0]&&a[0].data; } }catch(e){} DAILY.ai=saved||null; renderDaily(); }
-  catch(e){ $('dBody').innerHTML='<div class="empty">'+esc(e.message||e)+'</div>'; }
+  const {from,to,days}=dailyRange(); const key=from===to?from:from+'_'+to; const seq=++DSEQ; $('btnDLoad').disabled=true; $('dBody').innerHTML='<div class="empty">מושך '+(from===to?from:from+' עד '+to)+' מטוצ\'אט ופיירברי…</div>';
+  try{ const [d,r]=await Promise.all([dataApi('/daily?from='+from+'&to='+to),dataApi('/rescue?days='+Math.max(days,1)).catch(()=>null)]); if(seq!==DSEQ) return; DAILY=d; DAILY.key=key; RESCUE=r; let saved=null; try{ const rr=await fetch(CFG.sbUrl+'/rest/v1/daily_digests?select=data&date=eq.'+from+'&limit=1',{headers:hdr()}); if(rr.ok){ const a=await rr.json(); saved=a[0]&&a[0].data&&a[0].data.key===key?a[0].data:null; } }catch(e){} DAILY.ai=saved||null; renderDaily(); }
+  catch(e){ if(seq===DSEQ) $('dBody').innerHTML='<div class="empty">'+esc(e.message||e)+'</div>'; }
+  finally{ if(seq===DSEQ) $('btnDLoad').disabled=false; }
 }
+function rescueHtml(){
+  if(!RESCUE||!RESCUE.candidates) return '';
+  const L=RESCUE.candidates; if(!L.length) return '<div class="mbox"><h2>🛟 מועמדים להצלה</h2><div class="hint">לא נמצאו לידים שסומנו "לא רלוונטי" בטווח הזה עם דפוס של סוגרים.</div></div>';
+  return `<div class="mbox"><h2>🛟 מועמדים להצלה מהמאגר (${L.length} מתוך ${RESCUE.scanned} שסומנו לא רלוונטי) <span class="spacer"></span><button class="btn btn-sm btn-primary" onclick="rescueAdd()">➕ הוסף מסומנים לקמפיין "להציל מהמתים רלוונטיים"</button></h2>
+  <div class="hint" style="margin-bottom:8px">דפוס הסוגרים: שיחה ארוכה, כמה שיחות, 2+ תכנים, הרשמה לוובינר. ניקוד גבוה = דומה יותר ללידים שנסגרים. הקמפיין צריך להיות קיים בטוצ'אט בשם הזה בדיוק.</div>
+  <div style="overflow-x:auto"><table class="mtable"><thead><tr><th><input type="checkbox" onclick="document.querySelectorAll('.rsel').forEach(c=>c.checked=this.checked)"></th><th>ניקוד</th><th>ליד</th><th>למה</th><th>סומן</th><th>ע"י</th><th>סיבה</th><th>פיירברי</th><th>שיחה אחרונה</th><th></th></tr></thead><tbody>${L.map((x,i)=>`<tr><td><input type="checkbox" class="rsel" data-i="${i}" ${x.score>=4?'checked':''}></td><td class="num"><b>${x.score}</b></td><td><b>${esc(x.name)}</b><br><span class="hint">${esc(x.phone)}</span></td><td class="hint">${esc(x.why)}${x.content.length?'<br>'+esc(x.content.join(' · ')):''}</td><td>${fmtD(x.marked)}</td><td>${esc(x.marked_by)}</td><td class="hint">${esc([x.sub,x.note].filter(Boolean).join(' · '))}</td><td>${esc(x.fb_status||'')}</td><td class="hint" style="max-width:340px">${x.last_call?esc(x.last_call.rep)+' · '+esc(x.last_call.dur)+'<div style="max-height:70px;overflow:auto;white-space:pre-wrap">'+esc((x.last_call.ai||'').slice(0,400))+'</div>':'—'}</td><td><a href="#" onclick="openJourney('${esc(x.phone)}');return false">🧭</a></td></tr>`).join('')}</tbody></table></div></div>`;
+}
+window.rescueAdd=async()=>{
+  const sel=[...document.querySelectorAll('.rsel:checked')].map(c=>RESCUE.candidates[+c.dataset.i]); if(!sel.length) return toast('סמן לידים קודם');
+  if(!confirm('להוסיף '+sel.length+' לידים לקמפיין "להציל מהמתים רלוונטיים" בטוצ\'אט?')) return;
+  try{ const r=await fetch(CFG.dataUrl+'/rescue/add',{method:'POST',headers:{'x-app-key':CFG.dataKey,'content-type':'application/json'},body:JSON.stringify({leads:sel.map(x=>({phone:x.phone,name:x.name,fireberry_id:x.fireberry_id,notes:'הצלה: '+x.why+(x.last_call?' | שיחה אחרונה '+x.last_call.rep+' '+x.last_call.dur+': '+(x.last_call.ai||'').slice(0,300):'')}))})}); const j=await r.json(); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status)); toast('נוספו לקמפיין '+j.campaign+': '+JSON.stringify(j.result).slice(0,120)); }
+  catch(e){ toast('לא הצלחתי להוסיף: '+(e.message||e)); }
+};
 function renderDaily(){
   const d=DAILY; if(!d) return; const calls=d.calls.slice().sort((a,b)=>b.sec-a.sec); const byRep={};
   for(const c of d.calls){ const r=byRep[c.rep]=byRep[c.rep]||{n:0,sec:0,long:0}; r.n++; r.sec+=c.sec; if(c.sec>=600) r.long++; }
@@ -327,7 +345,8 @@ function renderDaily(){
   const kpi=(v,l)=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`;
   const ai=d.ai;
   $('dBody').innerHTML=`<div class="kpis">${kpi(d.calls.length,'שיחות מתועדות (עם סיכום)')}${kpi(talk,'דקות שיחה')}${kpi(d.calls.filter(c=>c.sec>=600).length,'שיחות מעל 10 דק\'')}${kpi(d.outcomes.filter(o=>o.reason==='CLOSED').length,'סגירות')}${kpi(d.outcomes.filter(o=>o.reason==='IRRELEVANT').length,'סומנו לא רלוונטי')}${kpi(fu.length,'הועברו ל-Follow Up')}${kpi(d.touched.length,'לידים שנגעו בהם')}</div>
-  <div id="dAi">${ai?renderDailyAi(ai):'<div class="ins info">לחץ "🧠 סיכום יום מלא (AI)" כדי לקבל: מה קרה לכל נציג, מי הלידים החמים ביותר של היום, ומי אפשר להציל מהמאגר ולסגור היום.</div>'}</div>
+  <div id="dAi">${ai?renderDailyAi(ai):'<div class="ins info">לחץ "🧠 סיכום יום מלא (AI)" כדי לקבל: מה קרה לכל נציג, מי הלידים החמים ביותר, ומי אפשר להציל מהמאגר ולסגור היום.</div>'}</div>
+  ${rescueHtml()}
   <div class="mbox"><h2>👥 נציגים</h2><div style="overflow-x:auto"><table class="mtable"><thead><tr><th>נציג</th><th>שיחות מתועדות</th><th>דקות</th><th>מעל 10 דק'</th><th>סגירות</th><th>לא רלוונטי</th><th>Follow Up</th></tr></thead><tbody>${Object.entries(byRep).sort((a,b)=>b[1].sec-a[1].sec).map(([r,x])=>`<tr><td><b>${esc(r)}</b></td><td class="num">${x.n}</td><td class="num">${Math.round(x.sec/60)}</td><td class="num">${x.long}</td><td class="num">${d.outcomes.filter(o=>o.rep===r&&o.reason==='CLOSED').length}</td><td class="num">${d.outcomes.filter(o=>o.rep===r&&o.reason==='IRRELEVANT').length}</td><td class="num">${fu.filter(t=>t.rep===r).length}</td></tr>`).join('')}</tbody></table></div>
   <div class="hint" style="margin-top:6px">סיכומי שיחה מגיעים רק מקמפיינים שמסונכרנים לפיירברי. תוצאות (${Object.entries(oc).map(([k,v])=>k+' '+v).join(' · ')}) ונגיעות מגיעות מטוצ'אט לכל הקמפיינים.</div></div>
   <div class="mbox"><h2>📞 השיחות של היום (לפי אורך)</h2><div class="dgrid">${calls.slice(0,60).map(c=>`<div class="dcard ${c.sec>=900?'hot':''}"><h4>${esc(c.name||'?')} <span class="hint">${esc(c.phone||'')}</span></h4><div class="hint">${fmtDT(c.t)} · ${esc(c.rep)} · <b>${esc(c.dur)}</b> · ${esc(c.level||'')} ${c.fb_status?'· '+esc(c.fb_status):''} ${c.rec?`· <a href="${esc(c.rec)}" target="_blank">הקלטה</a>`:''} · <a href="#" onclick="openJourney('${esc(c.phone||'')}');return false">🧭 מסע</a></div><div style="white-space:pre-wrap;font-size:12px;color:var(--text-muted);margin-top:6px;max-height:150px;overflow:auto">${esc((c.ai||'').slice(0,700))}</div></div>`).join('')||'<div class="empty">אין שיחות מתועדות ביום הזה.</div>'}</div></div>
@@ -351,13 +370,14 @@ const DAILY_SCHEMA={type:'object',additionalProperties:false,required:['headline
 $('btnDAi').onclick=async()=>{
   if(!DAILY) return toast('טען יום קודם'); const btn=$('btnDAi'); btn.disabled=true; $('dAi').innerHTML='<div class="hint">קורא את כל השיחות והתוצאות של היום…</div>';
   try{
-    const calls=DAILY.calls.slice().sort((a,b)=>b.sec-a.sec).slice(0,45).map(c=>({name:c.name,phone:c.phone,rep:c.rep,dur:c.dur,level:c.level,fb_status:c.fb_status,type:c.type,created:c.created,summary:(c.ai||'').slice(0,900)}));
-    const outcomes=DAILY.outcomes.map(o=>({name:o.name,phone:o.phone,rep:o.rep,reason:o.reason,sub:o.sub,note:o.note,campaign:o.campaign}));
-    const fu=DAILY.touched.filter(t=>t.status==='FOLLOWUP').slice(0,80).map(t=>({name:t.name,phone:t.phone,rep:t.rep,attempts:t.attempts,followDate:t.followDate,comment:t.comment,notes:t.notes}));
+    const calls=DAILY.calls.slice().sort((a,b)=>b.sec-a.sec).slice(0,35).map(c=>({name:c.name,phone:c.phone,rep:c.rep,dur:c.dur,level:c.level,fb_status:c.fb_status,type:c.type,created:c.created,summary:(c.ai||'').slice(0,600)}));
+    const outcomes=DAILY.outcomes.filter(o=>o.reason==='CLOSED'||o.sub||o.note).slice(0,80).map(o=>({name:o.name,phone:o.phone,rep:o.rep,reason:o.reason,sub:o.sub,note:o.note}));
+    const fu=DAILY.touched.filter(t=>t.status==='FOLLOWUP'&&(t.comment||t.notes)).slice(0,40).map(t=>({name:t.name,phone:t.phone,rep:t.rep,attempts:t.attempts,followDate:t.followDate,comment:t.comment,notes:(t.notes||'').slice(0,160)}));
+    const rescue=((RESCUE&&RESCUE.candidates)||[]).slice(0,30).map(x=>({name:x.name,phone:x.phone,score:x.score,why:x.why,marked_by:x.marked_by,sub:x.sub,note:x.note,fb_status:x.fb_status,last_call:x.last_call&&{rep:x.last_call.rep,dur:x.last_call.dur,summary:(x.last_call.ai||'').slice(0,500)}}));
     const sys=`אתה מנהל המכירות הבכיר של מועדון האיקומרס של אביב מלכה (מסלול ליווי להקמת עסק איקומרס, לידים ממשפכי וובינר / הדרכה חינמית / מיני-קורס, נציגים מתקשרים דרך חייגן). מה שלמדנו מ-104 סגירות בקיץ 2026: כמעט אף אחד לא סוגר מנגיעה אחת (חציון 4 שיחות ו-90 דקות מצטברות), הנציג שעשה את השיחה הארוכה הוא זה שסוגר (73 מ-83), חצי מהסגירות הן לידים שחזרו אחרי פנייה חוזרת או הרשמה חדשה לוובינר, ולידים שצרכו שני תכנים (וובינר + הדרכה/מיני-קורס) סוגרים הכי הרבה. "לא רלוונטי" אחרי שיחה של דקה הוא לרוב טעות של הנציג, לא של הליד. כתוב בעברית ישירה, בלי Markdown, בלי סימני כוכבית. בחר 5-8 לידים חמים (שיחה ארוכה היום, עניין אמיתי, לא נסגר) ו-4-8 להצלה (סומנו לא רלוונטי / ניתקו / Follow Up רחוק, אבל יש בהם עסקה לפי הסיכום או ההיסטוריה). לכל אחד: למה, מה לעשות, ומשפט פתיחה מדויק לשיחה הבאה שמתחבר למה שהוא אמר. אל תמציא לידים שלא ברשימות.`;
-    const usr=`תאריך: ${DAILY.date}\n\nשיחות עם סיכום (לפי אורך):\n${JSON.stringify(calls)}\n\nתוצאות שסומנו בטוצ'אט היום:\n${JSON.stringify(outcomes)}\n\nהועברו ל-Follow Up:\n${JSON.stringify(fu)}`;
-    const a=await claudeJson(sys,usr,DAILY_SCHEMA,6000); DAILY.ai=a; $('dAi').innerHTML=renderDailyAi(a);
-    try{ await sb('POST','daily_digests?on_conflict=date',{date:DAILY.date,data:a,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal'); }catch(e){ console.warn('daily save',e); }
+    const usr=`טווח: ${DAILY.from} עד ${DAILY.to}\n\nשיחות עם סיכום (לפי אורך):\n${JSON.stringify(calls)}\n\nסגירות והחלטות עם הערה:\n${JSON.stringify(outcomes)}\n\nFollow Up עם הערה:\n${JSON.stringify(fu)}\n\nמועמדים להצלה (סומנו לא רלוונטי אבל תואמים לדפוס הסוגרים, ניקוד גבוה = דומה יותר):\n${JSON.stringify(rescue)}\n\nכתוב תמציתי: כל שדה טקסט עד 30 מילים, הסיפור עד 90 מילים.`;
+    const a=await claudeJson(sys,usr,DAILY_SCHEMA,12000); a.key=DAILY.key; DAILY.ai=a; $('dAi').innerHTML=renderDailyAi(a);
+    try{ await sb('POST','daily_digests?on_conflict=date',{date:DAILY.from,data:a,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal'); }catch(e){ console.warn('daily save',e); }
   }catch(e){ $('dAi').innerHTML='<div class="empty">שגיאה: '+esc(e.message||e)+'</div>'; } finally{ btn.disabled=false; }
 };
 /* ── journeys (time to conversion) ── */
@@ -444,7 +464,7 @@ const fixFor=e=>e.fix||(TRAIN.find(t=>t.event_id===e.id)||{}).text||'';
 const allEvents=()=>ROWS.flatMap(r=>(r.events||[]).map(e=>({...e,fix:fixFor(e),call:r})));
 function evHtml(e,r,opts={}){
   const t=new Date(e.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); const rs=e.reasoning||{};
-  return `<div class="ev ${e.kind||''}" id="ev_${e.id}"><div class="eh"><span>🤖 ${KIND[e.kind]||e.kind||'המלצה'}</span><span>· ${t}</span><span>· שלב: ${STAGES.find(s=>s.id===e.stage)?.l||e.stage||''}</span>${e.request?`<span>· בקשה: "${esc(String(e.request).slice(0,60))}"</span>`:''}${opts.showCall?`<span>· <a href="#" onclick="openDetail('${r.id}');return false" style="color:#c4b5fd">${esc(r.rep)} · ${new Date(r.started_at).toLocaleDateString('he-IL')}</a></span>`:''}<span class="fbm">${e.fb==='like'?'👍':e.fb==='dislike'?'👎':''}</span></div>
+  return `<div class="ev ${e.kind||''}" id="ev_${e.id}"><div class="eh"><span>🤖 ${KIND[e.kind]||e.kind||'המלצה'}</span><span>· ${t}</span><span>· שלב: ${STAGES.find(s=>s.id===e.stage)?.l||e.stage||''}</span>${e.request?`<span>· בקשה: "${esc(String(e.request).slice(0,60))}"</span>`:''}${opts.showCall?`<span>· <a href="#" onclick="openDetail('${r.id}');return false" style="color:var(--purple)">${esc(r.rep)} · ${new Date(r.started_at).toLocaleDateString('he-IL')}</a></span>`:''}<span class="fbm">${e.fb==='like'?'👍':e.fb==='dislike'?'👎':''}</span></div>
     ${e.quote?`<div class="hint">"${esc(e.quote)}"</div>`:''}<div class="et">${esc(e.text||'')}</div>${e.why?`<div class="hint">למה: ${esc(e.why)}</div>`:''}${(e.plan&&e.plan.length)?`<div class="hint">🧭 ${esc(e.plan.join(' ← '))}</div>`:''}
     ${(e.ctx&&e.ctx.length)?`<div class="ctxl"><b>מה נאמר רגע לפני:</b>${e.ctx.map(l=>`<div class="cl ${l.who}"><span>${l.who==='rep'?'נציג':l.who==='cust'?'לקוח':'?'}:</span> ${esc(l.t)}</div>`).join('')}</div>`:''}
     <div class="er"><div><b>המצב:</b> שלב ${STAGES.find(s=>s.id===e.stage)?.l||e.stage||'—'}${e.stage_goal?' · מטרת השלב: '+esc(e.stage_goal):''}${e.cust_state?' · הלקוח: '+esc(e.cust_state):''}</div>${(e.missing&&e.missing.length)?`<div><b>מה עוד היה חסר בשלב:</b> ${esc(e.missing.join(' | '))}</div>`:''}<div><b>למה עכשיו:</b> ${esc(rs.why_now||'—')}</div><div><b>עיקרון:</b> ${esc(rs.principle||'—')}</div><div><b>מה ניסיתי להשיג:</b> ${esc(rs.goal||'—')}</div></div>
@@ -517,7 +537,7 @@ function renderTrain(){
   if(!renderTrain._ex){ renderTrain._ex=1; loadExemplars(); }
   const sc=$('fScope').value, so=$('fSource').value;
   let list=TRAIN.slice(); if(sc) list=list.filter(n=>(n.scope||'general')===sc); if(so) list=list.filter(n=>(n.source||'manager')===so);
-  $('trainList').innerHTML=list.length?list.map(n=>`<div class="note"><div class="sc">${SCOPES[n.scope]||n.scope||'כללי'}<br><span style="color:var(--text-muted);font-weight:500">${n.source==='correction'?'תיקון':n.source==='exemplar'?'🌟 מופת':'הנחיה'}</span></div><div class="tx">${n.context?`<div class="hint">${n.source==='exemplar'?'ציטוט מהשיחה':'על ההמלצה'}: "${esc(String(n.context).slice(0,200))}"</div>`:''}${esc(n.text)}<div class="meta">${new Date(n.created_at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}${n.rep?' · נציג: '+esc(n.rep):''}${n.call_id?` · <a href="#" onclick="openDetail('${n.call_id}');return false" style="color:#c4b5fd">לשיחה</a>`:''}</div></div><button class="btn btn-sm" onclick="delTrain('${n.id}')">מחק</button></div>`).join(''):'<div class="empty">עדיין אין הנחיות. כתוב את הראשונה משמאל.</div>';
+  $('trainList').innerHTML=list.length?list.map(n=>`<div class="note"><div class="sc">${SCOPES[n.scope]||n.scope||'כללי'}<br><span style="color:var(--text-muted);font-weight:500">${n.source==='correction'?'תיקון':n.source==='exemplar'?'🌟 מופת':'הנחיה'}</span></div><div class="tx">${n.context?`<div class="hint">${n.source==='exemplar'?'ציטוט מהשיחה':'על ההמלצה'}: "${esc(String(n.context).slice(0,200))}"</div>`:''}${esc(n.text)}<div class="meta">${new Date(n.created_at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}${n.rep?' · נציג: '+esc(n.rep):''}${n.call_id?` · <a href="#" onclick="openDetail('${n.call_id}');return false" style="color:var(--purple)">לשיחה</a>`:''}</div></div><button class="btn btn-sm" onclick="delTrain('${n.id}')">מחק</button></div>`).join(''):'<div class="empty">עדיין אין הנחיות. כתוב את הראשונה משמאל.</div>';
   const mk=new Date(); const month=mk.getFullYear()+'-'+String(mk.getMonth()+1).padStart(2,'0');
   const reps=REPS.filter(r=>r.month===month); $('repsGoals').innerHTML=reps.length?reps.map(r=>`<div class="note"><div class="sc">${esc(r.name)}</div><div class="tx">${r.achieved}/${r.target} סגירות<div class="goal-bar" style="height:8px;background:var(--surface3);border-radius:4px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${Math.min(100,r.target?r.achieved/r.target*100:0)}%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></i></div></div></div>`).join(''):'<div class="hint">הנציגים מגדירים יעד בתחילת החודש דרך "📈 היום שלי". כאן תראה את ההתקדמות.</div>';
 }
@@ -542,7 +562,7 @@ window.openDetail=async function(id,refresh){
   $('dAmmo').innerHTML=(r.ammo||[]).length?(r.ammo||[]).map((a,i)=>`<div class="ammo s-${SE[a.status]?a.status:'medium'}"><div class="at">${SE[a.status]||'🟡'} ${i+1}. ${AL[a.type]||a.type}</div>${esc(a.text)}${a.note?`<div class="an">${esc(a.note)}</div>`:''}${a.use?`<div class="au">💬 ${esc(a.use)}</div>`:''}</div>`).join(''):'<div class="empty">אין תחמושת עדיין</div>';
   const ob=openBarriers(r);
   const CKN={kyc:5,pain:5,objection:5,goal:5,motive:4,solution:5,close:5}; const ck=r.checks||{};
-  const ckLine=STAGES.map(s=>{let d=0;for(let i=1;i<=CKN[s.id];i++) if(ck[s.id+'.'+i]) d++; return `<span class="tag" style="${d===CKN[s.id]?'color:#6ee7b7':d?'color:var(--gold)':''}">${s.l} ${d}/${CKN[s.id]}</span>`}).join(' ');
+  const ckLine=STAGES.map(s=>{let d=0;for(let i=1;i<=CKN[s.id];i++) if(ck[s.id+'.'+i]) d++; return `<span class="tag" style="${d===CKN[s.id]?'color:#0f9d6e':d?'color:var(--gold)':''}">${s.l} ${d}/${CKN[s.id]}</span>`}).join(' ');
   $('dCoach').innerHTML=`<div class="meta" style="margin-bottom:6px">${ckLine}</div>${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · '))}</div>`:''}
     ${r.profile?`<div class="prof"><b style="color:var(--text)">פרופיל:</b> ${esc(r.profile)}</div>`:''}
     ${r.customer_state?`<div class="prof"><b style="color:var(--text)">מצב הלקוח:</b> ${esc(r.customer_state)}</div>`:''}
@@ -562,18 +582,18 @@ $('btnMCompare').onclick=async()=>{ const box=$('mCompare'); if(box.style.displa
 function renderCompare(){
   const box=$('mCompare'); const ms=MALL.map(x=>({m:x.month,d:x.data})); if(!ms.length){ box.innerHTML='<div class="hint">אין חודשים עדיין.</div>'; return; }
   const pct=v=>v==null?'—':v+'%', usd=v=>v==null?'—':'$'+nf(v), ils=v=>v==null?'—':'₪'+nf(v);
-  const delta=(a,b,lowerBetter)=>{ if(a==null||b==null||!b) return ''; const d=Math.round((a-b)/Math.abs(b)*100); if(!d) return '<span class="hint">=</span>'; const good=lowerBetter?d<0:d>0; return `<span style="color:${good?'#6ee7b7':'#fca5a5'};font-size:11px;margin-right:4px">${d>0?'▲':'▼'}${Math.abs(d)}%</span>`; };
+  const delta=(a,b,lowerBetter)=>{ if(a==null||b==null||!b) return ''; const d=Math.round((a-b)/Math.abs(b)*100); if(!d) return '<span class="hint">=</span>'; const good=lowerBetter?d<0:d>0; return `<span style="color:${good?'#0f9d6e':'#b91c1c'};font-size:11px;margin-right:4px">${d>0?'▲':'▼'}${Math.abs(d)}%</span>`; };
   const row=(label,get,fmt,lowerBetter)=>`<tr><td><b>${label}</b></td>${ms.map((x,i)=>{ const v=get(x.d); const prev=i?get(ms[i-1].d):null; return `<td class="num">${fmt(v)} ${delta(v,prev,lowerBetter)}</td>`; }).join('')}</tr>`;
   const head=`<thead><tr><th>מדד</th>${ms.map(x=>`<th>${x.m}</th>`).join('')}</tr></thead>`;
   const fn=(d,k)=>(d.funnels||[]).find(f=>f.key===k)||{}; const rp=(d,n)=>(d.reps||[]).find(r=>r.rep===n)||{};
   const repNames=[...new Set(ms.flatMap(x=>(x.d.reps||[]).filter(r=>r.leads>=30).map(r=>r.rep)))];
   box.innerHTML=`<h2>📈 השוואה חודשית ${ms.length>1?'':'<span class="hint" style="text-transform:none">(חודש אחד בלבד. ההשוואה תופיע אחרי העלאת החודש הבא)</span>'}</h2>
   <div style="overflow-x:auto"><table class="mtable">${head}<tbody>
-    <tr><td colspan="${ms.length+1}" style="background:var(--surface2);font-weight:800;color:#c4b5fd">כללי</td></tr>
+    <tr><td colspan="${ms.length+1}" style="background:var(--surface2);font-weight:800;color:var(--purple)">כללי</td></tr>
     ${row('לידים חדשים',d=>d.kpis.new_leads,nf)}${row('לידים שנוגעו',d=>d.kpis.called_leads,nf)}${row('% נוגעו מהחדשים',d=>d.kpis.new_leads?Math.round((d.kpis.new_leads-d.kpis.untouched_new)/d.kpis.new_leads*100):null,pct)}${row('סגירות',d=>d.kpis.closes,nf)}${row('% המרה (סגירות / נוגעו)',d=>d.kpis.close_rate,pct)}${row('עלות לסגירה',d=>d.kpis.cost_per_close,usd,true)}${row('הוצאת פרסום',d=>d.kpis.spend_total,usd,true)}${row('הכנסה',d=>d.kpis.revenue_total,ils)}${row('הכנסה לסגירה',d=>d.kpis.closes?Math.round(d.kpis.revenue_total/d.kpis.closes):null,ils)}${row('החזר על הוצאה (×)',d=>d.kpis.roas,v=>v==null?'—':'×'+v)}${row('שיחות עד סגירה',d=>d.kpis.avg_calls_to_close,v=>v==null?'—':v,true)}
-    <tr><td colspan="${ms.length+1}" style="background:var(--surface2);font-weight:800;color:#c4b5fd">משפכים</td></tr>
+    <tr><td colspan="${ms.length+1}" style="background:var(--surface2);font-weight:800;color:var(--purple)">משפכים</td></tr>
     ${['webinar','training','direct'].map(k=>row(FL[k]+': לידים חדשים',d=>fn(d,k).new_leads,nf)+row(FL[k]+': % המרה',d=>fn(d,k).close_rate,pct)+row(FL[k]+': סגירות',d=>fn(d,k).closes,nf)+row(FL[k]+': עלות לליד',d=>fn(d,k).cpl,usd,true)+row(FL[k]+': עלות לסגירה',d=>fn(d,k).cpa,usd,true)).join('')}
-    <tr><td colspan="${ms.length+1}" style="background:var(--surface2);font-weight:800;color:#c4b5fd">נציגים (% המרה = סגירות / לידים שנגע בהם)</td></tr>
+    <tr><td colspan="${ms.length+1}" style="background:var(--surface2);font-weight:800;color:var(--purple)">נציגים (% המרה = סגירות / לידים שנגע בהם)</td></tr>
     ${repNames.map(n=>row(n+': % המרה',d=>rp(d,n).close_rate,pct)+row(n+': סגירות',d=>rp(d,n).closes,nf)+row(n+': הכנסה',d=>rp(d,n).revenue,ils)+row(n+': דק׳ לשיחה',d=>rp(d,n).avg_len_min,v=>v==null?'—':v)).join('')}
   </tbody></table></div>`;
 }

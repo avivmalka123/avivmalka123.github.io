@@ -94,7 +94,10 @@
   .stage.active .l{color:var(--text);font-weight:800}
   .stage .n{font-size:10px;color:var(--text-muted);font-weight:700;margin-top:-4px}
   .stage{cursor:pointer}.stage.view .l{text-decoration:underline;text-underline-offset:3px}
-  .ck-wrap{margin-top:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px}
+  .ck-wrap{margin-top:6px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:5px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .ck-wrap .ck-h{font-size:11px;font-weight:800;color:var(--purple);white-space:nowrap;margin:0}.ck-wrap .ck-items{display:flex;flex-wrap:wrap;gap:2px 14px;flex:1}.ck-wrap .ck{font-size:11.5px;padding:0;gap:5px}.ck-wrap .ck i{width:12px}
+  .stagebar{padding:6px 14px 4px!important;margin:6px 22px 0!important}.stage .c{width:16px!important;height:16px!important;font-size:9px!important}.stage .l{font-size:11px!important}.stage .n{font-size:9px!important}.stage{gap:4px!important}.stages::before{top:8px!important}
+  #stageHint,#winHint{display:none!important}
   .ck-h{font-size:12px;font-weight:800;color:#6d28d9;margin-bottom:8px}.ck-h span{font-weight:500;color:var(--text-muted)}
   .ck-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:4px 16px}
   .ck{font-size:12.5px;color:var(--text-muted);display:flex;gap:8px;align-items:flex-start;line-height:1.45;padding:2px 0}
@@ -111,12 +114,22 @@
   @media(max-width:860px){main{grid-template-columns:1fr;padding-bottom:120px} .panel{max-height:none;min-height:0} .panel-b{overflow:visible} .saylog{max-height:55vh;min-height:0} .ammo-mini{position:static!important;width:auto!important;max-height:none!important;box-shadow:none;left:auto;bottom:auto} .ammo-mini.collapsed .panel-b{display:block} .ammo-mini .ammo{font-size:13px;padding:4px 8px} .coach-panel{left:8px;width:calc(100vw - 16px);bottom:88px;height:min(600px,calc(100vh - 100px))} .bubble{left:12px;bottom:12px}}
   .panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;min-height:420px;max-height:calc(100vh - 230px)}
   .tr-panel{grid-column:2;min-height:0}.tr-panel.collapsed .panel-b,.tr-panel.collapsed #idbarWrap{display:none}.tr-panel .panel-h{cursor:pointer}.tr-panel.collapsed{max-height:none}
-  .lead-panel{grid-column:1/-1;order:-1;min-height:0;max-height:none}.lead-panel .panel-b{padding:8px 14px 10px;gap:6px;overflow:visible}.lead-panel .panel-h{min-height:40px;padding:8px 14px}
-  .lead-panel .jst{min-width:84px;padding:4px 8px;font-size:11px}.lead-panel .jst em{font-size:15px}.lead-panel .jst b{font-size:11px}.lead-panel .jst small{font-size:10px}
+  .lead-panel{grid-column:1/-1;order:-2;min-height:0;max-height:none}
+  .joker{grid-column:1/-1;order:-1;min-height:0;max-height:none;background:linear-gradient(135deg,var(--surface),var(--surface2))}.joker-b{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:6px 16px;min-height:92px}
+  .jscore{display:flex;flex-direction:column;align-items:center;gap:2px}.ring{width:66px;height:66px;border-radius:50%;background:conic-gradient(var(--ring,var(--accent5)) calc(var(--p)*1%),var(--surface3) 0);display:grid;place-items:center;position:relative;transition:background .6s}.ring::before{content:'';position:absolute;inset:6px;border-radius:50%;background:var(--surface)}.ring b,.ring small{position:relative;z-index:1}.ring b{font-size:24px;line-height:1;font-weight:900}.ring small{font-size:10px;color:var(--text-muted)}.jlbl{font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.3px}
+  .jtxt{min-width:0}.jline{font-size:15px;font-weight:700;line-height:1.4}.jline b{color:var(--purple)}.jsub{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--text-muted);margin-top:4px}.jsub .ok{color:var(--accent4)}.jsub .todo{color:var(--accent5)}
+  .jbtns{display:flex;flex-direction:column;gap:6px;min-width:190px}.jbtns .btn.lead{min-height:42px;padding:6px 10px}.jbtns .btn.lead i{font-size:18px;width:24px}.jbtns .btn.lead span{font-size:13px}
+  @media(max-width:860px){.joker-b{grid-template-columns:auto 1fr;min-height:0}.jbtns{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.jbtns .btn.lead{flex:1}}
+  .main-coach{grid-column:1/-1;max-height:none;min-height:0}#coach{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:12px;align-content:start;overflow:visible}#coach>*{grid-column:1;min-width:0}#coach #sayLog{grid-column:2;grid-row:1/span 6;max-height:calc(100vh - 420px);min-height:220px;margin:0}
+  .saynow{text-align:center}.saynow .reqbar{text-align:right}
+  @media(max-width:860px){#coach{grid-template-columns:1fr}#coach #sayLog{grid-column:1;grid-row:auto}}
+  .tr-panel{display:none!important}
+  .lead-panel .linsight{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:5px 10px}.lead-panel .linsight b{display:inline;margin-left:6px}.lead-panel .panel-b{padding:6px 14px 6px;gap:3px;overflow:visible}.lead-panel .panel-h{display:none}
+  .lead-panel .jst{min-width:80px;padding:3px 7px;font-size:10.5px}.lead-panel .jst em{font-size:13px}.lead-panel .jst b{font-size:11px}.lead-panel .jst small{font-size:10px}
   .lhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}.lhead b{font-size:15px}.chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;white-space:nowrap}.chip.warn{color:var(--red);border-color:rgba(220,38,38,.35)}
   .lins2{display:grid;grid-template-columns:1fr 1fr;gap:6px}@media(max-width:860px){.lins2{grid-template-columns:1fr}}.lead-panel .linsight{padding:7px 10px;font-size:12.5px}.lead-panel .linsight b{font-size:11px}
   .lmore{font-size:12px;color:var(--text-muted)}.lmore summary{cursor:pointer;font-weight:700;padding:2px 0}.lmore .opener{font-size:13.5px;padding:8px 10px;margin-top:6px}
-  .leadbar.slim{grid-template-columns:1fr auto;max-width:520px}.leadbar.slim input{padding:6px 10px;font-size:14px}
+  .leadbar.slim{grid-template-columns:1fr auto;max-width:520px}.leadbar.slim input{padding:4px 10px;font-size:13px}.leadbar.slim .btn{padding:4px 10px}
   .leadbar{display:grid;grid-template-columns:1fr auto;gap:8px}.leadbar input{font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);direction:ltr;text-align:right}
   .jstrip{display:flex;gap:6px;overflow-x:auto;padding:4px 0}.jst{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:6px 10px;min-width:104px;text-align:center;font-size:12px;opacity:0;transform:translateY(6px);animation:jpop .4s forwards;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}.jst em{font-style:normal;font-size:18px;display:block}.jst b{font-size:12px}.jst small{color:var(--text-muted);font-size:11px}.jarr{align-self:center;color:var(--text-muted);flex:none}@keyframes jpop{to{opacity:1;transform:none}}
   .lfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}.lfact{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 8px;text-align:center}.lfact b{display:block;font-size:17px}.lfact span{font-size:11px;color:var(--text-muted)}
@@ -256,7 +269,7 @@
   .btn.lead.hot{border-color:rgba(239,68,68,.55)}.btn.lead.hot span small{color:#b91c1c}
   .btn.lead:disabled{opacity:.4}
   .ck-wrap{padding:12px 16px}.ck-items{gap:6px 18px}.ck{font-size:13px}
-  .saynow{padding:22px 24px}.saynow .t{font-size:30px;line-height:1.4}
+  .saynow{padding:18px 22px}.saynow .t{font-size:24px;line-height:1.45}
   .card{border-radius:14px}
   .stagebar{padding:18px 22px 14px}
   .msg{font-size:14.5px}
@@ -342,7 +355,7 @@
 </section>
 
 <main>
-  <section class="panel">
+  <section class="panel main-coach" id="coachWrap">
     <div class="panel-h">🧠 מה להגיד עכשיו <span class="spacer"></span><span id="aiLatency" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
     <div class="panel-b" id="coach">
       <div class="saynow" id="saynow">
@@ -364,8 +377,16 @@
   <section class="panel lead-panel" id="leadWrap">
     <div class="panel-h">🧭 מהלך הליד <span class="spacer"></span><span id="leadTag" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
     <div class="panel-b" id="leadPanel">
-      <div class="leadbar slim"><input id="leadPhone" placeholder="טלפון הליד (או שיזוהה לבד כשהשיחה עולה בטוצ'אט)" inputmode="tel" autocomplete="off"><button class="btn btn-primary btn-sm" id="btnLead">🧭 הכר את הליד</button></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><b style="font-size:12px;color:var(--text-muted);white-space:nowrap">🧭 מהלך הליד <span id="leadTag2"></span></b><div class="leadbar slim" style="flex:1;max-width:460px"><input id="leadPhone" placeholder="טלפון הליד (או שיזוהה לבד כשהשיחה עולה בטוצ'אט)" inputmode="tel" autocomplete="off"><button class="btn btn-primary btn-sm" id="btnLead">הכר את הליד</button></div></div>
       <div id="leadBody"></div>
+    </div>
+  </section>
+
+  <section class="panel joker" id="jokerWrap">
+    <div class="joker-b">
+      <div class="jscore"><div class="ring" id="jRing" style="--p:0"><b id="jNum">–</b><small>/10</small></div><div class="jlbl">מוכנות לסגירה</div></div>
+      <div class="jtxt"><div class="jline"><b>שורה תחתונה:</b> <span id="jLine">כשהשיחה תתחיל, כאן תראה בכל רגע כמה הלקוח קרוב להחלטה, מה כבר נפתר ומה עוד לא.</span></div><div class="jsub"><span class="ok">✅ נפתר: <span id="jSolved">—</span></span><span class="todo">🧱 לפתור: <span id="jToSolve">—</span></span></div></div>
+      <div class="jbtns" id="jBtns"></div>
     </div>
   </section>
 
@@ -495,7 +516,7 @@ const STAGES = [
   {id:'solution', l:'הצגת פתרון',   h:'המוצר כגשר, לא מצגת: רק מה שרלוונטי למניעים שלו, דיאלוג עם שאלות הסכמה, מסע לא רשימה, סוגסטיה.'},
   {id:'close',    l:'סגירה',        h:'להזכיר את הפער, לאסוף 3 "כן" קטנים, ואז שאלת המפתח בלי לבקש רשות. הכדור אצלו.'},
 ];
-const STAGE_CHECKS = {"kyc": ["הלקוח מספר בחופשיות, לא נחקר", "ידוע מי הוא: גיל, עיסוק, מצב כלכלי, איך מקבל החלטות", "ידוע למה דווקא עכשיו פנה", "נתפסו לפחות 2 קצוות חוט (טון / מילה עם רגש / נקודה אדומה / אמונה / רצון)", "פרט שהלקוח סיפר הוחזר אליו בהמשך"], "pain": ["הלקוח ביטא כאב במילים שלו והנציג הרחיב או פירק אותן", "הכאב יצא מהעולם האישי לסביבה: זוגיות, ילדים, משפחה", "נשמע רגע ספציפי שבו זה הורגש", "נשאלה שאלת מחיר או השלכה (\"איפה תהיה בעוד שנה\")", "הנציג שתק אחרי השאלה הקשה ולא קפץ לפתרון"], "objection": ["נשאל \"מה ניסית עד היום\" / \"מה עצר אותך\"", "זוהתה האמונה מאחורי ההתנגדות (כלפי עצמו / התחום / המוצר)", "נמצאה סתירה: תחום שבו כן הצליח או התמיד", "נשאלה שאלת החזרה בזמן: \"היית מתחיל אז?\"", "הלקוח לקח אחריות, הפסיק להאשים"], "goal": ["הלקוח אמר לאן הוא רוצה להגיע", "קילוף: \"למה זה חשוב לך\" עד שהגיע לרגש", "עברנו מתוצאה (כסף) לזהות ותחושה", "דמיון עתידי: איך נראה היום שלך בעוד שנה", "יש פער ברור בין הכואב לרצוי"], "motive": ["ידוע מה חסר לו כדי להרגיש בטוח (ליווי / קהילה / סדר / פשטות)", "הצורך תורגם לרגש: ביטחון / שייכות / פוקוס", "נאספו המילים המדויקות שלו להידהוד", "ידוע מה היה חסר בניסיונות קודמים"], "solution": ["המעבר נעשה עם \"בהתבסס על מה שאמרת…\"", "הוצג רק מה שרלוונטי למניעים שהוא נתן", "דיאלוג: שאלות הסכמה תוך כדי", "מסע לא רשימה: שלב ← פותר X שאמרת", "הלקוח אישר שזה מתחבר למה שחיפש"], "close": ["הוזכר הפער: מה שעשה עד היום הביא אותו לתסכול שתיאר", "נאספו לפחות 3 \"כן\" קטנים", "נשאלה שאלת המפתח בלי לבקש רשות", "התנגדות אחרונה טופלה בשאלה, לא בנאום", "הוסכם צעד: תשלום או מועד"]};
+const STAGE_CHECKS = {"kyc":["יודעים מי הוא ומה המצב שלו היום","יודעים למה פנה דווקא עכשיו","נתפס קצה חוט אחד: רגש, רצון או אמונה"],"pain":["הלקוח אמר במילים שלו מה מפריע לו","הכאב קיבל מחיר: כסף, זמן או תחושה","הנציג שתק ונתן לו לדבר"],"objection":["ההתנגדות נאמרה במפורש","נמצא החשש או האמונה שמאחוריה","הלקוח אישר שזה כבר לא עוצר אותו"],"goal":["הלקוח תיאר איך נראית ההצלחה בשבילו","המטרה נוגעת במי שהוא רוצה להיות, לא רק בכסף","הלקוח אמר למה זה חשוב לו"],"motive":["ברור מה הלקוח מאמין שהוא צריך: ליווי, קהילה או סדר","הנציג החזיר את זה במילים של הלקוח","הלקוח אישר"],"solution":["המסלול הוצג כגשר מהמצב היום למטרה שלו","הוצג במילים של הלקוח","התקבלו 2-3 הסכמות קטנות"],"close":["הוזכר הפער בין היום לבין מה שהוא רוצה","שאלת ההחלטה נשאלה ישירות","הצעד הבא נסגר: תשלום או מועד"]};
 const CARD_LABEL = {pain:'כאב זוהה',objection:'חסם זוהה',motive:'מניע רכישה זוהה',goal:'מטרה זוהתה',shift:'שינוי טון',warning:'אזהרה',opportunity:'הזדמנות',close:'סימן קנייה',kyc:'מידע על הלקוח'};
 const LINK_API='https://livecoach-link.aviv1988.workers.dev'; // team-link store (link-worker/): settings live there under a short token
 
@@ -661,14 +682,10 @@ function renderChecklist(){
   const id=S.viewStage||S.stage; const st=STAGES.find(x=>x.id===id); const items=STAGE_CHECKS[id]||[]; const idx=STAGES.findIndex(x=>x.id===id);
   const next=STAGES[Math.min(STAGES.length-1,S.stageIdx+1)];
   const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved');
-  $('checklist').innerHTML=`<div class="ck-h">📋 צ'ק-ליסט ${st.l}${S.viewStage&&S.viewStage!==S.stage?' <span>(צפייה, השלב הפעיל: '+STAGES[S.stageIdx].l+')</span>':''}</div>
+  $('checklist').innerHTML=`<div class="ck-h">${st.l}${S.viewStage&&S.viewStage!==S.stage?' (צפייה)':''}</div>
     <div class="ck-items">${items.map((t,i)=>`<div class="ck ${S.checks[id+'.'+(i+1)]?'on':''}"><i>${S.checks[id+'.'+(i+1)]?'✓':'○'}</i>${escapeHtml(t)}</div>`).join('')}</div>
-    <div class="ck-btns">
-      <button class="btn lead" onclick="leadTo('stage','${id}')"><i>🧭</i><span>השלם את ${st.l}<small>${items.length-stageDone(id)[0]} פריטים חסרים</small></span></button>
-      <button class="btn lead" onclick="leadTo('forward','${(STAGES[idx+1]||STAGES[idx]).id}')" ${idx>=STAGES.length-1?'disabled':''}><i>⏭️</i><span>קדימה ל${(STAGES[idx+1]||STAGES[idx]).l}<small>משפט מעבר טבעי</small></span></button>
-      <button class="btn lead ${openB.length?'hot':''}" onclick="leadTo('barriers','')"><i>🧱</i><span>פתור את החסמים<small>${openB.length?openB.length+' חסמים פתוחים':'אין חסמים פתוחים'}</small></span></button>
-      <button class="btn lead" onclick="leadTo('close','')"><i>🏁</i><span>הובל לסגירה<small>בודק מה חסר קודם</small></span></button>
-    </div>`;
+    `;
+  renderJoker();
 }
 window.leadTo=(kind,target)=>{
   const st=STAGES.find(x=>x.id===target); const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved');
@@ -998,7 +1015,7 @@ function teardownAudio(){
 }
 function beginSession(demo){
   S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.custGender='unknown'; S.insights=[]; S.summary=null; S.events=[]; S.lastEventId=null;
-  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
+  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; if(!(S.ready&&S.ready.pre)) S.ready=null; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
   if(!S.simActive) $('liveTag').textContent='LIVE';
   $('modal').classList.remove('show'); S.endedSim=false; S.endedAt=null; loadTraining();
@@ -1099,6 +1116,11 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
     speaker_labels:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string'},who:{type:'string',enum:['rep','cust']}},required:['id','who']},description:'לשורות שמסומנות "דובר לא ידוע": מי אמר אותן לפי התוכן. מערך ריק אם אין כאלה'},
     profile:{type:'string',description:'פרופיל הלקוח עד כה ב-2-3 משפטים: מי הוא, מה העסק/המצב, מה הוא ניסה, מה מגביל אותו. מצטבר על כל השיחה'},
     reasoning:{type:'object',additionalProperties:false,properties:{why_now:{type:'string',description:'למה דווקא עכשיו, מה בדיוק בתמלול הפעיל את ההמלצה, עד 25 מילים'},principle:{type:'string',description:'שם העיקרון או הכלי מהפלייבוק שעליו ההמלצה נשענת, עד 10 מילים'},goal:{type:'string',description:'מה ההמלצה מנסה להשיג בשיחה, עד 15 מילים'}},required:['why_now','principle','goal'],description:'הנימוק המלא של say_now, לצורך למידה ובקרה של המנהל'},
+    readiness:{type:'integer',description:'0-10: כמה הלקוח מוכן להחלטה עכשיו, לפי כל מה שנאמר בשיחה ובהיסטוריה שלו (0 = קר לגמרי, 10 = מוכן לסגור עכשיו)'},
+    bottom_line:{type:'string',description:'שורה תחתונה לנציג במשפט אחד עד 18 מילים: איפה הלקוח עומד ומה הצעד הנכון עכשיו'},
+    solved:{type:'string',description:'מה כבר נפתר או הוסכם עם הלקוח, עד 12 מילים, ריק אם כלום'},
+    to_solve:{type:'string',description:'מה עוד חייב להיפתר לפני שאפשר לסגור, עד 12 מילים'},
+    next_move:{type:'string',enum:['kyc','pain','barrier','goal','forward','close'],description:'הפעולה הבאה: kyc=להכיר יותר, pain=להעמיק בכאב, barrier=לפתור חסם פתוח, goal=לחדד מטרה, forward=להמשיך לשלב הבא, close=לעבור לסגירה'},
     close_check:{type:'array',items:{type:'string'},description:'רק כשהנציג מתקדם להצגת מוצר או לסגירה: רשימת דברים שעדיין לא נסגרו ושכדאי לו לוודא לפני שממשיך (חסם שלא אושר כפתור, פריט צ׳ק-ליסט חסר, הסכמה שלא נלקחה). עד 4 פריטים קצרים, לבדיקה בלבד, לא חובה. מערך ריק אם אין'},
     checks:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string',description:'מזהה פריט בצ׳ק-ליסט, בפורמט stage.index, למשל pain.2'},done:{type:'boolean'}},required:['id','done']},description:'מצב הצ׳ק-ליסט של כל השלבים עד השלב הנוכחי ועד אחד קדימה, לפי מה שקרה בפועל בתמלול. פריט done=true רק אם יש לזה עדות בתמלול. החזר את כל הפריטים הרלוונטיים בכל סבב'},
     insight:{type:'object',additionalProperties:false,properties:{quote:{type:'string',description:'ציטוט קצר ומדויק של משהו שהלקוח אמר (או מחרוזת ריקה אם אין חדש)'},principle:{type:'string',description:'שם העיקרון מהפלייבוק שרלוונטי לציטוט, עד 8 מילים'},lesson:{type:'string',description:'התובנה: מה הציטוט חושף על הלקוח ומה היה הצעד הנכון של הנציג לפי העיקרון, עד 35 מילים'}},required:['quote','principle','lesson'],description:'תובנה אחת שמחברת בין מה שהלקוח אמר לעיקרון מהפלייבוק, על ציטוט שעוד לא נותח'},
@@ -1110,7 +1132,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       use:{type:'string',description:'משפט או שאלה טבעיים שהנציג יכול להגיד עכשיו בעזרת הפריט, או מחרוזת ריקה'}},
       required:['type','status','text','note','use']},
       description:'תחמושת: לוח תוצאות חי של השיחה. בדיוק 8 פריטים כשיש מספיק מידע אמיתי, מדורגים מהחזק והרלוונטי ביותר כרגע לפחות. רק מה שהלקוח אמר או רמז בבירור. חסם נחשב פתור רק אם הלקוח אישר. החזר את הרשימה המלאה והמעודכנת בכל סבב'}
-  },required:['stage','temperature','customer_state','customer_gender','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','reasoning','close_check']};
+  },required:['stage','temperature','customer_state','customer_gender','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','readiness','bottom_line','solved','to_solve','next_move','reasoning','close_check']};
 
 function systemPrompt(){
   return `אתה מאמן מכירות בזמן אמת שיושב ליד נציג מכירות בזמן שיחת טלפון חיה עם לקוח. אתה רואה את התמלול החי ותפקידך להגיד לנציג, מיד, מה להגיד עכשיו.
@@ -1131,7 +1153,7 @@ function systemPrompt(){
 ${AMMO_RULES}
 - close_check: כשהנציג עובר להצגת מוצר או לסגירה ויש חסם שהלקוח לא אישר שנפתר, פריט צ'ק-ליסט קריטי חסר, או הסכמה שלא נלקחה, החזר רשימה קצרה "לבדיקה לפני סגירה". זו הארה בלבד, לא עצירה.
 - reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך. אם נשענת על דוגמה מהשטח, פתח את reasoning.principle ב-"🌟" בלי לציין שם של נציג. שמות של נציגים אחרים לא מופיעים בשום שדה שהנציג רואה.
-${trainingBlock()}${leadBlock()}
+${trainingBlock()}${leadBlock()}${readinessBlock()}
 - Latency-sensitive; begin your visible answer immediately.
 - בכל שדה טקסט: עברית מדוברת בלבד. בלי Markdown, בלי כוכביות, בלי קוד, בלי שמות שדות באנגלית, בלי סוגריים מסולסלים. כל משפט צריך להיקרא בקול כמו שהוא.
 - ammo: ברגע שהלקוח אמר משפט אחד, הרשימה לא ריקה: לפחות עובדה, רצון או מניע שהוא נתן, במילים שלו.
@@ -1230,6 +1252,7 @@ ${transcript}
 }
 function applyCoach(o,opt={}){
   o=scrub(o);
+  if(o.readiness!=null) setReadiness({score:o.readiness,line:o.bottom_line,solved:o.solved,to_solve:o.to_solve,next_move:o.next_move});
   for(const sl of (o.speaker_labels||[])) setSpeaker(sl.id,sl.who,false);
   if(o.customer_gender&&o.customer_gender!=='unknown') S.custGender=o.customer_gender;
   if(o.profile){S.profile=o.profile;const p=$('profile');p.style.display='';p.innerHTML='<b>פרופיל הלקוח:</b> '+escapeHtml(o.profile)}
@@ -1429,7 +1452,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS){
     try{
-      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+leadBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+leadBlock()+readinessBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -1712,7 +1735,7 @@ function jStrip(j){
 }
 function renderLead(j){
   const lc=j.last_call; const lg=j.longest;
-  $('leadTag').textContent=(j.name||'')+(j.closed?' · לקוח סגור':'');
+  $('leadTag').textContent=(j.name||'')+(j.closed?' · לקוח סגור':''); const t2=$('leadTag2'); if(t2) t2.textContent='· '+(j.name||'')+(j.closed?' · לקוח סגור':'');
   const chips=[`<span class="chip">${j.days_in_system!=null?j.days_in_system+' ימים במערכת':'חדש'}</span>`,`<span class="chip">${j.n_calls||0} שיחות · ${j.talk_min||0} דק'</span>`,lc?`<span class="chip">${escapeHtml(lc.rep.split(' ')[0])} לפני ${lc.days_ago} ימים (${escapeHtml(lc.dur)})</span>`:'<span class="chip">לא דיברו איתו עדיין</span>',`<span class="chip">${escapeHtml(j.level_now||'-')}</span>`,`<span class="chip">${escapeHtml(j.fb_status||'')}</span>`,...(j.tochat_active||[]).slice(0,1).map(a=>`<span class="chip">${a.status==='FOLLOWUP'?'Follow Up':'ממתין'}${a.followBy?' · '+escapeHtml(a.followBy):''}</span>`),j.closed?`<span class="chip warn">כבר נסגר ${fmtD(j.closed)} · ${escapeHtml(j.closer||'')}</span>`:''].join('');
   $('leadBody').innerHTML=`<div class="lhead"><b>${escapeHtml(j.name||'ליד')}</b><span style="color:var(--text-muted);font-size:12px">${escapeHtml(j.phone||'')}</span>${chips}${j.fireberry_link?`<a href="${escapeHtml(j.fireberry_link)}" target="_blank" class="chip">פיירברי ↗</a>`:''}</div>
   ${jStrip(j)}
@@ -1723,10 +1746,11 @@ function renderLead(j){
     <div class="jtl" style="margin-top:6px">${(j.timeline||[]).map(e=>`<div class="jev ${e.k}"><span class="t">${fmtD(e.t)}</span><span>${JK[e.k]||'•'}</span><span>${escapeHtml(e.text)}</span></div>`).join('')}</div>
   </details>`;
 }
-const BRIEF_SCHEMA={type:'object',additionalProperties:false,required:['one_line_profile','customer_gender','opening_lines','insights','recommended_path','dont_give_up','watch_out'],properties:{
+const BRIEF_SCHEMA={type:'object',additionalProperties:false,required:['one_line_profile','customer_gender','opening_lines','insights','recommended_path','dont_give_up','watch_out','readiness','bottom_line','solved','to_solve','next_move'],properties:{
+  readiness:{type:'integer',description:'0-10 כמה הליד קרוב להחלטה עוד לפני השיחה, לפי ההיסטוריה'},bottom_line:{type:'string',description:'שורה תחתונה לנציג, עד 18 מילים'},solved:{type:'string',description:'מה כבר הוסכם/נפתר איתו בעבר, עד 12 מילים'},to_solve:{type:'string',description:'מה חייב להיפתר בשיחה הזו, עד 12 מילים'},next_move:{type:'string',enum:['kyc','pain','barrier','goal','forward','close']},
   one_line_profile:{type:'string',description:'משפט אחד: מי הליד ואיפה הוא במסע'},customer_gender:{type:'string',enum:['m','f','unknown']},
   opening_lines:{type:'array',items:{type:'object',additionalProperties:false,required:['text','why'],properties:{text:{type:'string',description:'משפט פתיחה שהנציג מקריא, טבעי, מתחבר למה שהליד עשה או אמר'},why:{type:'string',description:'עד 12 מילים: למה המשפט הזה'}}}},
-  insights:{type:'array',items:{type:'object',additionalProperties:false,required:['title','text'],properties:{title:{type:'string'},text:{type:'string',description:'תובנה מבוססת נתונים: מה קרה עם הליד ומה זה אומר על השיחה הבאה'}}}},
+  insights:{type:'array',items:{type:'object',additionalProperties:false,required:['title','text'],properties:{title:{type:'string',description:'2-3 מילים'},text:{type:'string',description:'שורה אחת, עד 12 מילים: מה קרה ומה זה אומר לשיחה'}}}},
   recommended_path:{type:'object',additionalProperties:false,required:['offer','why','next_step'],properties:{offer:{type:'string',description:'מה להציע לו: וובינר הבא / הקלטה / הדרכה חינמית / מיני-קורס / שיחת מכירה מלאה / סגירה'},why:{type:'string'},next_step:{type:'string',description:'הצעד הקונקרטי בסוף השיחה'}}},
   dont_give_up:{type:'string',description:'למה לא לוותר על הליד הזה מהר, על בסיס הנתונים'},watch_out:{type:'string',description:'מלכודת אחת שצריך להיזהר ממנה בשיחה הזו'}}};
 async function leadBrief(j){
@@ -1734,10 +1758,11 @@ async function leadBrief(j){
   try{
     const compact={name:j.name,first_source:j.first_source,created:j.created,days_in_system:j.days_in_system,content:j.content,webinars:j.webinars,levels:(j.levels||[]).map(x=>x[1]),inquiries:j.inquiries,fb_status:j.fb_status,level_now:j.level_now,fb_notes:j.fb_notes,type:j.type,ref:j.ref,n_calls:j.n_calls,talk_min:j.talk_min,reps:j.reps,last_call:j.last_call&&{rep:j.last_call.rep,t:j.last_call.t,days_ago:j.last_call.days_ago,dur:j.last_call.dur,summary:String(j.last_call.ai||'').slice(0,1500)},longest:j.longest&&{rep:j.longest.rep,t:j.longest.t,dur:j.longest.dur,summary:String(j.longest.ai||'').slice(0,1500)},closed:j.closed,closer:j.closer,close_reason:j.close_reason,tochat_active:j.tochat_active,timeline_tail:(j.timeline||[]).slice(-14).map(e=>e.t.slice(0,10)+' '+e.text)};
     const res=await getClient().beta.messages.create({model:'claude-opus-5',max_tokens:2200,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema:BRIEF_SCHEMA}},
-      system:`אתה מאמן המכירות של מועדון האיקומרס של אביב מלכה (מסלול ליווי להקמת עסק איקומרס). הנציג ${S.settings.repName||''} עומד להתקשר לליד ואתה מכין אותו. כתוב בעברית מדוברת, חמה, בלי Markdown, בלי סוגריים מסולסלים. משפטי הפתיחה הם טקסט שהנציג מקריא: קצרים, טבעיים, בלשון אחת (קבע מגדר לפי השם; אם לא בטוח, נסח ניטרלי בלי לוכסנים), ומתחברים למשהו ספציפי שהליד עשה או אמר (הוובינר שנרשם אליו, התוכן שצפה, מה סיפר בשיחה הקודמת). תן 3 משפטי פתיחה שונים באופיים (חם, סקרן, ישיר), 2 תובנות מבוססות נתונים, מסלול מומלץ, למה לא לוותר, ומלכודת אחת.\n${LEARNINGS}\n${trainingBlock()}`,
+      system:`אתה מאמן המכירות של מועדון האיקומרס של אביב מלכה (מסלול ליווי להקמת עסק איקומרס). הנציג ${S.settings.repName||''} עומד להתקשר לליד ואתה מכין אותו. כתוב בעברית מדוברת, חמה, בלי Markdown, בלי סוגריים מסולסלים. משפטי הפתיחה הם טקסט שהנציג מקריא: קצרים, טבעיים, בלשון אחת (קבע מגדר לפי השם; אם לא בטוח, נסח ניטרלי בלי לוכסנים), ומתחברים למשהו ספציפי שהליד עשה או אמר (הוובינר שנרשם אליו, התוכן שצפה, מה סיפר בשיחה הקודמת). משפט הפתיחה הראשון הוא משפט מחץ: אנרגטי, בטוח, שובר קרח בשנייה, מתחבר למה שהוא עשה (נרשם לוובינר X, הוריד את ההדרכה, דיבר עם Y), ומסיים בשאלה קלה שמזמינה תשובה. אסור: "לא באתי למכור לך כלום", התנצלויות, "אני מקווה שלא מפריע". תן 3 משפטי פתיחה (מחץ, סקרן, ישיר), 2 תובנות של שורה אחת (עד 12 מילים כל אחת), מסלול מומלץ, למה לא לוותר, מלכודת אחת, וציון מוכנות 0-10 עם שורה תחתונה.\n${LEARNINGS}\n${trainingBlock()}`,
       messages:[{role:'user',content:'הליד (JSON מהמערכות):\n'+JSON.stringify(compact)}]},{timeout:60000,maxRetries:1});
     const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
     S.leadBrief=o; if(!S.profile&&o.one_line_profile) S.profile=o.one_line_profile;
+    if(o.readiness!=null&&!S.running) setReadiness({score:o.readiness,line:o.bottom_line,solved:o.solved,to_solve:o.to_solve,next_move:o.next_move,pre:true});
     box.innerHTML=`<div class="lins2">${(o.insights||[]).slice(0,2).map(x=>`<div class="linsight"><b>${escapeHtml(x.title)}</b>${escapeHtml(x.text)}</div>`).join('')}</div>
       <details class="lmore"><summary>משפטי פתיחה לליד הזה (${(o.opening_lines||[]).length}) · המסלול המומלץ${o.recommended_path?': '+escapeHtml(o.recommended_path.offer):''}</summary>
       ${(o.opening_lines||[]).map((l,i)=>`<div class="opener"><div>${escapeHtml(l.text)}</div><div class="w">${escapeHtml(l.why||'')}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="useOpener(${i})">🗣 אמור עכשיו</button></div></div>`).join('')}
@@ -1748,6 +1773,43 @@ async function leadBrief(j){
   }catch(e){ box.innerHTML='<div class="empty" style="padding:8px">המאמן לא הצליח לכתוב את הבריף: '+escapeHtml(e.error?.error?.message||e.message||String(e))+' <button class="btn btn-sm" onclick="leadBrief(window.__lc.S.lead)">נסה שוב</button></div>'; log('בריף ליד: '+(e.message||e),'err'); }
 }
 window.leadBrief=leadBrief;
+function instantOpener(j){
+  const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(finals.length) return;
+  const nm=(j.name||'').split(' ')[0]||''; const hi=nm?nm+', ':''; const src=j.first_source||''; const web=(j.webinars||[]).slice(-1)[0]; const lc=j.last_call;
+  let t;
+  if(j.closed) t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס. אתה כבר בפנים, אז השיחה הזאת קצרה: איפה אתה עומד עם החנות, ומה תוקע אותך השבוע?`;
+  else if(lc&&lc.days_ago<=45) t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס. דיברת עם ${lc.rep.split(' ')[0]} לפני ${lc.days_ago} ימים ואמרת שאתה רוצה להתחיל. אני מתקשר לסגור את הפינה הזאת: מה קרה מאז?`;
+  else if(/וובינר/.test(src)||web) t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס של אביב מלכה. נרשמת לוובינר${web?' של ה-'+web.replace(/\/2026/,''):''}, ואני מתקשר כי מי שנרשם בדרך כלל כבר החליט משהו בראש. מה בדיוק אתה רוצה לבנות?`;
+  else if(/הדרכה/.test(src)) t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס. ראיתי שלקחת את ההדרכה של אביב. רגע האמת: מה הדבר האחד שגרם לך להשאיר פרטים?`;
+  else if(/מיני/.test(src)) t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס. עברת את המיני-קורס, וזה אומר שאתה כבר יודע יותר מרוב האנשים שמתקשרים אליהם. השאלה היא רק מה עוצר אותך מלהתחיל?`;
+  else t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס של אביב מלכה. השארת פרטים אצלנו, ואני מתקשר לבדוק דבר אחד: מה אתה רוצה שיהיה שונה אצלך בעוד חצי שנה?`;
+  $('sayText').textContent=t; $('sayWhy').textContent='משפט פתיחה לפי המסע של הליד. המאמן משפר אותו עוד רגע.'; $('sayAvoid').textContent=''; $('sayReason').textContent='';
+}
+/* ── joker bar: readiness score, bottom line, contextual buttons ── */
+function readinessBlock(){ const r=S.ready; if(!r||r.score==null) return ''; return `\nמצב הסגירה כרגע (הערכה קודמת שלך): מוכנות ${r.score}/10. נפתר: ${r.solved||'—'}. עוד לפתור: ${r.to_solve||'—'}. עדכן את readiness בכל סבב לפי מה שקרה מאז, ותן say_now שמקדם את הפריט הבא שחסר.\n`; }
+function setReadiness(r){
+  const prev=(S.ready&&S.ready.score)||0; S.ready={score:Math.max(0,Math.min(10,Math.round(r.score||0))),line:r.line||'',solved:r.solved||'',to_solve:r.to_solve||'',next_move:r.next_move||'',pre:!!r.pre,at:Date.now()};
+  const ring=$('jRing'); const num=$('jNum'); const sc=S.ready.score; const col=sc>=8?'var(--accent4)':sc>=5?'var(--accent5)':'var(--red)'; ring.style.setProperty('--ring',col);
+  const t0=performance.now(); const dur=900; const from=prev; (function step(now){ const k=Math.min(1,(now-t0)/dur); const e=1-Math.pow(1-k,3); const v=from+(sc-from)*e; num.textContent=Math.round(v); ring.style.setProperty('--p',(v*10).toFixed(1)); if(k<1) requestAnimationFrame(step); })(t0);
+  $('jLine').textContent=S.ready.line||''; $('jSolved').textContent=S.ready.solved||'—'; $('jToSolve').textContent=S.ready.to_solve||'—';
+  renderJoker();
+}
+function renderJoker(){
+  const box=$('jBtns'); if(!box) return; const r=S.ready||{}; const sc=r.score==null?-1:r.score; const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved'); const idx=S.stageIdx||0; const next=STAGES[Math.min(STAGES.length-1,idx+1)]; const cur=STAGES[idx];
+  const btn=(icon,title,sub,on,cls='')=>`<button class="btn lead ${cls}" onclick="${on}"><i>${icon}</i><span>${title}<small>${sub}</small></span></button>`;
+  const out=[];
+  if(sc>=8) out.push(btn('🏁','עבור לסגירה',`הלקוח ב-${sc}/10, עכשיו הזמן`,"leadTo('close','')",'hot'));
+  if(openB.length||r.next_move==='barrier') out.push(btn('🧱','פתור את החסם',openB[0]?String(openB[0].text).slice(0,34):(r.to_solve||'').slice(0,34),"leadTo('barriers','')",'hot'));
+  if(!out.length||(sc<8&&out.length<2)){
+    if(r.next_move==='pain') out.push(btn('🎯','העמק בכאב','מה זה עולה לו באמת',"leadTo('stage','pain')"));
+    else if(r.next_move==='goal') out.push(btn('🌟','חדד את המטרה','לאן הוא רוצה להגיע',"leadTo('stage','goal')"));
+    else if(r.next_move==='kyc') out.push(btn('🧭','הכר אותו יותר','חסר מידע בסיסי',"leadTo('stage','kyc')"));
+    else if(r.next_move==='close'&&sc<8) out.push(btn('🧪','בדוק מוכנות',`רק ${sc}/10, לבדוק מה חסר`,"leadTo('close','')"));
+    else if(cur&&next&&idx<STAGES.length-1) out.push(btn('⏭️','קדימה ל'+next.l,'משפט מעבר טבעי',`leadTo('forward','${next.id}')`));
+  }
+  box.innerHTML=out.slice(0,2).join('');
+}
+window.renderJoker=renderJoker;
 window.useOpener=i=>{ const l=(S.leadBrief||{}).opening_lines?.[i]; if(!l) return; $('sayText').textContent=l.text; $('sayWhy').textContent=l.why||'משפט פתיחה מהמסע של הליד'; $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'משפט פתיחה מהמסע',text:l.text,why:l.why||'',reasoning:null}); }catch(e){} toast('המשפט בחלון "אמור עכשיו"','t-ok'); };
 async function loadLead(phoneIn){
   const ph=String(phoneIn||'').replace(/\D/g,''); const n9=ph.slice(-9); if(n9.length!==9) return toast('הקלד טלפון ישראלי מלא (10 ספרות)','t-error');
@@ -1755,7 +1817,7 @@ async function loadLead(phoneIn){
   if(!S.settings.dataKey){ openDrawer(); return toast('חסר מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
   $('leadBody').innerHTML='<div class="empty">מושך את המסע של הליד מטוצ\'אט ופיירברי…</div>'; $('leadTag').textContent=''; S.lead=null; S.leadBrief=null;
   try{ const r=await fetch(dataUrl+'/lead?phone=0'+n9,{headers:{'x-app-key':S.settings.dataKey}}); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
-    S.lead=j; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); leadBrief(j); }
+    S.lead=j; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
   catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
 }
 $('btnLead').onclick=()=>loadLead($('leadPhone').value);

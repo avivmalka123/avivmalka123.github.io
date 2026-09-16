@@ -9,4 +9,5 @@ A=$(printf '%s:%s' "$TOCHAT_TENANT" "$TOCHAT_API_KEY" | base64)
 python3 pull.py "$A" "$TOCHAT_BASE" "$FIREBERRY_TOKEN"
 python3 score.py
 python3 sync_meta.py --telegram
+python3 weekly_rescue.py 7 4 || echo "rescue step failed (is the campaign להציל מהמתים רלוונטיים created in ToChat?)"
 echo "$(date '+%F %T') weekly audiences done"

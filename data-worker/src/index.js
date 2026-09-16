@@ -15,10 +15,18 @@ const ST = {2:'לקוח סגר',5:'חזרה עתידית',9:'ליד חדש',13:'
 const TYPE = {2:'הדרכה חינמית (Aviv CRM)',4:'בורד וובינר'};
 const REFN = {'mini-course':'מיני-קורס','fb-hadracha':'הדרכה חינמית (פייסבוק)','mezoraz_yashir':'ישיר (מזורז)'};
 
-function cors(req){ const o=req.headers.get('Origin')||''; const ok=ALLOWED.includes(o)||/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o); return {'Access-Control-Allow-Origin':ok?o:ALLOWED[0],'Access-Control-Allow-Methods':'GET,OPTIONS','Access-Control-Allow-Headers':'content-type,x-app-key','Vary':'Origin'}; }
+function cors(req){ const o=req.headers.get('Origin')||''; const ok=ALLOWED.includes(o)||/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o); return {'Access-Control-Allow-Origin':ok?o:ALLOWED[0],'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'content-type,x-app-key','Vary':'Origin'}; }
 const json=(d,s=200,h={})=>new Response(JSON.stringify(d),{status:s,headers:{'content-type':'application/json; charset=utf-8',...h}});
 function safeEq(a,b){ if(a.length!==b.length) return false; let d=0; for(let i=0;i<a.length;i++) d|=a.charCodeAt(i)^b.charCodeAt(i); return d===0; }
 const digits=s=>String(s||'').replace(/\D/g,'');
+const num=v=>(v==null||v==='')?null:(isNaN(+v)?null:+v);
+// the v1 query API returns picklist LABELS (e.g. "לא רלוונטי", "⭐", "בורד וובינר", "כן"); /api/record returns codes
+const stName=v=>v==null||v===''?'':(num(v)!=null?(ST[num(v)]||String(v)):String(v));
+const lvName=v=>v==null||v===''?'':(num(v)!=null?(LVL[num(v)]||''):lvlName(String(v)));
+const tpName=v=>v==null||v===''?'':(num(v)!=null?(TYPE[num(v)]||''):(String(v).includes('וובינר')?'בורד וובינר':String(v).includes('Aviv')?'הדרכה חינמית (Aviv CRM)':String(v)));
+const lvCode=v=>{ const n=lvName(v); for(const [k,x] of Object.entries(LVL)) if(x===n) return +k; return null; };
+const tpCode=v=>{ const n=tpName(v); return n==='בורד וובינר'?4:n.startsWith('הדרכה')?2:null; };
+const yes=v=>v===2||v==='2'||String(v).trim()==='כן';
 const normName=s=>String(s||'').toLowerCase().replace(/["'׳״.\-_]/g,'').replace(/\s+/g,'');
 async function hookToken(env){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(env.APP_KEY||'')); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,24); }
 function deepFind(obj,pred,depth=0){ if(!obj||typeof obj!=='object'||depth>4) return null; for(const [k,v] of Object.entries(obj)){ if(pred(k,v)) return v; if(v&&typeof v==='object'){ const r=deepFind(v,pred,depth+1); if(r!=null) return r; } } return null; }
@@ -159,25 +167,48 @@ export default {
       if(url.pathname==='/lead'){ const ph=nine(url.searchParams.get('phone')); if(ph.length!==9) return json({error:'phone'},400,h); return json(await cache('lead:'+ph,1800,()=>fetchLead(env,ph,null)),200,h); }
       if(url.pathname==='/closes'){ const m=url.searchParams.get('month')||''; if(!/^\d{4}-\d{2}$/.test(m)) return json({error:'month'},400,h); const [y,mo]=m.split('-').map(Number); const last=new Date(Date.UTC(y,mo,0)).getUTCDate(); const cur=new Date().toISOString().slice(0,7)===m;
         return json(await cache('closes:'+m,cur?600:21600,async()=>dedupeByPhone(await closesForRange(env,`${m}-01`,`${m}-${String(last).padStart(2,'0')}`,['CLOSED'])).map(x=>({phone:'0'+nine(x.displayPhone),name:x.fullName||'',closed:String(x.timestamp).replace('Z','').slice(0,19),closer:x.repName||'',reason:(x.subReason&&x.subReason.name)||'',note:x.note||'',campaign:x.campaign,fireberry_id:x.externalId||null}))),200,h); }
-      if(url.pathname==='/daily'){ const d=url.searchParams.get('date')||new Date(Date.now()-864e5).toISOString().slice(0,10); if(!/^\d{4}-\d{2}-\d{2}$/.test(d)) return json({error:'date'},400,h);
-        return json(await cache('daily:'+d,900,async()=>{
-          const next=new Date(new Date(d+'T00:00:00Z').getTime()+864e5).toISOString().slice(0,10);
-          const [notesQ,outcomesRaw,camps]=await Promise.all([
-            fbQuery(env,{objecttype:7,page_size:500,page_number:1,fields:'noteid,notetext,objectid,createdon',query:`(subject = 'סיכום שיחה') AND (createdon >= '${d}') AND (createdon < '${next}')`,sort_by:'createdon',sort_type:'asc'}),
-            closesForRange(env,d,d,null), campaigns(env)]);
+      if(url.pathname==='/daily'){ const d=url.searchParams.get('from')||url.searchParams.get('date')||new Date(Date.now()-864e5).toISOString().slice(0,10); const dTo=url.searchParams.get('to')||d; if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!/^\d{4}-\d{2}-\d{2}$/.test(dTo)||dTo<d) return json({error:'date'},400,h);
+        return json(await cache('daily:'+d+':'+dTo,900,async()=>{
+          const next=new Date(new Date(dTo+'T00:00:00Z').getTime()+864e5).toISOString().slice(0,10);
+          const notesAll=[]; for(let pg=1;pg<=6;pg++){ const q=await fbQuery(env,{objecttype:7,page_size:500,page_number:pg,fields:'noteid,notetext,objectid,createdon',query:`(subject = 'סיכום שיחה') AND (createdon >= '${d}') AND (createdon < '${next}')`,sort_by:'createdon',sort_type:'asc'}); notesAll.push(...(q.Data||[])); if((q.Data||[]).length<500) break; }
+          const notesQ={Data:notesAll};
+          const [outcomesRaw,camps]=await Promise.all([closesForRange(env,d,dTo,null), campaigns(env)]);
           const calls=(notesQ.Data||[]).map(n=>{ const tx=String(n.notetext||''); return {t:String(n.createdon).slice(0,19),fireberry_id:n.objectid,rep:(tx.match(/נציג:\s*(.+)/)||[])[1]?.trim()||'',dur:(tx.match(/משך שיחה:\s*([\d:]+)/)||[])[1]||'',sec:mmss((tx.match(/משך שיחה:\s*([\d:]+)/)||[])[1]),rec:(tx.match(/קישור להקלטה:\s*(\S+)/)||[])[1]||'',ai:((tx.match(/סיכום AI:\s*([\s\S]+)/)||[])[1]||'').trim().slice(0,2500)}; });
           // names/phones for the called records (one query, up to 100 ids)
-          const ids=[...new Set(calls.map(c=>c.fireberry_id))].slice(0,100); const recs={};
-          if(ids.length){ const q=await fbQuery(env,{objecttype:1,page_size:200,page_number:1,fields:'accountid,accountname,telephone1,statuscode,pcfsystemfield104,pcfsystemfield106,accounttypecode,createdon,ownername',query:ids.map(i=>`(accountid = '${i}')`).join(' OR ')}); for(const r of q.Data||[]) recs[r.accountid]=r; }
-          for(const c of calls){ const r=recs[c.fireberry_id]; if(r){ c.name=r.accountname; c.phone='0'+nine(r.telephone1); c.fb_status=ST[r.statuscode]||''; c.level=LVL[r.pcfsystemfield104]||''; c.ref=REFN[r.pcfsystemfield106]||r.pcfsystemfield106||''; c.type=TYPE[r.accounttypecode]||''; c.created=String(r.createdon).slice(0,10); c.owner=r.ownername||''; } }
-          const outcomes=outcomesRaw.filter(x=>String(x.timestamp).slice(0,10)===d).map(x=>({t:String(x.timestamp).replace('Z','').slice(0,19),phone:'0'+nine(x.displayPhone),name:x.fullName||'',rep:x.repName||'',reason:x.reason,sub:(x.subReason&&x.subReason.name)||'',note:x.note||'',campaign:x.campaign,fireberry_id:x.externalId||null}));
+          const ids=[...new Set(calls.map(c=>c.fireberry_id))].slice(0,400); const recs={};
+          for(let i=0;i<ids.length;i+=50){ const q=await fbQuery(env,{objecttype:1,page_size:200,page_number:1,fields:'accountid,accountname,telephone1,statuscode,pcfsystemfield104,pcfsystemfield106,accounttypecode,createdon,ownername',query:ids.slice(i,i+50).map(x=>`(accountid = '${x}')`).join(' OR ')}); for(const r of q.Data||[]) recs[r.accountid]=r; }
+          for(const c of calls){ const r=recs[c.fireberry_id]; if(r){ c.name=r.accountname; c.phone='0'+nine(r.telephone1); c.fb_status=stName(r.statuscode); c.level=lvName(r.pcfsystemfield104); c.ref=REFN[r.pcfsystemfield106]||r.pcfsystemfield106||''; c.type=tpName(r.accounttypecode); c.created=String(r.createdon).slice(0,10); c.owner=r.ownername||''; } }
+          const outcomes=outcomesRaw.filter(x=>{ const t=String(x.timestamp).slice(0,10); return t>=d&&t<=dTo; }).map(x=>({t:String(x.timestamp).replace('Z','').slice(0,19),phone:'0'+nine(x.displayPhone),name:x.fullName||'',rep:x.repName||'',reason:x.reason,sub:(x.subReason&&x.subReason.name)||'',note:x.note||'',campaign:x.campaign,fireberry_id:x.externalId||null}));
           // open leads touched that day (last call on that date)
-          const touched=[]; await Promise.all(camps.filter(c=>c.status!=='OFF'&&c.active!==false).map(async c=>{ const rows=await tcGet(env,`/tenants/${env.TOCHAT_TENANT}/campaigns/${c.id}/openLeads`); for(const l of rows||[]) if(l.lastCall&&String(l.lastCall).slice(0,10)===d) touched.push({t:String(l.lastCall).replace('Z','').slice(0,19),phone:'0'+nine(l.displayPhone||l.phone),name:l.fullName||'',rep:l.repName||l.followByName||'',status:l.status,sub:l.subStatusName||l.subStatus||'',attempts:l.callAttempts||0,followDate:l.followDate||null,comment:l.followupComment||'',campaign:c.name,fireberry_id:l.externalId||null,notes:(l.notes||'').slice(0,300)}); }));
-          try{ const hooks=JSON.parse((await env.CACHE.get('daycalls:'+d))||'[]'); const have=new Set(calls.map(c=>c.t.slice(0,13)+'|'+normName(c.rep))); const agg={};
+          const touched=[]; await Promise.all(camps.filter(c=>c.status!=='OFF'&&c.active!==false).map(async c=>{ const rows=await tcGet(env,`/tenants/${env.TOCHAT_TENANT}/campaigns/${c.id}/openLeads`); for(const l of rows||[]) if(l.lastCall&&String(l.lastCall).slice(0,10)>=d&&String(l.lastCall).slice(0,10)<=dTo) touched.push({t:String(l.lastCall).replace('Z','').slice(0,19),phone:'0'+nine(l.displayPhone||l.phone),name:l.fullName||'',rep:l.repName||l.followByName||'',status:l.status,sub:l.subStatusName||l.subStatus||'',attempts:l.callAttempts||0,followDate:l.followDate||null,comment:l.followupComment||'',campaign:c.name,fireberry_id:l.externalId||null,notes:(l.notes||'').slice(0,300)}); }));
+          try{ const hooks=[]; for(let t=new Date(d+'T00:00:00Z');t.toISOString().slice(0,10)<=dTo;t=new Date(t.getTime()+864e5)) hooks.push(...JSON.parse((await env.CACHE.get('daycalls:'+t.toISOString().slice(0,10)))||'[]')); const have=new Set(calls.map(c=>c.t.slice(0,13)+'|'+normName(c.rep))); const agg={};
             for(const e of hooks){ const k=e.t.slice(0,13)+'|'+normName(e.rep)+'|'+e.phone; if(have.has(e.t.slice(0,13)+'|'+normName(e.rep))) continue; const m=agg[k]||(agg[k]={t:e.t,rep:e.rep,phone:e.phone,name:e.name,sec:0,dur:'',rec:'',ai:'',src:'webhook',campaign:e.campaign}); if(e.sec) m.sec=Math.max(m.sec,e.sec); if(e.ai) m.ai=e.ai; if(e.rec) m.rec=e.rec; }
             for(const m of Object.values(agg)){ if(m.sec<15&&!m.ai) continue; m.dur=String(Math.floor(m.sec/60)).padStart(2,'0')+':'+String(m.sec%60).padStart(2,'0'); calls.push(m); } calls.sort((a,b)=>a.t.localeCompare(b.t)); }catch(e){}
-          return {date:d,calls,outcomes,touched,generated:new Date().toISOString()};
+          return {date:d,from:d,to:dTo,calls,outcomes,touched,generated:new Date().toISOString()};
         }),200,h); }
+      if(url.pathname==='/rescue'){ const days=Math.min(60,Math.max(1,parseInt(url.searchParams.get('days')||'7'))); const to=new Date().toISOString().slice(0,10); const from=new Date(Date.now()-days*864e5).toISOString().slice(0,10);
+        return json(await cache('rescue:'+from+':'+to,1800,async()=>{
+          const raw=await closesForRange(env,from,to,['IRRELEVANT','CALL_ATTEMPTS_EXCEEDED']); const DNC=/לא להתקשר|שם פרטים בטעות|לא נרשם|מספר שגוי|טעות/;
+          const cand=dedupeByPhone(raw.filter(x=>!DNC.test((x.subReason&&x.subReason.name)||'')).sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)))).slice(0,400);
+          const ids=[...new Set(cand.map(x=>x.externalId).filter(Boolean))]; const recs={}; const notes={};
+          for(let i=0;i<ids.length;i+=50){ const q=await fbQuery(env,{objecttype:1,page_size:200,page_number:1,fields:'accountid,accountname,telephone1,statuscode,pcfsystemfield104,pcfsystemfield106,pcfsystemfield138,pcfsystemfield135,accounttypecode,createdon,ownername',query:ids.slice(i,i+50).map(x=>`(accountid = '${x}')`).join(' OR ')}); for(const r of q.Data||[]) recs[r.accountid]=r; }
+          for(let i=0;i<ids.length;i+=40){ const q=await fbQuery(env,{objecttype:7,page_size:500,page_number:1,fields:'noteid,notetext,objectid,createdon',query:'('+ids.slice(i,i+40).map(x=>`(objectid = '${x}')`).join(' OR ')+") AND (subject = 'סיכום שיחה')",sort_by:'createdon',sort_type:'asc'}); for(const n of q.Data||[]) (notes[n.objectid]=notes[n.objectid]||[]).push(n); }
+          const out=[];
+          for(const x of cand){ const r=recs[x.externalId]||{}; const ns=notes[x.externalId]||[]; if(/לקוח סגר|תשלום חלקי/.test(stName(r.statuscode))) continue;
+            const calls=ns.map(n=>{ const tx=String(n.notetext||''); const dur=(tx.match(/משך שיחה:\s*([\d:]+)/)||[])[1]||'0'; return {t:String(n.createdon).slice(0,19),rep:(tx.match(/נציג:\s*(.+)/)||[])[1]?.trim()||'',sec:mmss(dur),dur,ai:((tx.match(/סיכום AI:\s*([\s\S]+)/)||[])[1]||'').trim()}; }).filter(c=>c.sec>=15);
+            const longest=calls.length?calls.reduce((a,b)=>b.sec>a.sec?b:a):null; const lv=lvCode(r.pcfsystemfield104); const ref=r.pcfsystemfield106||''; const tcode=tpCode(r.accounttypecode); const rep135=yes(r.pcfsystemfield135)?2:0;
+            const content=new Set(); if(lv===1||tcode===2||ref==='fb-hadracha') content.add('הדרכה חינמית'); if(lv===3||ref==='mini-course') content.add('מיני-קורס'); if(r.pcfsystemfield138||[4,5,6,7,8].includes(lv)) content.add('וובינר');
+            let score=0; const why=[]; if(longest&&longest.sec>=600){ score+=3; why.push('שיחה של '+Math.floor(longest.sec/60)+" דק'"); } else if(longest&&longest.sec>=180){ score+=1; why.push('שיחה של '+Math.floor(longest.sec/60)+" דק'"); }
+            if(calls.length>=2){ score+=1; why.push(calls.length+' שיחות'); } if(content.size>=2){ score+=2; why.push('צרך '+content.size+' תכנים'); } if(r.pcfsystemfield138){ score+=1; why.push('נרשם לוובינר'); } if(rep135===2){ score+=1; why.push('השאיר פרטים שוב'); } if([4,6].includes(lv)){ score+=1; why.push('❤️/היה בוובינר'); }
+            if(score<2) continue;
+            const last=calls[calls.length-1]||null;
+            out.push({phone:'0'+nine(x.displayPhone),name:x.fullName||r.accountname||'',fireberry_id:x.externalId||null,marked:String(x.timestamp).replace('Z','').slice(0,19),marked_by:x.repName||'',reason:x.reason,sub:(x.subReason&&x.subReason.name)||'',note:x.note||'',campaign:x.campaign,score,why:why.join(' · '),content:[...content],level:lvName(r.pcfsystemfield104),fb_status:stName(r.statuscode),owner:r.ownername||'',created:r.createdon?String(r.createdon).slice(0,10):null,n_calls:calls.length,talk_min:Math.round(calls.reduce((s,c)=>s+c.sec,0)/6)/10,longest:longest?{rep:longest.rep,dur:longest.dur,t:longest.t,ai:longest.ai.slice(0,900)}:null,last_call:last?{rep:last.rep,dur:last.dur,t:last.t,ai:last.ai.slice(0,700)}:null}); }
+          out.sort((a,b)=>b.score-a.score||String(b.marked).localeCompare(String(a.marked)));
+          return {from,to,candidates:out.slice(0,120),scanned:cand.length,generated:new Date().toISOString()};
+        }),200,h); }
+      if(url.pathname==='/rescue/add'&&req.method==='POST'){ const body=await req.json().catch(()=>({})); const name=body.campaign||'להציל מהמתים רלוונטיים'; const camps=await campaigns(env); const c=camps.find(x=>(x.name||'').trim()===name.trim())||camps.find(x=>(x.name||'').includes(name)); if(!c) return json({error:'campaign not found: '+name,campaigns:camps.map(x=>x.name)},404,h);
+        const customers=(body.leads||[]).slice(0,500).map(l=>({firstName:String(l.name||'').slice(0,60),phone:l.phone,externalId:l.fireberry_id||undefined,notes:String(l.notes||'').slice(0,900),audience:'rescue'}));
+        const r=await fetch(TC+`/tenants/${env.TOCHAT_TENANT}/campaigns/${c.id}/customers`,{method:'POST',headers:{Authorization:'Basic '+btoa(env.TOCHAT_TENANT+':'+env.TOCHAT_API_KEY),'content-type':'application/json'},body:JSON.stringify({customers,dataSource:'LiveCoach rescue'})}); const j=await r.json().catch(()=>({})); return json({ok:r.ok,status:r.status,campaign:c.name,result:j},r.ok?200:502,h); }
       return json({error:'not found'},404,h);
     }catch(e){ return json({error:String(e&&e.message||e)},500,h); }
   }

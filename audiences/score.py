@@ -27,15 +27,19 @@ for a in fb:
     c=pd(a.get('createdon')); m=pd(a.get('modifiedon'))
     if c and (not x['created'] or c<x['created']): x['created']=c
     if m and (not x['modified'] or m>x['modified']): x['modified']=m
-    st=toi(a.get('statuscode'))
+    # the v1 query API returns picklist labels, /api/record returns codes: accept both
+    stv=a.get('statuscode'); st=toi(stv) or {'לקוח סגר':2,'סגר תשלום חלקי':13,'חזרה עתידית':5,'ליד חדש':9,'לא רלוונטי':15,'אין מענה':17,'חדש לנסות שוב':19,'שיחה מלאה ולא נסגר':20}.get(str(stv).strip(),0)
     if st in (2,13): x['status']='customer'
     elif x['status']!='customer': x['status']=st
-    lv=toi(a.get('pcfsystemfield104'))
+    lvv=a.get('pcfsystemfield104'); lv=toi(lvv)
+    if not lv and lvv:
+        ch=str(lvv).strip()[:1]; lv={'⭐':1,'👀':2,'💎':3,'❤':4,'🔥':5,'🔴':6,'😍':7,'💪':8,'🤩':9}.get(ch,0)
     if lv and (lv in (4,5,6,7,8) or not x['level']): x['level']=lv
     if a.get('pcfsystemfield106'): x['ref']=a['pcfsystemfield106']
-    if toi(a.get('accounttypecode')): x['type']=toi(a.get('accounttypecode'))
+    tv=a.get('accounttypecode'); tc=toi(tv) or (4 if 'וובינר' in str(tv) else 2 if 'Aviv' in str(tv) else 0)
+    if tc: x['type']=tc
     if a.get('pcfsystemfield138'): x['webinar']=a['pcfsystemfield138']
-    x['repeat']=max(x['repeat'],toi(a.get('pcfsystemfield135')))
+    rv=a.get('pcfsystemfield135'); x['repeat']=max(x['repeat'],toi(rv) or (2 if str(rv).strip()=='כן' else 0))
     x['owner']=a.get('ownername') or x['owner']
 for n in notes:
     p=byid.get(n['o'])
