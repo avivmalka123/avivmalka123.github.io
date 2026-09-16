@@ -27,7 +27,10 @@ function extractCall(type,body){
   const agent=deepFind(body,(k,v)=>/agentname|repname|username|agent$|userDisplayName|displayName/i.test(k)&&typeof v==='string'&&v.length>1)||deepFind(body,(k,v)=>/agentemail|useremail|email/i.test(k)&&typeof v==='string'&&v.includes('@'));
   const name=deepFind(body,(k,v)=>/fullname|customername|leadname|contactname|^name$/i.test(k)&&typeof v==='string');
   const campaign=deepFind(body,(k,v)=>/campaignname/i.test(k)&&typeof v==='string');
-  return {type,phone:phone?'0'+nine(phone):null,agent:agent||'',name:name||'',campaign:campaign||''};
+  const duration=deepFind(body,(k,v)=>/duration|length|seconds/i.test(k)&&(typeof v==='number'||/^[\d:]+$/.test(String(v))));
+  const summary=deepFind(body,(k,v)=>/summary|aisummary|transcript/i.test(k)&&typeof v==='string'&&v.length>20);
+  const recording=deepFind(body,(k,v)=>/record|url|mp3|audio/i.test(k)&&typeof v==='string'&&/^https?:\/\//.test(v));
+  return {type,phone:phone?'0'+nine(phone):null,agent:agent||'',name:name||'',campaign:campaign||'',duration:duration==null?null:(typeof duration==='number'?duration:mmss(duration)),summary:summary||'',recording:recording||''};
 }
 const nine=s=>digits(s).slice(-9);
 const fullPhone=s=>{ const d=digits(s); return d.startsWith('972')?d:'972'+d.replace(/^0/,''); };
@@ -103,7 +106,13 @@ async function fetchLead(env,phoneIn,closedRow){
   let record=null, notes=[];
   if(fid){ record=await fbRecord(env,fid); let page=1; while(page<=5){ const q=await fbQuery(env,{objecttype:7,page_size:200,page_number:page,fields:'noteid,notetext,subject,objectid,createdon,notetype',query:`objectid = '${fid}'`,sort_by:'createdon',sort_type:'asc'}); const rows=q.Data||[]; notes.push(...rows); if(rows.length<200) break; page++; } }
   if(!closedRow&&cust&&cust.inactiveCampaigns){ const cl=cust.inactiveCampaigns.filter(x=>x.reason==='CLOSED').sort((a,b)=>String(b.timestamp).localeCompare(String(a.timestamp)))[0]; if(cl) closedRow={timestamp:cl.timestamp,repName:cl.agentName,subReason:cl.subReason,note:cl.note}; }
-  return buildJourney({phone:'0'+n9,record,notes,cust,closedRow});
+  const j=buildJourney({phone:'0'+n9,record,notes,cust,closedRow});
+  try{ const hooks=JSON.parse((await env.CACHE.get('calls:'+n9))||'[]'); const byKey={}; for(const c of j.calls) byKey[c.t.slice(0,13)+'|'+normName(c.rep)]=c;
+    const merged={}; for(const e of hooks){ const k=e.t.slice(0,13)+'|'+normName(e.rep); if(byKey[k]){ if(!byKey[k].ai&&e.ai) byKey[k].ai=e.ai; if(!byKey[k].rec&&e.rec) byKey[k].rec=e.rec; continue; } const m=merged[k]||(merged[k]={t:e.t,rep:e.rep,sec:0,dur:'',rec:'',ai:'',src:'webhook'}); if(e.sec) m.sec=Math.max(m.sec,e.sec); if(e.ai) m.ai=e.ai; if(e.rec) m.rec=e.rec; }
+    for(const m of Object.values(merged)){ if(m.sec<15&&!m.ai) continue; m.dur=String(Math.floor(m.sec/60)).padStart(2,'0')+':'+String(m.sec%60).padStart(2,'0'); j.calls.push(m); j.timeline.push({t:m.t,k:'call',text:`שיחה · ${m.rep} · ${m.dur}`}); }
+    if(Object.keys(merged).length){ j.calls.sort((a,b)=>a.t.localeCompare(b.t)); j.timeline.sort((a,b)=>a.t.localeCompare(b.t)); j.n_calls=j.calls.length; j.talk_min=Math.round(j.calls.reduce((s,c)=>s+c.sec,0)/6)/10; j.reps=[...new Set(j.calls.map(c=>c.rep).filter(Boolean))]; const last=j.calls[j.calls.length-1]; j.last_call={rep:last.rep,dur:last.dur,t:last.t,ai:(last.ai||'').slice(0,1200),rec:last.rec,days_ago:Math.floor((Date.now()-new Date(last.t).getTime())/864e5)}; const talk=j.calls.filter(c=>c.sec>=120); const lg=talk.length?talk.reduce((a,b)=>b.sec>a.sec?b:a):null; j.longest=lg?{rep:lg.rep,dur:lg.dur,t:lg.t,ai:(lg.ai||'').slice(0,3000),rec:lg.rec}:j.longest; }
+  }catch(e){}
+  return j;
 }
 
 async function campaigns(env){ const c=await tcGet(env,'/campaigns'); return Array.isArray(c)?c:[]; }
@@ -128,7 +137,11 @@ export default {
       if(/CallEnded|CallRecordCreated|AISummary|Done|Followup|SubStatus/i.test(ev.type)){ if(idx[ak]&&(!ev.phone||idx[ak].phone===ev.phone)) delete idx[ak]; }
       else if(ev.phone&&/Outgoing|Incoming|Call/i.test(ev.type)){ idx[ak]={phone:ev.phone,agent:ev.agent,name:ev.name,campaign:ev.campaign,type:ev.type,ts:ev.ts}; idx._last=idx[ak]; }
       await env.CACHE.put('active:index',JSON.stringify(idx),{expirationTtl:6*3600});
-      return json({ok:true,parsed:{type:ev.type,phone:ev.phone,agent:ev.agent}},200,h); }
+      if(ev.phone&&/CallEnded|CallRecordCreated|AISummary/i.test(ev.type)){
+        const rec={t:ev.ts.slice(0,19),type:ev.type,rep:ev.agent,sec:ev.duration||0,rec:ev.recording||'',ai:ev.summary||'',name:ev.name||'',campaign:ev.campaign||''};
+        const pk='calls:'+nine(ev.phone); const pa=JSON.parse((await env.CACHE.get(pk))||'[]'); pa.push(rec); await env.CACHE.put(pk,JSON.stringify(pa.slice(-60)),{expirationTtl:120*86400});
+        const dk='daycalls:'+ev.ts.slice(0,10); const da=JSON.parse((await env.CACHE.get(dk))||'[]'); da.push({...rec,phone:ev.phone}); await env.CACHE.put(dk,JSON.stringify(da.slice(-2000)),{expirationTtl:60*86400}); }
+      return json({ok:true,parsed:{type:ev.type,phone:ev.phone,agent:ev.agent,duration:ev.duration,hasSummary:!!ev.summary}},200,h); }
     if(!env.APP_KEY||!safeEq(key,env.APP_KEY)) return json({error:'unauthorized'},401,h);
     const cache=async(k,ttl,fn)=>{ if(url.searchParams.get('fresh')!=='1'){ const v=await env.CACHE.get(k); if(v) return JSON.parse(v); } const d=await fn(); await env.CACHE.put(k,JSON.stringify(d),{expirationTtl:ttl}); return d; };
     try{
@@ -155,6 +168,9 @@ export default {
           const outcomes=outcomesRaw.filter(x=>String(x.timestamp).slice(0,10)===d).map(x=>({t:String(x.timestamp).replace('Z','').slice(0,19),phone:'0'+nine(x.displayPhone),name:x.fullName||'',rep:x.repName||'',reason:x.reason,sub:(x.subReason&&x.subReason.name)||'',note:x.note||'',campaign:x.campaign,fireberry_id:x.externalId||null}));
           // open leads touched that day (last call on that date)
           const touched=[]; await Promise.all(camps.filter(c=>c.status!=='OFF'&&c.active!==false).map(async c=>{ const rows=await tcGet(env,`/tenants/${env.TOCHAT_TENANT}/campaigns/${c.id}/openLeads`); for(const l of rows||[]) if(l.lastCall&&String(l.lastCall).slice(0,10)===d) touched.push({t:String(l.lastCall).replace('Z','').slice(0,19),phone:'0'+nine(l.displayPhone||l.phone),name:l.fullName||'',rep:l.repName||l.followByName||'',status:l.status,sub:l.subStatusName||l.subStatus||'',attempts:l.callAttempts||0,followDate:l.followDate||null,comment:l.followupComment||'',campaign:c.name,fireberry_id:l.externalId||null,notes:(l.notes||'').slice(0,300)}); }));
+          try{ const hooks=JSON.parse((await env.CACHE.get('daycalls:'+d))||'[]'); const have=new Set(calls.map(c=>c.t.slice(0,13)+'|'+normName(c.rep))); const agg={};
+            for(const e of hooks){ const k=e.t.slice(0,13)+'|'+normName(e.rep)+'|'+e.phone; if(have.has(e.t.slice(0,13)+'|'+normName(e.rep))) continue; const m=agg[k]||(agg[k]={t:e.t,rep:e.rep,phone:e.phone,name:e.name,sec:0,dur:'',rec:'',ai:'',src:'webhook',campaign:e.campaign}); if(e.sec) m.sec=Math.max(m.sec,e.sec); if(e.ai) m.ai=e.ai; if(e.rec) m.rec=e.rec; }
+            for(const m of Object.values(agg)){ if(m.sec<15&&!m.ai) continue; m.dur=String(Math.floor(m.sec/60)).padStart(2,'0')+':'+String(m.sec%60).padStart(2,'0'); calls.push(m); } calls.sort((a,b)=>a.t.localeCompare(b.t)); }catch(e){}
           return {date:d,calls,outcomes,touched,generated:new Date().toISOString()};
         }),200,h); }
       return json({error:'not found'},404,h);

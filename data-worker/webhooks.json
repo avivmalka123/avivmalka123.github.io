@@ -1,0 +1,9 @@
+{
+  "attached_at": "2026-09-16",
+  "note": "ToChat webhook ids attached to the livecoach-data worker (detach with DELETE/… if the API allows, or via ToChat support)",
+  "OutgoingCallLog": "o9owtWPD7F4cPFR6ImvK",
+  "IncomingCallLog": "4FUiDufZI4m0sAav09Rr",
+  "CallEndedLog": "ZOqYKoWrAH9Wh89wZOCz",
+  "CallRecordCreatedLog": "iaZAOQVHdnVOf3kudE4k",
+  "AISummaryLog": "LpyQiRUJf4vW1V5x0eC7"
+}
