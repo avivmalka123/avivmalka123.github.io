@@ -184,3 +184,35 @@ do $$ begin
     create policy "anon all daily_digests" on daily_digests for all to anon using (true) with check (true);
   end if;
 end $$;
+
+-- ── ToChat webhook state for the data worker (moved off Cloudflare KV, 2026-09-16) ──
+create table if not exists tc_events (
+  id bigserial primary key,
+  ts timestamptz not null default now(),
+  type text, phone text, agent text, name text, campaign text, external_id text,
+  raw jsonb
+);
+create index if not exists tc_events_ts on tc_events (ts desc);
+create table if not exists tc_active (
+  agent_key text primary key,
+  phone text, agent text, name text, campaign text, external_id text, type text,
+  ts timestamptz not null default now()
+);
+create table if not exists tc_calls (
+  id bigserial primary key,
+  phone text not null, t timestamptz not null, type text, rep text,
+  sec int default 0, rec text, ai text, name text, campaign text
+);
+create index if not exists tc_calls_phone on tc_calls (phone, t);
+create index if not exists tc_calls_t on tc_calls (t);
+alter table tc_events enable row level security;
+alter table tc_active enable row level security;
+alter table tc_calls enable row level security;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='tc_events' and policyname='anon all tc_events') then
+    create policy "anon all tc_events" on tc_events for all to anon using (true) with check (true); end if;
+  if not exists (select 1 from pg_policies where tablename='tc_active' and policyname='anon all tc_active') then
+    create policy "anon all tc_active" on tc_active for all to anon using (true) with check (true); end if;
+  if not exists (select 1 from pg_policies where tablename='tc_calls' and policyname='anon all tc_calls') then
+    create policy "anon all tc_calls" on tc_calls for all to anon using (true) with check (true); end if;
+end $$;
