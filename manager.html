@@ -46,6 +46,12 @@
   .note .sc{font-size:10.5px;font-weight:800;color:#c4b5fd;white-space:nowrap;padding-top:2px;min-width:70px}
   .note .tx{flex:1;white-space:pre-wrap}.note .meta{font-size:11px;color:var(--text-muted);margin-top:4px}
   .mbox{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px}
+  .jstrip{display:flex;gap:6px;overflow-x:auto;padding:6px 0;align-items:stretch}.jst{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:6px 10px;min-width:112px;text-align:center;font-size:12px;opacity:0;transform:translateY(6px);animation:jpop .4s forwards;display:flex;flex-direction:column;align-items:center;justify-content:center}.jst em{font-style:normal;font-size:18px;display:block}.jst b{font-size:12px}.jst small{display:block;color:var(--text-muted);font-size:11px}.jarr{align-self:center;color:var(--text-muted)}@keyframes jpop{to{opacity:1;transform:none}}
+  .jtl{max-height:420px;overflow:auto;font-size:12.5px}.jev{display:grid;grid-template-columns:105px 20px 1fr;gap:6px;padding:4px 0;border-bottom:1px dashed var(--border)}.jev .t{color:var(--text-muted);font-variant-numeric:tabular-nums}.jev.call{color:var(--accent3)}.jev.closed,.jev.tc_closed{color:var(--accent4);font-weight:700}.jev.inquiry{color:var(--neon)}.jev.webinar_reg{color:var(--accent5)}
+  .jmodal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60;display:none;align-items:flex-start;justify-content:center;padding:30px 12px;overflow:auto}.jmodal.on{display:flex}.jmodal .in{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:min(1100px,100%);padding:16px}
+  .bar{display:grid;grid-template-columns:150px 1fr 70px;align-items:center;gap:8px;margin:5px 0;font-size:12.5px}.bar .bl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bar i{display:block;height:10px;border-radius:6px;background:var(--accent);min-width:3px}.bar.g i{background:var(--accent4)}.bar.y i{background:var(--accent5)}.bar.b i{background:var(--accent3)}.bar.p i{background:var(--accent2)}.bar b{font-weight:700}.bar small{color:var(--text-muted);font-weight:400}
+  .dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}.dcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:13px}.dcard.hot{border-right:4px solid var(--accent5)}.dcard.rescue{border-right:4px solid var(--accent3)}.dcard h4{margin:0 0 6px;font-size:14px}.dcard .say{background:rgba(124,58,237,.12);border:1px solid rgba(168,85,247,.35);border-radius:10px;padding:8px 10px;margin-top:8px;font-size:13px}.dcard .why{color:var(--text-muted);font-size:12.5px}
+  .jgrid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:900px){.jgrid2{grid-template-columns:1fr}}
   .mgrid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
   .ins{border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.55;border:1px solid var(--border);background:var(--surface)}
   .ins.good{border-right:4px solid var(--accent4)}.ins.warn{border-right:4px solid var(--red)}.ins.info{border-right:4px solid var(--blue)}
@@ -123,7 +129,7 @@
   <div class="logo"><div class="logo-icon">📊</div><div>בורד מנהל<small>LiveCoach · שיחות בלייב, תחמושת וציונים</small></div></div>
   <span class="pill" id="pConn"><i class="dot"></i>חיבור לנתונים</span>
   <span class="pill" id="pPoll"><i class="dot"></i>רענון כל 4 שניות</span>
-  <nav class="tabs" id="navTabs"><button data-view="live" class="on">🔴 לייב וביצועים</button><button data-view="log">📚 יומן שיחות</button><button data-view="dislikes">👎 דיסלייקים <span id="dlCount" class="cnt"></span></button><button data-view="train">🎓 מרכז אימון</button><button data-view="metrics">📊 מדדים</button></nav>
+  <nav class="tabs" id="navTabs"><button data-view="live" class="on">🔴 לייב וביצועים</button><button data-view="daily">☀️ סיכום יום</button><button data-view="log">📚 יומן שיחות</button><button data-view="dislikes">👎 דיסלייקים <span id="dlCount" class="cnt"></span></button><button data-view="train">🎓 מרכז אימון</button><button data-view="metrics">📊 מדדים</button></nav>
   <div class="spacer"></div>
   <select class="btn" id="dayPick" style="direction:rtl"><option value="today">היום</option><option value="yesterday">אתמול</option><option value="week">7 ימים</option></select>
   <button class="btn" id="btnSetup">⚙️ חיבור</button>
@@ -137,6 +143,8 @@
     <div class="hint">אותם פרטים שהגדרת ב-LiveCoach תחת "צוות ובורד מנהל". נשמרים בדפדפן הזה בלבד.</div>
     <div class="field"><label class="field-label">OpenAI API Key (אופציונלי: תמלול הקלטות של שיחות מופת)</label><input class="field-input" id="cfgOai" type="password" placeholder="sk-..."></div>
     <div class="field"><label class="field-label">Anthropic API Key (אופציונלי: ניתוח AI של המדדים)</label><input class="field-input" id="cfgAnth" type="password" placeholder="sk-ant-..."></div>
+    <div class="field"><label class="field-label">שרת נתונים (טוצ'אט + פיירברי)</label><input class="field-input" id="cfgData" placeholder="https://livecoach-data.aviv1988.workers.dev"></div>
+    <div class="field"><label class="field-label">מפתח נתונים (APP_KEY של השרת)</label><input class="field-input" id="cfgDataKey" type="password" placeholder="מה-set-secrets.sh"></div>
     <button class="btn btn-primary" id="btnSaveCfg" style="margin-top:12px">שמור והתחבר</button>
   </section>
 
@@ -151,6 +159,10 @@
     <div style="overflow-x:auto"><table id="repTable"><thead><tr><th>נציג</th><th>ציון יומי</th><th>שיחות</th><th>הסתיימו</th><th>משך ממוצע</th><th>שלב ממוצע</th><th>סגירות</th><th>המשך טיפול</th><th>חסמים פתוחים (ממוצע)</th></tr></thead><tbody></tbody></table></div>
   </section>
 
+  <section id="dailySec" style="display:none">
+    <h2>☀️ סיכום יום: מה קרה, מי חם, ומה להציל היום <span class="spacer"></span><input type="date" class="field-input sm" id="dDate" style="width:auto"><button class="btn btn-sm" id="btnDLoad">טען</button><button class="btn btn-primary btn-sm" id="btnDAi">🧠 סיכום יום מלא (AI)</button></h2>
+    <div id="dBody"><div class="empty">בחר תאריך ולחץ "טען". ברירת המחדל: אתמול.</div></div>
+  </section>
   <section id="logSec" style="display:none">
     <h2>📚 יומן שיחות <span id="logCount" style="font-weight:500;text-transform:none"></span></h2>
     <div class="filters"><select class="field-input sm" id="fRep" style="width:auto"><option value="">כל הנציגים</option></select><select class="field-input sm" id="fMode" style="width:auto"><option value="">כל הסוגים</option><option value="rep">שיחות</option><option value="listen">האזנות</option><option value="sim">סימולציות</option></select><select class="field-input sm" id="fFb" style="width:auto"><option value="">הכל</option><option value="dislike">עם דיסלייק</option><option value="fix">עם תיקון</option></select><input class="field-input sm" id="fText" placeholder="חיפוש בתמלול…" style="width:220px"></div>
@@ -209,8 +221,15 @@
       <div class="field"><label class="field-label">הכנסה בפועל לכל נציג (₪), שורה לכל נציג: שם, סכום</label><textarea class="field-input" id="mRevenue" style="min-height:90px;direction:rtl;text-align:right" placeholder="ראם מלול, 71700&#10;סער רחמימוב, 59300"></textarea></div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" id="btnMCompute">חשב ושמור</button><label class="btn" style="cursor:pointer">📄 ייבא JSON מוכן <input type="file" id="fJson" accept=".json" style="display:none"></label><span class="hint" id="mStatus"></span></div>
     </div>
+    <div class="mbox" id="mJourney">
+      <h2 style="margin-bottom:8px">⏱ זמן להמרה ומסע הליד <span class="spacer"></span><select class="field-input sm" id="jMonth" style="width:auto"></select><button class="btn btn-sm" id="btnJRefresh" title="מושך מטוצ'אט + פיירברי דרך שרת הנתונים">🔄 משוך מהמערכות</button><label class="btn btn-sm" style="cursor:pointer">📄 ייבא מסעות JSON <input type="file" id="fJourneys" accept=".json" style="display:none"></label></h2>
+      <div class="hint" style="margin-bottom:8px">לכל ליד שנסגר בחודש: מתי נכנס (פיירברי), מאיפה, מה צרך בדרך, כמה שיחות ומי, ומתי נסגר (טוצ'אט). לחיצה על שורה פותחת את המסע המלא.</div>
+      <div id="jStatus" class="hint"></div>
+      <div id="jBody"><div class="empty">אין עדיין מסעות לחודש הזה. לחץ "משוך מהמערכות" (צריך שרת נתונים ב-⚙️ חיבור) או ייבא JSON.</div></div>
+    </div>
     <div id="mBody"><div class="empty">אין עדיין נתוני מדדים. לחץ "⬆️ עדכן חודש" והעלה את הקבצים, או ייבא JSON.</div></div>
   </section>
+  <div class="jmodal" id="jModal" onclick="if(event.target===this)this.classList.remove('on')"><div class="in" id="jModalIn"></div></div>
 
   <section id="recentSec">
     <h2>📋 סיכומי שיחות <span id="recentCount" style="font-weight:500;text-transform:none"></span></h2>
@@ -251,12 +270,137 @@ async function sb(method,path,body,prefer){ const r=await fetch(CFG.sbUrl+'/rest
   const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/);
   if(m){ try{ const c=b64u.dec(m[1]); if(c.sbUrl&&c.sbKey){ localStorage.setItem('lc_mgr',JSON.stringify({sbUrl:c.sbUrl,sbKey:c.sbKey})); history.replaceState(null,'',location.pathname); } }catch(e){} }
   try{CFG=JSON.parse(localStorage.getItem('lc_mgr')||'{}')}catch(e){CFG={}}
-  $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||''; $('cfgAnth').value=CFG.anth||''; $('cfgOai').value=CFG.oai||'';
+  $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||''; $('cfgAnth').value=CFG.anth||''; $('cfgOai').value=CFG.oai||''; $('cfgData').value=CFG.dataUrl||'https://livecoach-data.aviv1988.workers.dev'; $('cfgDataKey').value=CFG.dataKey||'';
   if(!CFG.sbUrl||!CFG.sbKey){ showSetup(true); } else { start(); }
 })();
 function showSetup(v){ $('setup').style.display=v?'':'none'; for(const id of ['liveSec','daySec','recentSec']) $(id).style.display=v?'none':''; }
+/* ── data bridge (ToChat + Fireberry via the livecoach-data worker) ── */
+function dataReady(){ return !!(CFG.dataUrl&&CFG.dataKey); }
+async function dataApi(path){ if(!dataReady()) throw new Error('חסר שרת נתונים או מפתח נתונים ב-⚙️ חיבור'); const r=await fetch(CFG.dataUrl+path,{headers:{'x-app-key':CFG.dataKey}}); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status)); return j; }
+async function claudeJson(system,user,schema,max=4000){
+  if(!CFG.anth) throw new Error('הוסף מפתח Anthropic ב"⚙️ חיבור"');
+  const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.anth,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','anthropic-beta':'server-side-fallback-2026-07-01'},body:JSON.stringify({model:'claude-opus-5',max_tokens:max,fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema}},system,messages:[{role:'user',content:user}]})});
+  const j=await r.json(); if(!r.ok) throw new Error(j.error?.message||r.status); return JSON.parse((j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''));
+}
+const fmtD=iso=>{ if(!iso) return '?'; const d=new Date(String(iso).slice(0,19)); return isNaN(d)?String(iso).slice(0,10):d.toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit'}); };
+const fmtDT=iso=>{ if(!iso) return '?'; const d=new Date(String(iso).slice(0,19)); return isNaN(d)?String(iso).slice(0,16):d.toLocaleString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}); };
+const JK={created:'🟢',webinar_reg:'🎥',inquiry:'📩',field:'🔁',call:'📞',note:'📝',tc_closed:'✅',tc_done:'⏹',closed:'🏁',other:'•'};
+function jStrip(j){
+  const st=[['🟢',j.first_source||'?',j.created?fmtD(j.created):'']];
+  for(const c of j.content||[]) if(c!==j.first_source) st.push(['📚',c,'']);
+  if((j.webinars||[]).length) st.push(['🎥','וובינר '+j.webinars.slice(-2).join(' · '),'']);
+  if(j.inquiries) st.push(['📩',j.inquiries+' פניות חוזרות','']);
+  if(j.n_calls) st.push(['📞',j.n_calls+' שיחות · '+j.talk_min+" דק'",(j.reps||[]).join(', ').slice(0,40)]); else st.push(['📵','אין שיחות מתועדות','']);
+  if(j.closed) st.push(['🏁',j.close_reason||j.close_note||'סגירה',(j.closer||'')+' · '+fmtD(j.closed)]); else st.push(['⏳',j.fb_status||'פתוח',(j.days_in_system!=null?j.days_in_system+' ימים במערכת':'')]);
+  return '<div class="jstrip">'+st.map(([a,b,c],i)=>`<div class="jst" style="animation-delay:${(i*.1).toFixed(2)}s"><em>${a}</em><b>${esc(b)}</b><small>${esc(c)}</small></div>`).join('<span class="jarr">←</span>')+'</div>';
+}
+function jFull(j){
+  const lg=j.longest; const calls=(j.calls||[]).filter(c=>c.sec>=120||c.ai);
+  return `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><b style="font-size:18px">${esc(j.name||'')}</b> <span class="hint">${esc(j.phone||'')}</span> ${j.fireberry_link?`<a href="${esc(j.fireberry_link)}" target="_blank" class="tag">פיירברי ↗</a>`:''} <span class="tag">${esc(j.type||'-')}</span> ${j.ref?`<span class="tag">REF ${esc(j.ref)}</span>`:''} <span class="tag">${esc(j.level_now||'-')}</span> <span class="tag">${esc(j.fb_status||'')}</span></div>
+    <div class="hint">${j.days_to_close!=null?`<b>${j.days_to_close}</b> ימים לסגירה · `:''}${j.days_in_system!=null?`<b>${j.days_in_system}</b> ימים במערכת · `:''}<b>${j.n_calls||0}</b> שיחות · <b>${j.talk_min||0}</b> דק' · <b>${(j.reps||[]).length}</b> נציגים</div></div>
+    ${jStrip(j)}
+    <div class="jgrid2"><div><h3 style="font-size:13px;color:var(--accent5);margin:6px 0">ציר זמן מלא (${(j.timeline||[]).length})</h3><div class="jtl">${(j.timeline||[]).map(e=>`<div class="jev ${e.k}"><span class="t">${fmtDT(e.t)}</span><span>${JK[e.k]||'•'}</span><span>${esc(e.text)}</span></div>`).join('')}</div></div>
+    <div>${lg?`<div class="ins good"><b>השיחה שעשתה את העבודה · ${esc(lg.rep)} · ${esc(lg.dur)} · ${fmtD(lg.t)}</b>${lg.rec?` · <a href="${esc(lg.rec)}" target="_blank">הקלטה</a>`:''}<div style="white-space:pre-wrap;color:var(--text-muted);font-size:12px;margin-top:6px;max-height:260px;overflow:auto">${esc((lg.ai||'').slice(0,1800))}</div></div>`:'<div class="ins warn">אין שיחה מתומללת. סיכומי השיחה מגיעים לפיירברי רק מחלק מהקמפיינים.</div>'}
+    <h3 style="font-size:13px;color:var(--accent5);margin:10px 0 6px">שיחות מתועדות</h3>${calls.length?calls.map(c=>`<div style="background:var(--surface2);border-radius:10px;padding:8px 10px;margin:6px 0;font-size:12.5px"><b>${fmtD(c.t)} · ${esc(c.rep)} · ${esc(c.dur)}</b>${c.rec?` · <a href="${esc(c.rec)}" target="_blank">הקלטה</a>`:''}<div style="white-space:pre-wrap;color:var(--text-muted);font-size:12px;margin-top:4px;max-height:160px;overflow:auto">${esc((c.ai||'').slice(0,900))}</div></div>`).join(''):'<div class="hint">אין</div>'}</div></div>`;
+}
+const JCACHE={};
+async function openJourney(phone,pre){
+  const m=$('jModal'); m.classList.add('on'); $('jModalIn').innerHTML='<div class="hint">טוען את המסע של '+esc(phone)+'…</div>';
+  try{ const j=pre||JCACHE[phone]||(JCACHE[phone]=await dataApi('/lead?phone='+encodeURIComponent(phone))); $('jModalIn').innerHTML='<div style="text-align:left"><button class="btn btn-sm" onclick="$(\'jModal\').classList.remove(\'on\')">✕ סגור</button></div>'+jFull(j); }
+  catch(e){ $('jModalIn').innerHTML='<div class="empty">'+esc(e.message||e)+'</div>'; }
+}
+window.openJourney=openJourney;
+/* ── daily digest ── */
+let DAILY=null, DINIT=false;
+function initDaily(){ if(DINIT) return; DINIT=true; const d=new Date(Date.now()-864e5); $('dDate').value=d.toISOString().slice(0,10); loadDaily(); }
+$('btnDLoad').onclick=()=>loadDaily();
+async function loadDaily(){
+  const date=$('dDate').value; $('dBody').innerHTML='<div class="empty">מושך את היום '+date+' מטוצ\'אט ופיירברי…</div>';
+  try{ DAILY=await dataApi('/daily?date='+date); let saved=null; try{ const r=await fetch(CFG.sbUrl+'/rest/v1/daily_digests?select=data&date=eq.'+date,{headers:hdr()}); if(r.ok){ const a=await r.json(); saved=a[0]&&a[0].data; } }catch(e){} DAILY.ai=saved||null; renderDaily(); }
+  catch(e){ $('dBody').innerHTML='<div class="empty">'+esc(e.message||e)+'</div>'; }
+}
+function renderDaily(){
+  const d=DAILY; if(!d) return; const calls=d.calls.slice().sort((a,b)=>b.sec-a.sec); const byRep={};
+  for(const c of d.calls){ const r=byRep[c.rep]=byRep[c.rep]||{n:0,sec:0,long:0}; r.n++; r.sec+=c.sec; if(c.sec>=600) r.long++; }
+  const oc=d.outcomes.reduce((a,o)=>{ const k=o.reason==='CLOSED'?'✅ נסגר':o.reason==='IRRELEVANT'?'לא רלוונטי':o.reason==='CALL_ATTEMPTS_EXCEEDED'?'חריגת ניסיונות':o.reason; a[k]=(a[k]||0)+1; return a; },{});
+  const fu=d.touched.filter(t=>t.status==='FOLLOWUP'); const talk=Math.round(d.calls.reduce((s,c)=>s+c.sec,0)/60);
+  const kpi=(v,l)=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  const ai=d.ai;
+  $('dBody').innerHTML=`<div class="kpis">${kpi(d.calls.length,'שיחות מתועדות (עם סיכום)')}${kpi(talk,'דקות שיחה')}${kpi(d.calls.filter(c=>c.sec>=600).length,'שיחות מעל 10 דק\'')}${kpi(d.outcomes.filter(o=>o.reason==='CLOSED').length,'סגירות')}${kpi(d.outcomes.filter(o=>o.reason==='IRRELEVANT').length,'סומנו לא רלוונטי')}${kpi(fu.length,'הועברו ל-Follow Up')}${kpi(d.touched.length,'לידים שנגעו בהם')}</div>
+  <div id="dAi">${ai?renderDailyAi(ai):'<div class="ins info">לחץ "🧠 סיכום יום מלא (AI)" כדי לקבל: מה קרה לכל נציג, מי הלידים החמים ביותר של היום, ומי אפשר להציל מהמאגר ולסגור היום.</div>'}</div>
+  <div class="mbox"><h2>👥 נציגים</h2><div style="overflow-x:auto"><table class="mtable"><thead><tr><th>נציג</th><th>שיחות מתועדות</th><th>דקות</th><th>מעל 10 דק'</th><th>סגירות</th><th>לא רלוונטי</th><th>Follow Up</th></tr></thead><tbody>${Object.entries(byRep).sort((a,b)=>b[1].sec-a[1].sec).map(([r,x])=>`<tr><td><b>${esc(r)}</b></td><td class="num">${x.n}</td><td class="num">${Math.round(x.sec/60)}</td><td class="num">${x.long}</td><td class="num">${d.outcomes.filter(o=>o.rep===r&&o.reason==='CLOSED').length}</td><td class="num">${d.outcomes.filter(o=>o.rep===r&&o.reason==='IRRELEVANT').length}</td><td class="num">${fu.filter(t=>t.rep===r).length}</td></tr>`).join('')}</tbody></table></div>
+  <div class="hint" style="margin-top:6px">סיכומי שיחה מגיעים רק מקמפיינים שמסונכרנים לפיירברי. תוצאות (${Object.entries(oc).map(([k,v])=>k+' '+v).join(' · ')}) ונגיעות מגיעות מטוצ'אט לכל הקמפיינים.</div></div>
+  <div class="mbox"><h2>📞 השיחות של היום (לפי אורך)</h2><div class="dgrid">${calls.slice(0,60).map(c=>`<div class="dcard ${c.sec>=900?'hot':''}"><h4>${esc(c.name||'?')} <span class="hint">${esc(c.phone||'')}</span></h4><div class="hint">${fmtDT(c.t)} · ${esc(c.rep)} · <b>${esc(c.dur)}</b> · ${esc(c.level||'')} ${c.fb_status?'· '+esc(c.fb_status):''} ${c.rec?`· <a href="${esc(c.rec)}" target="_blank">הקלטה</a>`:''} · <a href="#" onclick="openJourney('${esc(c.phone||'')}');return false">🧭 מסע</a></div><div style="white-space:pre-wrap;font-size:12px;color:var(--text-muted);margin-top:6px;max-height:150px;overflow:auto">${esc((c.ai||'').slice(0,700))}</div></div>`).join('')||'<div class="empty">אין שיחות מתועדות ביום הזה.</div>'}</div></div>
+  <div class="mbox"><h2>📌 מה הוחלט על לידים היום</h2><div style="overflow-x:auto"><table class="mtable"><thead><tr><th>שעה</th><th>ליד</th><th>נציג</th><th>תוצאה</th><th>סיבה / הערה</th><th>קמפיין</th><th></th></tr></thead><tbody>${d.outcomes.slice().sort((a,b)=>(a.reason==='CLOSED'?0:1)-(b.reason==='CLOSED'?0:1)||b.t.localeCompare(a.t)).slice(0,150).map(o=>`<tr><td>${fmtDT(o.t).slice(-5)}</td><td><b>${esc(o.name)}</b> <span class="hint">${esc(o.phone)}</span></td><td>${esc(o.rep)}</td><td>${o.reason==='CLOSED'?'✅ נסגר':o.reason==='IRRELEVANT'?'לא רלוונטי':esc(o.reason)}</td><td>${esc([o.sub,o.note].filter(Boolean).join(' · '))}</td><td class="hint">${esc(o.campaign)}</td><td><a href="#" onclick="openJourney('${esc(o.phone)}');return false">🧭</a></td></tr>`).join('')}</tbody></table></div>
+  ${fu.length?`<h2 style="margin-top:12px">📅 הועברו ל-Follow Up (${fu.length})</h2><div style="overflow-x:auto"><table class="mtable"><thead><tr><th>ליד</th><th>נציג</th><th>ניסיונות</th><th>מועד חזרה</th><th>הערה</th><th></th></tr></thead><tbody>${fu.slice(0,120).map(t=>`<tr><td><b>${esc(t.name)}</b> <span class="hint">${esc(t.phone)}</span></td><td>${esc(t.rep)}</td><td class="num">${t.attempts}</td><td>${t.followDate?fmtDT(t.followDate):'—'}</td><td>${esc(t.comment||t.sub||'')}</td><td><a href="#" onclick="openJourney('${esc(t.phone)}');return false">🧭</a></td></tr>`).join('')}</tbody></table></div>`:''}</div>`;
+}
+function renderDailyAi(a){
+  const card=(x,cls)=>`<div class="dcard ${cls}"><h4>${esc(x.name||'')} <span class="hint">${esc(x.phone||'')}</span> ${x.rep?`<span class="tag">${esc(x.rep)}</span>`:''}</h4><div class="why">${esc(x.why||'')}</div>${x.what_to_do?`<div style="margin-top:6px"><b>מה לעשות:</b> ${esc(x.what_to_do)}</div>`:''}${x.say?`<div class="say">🗣 ${esc(x.say)}</div>`:''}<div style="margin-top:6px"><a href="#" onclick="openJourney('${esc(x.phone||'')}');return false">🧭 המסע המלא</a></div></div>`;
+  return `<div class="narr" style="margin-bottom:12px"><b style="font-size:16px">${esc(a.headline||'')}</b>\n${esc(a.day_story||'')}</div>
+  <div class="mbox"><h2>🔥 הלידים החמים של היום (${(a.hottest||[]).length})</h2><div class="dgrid">${(a.hottest||[]).map(x=>card(x,'hot')).join('')}</div></div>
+  <div class="mbox"><h2>🛟 להציל מהמאגר ולסגור היום (${(a.rescue||[]).length})</h2><div class="hint" style="margin-bottom:8px">לידים שסומנו לא רלוונטי / Follow Up / ניתקו, אבל לפי ההיסטוריה שלהם יש שם עסקה.</div><div class="dgrid">${(a.rescue||[]).map(x=>card(x,'rescue')).join('')}</div></div>
+  <div class="mbox"><h2>👥 מה קרה לכל נציג</h2><div style="display:grid;gap:8px">${(a.reps||[]).map(r=>`<div class="ins ${r.tone==='good'?'good':r.tone==='warn'?'warn':'info'}"><b>${esc(r.rep)}:</b> ${esc(r.text)}</div>`).join('')}</div></div>
+  <div class="mbox"><h2>🧭 מה למדנו על הלידים היום</h2><div style="display:grid;gap:8px">${(a.lessons||[]).map(t=>`<div class="ins info">${esc(t)}</div>`).join('')}</div>${a.one_action?`<div class="ins good" style="margin-top:10px"><b>הפעולה האחת להיום:</b> ${esc(a.one_action)}</div>`:''}</div>`;
+}
+const DAILY_SCHEMA={type:'object',additionalProperties:false,required:['headline','day_story','hottest','rescue','reps','lessons','one_action'],properties:{
+  headline:{type:'string'},day_story:{type:'string',description:'3-5 משפטים: מה קרה ביום הזה במוקד, בלי Markdown'},
+  hottest:{type:'array',items:{type:'object',additionalProperties:false,required:['name','phone','rep','why','what_to_do','say'],properties:{name:{type:'string'},phone:{type:'string'},rep:{type:'string'},why:{type:'string'},what_to_do:{type:'string'},say:{type:'string',description:'משפט פתיחה מדויק לשיחה הבאה, בלשון הלקוח'}}}},
+  rescue:{type:'array',items:{type:'object',additionalProperties:false,required:['name','phone','rep','why','what_to_do','say'],properties:{name:{type:'string'},phone:{type:'string'},rep:{type:'string',description:'מי צריך להתקשר (נציג שכבר דיבר איתו, או המנהל)'},why:{type:'string'},what_to_do:{type:'string'},say:{type:'string'}}}},
+  reps:{type:'array',items:{type:'object',additionalProperties:false,required:['rep','text','tone'],properties:{rep:{type:'string'},text:{type:'string'},tone:{type:'string',enum:['good','warn','info']}}}},
+  lessons:{type:'array',items:{type:'string'}},one_action:{type:'string'}}};
+$('btnDAi').onclick=async()=>{
+  if(!DAILY) return toast('טען יום קודם'); const btn=$('btnDAi'); btn.disabled=true; $('dAi').innerHTML='<div class="hint">קורא את כל השיחות והתוצאות של היום…</div>';
+  try{
+    const calls=DAILY.calls.slice().sort((a,b)=>b.sec-a.sec).slice(0,45).map(c=>({name:c.name,phone:c.phone,rep:c.rep,dur:c.dur,level:c.level,fb_status:c.fb_status,type:c.type,created:c.created,summary:(c.ai||'').slice(0,900)}));
+    const outcomes=DAILY.outcomes.map(o=>({name:o.name,phone:o.phone,rep:o.rep,reason:o.reason,sub:o.sub,note:o.note,campaign:o.campaign}));
+    const fu=DAILY.touched.filter(t=>t.status==='FOLLOWUP').slice(0,80).map(t=>({name:t.name,phone:t.phone,rep:t.rep,attempts:t.attempts,followDate:t.followDate,comment:t.comment,notes:t.notes}));
+    const sys=`אתה מנהל המכירות הבכיר של מועדון האיקומרס של אביב מלכה (מסלול ליווי להקמת עסק איקומרס, לידים ממשפכי וובינר / הדרכה חינמית / מיני-קורס, נציגים מתקשרים דרך חייגן). מה שלמדנו מ-104 סגירות בקיץ 2026: כמעט אף אחד לא סוגר מנגיעה אחת (חציון 4 שיחות ו-90 דקות מצטברות), הנציג שעשה את השיחה הארוכה הוא זה שסוגר (73 מ-83), חצי מהסגירות הן לידים שחזרו אחרי פנייה חוזרת או הרשמה חדשה לוובינר, ולידים שצרכו שני תכנים (וובינר + הדרכה/מיני-קורס) סוגרים הכי הרבה. "לא רלוונטי" אחרי שיחה של דקה הוא לרוב טעות של הנציג, לא של הליד. כתוב בעברית ישירה, בלי Markdown, בלי סימני כוכבית. בחר 5-8 לידים חמים (שיחה ארוכה היום, עניין אמיתי, לא נסגר) ו-4-8 להצלה (סומנו לא רלוונטי / ניתקו / Follow Up רחוק, אבל יש בהם עסקה לפי הסיכום או ההיסטוריה). לכל אחד: למה, מה לעשות, ומשפט פתיחה מדויק לשיחה הבאה שמתחבר למה שהוא אמר. אל תמציא לידים שלא ברשימות.`;
+    const usr=`תאריך: ${DAILY.date}\n\nשיחות עם סיכום (לפי אורך):\n${JSON.stringify(calls)}\n\nתוצאות שסומנו בטוצ'אט היום:\n${JSON.stringify(outcomes)}\n\nהועברו ל-Follow Up:\n${JSON.stringify(fu)}`;
+    const a=await claudeJson(sys,usr,DAILY_SCHEMA,6000); DAILY.ai=a; $('dAi').innerHTML=renderDailyAi(a);
+    try{ await sb('POST','daily_digests?on_conflict=date',{date:DAILY.date,data:a,updated_at:new Date().toISOString()},'resolution=merge-duplicates,return=minimal'); }catch(e){ console.warn('daily save',e); }
+  }catch(e){ $('dAi').innerHTML='<div class="empty">שגיאה: '+esc(e.message||e)+'</div>'; } finally{ btn.disabled=false; }
+};
+/* ── journeys (time to conversion) ── */
+let JROWS={}, JMONTH=null;
+function monthList(){ const out=[]; const d=new Date(); for(let i=0;i<12;i++){ out.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')); d.setMonth(d.getMonth()-1); } return out; }
+async function initJourneys(){ if(initJourneys._d) return; initJourneys._d=1; $('jMonth').innerHTML=monthList().map(m=>`<option value="${m}">${m}</option>`).join(''); $('jMonth').onchange=()=>loadJourneys($('jMonth').value); await loadJourneys($('jMonth').value); }
+async function loadJourneys(month){
+  JMONTH=month; $('jStatus').textContent='';
+  try{ const r=await fetch(CFG.sbUrl+'/rest/v1/lead_journeys?select=month,phone,data&order=month.asc&limit=5000',{headers:hdr()}); if(r.ok){ JROWS={}; for(const x of await r.json()) (JROWS[x.month]=JROWS[x.month]||[]).push(x.data); } else if(!Object.keys(JROWS).length){ $('jStatus').textContent='טבלת lead_journeys לא קיימת עדיין. הרץ את supabase.sql המעודכן, או עבוד בזיכרון.'; } }catch(e){}
+  renderJourneys();
+}
+async function saveJourneys(month,list){ try{ const rows=list.map(j=>({month,phone:j.phone,data:j,updated_at:new Date().toISOString()})); for(let i=0;i<rows.length;i+=100) await sb('POST','lead_journeys?on_conflict=month,phone',rows.slice(i,i+100),'resolution=merge-duplicates,return=minimal'); return true; }catch(e){ $('jStatus').textContent='נשמר בזיכרון בלבד (טבלת lead_journeys: '+(e.message||e).slice(0,80)+')'; return false; } }
+$('btnJRefresh').onclick=async()=>{
+  const month=$('jMonth').value; const st=$('jStatus'); const btn=$('btnJRefresh'); btn.disabled=true;
+  try{ st.textContent='מושך סגירות של '+month+'…'; const closes=await dataApi('/closes?month='+month+'&fresh=1'); const out=[]; let i=0;
+    const worker=async()=>{ while(i<closes.length){ const c=closes[i++]; try{ const j=await dataApi('/lead?phone='+encodeURIComponent(c.phone)); if(!j.closed||j.closed<c.closed.slice(0,7)){ j.closed=c.closed; j.closer=c.closer; j.close_reason=c.reason; j.close_note=c.note; if(j.created) j.days_to_close=Math.floor((new Date(c.closed)-new Date(j.created))/864e5); } j.campaign=c.campaign; out.push(j); }catch(e){ out.push({phone:c.phone,name:c.name,closed:c.closed,closer:c.closer,close_reason:c.reason,close_note:c.note,campaign:c.campaign,first_source:'שגיאה: '+(e.message||e),content:[],calls:[],n_calls:0,talk_min:0,reps:[],timeline:[]}); } st.textContent=`מושך מסעות ${out.length}/${closes.length}…`; } };
+    await Promise.all([worker(),worker(),worker(),worker()]);
+    JROWS[month]=out; await saveJourneys(month,out); st.textContent='✅ '+out.length+' סגירות ב-'+month+' עודכנו מהמערכות'; renderJourneys();
+  }catch(e){ st.textContent='❌ '+(e.message||e); } finally{ btn.disabled=false; }
+};
+$('fJourneys').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; try{ const doc=JSON.parse(await f.text()); const months=Array.isArray(doc)?{[JMONTH]:doc}:doc; let n=0; for(const [m,list] of Object.entries(months)){ if(!/^\d{4}-\d{2}$/.test(m)||!Array.isArray(list)) continue; JROWS[m]=list; n+=list.length; $('jStatus').textContent='שומר '+m+'…'; await saveJourneys(m,list); } $('jStatus').textContent='✅ יובאו '+n+' מסעות ב-'+Object.keys(months).length+' חודשים'; renderJourneys(); }catch(err){ $('jStatus').textContent='❌ '+(err.message||err); } e.target.value=''; };
+function bars(counter,total,cls=''){ const en=Object.entries(counter).sort((a,b)=>b[1]-a[1]); const mx=en[0]?en[0][1]:1; return en.map(([k,v])=>`<div class="bar ${cls}"><span class="bl" title="${esc(k)}">${esc(k)}</span><i style="width:${Math.round(v/mx*100)}%"></i><b>${v}<small> · ${Math.round(v/total*100)}%</small></b></div>`).join('')||'<div class="hint">—</div>'; }
+const median=a=>{ if(!a.length) return null; const s=a.slice().sort((x,y)=>x-y); const m=Math.floor(s.length/2); return s.length%2?s[m]:(s[m-1]+s[m])/2; };
+function jStats(L){ const days=L.map(l=>l.days_to_close).filter(v=>v!=null); const calls=L.map(l=>l.n_calls||0); const cnt=(f)=>L.reduce((a,l)=>{ const k=f(l)||'—'; a[k]=(a[k]||0)+1; return a; },{});
+  return {n:L.length,med_days:median(days),fast:days.filter(v=>v<=7).length,slow:days.filter(v=>v>60).length,med_calls:median(calls),zero:calls.filter(v=>!v).length,fb_closed:L.filter(l=>l.fb_status==='לקוח סגר').length,
+    src:cnt(l=>l.first_source),content:L.reduce((a,l)=>{ for(const c of l.content||[]) a[c]=(a[c]||0)+1; return a; },{}),reason:cnt(l=>l.close_reason||'ללא סיבת סגירה'),closer:cnt(l=>l.closer),path:cnt(l=>[l.first_source,...(l.content||[]).filter(c=>c!==l.first_source).slice(0,2)].join(' ← ')),
+    web:L.filter(l=>/וובינר/.test(l.first_source||'')).length,train:L.filter(l=>/הדרכה/.test(l.first_source||'')).length,mini:L.filter(l=>/מיני/.test(l.first_source||'')).length,multi:L.filter(l=>(l.content||[]).length>=2).length,old:days.filter(v=>v>60).length}; }
+function renderJourneys(){
+  const L=JROWS[JMONTH]||[]; const months=Object.keys(JROWS).sort();
+  const kpi=(v,l)=>`<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  let html='';
+  if(months.length){ const S=months.map(m=>[m,jStats(JROWS[m])]); const pct=(a,b)=>b?Math.round(a/b*100)+'%':'—';
+    html+=`<div style="overflow-x:auto;margin-bottom:12px"><table class="mtable"><thead><tr><th>מתחילת השנה</th>${S.map(([m])=>`<th>${m}</th>`).join('')}</tr></thead><tbody>
+    ${[['סגירות (טוצ\'אט)',s=>s.n],['חציון ימים מכניסה לסגירה',s=>s.med_days!=null?Math.round(s.med_days):'—'],['נסגרו תוך שבוע',s=>pct(s.fast,s.n)],['נסגרו אחרי 60+ יום (מאגר)',s=>pct(s.old,s.n)],['כניסה ראשונה: וובינר',s=>pct(s.web,s.n)],['כניסה ראשונה: הדרכה חינמית',s=>pct(s.train,s.n)],['כניסה ראשונה: מיני-קורס',s=>pct(s.mini,s.n)],['צרכו 2+ תכנים לפני הסגירה',s=>pct(s.multi,s.n)],['חציון שיחות עד סגירה',s=>s.med_calls!=null?s.med_calls:'—'],['סגירות בלי שיחה מתועדת',s=>s.zero],['מסומנים "לקוח סגר" בפיירברי',s=>pct(s.fb_closed,s.n)]].map(([l,f])=>`<tr><td><b>${l}</b></td>${S.map(([,s])=>`<td class="num">${f(s)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+  if(!L.length){ $('jBody').innerHTML=html+'<div class="empty">אין מסעות לחודש '+JMONTH+'. לחץ "משוך מהמערכות" או ייבא JSON.</div>'; return; }
+  const s=jStats(L);
+  html+=`<div class="kpis">${kpi(s.n,'סגירות')}${kpi(s.med_days!=null?Math.round(s.med_days):'—','חציון ימים לסגירה')}${kpi(s.fast,'תוך שבוע')}${kpi(s.slow,'אחרי 60+ יום')}${kpi(s.med_calls!=null?s.med_calls:'—','חציון שיחות')}${kpi(s.zero,'בלי שיחה מתועדת')}${kpi(s.fb_closed,'"לקוח סגר" בפיירברי')}</div>
+  <div class="mgrid3"><div class="mbox"><h3 style="font-size:13px;color:var(--accent5);margin-bottom:8px">מאיפה הליד הגיע בפעם הראשונה</h3>${bars(s.src,s.n)}</div><div class="mbox"><h3 style="font-size:13px;color:var(--accent5);margin-bottom:8px">מה צרך בדרך</h3>${bars(s.content,s.n,'g')}</div><div class="mbox"><h3 style="font-size:13px;color:var(--accent5);margin-bottom:8px">סיבת סגירה בטוצ'אט</h3>${bars(s.reason,s.n,'y')}</div><div class="mbox"><h3 style="font-size:13px;color:var(--accent5);margin-bottom:8px">המסלול המלא</h3>${bars(s.path,s.n,'p')}</div><div class="mbox"><h3 style="font-size:13px;color:var(--accent5);margin-bottom:8px">מי סגר</h3>${bars(s.closer,s.n,'b')}</div></div>
+  <div style="overflow-x:auto"><table class="mtable"><thead><tr><th>ליד</th><th>כניסה</th><th>מקור ראשון</th><th>תכנים</th><th>ימים</th><th>שיחות</th><th>דק'</th><th>נציגים</th><th>סגירה</th><th>סוגר</th><th>סיבה</th><th>פיירברי</th></tr></thead><tbody>${L.slice().sort((a,b)=>String(a.closed).localeCompare(String(b.closed))).map(l=>`<tr style="cursor:pointer" onclick="openJourney('${esc(l.phone)}',JROWS['${JMONTH}'].find(x=>x.phone==='${esc(l.phone)}'))"><td><b>${esc(l.name||'')}</b><br><span class="hint">${esc(l.phone)}</span></td><td>${fmtD(l.created)}</td><td>${esc(l.first_source||'')}</td><td class="hint">${esc((l.content||[]).join(' · '))}</td><td class="num" style="color:${l.days_to_close!=null&&l.days_to_close<=7?'var(--accent4)':l.days_to_close>60?'var(--red)':'inherit'}">${l.days_to_close!=null?l.days_to_close:'?'}</td><td class="num">${l.n_calls||0}</td><td class="num">${l.talk_min||0}</td><td class="hint">${esc((l.reps||[]).join(', '))}</td><td>${fmtD(l.closed)}</td><td>${esc(l.closer||'')}</td><td class="hint">${esc(l.close_reason||l.close_note||'')}</td><td>${esc(l.fb_status||'')}</td></tr>`).join('')}</tbody></table></div>`;
+  $('jBody').innerHTML=html;
+}
 $('btnSetup').onclick=()=>showSetup($('setup').style.display==='none');
-$('btnSaveCfg').onclick=()=>{ CFG={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim(),anth:$('cfgAnth').value.trim().replace(/[^\x21-\x7E]/g,''),oai:$('cfgOai').value.trim().replace(/[^\x21-\x7E]/g,'')}; localStorage.setItem('lc_mgr',JSON.stringify(CFG)); showSetup(false); start(); };
+$('btnSaveCfg').onclick=()=>{ CFG={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim(),anth:$('cfgAnth').value.trim().replace(/[^\x21-\x7E]/g,''),oai:$('cfgOai').value.trim().replace(/[^\x21-\x7E]/g,''),dataUrl:($('cfgData').value.trim()||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,''),dataKey:$('cfgDataKey').value.trim().replace(/[^\x21-\x7E]/g,'')}; localStorage.setItem('lc_mgr',JSON.stringify(CFG)); showSetup(false); start(); };
 $('dayPick').onchange=()=>render();
 
 /* ── data ── */
@@ -288,7 +432,7 @@ const openBarriers=r=>(r.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='res
 function stagesHtml(r){ const i=stageIdx(r); return '<div class="stages">'+STAGES.map((s,k)=>`<i class="${k<i?'d':k===i?'a':''}" title="${s.l}"></i>`).join('')+'</div>'; }
 
 /* ── render ── */
-function setView(v){ VIEW=v; for(const b of $('navTabs').querySelectorAll('button')) b.classList.toggle('on',b.dataset.view===v); $('liveSec').style.display=v==='live'?'':'none'; $('daySec').style.display=v==='live'?'':'none'; $('recentSec').style.display=v==='live'?'':'none'; $('logSec').style.display=v==='log'?'':'none'; $('dlSec').style.display=v==='dislikes'?'':'none'; $('trainSec').style.display=v==='train'?'':'none'; $('metricsSec').style.display=v==='metrics'?'':'none'; if(v==='metrics') initMetrics(); render(); }
+function setView(v){ VIEW=v; for(const b of $('navTabs').querySelectorAll('button')) b.classList.toggle('on',b.dataset.view===v); $('dailySec').style.display=v==='daily'?'':'none'; if(v==='daily') initDaily(); $('liveSec').style.display=v==='live'?'':'none'; $('daySec').style.display=v==='live'?'':'none'; $('recentSec').style.display=v==='live'?'':'none'; $('logSec').style.display=v==='log'?'':'none'; $('dlSec').style.display=v==='dislikes'?'':'none'; $('trainSec').style.display=v==='train'?'':'none'; $('metricsSec').style.display=v==='metrics'?'':'none'; if(v==='metrics') initMetrics(); render(); }
 $('navTabs').onclick=e=>{ const b=e.target.closest('button'); if(b) setView(b.dataset.view); };
 for(const id of ['fRep','fMode','fFb','fText','fScope','fSource']) $(id).addEventListener('input',()=>render());
 $('scopes').innerHTML=Object.entries(SCOPES).map(([k,l])=>`<button data-sc="${k}" class="${k==='general'?'on':''}">${l}</button>`).join('');
@@ -412,7 +556,7 @@ $('btnCopy').onclick=()=>{ const r=ROWS.find(x=>x.id===SEL); if(r&&r.summary){ n
 let MDOC=null, MLEADS=[], MMONTHS=[], MINIT=false;
 const FL={webinar:'וובינר',training:'הדרכה חינמית',direct:'ליד ישיר',course48:'קורס 48',unknown:'לא משויך'};
 const nf=v=>v==null||isNaN(v)?'—':Number(v).toLocaleString('he-IL');
-async function initMetrics(){ if(MINIT) return; MINIT=true; await loadMonths(); }
+async function initMetrics(){ if(MINIT) return; MINIT=true; initJourneys(); await loadMonths(); }
 let MALL=[];
 $('btnMCompare').onclick=async()=>{ const box=$('mCompare'); if(box.style.display!=='none'){ box.style.display='none'; return; } box.style.display=''; box.innerHTML='<div class="hint">טוען חודשים…</div>'; try{ const r=await fetch(CFG.sbUrl+'/rest/v1/metrics?select=month,data&order=month.asc',{headers:hdr()}); MALL=await r.json(); renderCompare(); }catch(e){ box.innerHTML='<div class="hint">שגיאה: '+esc(e.message)+'</div>'; } };
 function renderCompare(){

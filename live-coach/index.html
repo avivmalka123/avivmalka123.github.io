@@ -110,6 +110,16 @@
   @media(max-width:1250px){main{grid-template-columns:1fr 1fr}}
   @media(max-width:860px){main{grid-template-columns:1fr;padding-bottom:120px} .panel{max-height:none;min-height:0} .panel-b{overflow:visible} .saylog{max-height:55vh;min-height:0} .ammo-mini{position:static!important;width:auto!important;max-height:none!important;box-shadow:none;left:auto;bottom:auto} .ammo-mini.collapsed .panel-b{display:block} .ammo-mini .ammo{font-size:13px;padding:4px 8px} .coach-panel{left:8px;width:calc(100vw - 16px);bottom:88px;height:min(600px,calc(100vh - 100px))} .bubble{left:12px;bottom:12px}}
   .panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;min-height:420px;max-height:calc(100vh - 230px)}
+  .tr-panel{grid-column:2;min-height:0}.tr-panel.collapsed .panel-b,.tr-panel.collapsed #idbarWrap{display:none}.tr-panel .panel-h{cursor:pointer}.tr-panel.collapsed{max-height:none}
+  .lead-panel{grid-column:2}
+  .leadbar{display:grid;grid-template-columns:1fr auto;gap:8px}.leadbar input{font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);direction:ltr;text-align:right}
+  .jstrip{display:flex;gap:6px;overflow-x:auto;padding:4px 0}.jst{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:6px 10px;min-width:104px;text-align:center;font-size:12px;opacity:0;transform:translateY(6px);animation:jpop .4s forwards;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}.jst em{font-style:normal;font-size:18px;display:block}.jst b{font-size:12px}.jst small{color:var(--text-muted);font-size:11px}.jarr{align-self:center;color:var(--text-muted);flex:none}@keyframes jpop{to{opacity:1;transform:none}}
+  .lfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}.lfact{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 8px;text-align:center}.lfact b{display:block;font-size:17px}.lfact span{font-size:11px;color:var(--text-muted)}
+  .opener{background:linear-gradient(135deg,rgba(124,58,237,.10),rgba(236,72,153,.06));border:1px solid rgba(124,58,237,.3);border-radius:12px;padding:10px 12px;font-size:14.5px;line-height:1.5}.opener .w{font-size:12px;color:var(--text-muted);margin-top:4px}.opener .acts{display:flex;gap:6px;margin-top:6px}
+  .linsight{border-radius:12px;padding:9px 12px;border:1px solid var(--border);border-right:4px solid var(--teal);background:var(--surface2);font-size:13.5px;line-height:1.5}.linsight b{display:block;color:var(--teal);font-size:12px;margin-bottom:2px}.linsight.path{border-right-color:var(--gold)}.linsight.path b{color:var(--gold)}.linsight.warn{border-right-color:var(--red)}.linsight.warn b{color:var(--red)}
+  .ldet{font-size:12.5px}.ldet summary{cursor:pointer;color:var(--text-muted);font-weight:700;padding:4px 0}.jtl{max-height:260px;overflow:auto}.jev{display:grid;grid-template-columns:96px 18px 1fr;gap:6px;padding:3px 0;border-bottom:1px dashed var(--border);font-size:12px}.jev .t{color:var(--text-muted)}.jev.call{color:var(--blue)}.jev.closed,.jev.tc_closed{color:var(--accent4);font-weight:700}.jev.inquiry{color:var(--purple)}.jev.webinar_reg{color:var(--gold)}
+  .lsum{white-space:pre-wrap;color:var(--text-muted);font-size:12px;max-height:200px;overflow:auto;background:var(--surface2);border-radius:10px;padding:8px}
+  @media(max-width:860px){.tr-panel,.lead-panel{grid-column:auto}}
   .panel-h{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
   .panel-h .live{display:inline-flex;align-items:center;gap:5px;color:var(--red);font-size:11px}
   .panel-h .live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite}
@@ -346,8 +356,16 @@
     </div>
   </section>
 
-  <section class="panel tr-panel">
-    <div class="panel-h">💬 תמלול חי <span class="live" id="liveTag" style="display:none">LIVE</span><span class="mode-tag" id="modeTag" style="display:none">ערוץ אחד · בחר דובר לכל משפט</span><span class="spacer"></span><button class="btn btn-sm" id="btnAnalyze" title="נתח עכשיו">🔄</button><button class="btn btn-sm" id="btnClear">נקה</button></div>
+  <section class="panel lead-panel" id="leadWrap">
+    <div class="panel-h">🧭 מהלך הליד <span class="spacer"></span><span id="leadTag" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
+    <div class="panel-b" id="leadPanel">
+      <div class="leadbar"><input id="leadPhone" placeholder="טלפון הליד לפני השיחה, למשל 0541234567" inputmode="tel" autocomplete="off"><button class="btn btn-primary" id="btnLead">🧭 הכר את הליד</button></div>
+      <div id="leadBody"><div class="empty">הקלד את הטלפון של הליד (מטוצ'אט) לפני שאתה מחייג. תקבל: המסע שלו מהרגע שנכנס, מה כבר נאמר לו, משפטי פתיחה שנכתבו בשבילו, ומה נכון לעשות איתו לפי כל מה שלמדנו מלידים כמוהו.</div></div>
+    </div>
+  </section>
+
+  <section class="panel tr-panel collapsed" id="trWrap">
+    <div class="panel-h" id="trHead">💬 תמלול חי <span id="trChev">▾</span> <span class="live" id="liveTag" style="display:none">LIVE</span><span class="mode-tag" id="modeTag" style="display:none">ערוץ אחד · בחר דובר לכל משפט</span><span class="spacer"></span><button class="btn btn-sm" id="btnAnalyze" title="נתח עכשיו">🔄</button><button class="btn btn-sm" id="btnClear">נקה</button></div>
     <div id="idbarWrap" style="padding:12px 16px 0;display:none"></div>
     <div class="panel-b" id="transcript">
       <div class="empty" id="emptyT">התמלול יופיע כאן.<br>הנציג בצד שמאל, הלקוח בצד ימין. כל משפט שמסתיים נשלח למאמן.</div>
@@ -423,6 +441,8 @@
   <div class="sec">👥 צוות ובורד מנהל</div>
   <div class="field"><label class="field-label">Supabase URL</label><input class="field-input ltr" id="sSbUrl" placeholder="https://xxxx.supabase.co"></div>
   <div class="field"><label class="field-label">Supabase Publishable key (או anon key ישן)</label><input class="field-input ltr" id="sSbKey" type="password" placeholder="sb_publishable_..."></div>
+  <div class="field"><label class="field-label">שרת נתונים (מהלך הליד: טוצ'אט + פיירברי)</label><input class="field-input ltr" id="sDataUrl" placeholder="https://livecoach-data.aviv1988.workers.dev"></div>
+  <div class="field"><label class="field-label">מפתח נתונים</label><input class="field-input ltr" id="sDataKey" type="password" placeholder="מהמנהל (APP_KEY)"></div>
   <div class="field"><label class="field-label">סיסמת אדמין ליצירת לינק קצר (רק למנהל)</label><input class="field-input ltr" id="sAdminPw" type="password" placeholder="..."><div class="hint">נשמרת רק בדפדפן שלך ולא נכללת בלינק. בלעדיה "צור לינק" מייצר את הלינק הארוך הישן.</div></div>
   <div class="hint">כשמוגדר, כל שיחה נשלחת בלייב לבורד המנהל. ההגדרה נכללת בלינק לצוות. <a href="../manager/" target="_blank" style="color:#6d28d9">פתח את בורד המנהל ↗</a></div>
   <div class="field" style="margin-top:10px"><button class="btn" id="btnInvite" style="width:100%;justify-content:center">🔗 צור לינק קצר לצוות</button><div class="hint">עם סיסמת אדמין: ההגדרות נשמרות ב-Cloudflare תחת טוקן אקראי והלינק קצר ובלי מפתחות (מתאים לוואטסאפ). בלי סיסמה: הלינק הארוך הישן. בשני המקרים, לשלוח רק לנציגים שלך.</div><input class="field-input ltr" id="inviteOut" readonly style="margin-top:6px;font-size:11px" placeholder="הלינק יופיע כאן"></div>
@@ -538,7 +558,7 @@ function loadSettings(){
   if(s.principles&&s.principles.startsWith('PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה')) s.principles=''; // the previous built-in playbook was saved verbatim; follow the new default instead
   $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES;
   $('sRepName').value=s.repName||''; $('sRepGender').value=s.repGender||'m'; refreshKeysBanner(); $('sCustName').value=s.custName||'';
-  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||40;
+  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sDataUrl').value=s.dataUrl||''; $('sDataKey').value=s.dataKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||40;
   syncAudioUI();
 }
 const cleanKey=v=>(v||'').replace(/[^\x21-\x7E]/g,''); // keep printable ASCII only: strips Hebrew, RTL marks, zero-width chars, spaces
@@ -552,7 +572,7 @@ function saveSettings(){
   S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:customOnly($('sContext').value,DEFAULT_CONTEXT),
     principles:customOnly($('sPrinciples').value,DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),repGender:$('sRepGender').value,custName:$('sCustName').value.trim(),
     mic:$('sMic').value,mode:$('sMode').value,custSrc:$('sCustSrc').value,custDev:$('sCustDev').value,sttModel:$('sSttModel').value,effort:$('sEffort').value,
-    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,sayEverySec:Math.min(180,Math.max(15,parseInt($('sSayEvery').value)||40)),goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
+    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),dataUrl:$('sDataUrl').value.trim().replace(/\/+$/,''),dataKey:cleanKey($('sDataKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,sayEverySec:Math.min(180,Math.max(15,parseInt($('sSayEvery').value)||40)),goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
   syncModeSeg(); refreshKeysBanner(); $('whoName').textContent=S.settings.repName||'ללא שם';
   localStorage.setItem('lc_settings',JSON.stringify(S.settings));
   S.anthropic=null;
@@ -580,7 +600,7 @@ $('modeSeg').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; if(
   toast(S.settings.mode==='listen'?'מצב האזנה: שני הדוברים באותו ערוץ, זיהוי לפי קול'+(S.settings.speechmatics?'':' (הוסף מפתח Speechmatics)'):'מצב נציג: המיקרופון שלך = נציג, הטאב = לקוח','t-ok'); };
 $('pWho').onclick=()=>{ let n=null; try{ n=prompt('מה השם שלך? (יופיע בבורד המנהל)',S.settings.repName||'') }catch(e){} if(n===null) return; S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName||'ללא שם'; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); };
 const b64u={enc:o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
-$('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.openai,anthropic:S.settings.anthropic,speechmatics:S.settings.speechmatics,sbUrl:S.settings.sbUrl,sbKey:S.settings.sbKey,mode:'rep',custSrc:'tab',sttModel:S.settings.sttModel,effort:S.settings.effort,
+$('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.openai,anthropic:S.settings.anthropic,speechmatics:S.settings.speechmatics,sbUrl:S.settings.sbUrl,sbKey:S.settings.sbKey,dataUrl:S.settings.dataUrl,dataKey:S.settings.dataKey,mode:'rep',custSrc:'tab',sttModel:S.settings.sttModel,effort:S.settings.effort,
     context:(S.settings.context!==DEFAULT_CONTEXT?S.settings.context:undefined),principles:(S.settings.principles!==DEFAULT_PRINCIPLES?S.settings.principles:undefined)};
   // the link carries whatever THIS browser has saved; an empty link silently leaves every rep without keys
   if(!cfg.anthropic||!cfg.openai){ toast('בדפדפן הזה חסרים מפתחות (OpenAI/Anthropic), הלינק ייצא ריק. הזן אותם כאן ושמור, או צור את הלינק מהדפדפן שבו הם שמורים.','t-error'); return; }
@@ -598,9 +618,9 @@ $('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.
     .catch(e=>{ done(longUrl,'הלינק הקצר נכשל ('+(e.message||e)+'), הועתק הלינק הארוך'); })
     .finally(()=>{ $('btnInvite').disabled=false; });
 };
-function saveSettingsSilent(){ const keep=S.settings; S.settings={...keep,openai:cleanKey($('sOpenai').value),anthropic:cleanKey($('sAnthropic').value),speechmatics:cleanKey($('sSm').value),sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),adminPw:$('sAdminPw').value.trim(),sttModel:$('sSttModel').value,effort:$('sEffort').value,context:(v=>(!v||v===DEFAULT_CONTEXT)?'':v)($('sContext').value.trim()),principles:(v=>(!v||v===DEFAULT_PRINCIPLES)?'':v)($('sPrinciples').value.trim())}; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); }
+function saveSettingsSilent(){ const keep=S.settings; S.settings={...keep,openai:cleanKey($('sOpenai').value),anthropic:cleanKey($('sAnthropic').value),speechmatics:cleanKey($('sSm').value),sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),dataUrl:$('sDataUrl').value.trim().replace(/\/+$/,''),dataKey:cleanKey($('sDataKey').value),adminPw:$('sAdminPw').value.trim(),sttModel:$('sSttModel').value,effort:$('sEffort').value,context:(v=>(!v||v===DEFAULT_CONTEXT)?'':v)($('sContext').value.trim()),principles:(v=>(!v||v===DEFAULT_PRINCIPLES)?'':v)($('sPrinciples').value.trim())}; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); }
 function mergeTeamCfg(cfg){ let cur={}; try{cur=JSON.parse(localStorage.getItem('lc_settings')||'{}')}catch(e){}
-    const merged={...cur}; for(const k of ['openai','anthropic','speechmatics','sbUrl','sbKey','sttModel','effort','context','principles']) if(cfg[k]) merged[k]=cfg[k]; if(!merged.mode) merged.mode=cfg.mode||'rep'; if(!merged.custSrc) merged.custSrc=cfg.custSrc||'tab';
+    const merged={...cur}; for(const k of ['openai','anthropic','speechmatics','sbUrl','sbKey','dataUrl','dataKey','sttModel','effort','context','principles']) if(cfg[k]) merged[k]=cfg[k]; if(!merged.mode) merged.mode=cfg.mode||'rep'; if(!merged.custSrc) merged.custSrc=cfg.custSrc||'tab';
     localStorage.setItem('lc_settings',JSON.stringify(merged)); history.replaceState(null,'',location.pathname+location.search); S.anthropic=null; }
 function applyHashConfig(){ const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/); if(!m) return false; try{ mergeTeamCfg(b64u.dec(m[1])); return true; }catch(e){ console.warn('bad cfg',e); return false; } }
 async function importTeamToken(tok){ // short team link: #t=<token> → settings fetched from the link store
@@ -1106,7 +1126,7 @@ function systemPrompt(){
 ${AMMO_RULES}
 - close_check: כשהנציג עובר להצגת מוצר או לסגירה ויש חסם שהלקוח לא אישר שנפתר, פריט צ'ק-ליסט קריטי חסר, או הסכמה שלא נלקחה, החזר רשימה קצרה "לבדיקה לפני סגירה". זו הארה בלבד, לא עצירה.
 - reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך. אם נשענת על דוגמה מהשטח, פתח את reasoning.principle ב-"🌟" בלי לציין שם של נציג. שמות של נציגים אחרים לא מופיעים בשום שדה שהנציג רואה.
-${trainingBlock()}
+${trainingBlock()}${leadBlock()}
 - Latency-sensitive; begin your visible answer immediately.
 - בכל שדה טקסט: עברית מדוברת בלבד. בלי Markdown, בלי כוכביות, בלי קוד, בלי שמות שדות באנגלית, בלי סוגריים מסולסלים. כל משפט צריך להיקרא בקול כמו שהוא.
 - ammo: ברגע שהלקוח אמר משפט אחד, הרשימה לא ריקה: לפחות עובדה, רצון או מניע שהוא נתן, במילים שלו.
@@ -1404,7 +1424,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS){
     try{
-      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+leadBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -1671,6 +1691,69 @@ else if(savedTok&&(!S.settings.anthropic||!S.settings.openai)){ S.importing=true
 else postImportChecks();
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
 window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis}; // debug hooks
+/* ── lead journey panel: who is this lead, what happened, what to say ── */
+const LEARNINGS=`מה למדנו מ-104 סגירות (יולי-ספטמבר 2026): כמעט אף אחד לא סוגר מנגיעה אחת (חציון 4 שיחות ו-90 דקות מצטברות). הנציג שעשה את השיחה הארוכה הוא זה שסוגר (73 מתוך 83). חצי מהסגירות הן לידים שחזרו אחרי פנייה חוזרת או הרשמה חדשה לוובינר, ורבע נסגרו אחרי יותר מ-60 יום במאגר. לידים שצרכו שני תכנים (וובינר + הדרכה חינמית או מיני-קורס) סוגרים הכי הרבה; ליד שצרך תוכן אחד בלבד צריך קודם את התוכן השני. ליד מהדרכה חינמית סוגר מהר (חציון 7 ימים) ולכן צריך שיחה מלאה מיד. ליד שנרשם לוובינר ולא הגיע הוא לא ליד מת: הוא נסגר בשיחה שמחזירה אותו להקלטה או לוובינר הבא. "לא רלוונטי" אחרי שיחה של דקה הוא לרוב טעות של הנציג.`;
+function leadBlock(){ const j=S.lead; if(!j) return ''; const b=S.leadBrief||{}; const lc=j.last_call; return `\nרקע על הליד מהמערכות (טוצ'אט + פיירברי), השתמש בו בטבעיות ואל תקריא אותו ללקוח כרשימה:\n- ${j.name||'ליד'}: נכנס ${j.created?j.created.slice(0,10):'?'} דרך ${j.first_source||'?'}${j.days_in_system!=null?', '+j.days_in_system+' ימים במערכת':''}. תכנים: ${(j.content||[]).join(', ')||'לא ידוע'}. וובינרים: ${(j.webinars||[]).join(', ')||'אין'}. רמת ליד: ${j.level_now||'-'}. סטטוס פיירברי: ${j.fb_status||'-'}.\n- שיחות קודמות: ${j.n_calls||0} (${j.talk_min||0} דק') עם ${(j.reps||[]).join(', ')||'אף אחד'}.${lc?' שיחה אחרונה: '+lc.rep+' לפני '+lc.days_ago+' ימים ('+lc.dur+'). מה נאמר שם: '+String(lc.ai||'').replace(/[*#]/g,'').slice(0,700):''}\n${b.one_line_profile?'- פרופיל: '+b.one_line_profile+'\n':''}${(b.insights||[]).map(i=>'- '+i.title+': '+i.text).join('\n')}${b.recommended_path?'\n- המסלול המומלץ: '+b.recommended_path.offer+' ('+b.recommended_path.why+')':''}\n`; }
+const JK={created:'🟢',webinar_reg:'🎥',inquiry:'📩',field:'🔁',call:'📞',note:'📝',tc_closed:'✅',tc_done:'⏹',closed:'🏁',other:'•'};
+const fmtD=iso=>{ if(!iso) return '?'; const d=new Date(String(iso).slice(0,19)); return isNaN(d)?String(iso).slice(0,10):d.toLocaleDateString('he-IL',{day:'2-digit',month:'2-digit',year:'2-digit'}); };
+function jStrip(j){
+  const st=[['🟢',j.first_source||'?',j.created?fmtD(j.created):'']];
+  for(const c of j.content||[]) if(c!==j.first_source) st.push(['📚',c,'']);
+  if((j.webinars||[]).length) st.push(['🎥','וובינר '+j.webinars.slice(-2).join(' · '),'']);
+  if(j.inquiries) st.push(['📩',j.inquiries+' פניות חוזרות','']);
+  if(j.n_calls) st.push(['📞',j.n_calls+' שיחות · '+j.talk_min+" דק'",(j.reps||[]).join(', ').slice(0,36)]); else st.push(['📵','אין שיחות מתועדות','']);
+  if(j.closed) st.push(['🏁',j.close_reason||j.close_note||'נסגר',(j.closer||'')+' · '+fmtD(j.closed)]); else st.push(['⏳',j.fb_status||'פתוח',j.days_in_system!=null?j.days_in_system+' ימים במערכת':'']);
+  return '<div class="jstrip">'+st.map(([a,b,c],i)=>`<div class="jst" style="animation-delay:${(i*.1).toFixed(2)}s"><em>${a}</em><b>${escapeHtml(b)}</b><small>${escapeHtml(c)}</small></div>`).join('<span class="jarr">←</span>')+'</div>';
+}
+function leadFacts(j){ const lc=j.last_call; return `<div class="lfacts"><div class="lfact"><b>${j.days_in_system!=null?j.days_in_system:'?'}</b><span>ימים במערכת</span></div><div class="lfact"><b>${j.n_calls||0}</b><span>שיחות · ${j.talk_min||0} דק'</span></div><div class="lfact"><b>${lc?lc.days_ago:'—'}</b><span>${lc?'ימים מאז '+escapeHtml(lc.rep.split(' ')[0]):'לא דיברו איתו'}</span></div><div class="lfact"><b style="font-size:13px">${escapeHtml(j.level_now||'-')}</b><span>${escapeHtml(j.fb_status||'')}</span></div></div>`; }
+function renderLead(j){
+  const lc=j.last_call, lg=j.longest;
+  $('leadTag').textContent=(j.name||'')+(j.closed?' · לקוח סגור':'');
+  $('leadBody').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><b style="font-size:17px">${escapeHtml(j.name||'ליד')}</b> <span style="color:var(--text-muted);font-size:12px">${escapeHtml(j.phone||'')}${j.owner?' · '+escapeHtml(j.owner):''}</span></div>${j.fireberry_link?`<a href="${escapeHtml(j.fireberry_link)}" target="_blank" class="btn btn-sm">פיירברי ↗</a>`:''}</div>
+  ${jStrip(j)}${leadFacts(j)}
+  ${j.closed?`<div class="linsight warn"><b>שים לב</b>הליד הזה כבר נסגר ב-${fmtD(j.closed)} על ידי ${escapeHtml(j.closer||'')}${j.close_reason?' ('+escapeHtml(j.close_reason)+')':''}. זו שיחת שירות או שדרוג, לא מכירה מאפס.</div>`:''}
+  ${(j.tochat_active||[]).map(a=>`<div class="linsight"><b>בטוצ'אט עכשיו</b>${escapeHtml(a.campaign)} · ${a.status==='FOLLOWUP'?'Follow Up':'ממתין'}${a.attempts?' · '+a.attempts+' ניסיונות':''}${a.followBy?' · '+escapeHtml(a.followBy):''}${a.comment?' · '+escapeHtml(a.comment):''}</div>`).join('')}
+  <div id="leadBrief"><div class="empty" style="padding:10px">כותב משפטי פתיחה ותובנות לליד הזה…</div></div>
+  ${lc?`<details class="ldet"><summary>📞 מה נאמר בשיחה האחרונה (${escapeHtml(lc.rep)} · ${escapeHtml(lc.dur)} · ${fmtD(lc.t)})${lc.rec?' · <a href="'+escapeHtml(lc.rec)+'" target="_blank">הקלטה</a>':''}</summary><div class="lsum">${escapeHtml(String(lc.ai||'אין סיכום').replace(/[*#]/g,''))}</div></details>`:''}
+  ${lg&&(!lc||lg.t!==lc.t)?`<details class="ldet"><summary>🏆 השיחה הארוכה ביותר (${escapeHtml(lg.rep)} · ${escapeHtml(lg.dur)} · ${fmtD(lg.t)})</summary><div class="lsum">${escapeHtml(String(lg.ai||'').replace(/[*#]/g,''))}</div></details>`:''}
+  <details class="ldet"><summary>🕓 ציר הזמן המלא (${(j.timeline||[]).length})</summary><div class="jtl">${(j.timeline||[]).map(e=>`<div class="jev ${e.k}"><span class="t">${fmtD(e.t)}</span><span>${JK[e.k]||'•'}</span><span>${escapeHtml(e.text)}</span></div>`).join('')}</div></details>`;
+}
+const BRIEF_SCHEMA={type:'object',additionalProperties:false,required:['one_line_profile','customer_gender','opening_lines','insights','recommended_path','dont_give_up','watch_out'],properties:{
+  one_line_profile:{type:'string',description:'משפט אחד: מי הליד ואיפה הוא במסע'},customer_gender:{type:'string',enum:['m','f','unknown']},
+  opening_lines:{type:'array',items:{type:'object',additionalProperties:false,required:['text','why'],properties:{text:{type:'string',description:'משפט פתיחה שהנציג מקריא, טבעי, מתחבר למה שהליד עשה או אמר'},why:{type:'string',description:'עד 12 מילים: למה המשפט הזה'}}}},
+  insights:{type:'array',items:{type:'object',additionalProperties:false,required:['title','text'],properties:{title:{type:'string'},text:{type:'string',description:'תובנה מבוססת נתונים: מה קרה עם הליד ומה זה אומר על השיחה הבאה'}}}},
+  recommended_path:{type:'object',additionalProperties:false,required:['offer','why','next_step'],properties:{offer:{type:'string',description:'מה להציע לו: וובינר הבא / הקלטה / הדרכה חינמית / מיני-קורס / שיחת מכירה מלאה / סגירה'},why:{type:'string'},next_step:{type:'string',description:'הצעד הקונקרטי בסוף השיחה'}}},
+  dont_give_up:{type:'string',description:'למה לא לוותר על הליד הזה מהר, על בסיס הנתונים'},watch_out:{type:'string',description:'מלכודת אחת שצריך להיזהר ממנה בשיחה הזו'}}};
+async function leadBrief(j){
+  const box=$('leadBrief'); if(!box) return;
+  try{
+    const compact={name:j.name,first_source:j.first_source,created:j.created,days_in_system:j.days_in_system,content:j.content,webinars:j.webinars,levels:(j.levels||[]).map(x=>x[1]),inquiries:j.inquiries,fb_status:j.fb_status,level_now:j.level_now,fb_notes:j.fb_notes,type:j.type,ref:j.ref,n_calls:j.n_calls,talk_min:j.talk_min,reps:j.reps,last_call:j.last_call&&{rep:j.last_call.rep,t:j.last_call.t,days_ago:j.last_call.days_ago,dur:j.last_call.dur,summary:String(j.last_call.ai||'').slice(0,1500)},longest:j.longest&&{rep:j.longest.rep,t:j.longest.t,dur:j.longest.dur,summary:String(j.longest.ai||'').slice(0,1500)},closed:j.closed,closer:j.closer,close_reason:j.close_reason,tochat_active:j.tochat_active,timeline_tail:(j.timeline||[]).slice(-14).map(e=>e.t.slice(0,10)+' '+e.text)};
+    const res=await getClient().beta.messages.create({model:'claude-opus-5',max_tokens:2200,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema:BRIEF_SCHEMA}},
+      system:`אתה מאמן המכירות של מועדון האיקומרס של אביב מלכה (מסלול ליווי להקמת עסק איקומרס). הנציג ${S.settings.repName||''} עומד להתקשר לליד ואתה מכין אותו. כתוב בעברית מדוברת, חמה, בלי Markdown, בלי סוגריים מסולסלים. משפטי הפתיחה הם טקסט שהנציג מקריא: קצרים, טבעיים, בלשון אחת (קבע מגדר לפי השם; אם לא בטוח, נסח ניטרלי בלי לוכסנים), ומתחברים למשהו ספציפי שהליד עשה או אמר (הוובינר שנרשם אליו, התוכן שצפה, מה סיפר בשיחה הקודמת). תן 3 משפטי פתיחה שונים באופיים (חם, סקרן, ישיר), 2 תובנות מבוססות נתונים, מסלול מומלץ, למה לא לוותר, ומלכודת אחת.\n${LEARNINGS}\n${trainingBlock()}`,
+      messages:[{role:'user',content:'הליד (JSON מהמערכות):\n'+JSON.stringify(compact)}]},{timeout:60000,maxRetries:1});
+    const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
+    S.leadBrief=o; if(!S.profile&&o.one_line_profile) S.profile=o.one_line_profile;
+    box.innerHTML=`<div style="font-size:13px;color:var(--text-muted)"><b>פרופיל:</b> ${escapeHtml(o.one_line_profile||'')}</div>
+      <div style="font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.5px;margin-top:6px">משפטי פתיחה לליד הזה</div>
+      ${(o.opening_lines||[]).map((l,i)=>`<div class="opener"><div>${escapeHtml(l.text)}</div><div class="w">${escapeHtml(l.why||'')}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="useOpener(${i})">🗣 אמור עכשיו</button><button class="btn btn-sm" onclick="navigator.clipboard?.writeText(this.closest('.opener').firstChild.textContent)">📋</button></div></div>`).join('')}
+      ${(o.insights||[]).map(x=>`<div class="linsight"><b>${escapeHtml(x.title)}</b>${escapeHtml(x.text)}</div>`).join('')}
+      ${o.recommended_path?`<div class="linsight path"><b>המסלול המומלץ: ${escapeHtml(o.recommended_path.offer)}</b>${escapeHtml(o.recommended_path.why)}<div style="margin-top:4px"><b style="display:inline;color:var(--text)">הצעד הבא:</b> ${escapeHtml(o.recommended_path.next_step)}</div></div>`:''}
+      ${o.dont_give_up?`<div class="linsight"><b>למה לא לוותר</b>${escapeHtml(o.dont_give_up)}</div>`:''}${o.watch_out?`<div class="linsight warn"><b>להיזהר</b>${escapeHtml(o.watch_out)}</div>`:''}`;
+  }catch(e){ box.innerHTML='<div class="empty" style="padding:8px">המאמן לא הצליח לכתוב את הבריף: '+escapeHtml(e.error?.error?.message||e.message||String(e))+' <button class="btn btn-sm" onclick="leadBrief(window.__lc.S.lead)">נסה שוב</button></div>'; log('בריף ליד: '+(e.message||e),'err'); }
+}
+window.leadBrief=leadBrief;
+window.useOpener=i=>{ const l=(S.leadBrief||{}).opening_lines?.[i]; if(!l) return; $('sayText').textContent=l.text; $('sayWhy').textContent=l.why||'משפט פתיחה מהמסע של הליד'; $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'משפט פתיחה מהמסע',text:l.text,why:l.why||'',reasoning:null}); }catch(e){} toast('המשפט בחלון "אמור עכשיו"','t-ok'); };
+async function loadLead(phoneIn){
+  const ph=String(phoneIn||'').replace(/\D/g,''); const n9=ph.slice(-9); if(n9.length!==9) return toast('הקלד טלפון ישראלי מלא (10 ספרות)','t-error');
+  if(!S.settings.dataUrl||!S.settings.dataKey){ openDrawer(); return toast('חסר שרת נתונים / מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
+  $('leadBody').innerHTML='<div class="empty">מושך את המסע של הליד מטוצ\'אט ופיירברי…</div>'; $('leadTag').textContent=''; S.lead=null; S.leadBrief=null;
+  try{ const r=await fetch(S.settings.dataUrl+'/lead?phone=0'+n9,{headers:{'x-app-key':S.settings.dataKey}}); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
+    S.lead=j; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); leadBrief(j); }
+  catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
+}
+$('btnLead').onclick=()=>loadLead($('leadPhone').value); $('leadPhone').addEventListener('keydown',e=>{ if(e.key==='Enter') loadLead(e.target.value); });
+$('leadPhone').addEventListener('paste',()=>setTimeout(()=>{ const v=$('leadPhone').value.replace(/\D/g,''); if(v.length>=9) loadLead(v); },50));
+$('trHead').onclick=e=>{ if(e.target.closest('button')) return; const w=$('trWrap'); w.classList.toggle('collapsed'); $('trChev').textContent=w.classList.contains('collapsed')?'▾':'▴'; };
 $('ammoHead').onclick=()=>{ const w=$('ammoWrap'); w.classList.toggle('collapsed'); try{localStorage.setItem('lc_ammo_collapsed',w.classList.contains('collapsed')?'1':'')}catch(e){} };
 try{ if(localStorage.getItem('lc_ammo_collapsed')==='1') $('ammoWrap').classList.add('collapsed'); }catch(e){}
 window.addEventListener('beforeunload',e=>{if((S.running&&!S.demo)||S.day){e.preventDefault();e.returnValue=''}});

@@ -1,0 +1,13 @@
+name = "livecoach-data"
+main = "src/index.js"
+compatibility_date = "2026-01-15"
+
+# Read-only bridge to ToChat + Fireberry for LiveCoach (rep app + manager board).
+# Secrets (set once, never in git):
+#   npx wrangler secret put TOCHAT_TENANT
+#   npx wrangler secret put TOCHAT_API_KEY
+#   npx wrangler secret put FIREBERRY_TOKEN
+#   npx wrangler secret put APP_KEY        # shared key the apps send as x-app-key
+[[kv_namespaces]]
+binding = "CACHE"
+id = "079622a22e9844c2aecec6136e1fba77"

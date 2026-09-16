@@ -160,3 +160,27 @@ drop policy if exists "team delete" on public.exemplars;
 create policy "team read"   on public.exemplars for select to anon using (true);
 create policy "team write"  on public.exemplars for insert to anon with check (true);
 create policy "team delete" on public.exemplars for delete to anon using (true);
+
+-- ── lead journeys (time to conversion) + daily digests ── added 2026-09-16
+create table if not exists lead_journeys (
+  month text not null,
+  phone text not null,
+  data jsonb not null,
+  updated_at timestamptz default now(),
+  primary key (month, phone)
+);
+create table if not exists daily_digests (
+  date date primary key,
+  data jsonb not null,
+  updated_at timestamptz default now()
+);
+alter table lead_journeys enable row level security;
+alter table daily_digests enable row level security;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='lead_journeys' and policyname='anon all lead_journeys') then
+    create policy "anon all lead_journeys" on lead_journeys for all to anon using (true) with check (true);
+  end if;
+  if not exists (select 1 from pg_policies where tablename='daily_digests' and policyname='anon all daily_digests') then
+    create policy "anon all daily_digests" on daily_digests for all to anon using (true) with check (true);
+  end if;
+end $$;
