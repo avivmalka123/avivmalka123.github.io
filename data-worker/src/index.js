@@ -145,6 +145,8 @@ export default {
     const h=cors(req); if(req.method==='OPTIONS') return new Response(null,{status:204,headers:h});
     const url=new URL(req.url); const key=req.headers.get('x-app-key')||url.searchParams.get('key')||'';
     if(url.pathname==='/health') return json({ok:true},200,h);
+    if(url.pathname==='/diag'){ if(!env.APP_KEY||!safeEq(key,env.APP_KEY)) return json({error:'unauthorized'},401,h); const k=env.SUPABASE_KEY||''; let probe=null; try{ const r=await fetch(env.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/tc_events?select=id&limit=1',{headers:{apikey:k,...(k.startsWith('eyJ')?{Authorization:'Bearer '+k}:{})}}); probe=r.status+' '+(await r.text()).slice(0,160); }catch(e){ probe=String(e.message); }
+      return json({supabase_url:env.SUPABASE_URL,key_prefix:k.slice(0,15),key_len:k.length,key_has_ws:/\s/.test(k),key_charset_ok:/^[A-Za-z0-9_\-.]+$/.test(k),probe},200,h); }
     const hm=url.pathname.match(/^\/hook\/([a-f0-9]{24})\/([A-Za-z]+)\/?$/);
     if(hm){ if(hm[1]!==await hookToken(env)) return json({error:'bad token'},401,h);
       let body=null; const ct=req.headers.get('content-type')||''; try{ body=ct.includes('json')?await req.json():Object.fromEntries((await req.formData()).entries()); }catch(e){ body={raw:await req.text().catch(()=>'')}; }
@@ -167,6 +169,7 @@ export default {
     const cache=async(k,ttl,fn)=>{ if(url.searchParams.get('fresh')!=='1'){ try{ const v=await env.CACHE.get(k); if(v) return JSON.parse(v); }catch(e){} } const d=await fn(); await kvPutSafe(env,k,JSON.stringify(d),{expirationTtl:ttl}); return d; };
     try{
       if(url.pathname==='/campaigns') return json(await campaigns(env),200,h);
+      if(url.pathname==='/hooks/purge'){ const agent=url.searchParams.get('agent')||''; if(!agent||!sbReady(env)) return json({error:'agent'},400,h); for(const t of ['tc_events','tc_calls']) await sb(env,t+'?'+(t==='tc_events'?'agent':'rep')+'=eq.'+encodeURIComponent(agent),'DELETE'); await sb(env,'tc_active?agent=eq.'+encodeURIComponent(agent),'DELETE'); return json({ok:true},200,h); }
       if(url.pathname==='/hooks/log'){ let events=[]; if(sbReady(env)){ try{ events=(await sb(env,'tc_events?select=ts,type,phone,agent,name,raw&order=ts.desc&limit=40')).map(e=>({...e,raw:JSON.stringify(e.raw).slice(0,4000)})); }catch(e){ events=[{error:String(e.message)}]; } } return json({token:await hookToken(env),store:sbReady(env)?'supabase':'kv',events},200,h); }
       if(url.pathname==='/active'){ const rep=normName(url.searchParams.get('rep')); let idx={}; if(sbReady(env)){ try{ for(const r of await sb(env,'tc_active?select=*&ts=gt.'+new Date(Date.now()-2*3600e3).toISOString())) idx[r.agent_key]={phone:r.phone,agent:r.agent,name:r.name,campaign:r.campaign,externalId:r.external_id||'',type:r.type,ts:r.ts}; }catch(e){} } else { const idxRaw=await env.CACHE.get('active:index'); idx=idxRaw?JSON.parse(idxRaw):{}; } const fresh=e=>e&&(Date.now()-new Date(e.ts).getTime())<2*3600e3;
         let hit=null; if(rep){ hit=idx[rep]||Object.entries(idx).find(([k,v])=>k!=='_last'&&k!=='_'&&(k.includes(rep)||rep.includes(k)))?.[1]||null; }
