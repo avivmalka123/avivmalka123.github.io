@@ -23,6 +23,11 @@ const normName=s=>String(s||'').toLowerCase().replace(/["'׳״.\-_]/g,'').replac
 async function hookToken(env){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(env.APP_KEY||'')); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,24); }
 function deepFind(obj,pred,depth=0){ if(!obj||typeof obj!=='object'||depth>4) return null; for(const [k,v] of Object.entries(obj)){ if(pred(k,v)) return v; if(v&&typeof v==='object'){ const r=deepFind(v,pred,depth+1); if(r!=null) return r; } } return null; }
 function extractCall(type,body){
+  // exact ToChat keys first (seen 2026-09-16: userName, userEmail, customerDisplayPhone, customerId, customerName, externalId, campaignName, sessionId)
+  const b=body||{};
+  if(b.customerDisplayPhone||b.customerId){ return {type,phone:'0'+nine(b.customerDisplayPhone||b.customerId),agent:b.userName||b.userEmail||'',email:b.userEmail||'',name:b.customerName||'',campaign:b.campaignName||'',externalId:b.externalId||'',sessionId:b.sessionId||'',
+      duration:b.duration==null?(b.callDuration==null?null:(typeof b.callDuration==='number'?b.callDuration:mmss(b.callDuration))):(typeof b.duration==='number'?b.duration:mmss(b.duration)),
+      summary:b.summary||b.aiSummary||b.text||'',recording:b.recordUrl||b.recordingUrl||b.url||b.fileUrl||''}; }
   const phone=deepFind(body,(k,v)=>/phone|number|msisdn|caller|callee|destination/i.test(k)&&typeof v!=='object'&&digits(v).length>=9)||deepFind(body,(k,v)=>typeof v==='string'&&/^\+?\d[\d\s-]{8,14}$/.test(v.trim()));
   const agent=deepFind(body,(k,v)=>/agentname|repname|username|agent$|userDisplayName|displayName/i.test(k)&&typeof v==='string'&&v.length>1)||deepFind(body,(k,v)=>/agentemail|useremail|email/i.test(k)&&typeof v==='string'&&v.includes('@'));
   const name=deepFind(body,(k,v)=>/fullname|customername|leadname|contactname|^name$/i.test(k)&&typeof v==='string');
@@ -135,7 +140,7 @@ export default {
       const logRaw=await env.CACHE.get('hooks:log'); const logArr=logRaw?JSON.parse(logRaw):[]; logArr.unshift({type:ev.type,ts:ev.ts,phone:ev.phone,agent:ev.agent,name:ev.name,raw:ev.raw}); await env.CACHE.put('hooks:log',JSON.stringify(logArr.slice(0,40)),{expirationTtl:7*86400});
       const idxRaw=await env.CACHE.get('active:index'); const idx=idxRaw?JSON.parse(idxRaw):{}; const ak=normName(ev.agent)||'_';
       if(/CallEnded|CallRecordCreated|AISummary|Done|Followup|SubStatus/i.test(ev.type)){ if(idx[ak]&&(!ev.phone||idx[ak].phone===ev.phone)) delete idx[ak]; }
-      else if(ev.phone&&/Outgoing|Incoming|Call/i.test(ev.type)){ idx[ak]={phone:ev.phone,agent:ev.agent,name:ev.name,campaign:ev.campaign,type:ev.type,ts:ev.ts}; idx._last=idx[ak]; }
+      else if(ev.phone&&/Outgoing|Incoming|Call/i.test(ev.type)){ idx[ak]={phone:ev.phone,agent:ev.agent,name:ev.name,campaign:ev.campaign,externalId:ev.externalId||'',type:ev.type,ts:ev.ts}; idx._last=idx[ak]; }
       await env.CACHE.put('active:index',JSON.stringify(idx),{expirationTtl:6*3600});
       if(ev.phone&&/CallEnded|CallRecordCreated|AISummary/i.test(ev.type)){
         const rec={t:ev.ts.slice(0,19),type:ev.type,rep:ev.agent,sec:ev.duration||0,rec:ev.recording||'',ai:ev.summary||'',name:ev.name||'',campaign:ev.campaign||''};
