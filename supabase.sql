@@ -231,3 +231,32 @@ alter table calls add column if not exists lead_name text;
 alter table calls add column if not exists whisper text;
 alter table calls add column if not exists whisper_at timestamptz;
 alter table calls add column if not exists whisper_by text;
+
+-- ── follow-up plans + end-of-day reviews (2026-09-16 night) ──
+create table if not exists followups (
+  id text primary key,
+  rep text not null,
+  phone text, name text, call_id text,
+  plan jsonb not null,
+  next_at timestamptz,
+  status text default 'open',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+create index if not exists followups_rep_next on followups (rep, next_at);
+create table if not exists day_reviews (
+  rep text not null,
+  day date not null,
+  data jsonb not null,
+  seen boolean default false,
+  updated_at timestamptz default now(),
+  primary key (rep, day)
+);
+alter table followups enable row level security;
+alter table day_reviews enable row level security;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='followups' and policyname='anon all followups') then
+    create policy "anon all followups" on followups for all to anon using (true) with check (true); end if;
+  if not exists (select 1 from pg_policies where tablename='day_reviews' and policyname='anon all day_reviews') then
+    create policy "anon all day_reviews" on day_reviews for all to anon using (true) with check (true); end if;
+end $$;
