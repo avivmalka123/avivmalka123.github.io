@@ -146,7 +146,7 @@
     <div class="field"><label class="field-label">Anthropic API Key (אופציונלי: ניתוח AI של המדדים)</label><input class="field-input" id="cfgAnth" type="password" placeholder="sk-ant-..."></div>
     <div class="field"><label class="field-label">שרת נתונים (טוצ'אט + פיירברי)</label><input class="field-input" id="cfgData" placeholder="https://livecoach-data.aviv1988.workers.dev"></div>
     <div class="field"><label class="field-label">מפתח נתונים (APP_KEY של השרת)</label><input class="field-input" id="cfgDataKey" type="password" placeholder="מה-set-secrets.sh"></div>
-    <button class="btn btn-primary" id="btnSaveCfg" style="margin-top:12px">שמור והתחבר</button>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px"><button class="btn btn-primary" id="btnSaveCfg">שמור והתחבר</button><button class="btn" type="button" onclick="boardLink()" title="לינק שמכיל את כל החיבורים, למנהל נוסף. לשלוח רק למי שצריך גישה מלאה לבורד">🔗 לינק לבורד למנהל נוסף</button></div>
   </section>
 
   <section id="liveSec">
@@ -269,11 +269,12 @@ async function sb(method,path,body,prefer){ const r=await fetch(CFG.sbUrl+'/rest
 /* ── config ── */
 (function init(){
   const m=location.hash.match(/cfg=([A-Za-z0-9_-]+)/);
-  if(m){ try{ const c=b64u.dec(m[1]); if(c.sbUrl&&c.sbKey){ localStorage.setItem('lc_mgr',JSON.stringify({sbUrl:c.sbUrl,sbKey:c.sbKey})); history.replaceState(null,'',location.pathname); } }catch(e){} }
+  if(m){ try{ const c=b64u.dec(m[1]); if(c.sbUrl&&c.sbKey){ let cur={}; try{ cur=JSON.parse(localStorage.getItem('lc_mgr')||'{}'); }catch(e){} const next={...cur,sbUrl:c.sbUrl,sbKey:c.sbKey}; for(const k of ['dataUrl','dataKey','anth','oai']) if(c[k]) next[k]=c[k]; localStorage.setItem('lc_mgr',JSON.stringify(next)); history.replaceState(null,'',location.pathname); } }catch(e){} }
   try{CFG=JSON.parse(localStorage.getItem('lc_mgr')||'{}')}catch(e){CFG={}}
   $('cfgUrl').value=CFG.sbUrl||''; $('cfgKey').value=CFG.sbKey||''; $('cfgAnth').value=CFG.anth||''; $('cfgOai').value=CFG.oai||''; $('cfgData').value=CFG.dataUrl||'https://livecoach-data.aviv1988.workers.dev'; $('cfgDataKey').value=CFG.dataKey||'';
   if(!CFG.sbUrl||!CFG.sbKey){ showSetup(true); } else { start(); }
 })();
+window.boardLink=async()=>{ const c={sbUrl:$('cfgUrl').value.trim().replace(/\/+$/,''),sbKey:$('cfgKey').value.trim(),dataUrl:($('cfgData').value.trim()||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,''),dataKey:$('cfgDataKey').value.trim(),anth:$('cfgAnth').value.trim(),oai:$('cfgOai').value.trim()}; if(!c.sbUrl||!c.sbKey) return toast('מלא קודם Supabase URL ומפתח'); const url='https://avivmalka123.github.io/manager/#cfg='+b64u.enc(c); try{ await navigator.clipboard.writeText(url); toast('הלינק לבורד הועתק. מי שפותח אותו מקבל את כל החיבורים אוטומטית.'); }catch(e){ prompt('העתק את הלינק:',url); } };
 window.copyKey=async()=>{ const v=($('cfgKey').value||'').trim(); if(!v) return toast('השדה ריק'); try{ await navigator.clipboard.writeText(v); toast('המפתח הועתק ('+v.length+' תווים). עכשיו הדבק בטרמינל.'); }catch(e){ const i=$('cfgKey'); i.type='text'; i.select(); document.execCommand('copy'); i.type='password'; toast('המפתח הועתק. עכשיו הדבק בטרמינל.'); } };
 function showSetup(v){ $('setup').style.display=v?'':'none'; for(const id of ['liveSec','daySec','recentSec']) $(id).style.display=v?'none':''; }
 /* ── data bridge (ToChat + Fireberry via the livecoach-data worker) ── */
