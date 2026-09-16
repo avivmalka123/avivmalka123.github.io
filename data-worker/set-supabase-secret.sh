@@ -1,7 +1,17 @@
 #!/bin/bash
-# One-time: gives the data worker the Supabase publishable key so ToChat webhook events are stored in Supabase
-# (Cloudflare KV free tier allows only 1,000 writes/day). Paste the same key you entered in the manager board (⚙️ חיבור).
+# One-time: gives the data worker the Supabase publishable key (same key as in the manager board, ⚙️ חיבור).
 cd "$(dirname "$0")"
-read -r -p "Supabase publishable key (sb_publishable_...): " KEY
+echo ""
+echo "הדבק כאן את המפתח של סופאבייס (מתחיל ב-sb_publishable_ או ב-eyJ) ולחץ Enter:"
+while true; do
+  read -r KEY
+  KEY="$(printf '%s' "$KEY" | tr -d '[:space:]')"
+  case "$KEY" in
+    sb_publishable_*|eyJ*) break ;;
+    *) echo "❌ זה לא מפתח של סופאבייס (התקבל: ${KEY:0:20}…). העתק מהבורד: ⚙️ חיבור → Supabase Publishable key → ⌘A ⌘C, והדבק כאן:" ;;
+  esac
+done
 printf '%s' "$KEY" | npx wrangler secret put SUPABASE_KEY
-echo "✅ done. The worker now stores webhook state in Supabase (run supabase.sql first for the tc_* tables)."
+echo "✅ נשמר (${#KEY} תווים). בדיקה:"
+curl -s "https://livecoach-data.aviv1988.workers.dev/health"
+echo ""
