@@ -111,7 +111,12 @@
   @media(max-width:860px){main{grid-template-columns:1fr;padding-bottom:120px} .panel{max-height:none;min-height:0} .panel-b{overflow:visible} .saylog{max-height:55vh;min-height:0} .ammo-mini{position:static!important;width:auto!important;max-height:none!important;box-shadow:none;left:auto;bottom:auto} .ammo-mini.collapsed .panel-b{display:block} .ammo-mini .ammo{font-size:13px;padding:4px 8px} .coach-panel{left:8px;width:calc(100vw - 16px);bottom:88px;height:min(600px,calc(100vh - 100px))} .bubble{left:12px;bottom:12px}}
   .panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;min-height:420px;max-height:calc(100vh - 230px)}
   .tr-panel{grid-column:2;min-height:0}.tr-panel.collapsed .panel-b,.tr-panel.collapsed #idbarWrap{display:none}.tr-panel .panel-h{cursor:pointer}.tr-panel.collapsed{max-height:none}
-  .lead-panel{grid-column:2}
+  .lead-panel{grid-column:1/-1;order:-1;min-height:0;max-height:none}.lead-panel .panel-b{padding:8px 14px 10px;gap:6px;overflow:visible}.lead-panel .panel-h{min-height:40px;padding:8px 14px}
+  .lead-panel .jst{min-width:84px;padding:4px 8px;font-size:11px}.lead-panel .jst em{font-size:15px}.lead-panel .jst b{font-size:11px}.lead-panel .jst small{font-size:10px}
+  .lhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}.lhead b{font-size:15px}.chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;white-space:nowrap}.chip.warn{color:var(--red);border-color:rgba(220,38,38,.35)}
+  .lins2{display:grid;grid-template-columns:1fr 1fr;gap:6px}@media(max-width:860px){.lins2{grid-template-columns:1fr}}.lead-panel .linsight{padding:7px 10px;font-size:12.5px}.lead-panel .linsight b{font-size:11px}
+  .lmore{font-size:12px;color:var(--text-muted)}.lmore summary{cursor:pointer;font-weight:700;padding:2px 0}.lmore .opener{font-size:13.5px;padding:8px 10px;margin-top:6px}
+  .leadbar.slim{grid-template-columns:1fr auto;max-width:520px}.leadbar.slim input{padding:6px 10px;font-size:14px}
   .leadbar{display:grid;grid-template-columns:1fr auto;gap:8px}.leadbar input{font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);direction:ltr;text-align:right}
   .jstrip{display:flex;gap:6px;overflow-x:auto;padding:4px 0}.jst{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:6px 10px;min-width:104px;text-align:center;font-size:12px;opacity:0;transform:translateY(6px);animation:jpop .4s forwards;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}.jst em{font-style:normal;font-size:18px;display:block}.jst b{font-size:12px}.jst small{color:var(--text-muted);font-size:11px}.jarr{align-self:center;color:var(--text-muted);flex:none}@keyframes jpop{to{opacity:1;transform:none}}
   .lfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}.lfact{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 8px;text-align:center}.lfact b{display:block;font-size:17px}.lfact span{font-size:11px;color:var(--text-muted)}
@@ -159,7 +164,7 @@
   .saynow .k .spin{width:12px;height:12px;border:2px solid #6d28d9;border-top-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:none}
   .saynow.thinking .k .spin{display:inline-block}
   @keyframes rot{to{transform:rotate(360deg)}}
-  .saynow .t{font-size:19px;font-weight:700;line-height:1.5;color:var(--text)}
+  .saynow .t{font-size:21px;font-weight:700;line-height:1.5;color:var(--text)}
   .saynow .w{font-size:12.5px;color:#6d28d9;margin-top:8px;line-height:1.5}
   .saynow .avoid{font-size:12px;color:#b91c1c;margin-top:6px}
   .card{border-radius:14px;padding:12px 14px;border:1px solid var(--border);background:var(--surface2);border-right:4px solid var(--c,#888);animation:in .3s ease}
@@ -251,7 +256,7 @@
   .btn.lead.hot{border-color:rgba(239,68,68,.55)}.btn.lead.hot span small{color:#b91c1c}
   .btn.lead:disabled{opacity:.4}
   .ck-wrap{padding:12px 16px}.ck-items{gap:6px 18px}.ck{font-size:13px}
-  .saynow{padding:20px 22px}.saynow .t{font-size:27px;line-height:1.45}
+  .saynow{padding:22px 24px}.saynow .t{font-size:30px;line-height:1.4}
   .card{border-radius:14px}
   .stagebar{padding:18px 22px 14px}
   .msg{font-size:14.5px}
@@ -359,8 +364,8 @@
   <section class="panel lead-panel" id="leadWrap">
     <div class="panel-h">🧭 מהלך הליד <span class="spacer"></span><span id="leadTag" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
     <div class="panel-b" id="leadPanel">
-      <div class="leadbar"><input id="leadPhone" placeholder="טלפון הליד לפני השיחה, למשל 0541234567" inputmode="tel" autocomplete="off"><button class="btn btn-primary" id="btnLead">🧭 הכר את הליד</button></div>
-      <div id="leadBody"><div class="empty">הקלד את הטלפון של הליד (מטוצ'אט) לפני שאתה מחייג. תקבל: המסע שלו מהרגע שנכנס, מה כבר נאמר לו, משפטי פתיחה שנכתבו בשבילו, ומה נכון לעשות איתו לפי כל מה שלמדנו מלידים כמוהו.</div></div>
+      <div class="leadbar slim"><input id="leadPhone" placeholder="טלפון הליד (או שיזוהה לבד כשהשיחה עולה בטוצ'אט)" inputmode="tel" autocomplete="off"><button class="btn btn-primary btn-sm" id="btnLead">🧭 הכר את הליד</button></div>
+      <div id="leadBody"></div>
     </div>
   </section>
 
@@ -1705,18 +1710,18 @@ function jStrip(j){
   if(j.closed) st.push(['🏁',j.close_reason||j.close_note||'נסגר',(j.closer||'')+' · '+fmtD(j.closed)]); else st.push(['⏳',j.fb_status||'פתוח',j.days_in_system!=null?j.days_in_system+' ימים במערכת':'']);
   return '<div class="jstrip">'+st.map(([a,b,c],i)=>`<div class="jst" style="animation-delay:${(i*.1).toFixed(2)}s"><em>${a}</em><b>${escapeHtml(b)}</b><small>${escapeHtml(c)}</small></div>`).join('<span class="jarr">←</span>')+'</div>';
 }
-function leadFacts(j){ const lc=j.last_call; return `<div class="lfacts"><div class="lfact"><b>${j.days_in_system!=null?j.days_in_system:'?'}</b><span>ימים במערכת</span></div><div class="lfact"><b>${j.n_calls||0}</b><span>שיחות · ${j.talk_min||0} דק'</span></div><div class="lfact"><b>${lc?lc.days_ago:'—'}</b><span>${lc?'ימים מאז '+escapeHtml(lc.rep.split(' ')[0]):'לא דיברו איתו'}</span></div><div class="lfact"><b style="font-size:13px">${escapeHtml(j.level_now||'-')}</b><span>${escapeHtml(j.fb_status||'')}</span></div></div>`; }
 function renderLead(j){
-  const lc=j.last_call, lg=j.longest;
+  const lc=j.last_call; const lg=j.longest;
   $('leadTag').textContent=(j.name||'')+(j.closed?' · לקוח סגור':'');
-  $('leadBody').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><b style="font-size:17px">${escapeHtml(j.name||'ליד')}</b> <span style="color:var(--text-muted);font-size:12px">${escapeHtml(j.phone||'')}${j.owner?' · '+escapeHtml(j.owner):''}</span></div>${j.fireberry_link?`<a href="${escapeHtml(j.fireberry_link)}" target="_blank" class="btn btn-sm">פיירברי ↗</a>`:''}</div>
-  ${jStrip(j)}${leadFacts(j)}
-  ${j.closed?`<div class="linsight warn"><b>שים לב</b>הליד הזה כבר נסגר ב-${fmtD(j.closed)} על ידי ${escapeHtml(j.closer||'')}${j.close_reason?' ('+escapeHtml(j.close_reason)+')':''}. זו שיחת שירות או שדרוג, לא מכירה מאפס.</div>`:''}
-  ${(j.tochat_active||[]).map(a=>`<div class="linsight"><b>בטוצ'אט עכשיו</b>${escapeHtml(a.campaign)} · ${a.status==='FOLLOWUP'?'Follow Up':'ממתין'}${a.attempts?' · '+a.attempts+' ניסיונות':''}${a.followBy?' · '+escapeHtml(a.followBy):''}${a.comment?' · '+escapeHtml(a.comment):''}</div>`).join('')}
-  <div id="leadBrief"><div class="empty" style="padding:10px">כותב משפטי פתיחה ותובנות לליד הזה…</div></div>
-  ${lc?`<details class="ldet"><summary>📞 מה נאמר בשיחה האחרונה (${escapeHtml(lc.rep)} · ${escapeHtml(lc.dur)} · ${fmtD(lc.t)})${lc.rec?' · <a href="'+escapeHtml(lc.rec)+'" target="_blank">הקלטה</a>':''}</summary><div class="lsum">${escapeHtml(String(lc.ai||'אין סיכום').replace(/[*#]/g,''))}</div></details>`:''}
-  ${lg&&(!lc||lg.t!==lc.t)?`<details class="ldet"><summary>🏆 השיחה הארוכה ביותר (${escapeHtml(lg.rep)} · ${escapeHtml(lg.dur)} · ${fmtD(lg.t)})</summary><div class="lsum">${escapeHtml(String(lg.ai||'').replace(/[*#]/g,''))}</div></details>`:''}
-  <details class="ldet"><summary>🕓 ציר הזמן המלא (${(j.timeline||[]).length})</summary><div class="jtl">${(j.timeline||[]).map(e=>`<div class="jev ${e.k}"><span class="t">${fmtD(e.t)}</span><span>${JK[e.k]||'•'}</span><span>${escapeHtml(e.text)}</span></div>`).join('')}</div></details>`;
+  const chips=[`<span class="chip">${j.days_in_system!=null?j.days_in_system+' ימים במערכת':'חדש'}</span>`,`<span class="chip">${j.n_calls||0} שיחות · ${j.talk_min||0} דק'</span>`,lc?`<span class="chip">${escapeHtml(lc.rep.split(' ')[0])} לפני ${lc.days_ago} ימים (${escapeHtml(lc.dur)})</span>`:'<span class="chip">לא דיברו איתו עדיין</span>',`<span class="chip">${escapeHtml(j.level_now||'-')}</span>`,`<span class="chip">${escapeHtml(j.fb_status||'')}</span>`,...(j.tochat_active||[]).slice(0,1).map(a=>`<span class="chip">${a.status==='FOLLOWUP'?'Follow Up':'ממתין'}${a.followBy?' · '+escapeHtml(a.followBy):''}</span>`),j.closed?`<span class="chip warn">כבר נסגר ${fmtD(j.closed)} · ${escapeHtml(j.closer||'')}</span>`:''].join('');
+  $('leadBody').innerHTML=`<div class="lhead"><b>${escapeHtml(j.name||'ליד')}</b><span style="color:var(--text-muted);font-size:12px">${escapeHtml(j.phone||'')}</span>${chips}${j.fireberry_link?`<a href="${escapeHtml(j.fireberry_link)}" target="_blank" class="chip">פיירברי ↗</a>`:''}</div>
+  ${jStrip(j)}
+  <div id="leadBrief"><div class="lmore">המאמן קורא את ההיסטוריה וכותב 2 תובנות…</div></div>
+  <details class="lmore"><summary>עוד: השיחה האחרונה · ציר הזמן המלא</summary>
+    ${lc?`<div style="margin-top:6px"><b>📞 ${escapeHtml(lc.rep)} · ${escapeHtml(lc.dur)} · ${fmtD(lc.t)}</b>${lc.rec?' · <a href="'+escapeHtml(lc.rec)+'" target="_blank">הקלטה</a>':''}<div class="lsum">${escapeHtml(String(lc.ai||'אין סיכום').replace(/[*#]/g,''))}</div></div>`:''}
+    ${lg&&(!lc||lg.t!==lc.t)?`<div style="margin-top:6px"><b>🏆 ${escapeHtml(lg.rep)} · ${escapeHtml(lg.dur)} · ${fmtD(lg.t)}</b><div class="lsum">${escapeHtml(String(lg.ai||'').replace(/[*#]/g,''))}</div></div>`:''}
+    <div class="jtl" style="margin-top:6px">${(j.timeline||[]).map(e=>`<div class="jev ${e.k}"><span class="t">${fmtD(e.t)}</span><span>${JK[e.k]||'•'}</span><span>${escapeHtml(e.text)}</span></div>`).join('')}</div>
+  </details>`;
 }
 const BRIEF_SCHEMA={type:'object',additionalProperties:false,required:['one_line_profile','customer_gender','opening_lines','insights','recommended_path','dont_give_up','watch_out'],properties:{
   one_line_profile:{type:'string',description:'משפט אחד: מי הליד ואיפה הוא במסע'},customer_gender:{type:'string',enum:['m','f','unknown']},
@@ -1733,12 +1738,13 @@ async function leadBrief(j){
       messages:[{role:'user',content:'הליד (JSON מהמערכות):\n'+JSON.stringify(compact)}]},{timeout:60000,maxRetries:1});
     const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
     S.leadBrief=o; if(!S.profile&&o.one_line_profile) S.profile=o.one_line_profile;
-    box.innerHTML=`<div style="font-size:13px;color:var(--text-muted)"><b>פרופיל:</b> ${escapeHtml(o.one_line_profile||'')}</div>
-      <div style="font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.5px;margin-top:6px">משפטי פתיחה לליד הזה</div>
-      ${(o.opening_lines||[]).map((l,i)=>`<div class="opener"><div>${escapeHtml(l.text)}</div><div class="w">${escapeHtml(l.why||'')}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="useOpener(${i})">🗣 אמור עכשיו</button><button class="btn btn-sm" onclick="navigator.clipboard?.writeText(this.closest('.opener').firstChild.textContent)">📋</button></div></div>`).join('')}
-      ${(o.insights||[]).map(x=>`<div class="linsight"><b>${escapeHtml(x.title)}</b>${escapeHtml(x.text)}</div>`).join('')}
-      ${o.recommended_path?`<div class="linsight path"><b>המסלול המומלץ: ${escapeHtml(o.recommended_path.offer)}</b>${escapeHtml(o.recommended_path.why)}<div style="margin-top:4px"><b style="display:inline;color:var(--text)">הצעד הבא:</b> ${escapeHtml(o.recommended_path.next_step)}</div></div>`:''}
-      ${o.dont_give_up?`<div class="linsight"><b>למה לא לוותר</b>${escapeHtml(o.dont_give_up)}</div>`:''}${o.watch_out?`<div class="linsight warn"><b>להיזהר</b>${escapeHtml(o.watch_out)}</div>`:''}`;
+    box.innerHTML=`<div class="lins2">${(o.insights||[]).slice(0,2).map(x=>`<div class="linsight"><b>${escapeHtml(x.title)}</b>${escapeHtml(x.text)}</div>`).join('')}</div>
+      <details class="lmore"><summary>משפטי פתיחה לליד הזה (${(o.opening_lines||[]).length}) · המסלול המומלץ${o.recommended_path?': '+escapeHtml(o.recommended_path.offer):''}</summary>
+      ${(o.opening_lines||[]).map((l,i)=>`<div class="opener"><div>${escapeHtml(l.text)}</div><div class="w">${escapeHtml(l.why||'')}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="useOpener(${i})">🗣 אמור עכשיו</button></div></div>`).join('')}
+      ${o.recommended_path?`<div class="linsight path" style="margin-top:6px"><b>המסלול המומלץ: ${escapeHtml(o.recommended_path.offer)}</b>${escapeHtml(o.recommended_path.why)} · <b style="display:inline;color:var(--text)">הצעד הבא:</b> ${escapeHtml(o.recommended_path.next_step)}</div>`:''}
+      ${o.dont_give_up?`<div class="linsight" style="margin-top:6px"><b>למה לא לוותר</b>${escapeHtml(o.dont_give_up)}</div>`:''}${o.watch_out?`<div class="linsight warn" style="margin-top:6px"><b>להיזהר</b>${escapeHtml(o.watch_out)}</div>`:''}</details>`;
+    // before the customer said anything, the first opener is what to say now
+    const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length&&(o.opening_lines||[]).length){ const l=o.opening_lines[0]; $('sayText').textContent=l.text; $('sayWhy').textContent='משפט פתיחה לליד הזה: '+(l.why||''); $('sayAvoid').textContent=''; $('sayReason').textContent=''; }
   }catch(e){ box.innerHTML='<div class="empty" style="padding:8px">המאמן לא הצליח לכתוב את הבריף: '+escapeHtml(e.error?.error?.message||e.message||String(e))+' <button class="btn btn-sm" onclick="leadBrief(window.__lc.S.lead)">נסה שוב</button></div>'; log('בריף ליד: '+(e.message||e),'err'); }
 }
 window.leadBrief=leadBrief;
@@ -1752,7 +1758,15 @@ async function loadLead(phoneIn){
     S.lead=j; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); leadBrief(j); }
   catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
 }
-$('btnLead').onclick=()=>loadLead($('leadPhone').value); $('leadPhone').addEventListener('keydown',e=>{ if(e.key==='Enter') loadLead(e.target.value); });
+$('btnLead').onclick=()=>loadLead($('leadPhone').value);
+let ACTIVE_SEEN=null;
+async function pollActive(){
+  if(!S.settings.dataKey||!S.settings.repName||document.hidden) return;
+  try{ const dataUrl=(S.settings.dataUrl||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,''); const r=await fetch(dataUrl+'/active?rep='+encodeURIComponent(S.settings.repName),{headers:{'x-app-key':S.settings.dataKey}}); if(!r.ok) return; const {active}=await r.json();
+    if(active&&active.phone&&active.phone!==ACTIVE_SEEN){ ACTIVE_SEEN=active.phone; $('leadPhone').value=active.phone; toast('שיחה זוהתה בטוצ\'אט: '+(active.name||active.phone),'t-ok'); loadLead(active.phone); } }
+  catch(e){}
+}
+setInterval(pollActive,5000); $('leadPhone').addEventListener('keydown',e=>{ if(e.key==='Enter') loadLead(e.target.value); });
 $('leadPhone').addEventListener('paste',()=>setTimeout(()=>{ const v=$('leadPhone').value.replace(/\D/g,''); if(v.length>=9) loadLead(v); },50));
 $('trHead').onclick=e=>{ if(e.target.closest('button')) return; const w=$('trWrap'); w.classList.toggle('collapsed'); $('trChev').textContent=w.classList.contains('collapsed')?'▾':'▴'; };
 $('ammoHead').onclick=()=>{ const w=$('ammoWrap'); w.classList.toggle('collapsed'); try{localStorage.setItem('lc_ammo_collapsed',w.classList.contains('collapsed')?'1':'')}catch(e){} };

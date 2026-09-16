@@ -3,7 +3,10 @@
 //   GET /closes?month=YYYY-MM     closed (CLOSED) leads that month, deduped by phone
 //   GET /daily?date=YYYY-MM-DD    everything that happened that day (calls, outcomes, touched leads)
 //   GET /campaigns
-// Auth: header x-app-key (or ?key=) must equal APP_KEY.
+//   POST /hook/<token>/<ToChatEventType>   ToChat webhooks (OutgoingCallLog / IncomingCallLog / CallEndedLog …); token = sha256(APP_KEY)[0:24]
+//   GET /active?rep=<name>                the call the rep is on right now (from the webhooks)
+//   GET /hooks/log                        last webhook payloads (debug)
+// Auth: header x-app-key (or ?key=) must equal APP_KEY (except /hook/<token>/…).
 const ALLOWED = ['https://avivmalka123.github.io'];
 const TC = 'https://europe-west3-tochat-cannon.cloudfunctions.net/api/integrations/v1';
 const FB = 'https://api.fireberry.com';
@@ -16,6 +19,16 @@ function cors(req){ const o=req.headers.get('Origin')||''; const ok=ALLOWED.incl
 const json=(d,s=200,h={})=>new Response(JSON.stringify(d),{status:s,headers:{'content-type':'application/json; charset=utf-8',...h}});
 function safeEq(a,b){ if(a.length!==b.length) return false; let d=0; for(let i=0;i<a.length;i++) d|=a.charCodeAt(i)^b.charCodeAt(i); return d===0; }
 const digits=s=>String(s||'').replace(/\D/g,'');
+const normName=s=>String(s||'').toLowerCase().replace(/["'׳״.\-_]/g,'').replace(/\s+/g,'');
+async function hookToken(env){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(env.APP_KEY||'')); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,24); }
+function deepFind(obj,pred,depth=0){ if(!obj||typeof obj!=='object'||depth>4) return null; for(const [k,v] of Object.entries(obj)){ if(pred(k,v)) return v; if(v&&typeof v==='object'){ const r=deepFind(v,pred,depth+1); if(r!=null) return r; } } return null; }
+function extractCall(type,body){
+  const phone=deepFind(body,(k,v)=>/phone|number|msisdn|caller|callee|destination/i.test(k)&&typeof v!=='object'&&digits(v).length>=9)||deepFind(body,(k,v)=>typeof v==='string'&&/^\+?\d[\d\s-]{8,14}$/.test(v.trim()));
+  const agent=deepFind(body,(k,v)=>/agentname|repname|username|agent$|userDisplayName|displayName/i.test(k)&&typeof v==='string'&&v.length>1)||deepFind(body,(k,v)=>/agentemail|useremail|email/i.test(k)&&typeof v==='string'&&v.includes('@'));
+  const name=deepFind(body,(k,v)=>/fullname|customername|leadname|contactname|^name$/i.test(k)&&typeof v==='string');
+  const campaign=deepFind(body,(k,v)=>/campaignname/i.test(k)&&typeof v==='string');
+  return {type,phone:phone?'0'+nine(phone):null,agent:agent||'',name:name||'',campaign:campaign||''};
+}
 const nine=s=>digits(s).slice(-9);
 const fullPhone=s=>{ const d=digits(s); return d.startsWith('972')?d:'972'+d.replace(/^0/,''); };
 
@@ -106,10 +119,25 @@ export default {
     const h=cors(req); if(req.method==='OPTIONS') return new Response(null,{status:204,headers:h});
     const url=new URL(req.url); const key=req.headers.get('x-app-key')||url.searchParams.get('key')||'';
     if(url.pathname==='/health') return json({ok:true},200,h);
+    const hm=url.pathname.match(/^\/hook\/([a-f0-9]{24})\/([A-Za-z]+)\/?$/);
+    if(hm){ if(hm[1]!==await hookToken(env)) return json({error:'bad token'},401,h);
+      let body=null; const ct=req.headers.get('content-type')||''; try{ body=ct.includes('json')?await req.json():Object.fromEntries((await req.formData()).entries()); }catch(e){ body={raw:await req.text().catch(()=>'')}; }
+      const ev={...extractCall(hm[2],body),ts:new Date().toISOString(),raw:JSON.stringify(body).slice(0,4000)};
+      const logRaw=await env.CACHE.get('hooks:log'); const logArr=logRaw?JSON.parse(logRaw):[]; logArr.unshift({type:ev.type,ts:ev.ts,phone:ev.phone,agent:ev.agent,name:ev.name,raw:ev.raw}); await env.CACHE.put('hooks:log',JSON.stringify(logArr.slice(0,40)),{expirationTtl:7*86400});
+      const idxRaw=await env.CACHE.get('active:index'); const idx=idxRaw?JSON.parse(idxRaw):{}; const ak=normName(ev.agent)||'_';
+      if(/CallEnded|CallRecordCreated|AISummary|Done|Followup|SubStatus/i.test(ev.type)){ if(idx[ak]&&(!ev.phone||idx[ak].phone===ev.phone)) delete idx[ak]; }
+      else if(ev.phone&&/Outgoing|Incoming|Call/i.test(ev.type)){ idx[ak]={phone:ev.phone,agent:ev.agent,name:ev.name,campaign:ev.campaign,type:ev.type,ts:ev.ts}; idx._last=idx[ak]; }
+      await env.CACHE.put('active:index',JSON.stringify(idx),{expirationTtl:6*3600});
+      return json({ok:true,parsed:{type:ev.type,phone:ev.phone,agent:ev.agent}},200,h); }
     if(!env.APP_KEY||!safeEq(key,env.APP_KEY)) return json({error:'unauthorized'},401,h);
     const cache=async(k,ttl,fn)=>{ if(url.searchParams.get('fresh')!=='1'){ const v=await env.CACHE.get(k); if(v) return JSON.parse(v); } const d=await fn(); await env.CACHE.put(k,JSON.stringify(d),{expirationTtl:ttl}); return d; };
     try{
       if(url.pathname==='/campaigns') return json(await campaigns(env),200,h);
+      if(url.pathname==='/hooks/log'){ const raw=await env.CACHE.get('hooks:log'); return json({token:await hookToken(env),events:raw?JSON.parse(raw):[]},200,h); }
+      if(url.pathname==='/active'){ const rep=normName(url.searchParams.get('rep')); const idxRaw=await env.CACHE.get('active:index'); const idx=idxRaw?JSON.parse(idxRaw):{}; const fresh=e=>e&&(Date.now()-new Date(e.ts).getTime())<2*3600e3;
+        let hit=null; if(rep){ hit=idx[rep]||Object.entries(idx).find(([k,v])=>k!=='_last'&&k!=='_'&&(k.includes(rep)||rep.includes(k)))?.[1]||null; }
+        if(!hit&&rep){ const first=rep.slice(0,3); hit=Object.entries(idx).find(([k])=>k!=='_last'&&k!=='_'&&k.startsWith(first))?.[1]||null; }
+        return json({active:fresh(hit)?hit:null,agents:Object.keys(idx).filter(k=>k!=='_last'&&k!=='_')},200,{...h,'Cache-Control':'no-store'}); }
       if(url.pathname==='/lead'){ const ph=nine(url.searchParams.get('phone')); if(ph.length!==9) return json({error:'phone'},400,h); return json(await cache('lead:'+ph,1800,()=>fetchLead(env,ph,null)),200,h); }
       if(url.pathname==='/closes'){ const m=url.searchParams.get('month')||''; if(!/^\d{4}-\d{2}$/.test(m)) return json({error:'month'},400,h); const [y,mo]=m.split('-').map(Number); const last=new Date(Date.UTC(y,mo,0)).getUTCDate(); const cur=new Date().toISOString().slice(0,7)===m;
         return json(await cache('closes:'+m,cur?600:21600,async()=>dedupeByPhone(await closesForRange(env,`${m}-01`,`${m}-${String(last).padStart(2,'0')}`,['CLOSED'])).map(x=>({phone:'0'+nine(x.displayPhone),name:x.fullName||'',closed:String(x.timestamp).replace('Z','').slice(0,19),closer:x.repName||'',reason:(x.subReason&&x.subReason.name)||'',note:x.note||'',campaign:x.campaign,fireberry_id:x.externalId||null}))),200,h); }
