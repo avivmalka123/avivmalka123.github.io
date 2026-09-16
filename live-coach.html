@@ -177,7 +177,10 @@
   .saynow .k .spin{width:12px;height:12px;border:2px solid #6d28d9;border-top-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:none}
   .saynow.thinking .k .spin{display:inline-block}
   @keyframes rot{to{transform:rotate(360deg)}}
-  .saynow .t{font-size:21px;font-weight:700;line-height:1.5;color:var(--text)}
+  .saynow .t{font-size:19px;font-weight:700;line-height:1.45;color:var(--text)}
+  .sayopts{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:right}.sayopt{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px;cursor:pointer;position:relative;transition:border-color .2s}.sayopt.on{border-color:rgba(124,58,237,.55);box-shadow:0 0 0 2px rgba(124,58,237,.12)}.sayopt .lbl{display:inline-block;font-size:11px;font-weight:900;color:var(--purple);background:rgba(124,58,237,.1);border-radius:8px;padding:1px 8px;margin-bottom:6px}.sayopt .lbl em{font-style:normal;font-weight:600;color:var(--text-muted);margin-right:4px}
+  @media(max-width:700px){.sayopts{grid-template-columns:1fr}}
+  .bchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}.bchips .k{font-size:11px;font-weight:800;color:var(--text-muted)}.bchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:3px 6px 3px 10px;font-size:12.5px;font-weight:700;cursor:pointer;user-select:none}.bchip.open{border-color:rgba(220,38,38,.5);background:rgba(220,38,38,.06)}.bchip.done{border-color:rgba(15,157,110,.5);background:rgba(15,157,110,.08);color:var(--accent4)}.bchip .q{border:none;background:var(--surface2);border-radius:999px;width:22px;height:22px;font-size:12px;cursor:pointer;color:var(--purple)}.bchip .q:hover{background:var(--surface3)}
   .saynow .w{font-size:12.5px;color:#6d28d9;margin-top:8px;line-height:1.5}
   .saynow .avoid{font-size:12px;color:#b91c1c;margin-top:6px}
   .card{border-radius:14px;padding:12px 14px;border:1px solid var(--border);background:var(--surface2);border-right:4px solid var(--c,#888);animation:in .3s ease}
@@ -269,7 +272,7 @@
   .btn.lead.hot{border-color:rgba(239,68,68,.55)}.btn.lead.hot span small{color:#b91c1c}
   .btn.lead:disabled{opacity:.4}
   .ck-wrap{padding:12px 16px}.ck-items{gap:6px 18px}.ck{font-size:13px}
-  .saynow{padding:18px 22px}.saynow .t{font-size:24px;line-height:1.45}
+  .saynow{padding:16px 20px}.saynow .t{font-size:20px;line-height:1.45}
   .card{border-radius:14px}
   .stagebar{padding:18px 22px 14px}
   .msg{font-size:14.5px}
@@ -360,13 +363,14 @@
     <div class="panel-b" id="coach">
       <div class="saynow" id="saynow">
         <div class="k"><i class="spin"></i>אמור עכשיו</div>
-        <div class="t" id="sayText">התחל שיחה או הרץ הדגמה. ברגע שהלקוח מדבר, המאמן יגיד לך בדיוק מה להגיד.</div>
+        <div class="sayopts"><div class="sayopt on" id="optA" onclick="pickSay('a')"><span class="lbl">א <em id="sayAngleA"></em></span><div class="t" id="sayText">התחל שיחה או הרץ הדגמה. ברגע שהלקוח מדבר, המאמן יגיד לך בדיוק מה להגיד.</div></div><div class="sayopt" id="optB" onclick="pickSay('b')" style="display:none"><span class="lbl">ב <em id="sayAngleB"></em></span><div class="t" id="sayTextB"></div></div></div>
         <div class="w" id="sayWhy"></div>
         <div class="avoid" id="sayAvoid"></div>
         <div class="reason" id="sayReason"></div>
         <div class="sayfoot"><span id="sayFb"></span></div>
         <div class="reqbar"><input id="reqInput" placeholder="בקש משפט: 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-primary" id="btnReq">✨ תן משפט</button><button class="btn" id="btnAsk" title="בלי הנחיה: המאמן מבין מההיסטוריה מה לשאול עכשיו" style="border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול?</button></div>
       </div>
+      <div class="bchips" id="bchips"></div>
       <div class="cust-state" id="custState" style="display:none"></div>
       <div class="saylog" id="sayLog"></div>
       <div class="profile" id="profile" style="display:none"></div>
@@ -462,6 +466,8 @@
   <div class="field"><label class="field-label">שם הלקוח (אופציונלי)</label><input class="field-input" id="sCustName" placeholder="דנה"></div>
   <div class="field"><label class="field-label">משפט חדש ב"אמור עכשיו" כל כמה שניות</label><input class="field-input" id="sSayEvery" type="number" min="15" max="180" placeholder="40"><div class="hint">ברירת מחדל 40. כפתורי "מה לשאול" ו"תן משפט" תמיד מיידיים.</div></div>
   <div class="field"><label class="field-label">רמת חשיבה של המאמן</label>
+    <select class="field-input" id="sCoachModel"><option value="claude-sonnet-5">חסכוני: Sonnet 5 (מומלץ, פי 5 זול)</option><option value="claude-opus-5">מקסימלי: Opus 5 (יקר)</option></select>
+    <div class="hint" style="margin:-4px 0 8px">המודל של הניתוח בזמן אמת ושל המשפט כל 60 שניות. סיכום שיחה, בריף ליד וסימולציה נשארים על Opus.</div>
     <select class="field-input" id="sEffort"><option value="low">מהיר (מומלץ לזמן אמת)</option><option value="medium">מאוזן</option><option value="high">מעמיק (איטי יותר)</option></select>
   </div>
   <div class="sec">👥 צוות ובורד מנהל</div>
@@ -517,6 +523,7 @@ const STAGES = [
   {id:'close',    l:'סגירה',        h:'להזכיר את הפער, לאסוף 3 "כן" קטנים, ואז שאלת המפתח בלי לבקש רשות. הכדור אצלו.'},
 ];
 const STAGE_CHECKS = {"kyc":["יודעים מי הוא ומה המצב שלו היום","יודעים למה פנה דווקא עכשיו","נתפס קצה חוט אחד: רגש, רצון או אמונה"],"pain":["הלקוח אמר במילים שלו מה מפריע לו","הכאב קיבל מחיר: כסף, זמן או תחושה","הנציג שתק ונתן לו לדבר"],"objection":["ההתנגדות נאמרה במפורש","נמצא החשש או האמונה שמאחוריה","הלקוח אישר שזה כבר לא עוצר אותו"],"goal":["הלקוח תיאר איך נראית ההצלחה בשבילו","המטרה נוגעת במי שהוא רוצה להיות, לא רק בכסף","הלקוח אמר למה זה חשוב לו"],"motive":["ברור מה הלקוח מאמין שהוא צריך: ליווי, קהילה או סדר","הנציג החזיר את זה במילים של הלקוח","הלקוח אישר"],"solution":["המסלול הוצג כגשר מהמצב היום למטרה שלו","הוצג במילים של הלקוח","התקבלו 2-3 הסכמות קטנות"],"close":["הוזכר הפער בין היום לבין מה שהוא רוצה","שאלת ההחלטה נשאלה ישירות","הצעד הבא נסגר: תשלום או מועד"]};
+const BARRIERS=[['money','כסף'],['spouse','אישה / בן זוג'],['finance','מצב פיננסי'],['time','זמן'],['decision','קבלת החלטה'],['certainty','עיגון וודאי']];
 const CARD_LABEL = {pain:'כאב זוהה',objection:'חסם זוהה',motive:'מניע רכישה זוהה',goal:'מטרה זוהתה',shift:'שינוי טון',warning:'אזהרה',opportunity:'הזדמנות',close:'סימן קנייה',kyc:'מידע על הלקוח'};
 const LINK_API='https://livecoach-link.aviv1988.workers.dev'; // team-link store (link-worker/): settings live there under a short token
 
@@ -584,7 +591,7 @@ function loadSettings(){
   if(s.principles&&s.principles.startsWith('PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה')) s.principles=''; // the previous built-in playbook was saved verbatim; follow the new default instead
   $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES;
   $('sRepName').value=s.repName||''; $('sRepGender').value=s.repGender||'m'; refreshKeysBanner(); $('sCustName').value=s.custName||'';
-  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sDataUrl').value=s.dataUrl||'https://livecoach-data.aviv1988.workers.dev'; $('sDataKey').value=s.dataKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||40;
+  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sDataUrl').value=s.dataUrl||'https://livecoach-data.aviv1988.workers.dev'; $('sDataKey').value=s.dataKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||60; $('sCoachModel').value=s.coachModel||'claude-sonnet-5';
   syncAudioUI();
 }
 const cleanKey=v=>(v||'').replace(/[^\x21-\x7E]/g,''); // keep printable ASCII only: strips Hebrew, RTL marks, zero-width chars, spaces
@@ -598,7 +605,7 @@ function saveSettings(){
   S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:customOnly($('sContext').value,DEFAULT_CONTEXT),
     principles:customOnly($('sPrinciples').value,DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),repGender:$('sRepGender').value,custName:$('sCustName').value.trim(),
     mic:$('sMic').value,mode:$('sMode').value,custSrc:$('sCustSrc').value,custDev:$('sCustDev').value,sttModel:$('sSttModel').value,effort:$('sEffort').value,
-    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),dataUrl:$('sDataUrl').value.trim().replace(/\/+$/,''),dataKey:cleanKey($('sDataKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,sayEverySec:Math.min(180,Math.max(15,parseInt($('sSayEvery').value)||40)),goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
+    sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),dataUrl:$('sDataUrl').value.trim().replace(/\/+$/,''),dataKey:cleanKey($('sDataKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,sayEverySec:Math.min(180,Math.max(15,parseInt($('sSayEvery').value)||60)),coachModel:$('sCoachModel').value||'claude-sonnet-5',goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
   syncModeSeg(); refreshKeysBanner(); $('whoName').textContent=S.settings.repName||'ללא שם';
   localStorage.setItem('lc_settings',JSON.stringify(S.settings));
   S.anthropic=null;
@@ -644,7 +651,7 @@ $('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.
     .catch(e=>{ done(longUrl,'הלינק הקצר נכשל ('+(e.message||e)+'), הועתק הלינק הארוך'); })
     .finally(()=>{ $('btnInvite').disabled=false; });
 };
-function saveSettingsSilent(){ const keep=S.settings; S.settings={...keep,openai:cleanKey($('sOpenai').value),anthropic:cleanKey($('sAnthropic').value),speechmatics:cleanKey($('sSm').value),sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),dataUrl:$('sDataUrl').value.trim().replace(/\/+$/,''),dataKey:cleanKey($('sDataKey').value),adminPw:$('sAdminPw').value.trim(),sttModel:$('sSttModel').value,effort:$('sEffort').value,context:(v=>(!v||v===DEFAULT_CONTEXT)?'':v)($('sContext').value.trim()),principles:(v=>(!v||v===DEFAULT_PRINCIPLES)?'':v)($('sPrinciples').value.trim())}; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); }
+function saveSettingsSilent(){ const keep=S.settings; S.settings={...keep,openai:cleanKey($('sOpenai').value),anthropic:cleanKey($('sAnthropic').value),speechmatics:cleanKey($('sSm').value),sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),dataUrl:$('sDataUrl').value.trim().replace(/\/+$/,''),dataKey:cleanKey($('sDataKey').value),adminPw:$('sAdminPw').value.trim(),sttModel:$('sSttModel').value,effort:$('sEffort').value,coachModel:$('sCoachModel').value||'claude-sonnet-5',context:(v=>(!v||v===DEFAULT_CONTEXT)?'':v)($('sContext').value.trim()),principles:(v=>(!v||v===DEFAULT_PRINCIPLES)?'':v)($('sPrinciples').value.trim())}; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); }
 function mergeTeamCfg(cfg){ let cur={}; try{cur=JSON.parse(localStorage.getItem('lc_settings')||'{}')}catch(e){}
     const merged={...cur}; for(const k of ['openai','anthropic','speechmatics','sbUrl','sbKey','dataUrl','dataKey','sttModel','effort','context','principles']) if(cfg[k]) merged[k]=cfg[k]; if(!merged.mode) merged.mode=cfg.mode||'rep'; if(!merged.custSrc) merged.custSrc=cfg.custSrc||'tab';
     localStorage.setItem('lc_settings',JSON.stringify(merged)); history.replaceState(null,'',location.pathname+location.search); S.anthropic=null; }
@@ -1015,7 +1022,8 @@ function teardownAudio(){
 }
 function beginSession(demo){
   S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.custGender='unknown'; S.insights=[]; S.summary=null; S.events=[]; S.lastEventId=null;
-  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; if(!(S.ready&&S.ready.pre)) S.ready=null; S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
+  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.barriers={}; renderBarriers(); if(!(S.ready&&S.ready.pre)) S.ready=null;
+  setTimeout(()=>{ if(S.running&&!S.ready) setReadiness({score:1,line:'תחילת שיחה: קודם אמון ומי הוא, למה עכשיו, ולתפוס קצה חוט אחד',solved:'',to_solve:'להכיר את הלקוח ולפתוח את הכאב',next_move:'kyc'}); else if(S.running&&S.ready) renderJoker(); },300); S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
   if(!S.simActive) $('liveTag').textContent='LIVE';
   $('modal').classList.remove('show'); S.endedSim=false; S.endedAt=null; loadTraining();
@@ -1107,6 +1115,9 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
     temperature:{type:'string',enum:['cold','warm','hot'],description:'חום הליד כרגע'},
     customer_state:{type:'string',description:'משפט אחד: מה הלקוח מרגיש/רוצה/חושש כרגע'},
     customer_gender:{type:'string',enum:['m','f','unknown'],description:'מגדר הלקוח לפי השם, הפעלים והכינויים בתמלול. unknown רק אם באמת אין רמז'},
+    say_alt:{type:'string',description:'אפשרות ב: משפט שהנציג יכול להגיד עכשיו מכיוון אחר לגמרי מ-say_now (אם א הוא שאלה, ב הוא שיקוף; אם א נוגע במספרים, ב נוגע ברגש; אם א מעמיק, ב מקדם). באותה איכות, לא גרסה מנומסת של א'},
+    angle_a:{type:'string',description:'2-3 מילים: הכיוון של אפשרות א (למשל: שאלת כאב, שיקוף, סתירה, מעבר)'},
+    angle_b:{type:'string',description:'2-3 מילים: הכיוון של אפשרות ב'},
     say_now:{type:'string',description:'המשפט המדויק שהנציג צריך להגיד עכשיו, בעברית מדוברת, 1-2 משפטים, ניתן לקרוא מהמסך'},
     why:{type:'string',description:'למה זה המשפט הנכון עכשיו, עד 15 מילים'},
     avoid:{type:'string',description:'מה לא לעשות עכשיו, עד 12 מילים, או מחרוזת ריקה'},
@@ -1132,7 +1143,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       use:{type:'string',description:'משפט או שאלה טבעיים שהנציג יכול להגיד עכשיו בעזרת הפריט, או מחרוזת ריקה'}},
       required:['type','status','text','note','use']},
       description:'תחמושת: לוח תוצאות חי של השיחה. בדיוק 8 פריטים כשיש מספיק מידע אמיתי, מדורגים מהחזק והרלוונטי ביותר כרגע לפחות. רק מה שהלקוח אמר או רמז בבירור. חסם נחשב פתור רק אם הלקוח אישר. החזר את הרשימה המלאה והמעודכנת בכל סבב'}
-  },required:['stage','temperature','customer_state','customer_gender','say_now','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','readiness','bottom_line','solved','to_solve','next_move','reasoning','close_check']};
+  },required:['stage','temperature','customer_state','customer_gender','say_now','say_alt','angle_a','angle_b','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','readiness','bottom_line','solved','to_solve','next_move','reasoning','close_check']};
 
 function systemPrompt(){
   return `אתה מאמן מכירות בזמן אמת שיושב ליד נציג מכירות בזמן שיחת טלפון חיה עם לקוח. אתה רואה את התמלול החי ותפקידך להגיד לנציג, מיד, מה להגיד עכשיו.
@@ -1153,7 +1164,7 @@ function systemPrompt(){
 ${AMMO_RULES}
 - close_check: כשהנציג עובר להצגת מוצר או לסגירה ויש חסם שהלקוח לא אישר שנפתר, פריט צ'ק-ליסט קריטי חסר, או הסכמה שלא נלקחה, החזר רשימה קצרה "לבדיקה לפני סגירה". זו הארה בלבד, לא עצירה.
 - reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך. אם נשענת על דוגמה מהשטח, פתח את reasoning.principle ב-"🌟" בלי לציין שם של נציג. שמות של נציגים אחרים לא מופיעים בשום שדה שהנציג רואה.
-${trainingBlock()}${leadBlock()}${readinessBlock()}
+${trainingBlock()}
 - Latency-sensitive; begin your visible answer immediately.
 - בכל שדה טקסט: עברית מדוברת בלבד. בלי Markdown, בלי כוכביות, בלי קוד, בלי שמות שדות באנגלית, בלי סוגריים מסולסלים. כל משפט צריך להיקרא בקול כמו שהוא.
 - ammo: ברגע שהלקוח אמר משפט אחד, הרשימה לא ריקה: לפחות עובדה, רצון או מניע שהוא נתן, במילים שלו.
@@ -1228,10 +1239,10 @@ ${transcript}
 הדובר האחרון: ${finals[finals.length-1].who==='rep'?'הנציג':finals[finals.length-1].who==='cust'?'הלקוח':'לא ידוע'}. הלקוח סיים לדבר. מה הנציג צריך להגיד עכשיו?`;
   try{
     const res=await getClient().beta.messages.create({
-      model:'claude-opus-5', max_tokens:2500,
+      model:coachModel(), max_tokens:1800,
       betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
       output_config:{effort:S.settings.effort||'low',format:{type:'json_schema',schema:COACH_SCHEMA}},
-      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()}],
       messages:[{role:'user',content:user}],
     });
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לנתח את הקטע הזה');
@@ -1284,7 +1295,7 @@ function applyCoach(o,opt={}){
   const staleSay=!!(opt.startedAt&&S.sayAt&&S.sayAt>opt.startedAt)||tooSoon;
   if(!staleSay){
     const ev=addEvent({kind:S.single?'listen':'auto',text:o.say_now||'',why:o.why||'',avoid:o.avoid||'',reasoning:o.reasoning||null,close_check:o.close_check||[]});
-    $('sayText').textContent=o.say_now||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
+    showSay(o.say_now||'',o.say_alt||'',o.angle_a||'',o.angle_b||''); $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=o.avoid?'⚠️ אל: '+o.avoid:'';
     $('sayReason').innerHTML=o.reasoning?`<span>🧠 ${escapeHtml(o.reasoning.principle||'')}</span><span>🎯 ${escapeHtml(o.reasoning.goal||'')}</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
     const sn=$('saynow'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
     S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
@@ -1366,7 +1377,7 @@ async function requestSentence(auto){
   $('btnReq').disabled=true; $('btnAsk').disabled=true; $('saynow').classList.add('thinking'); setPill('pAI','busy');
   try{
     const res=await getClient().beta.messages.create({
-      model:'claude-opus-5', max_tokens:800, betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
+      model:coachModel(), max_tokens:800, betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
       output_config:{effort:S.settings.effort||'low',format:{type:'json_schema',schema:REQ_SCHEMA}},
       system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
       messages:[{role:'user',content:(auto?`הנציג לחץ "מה לשאול עכשיו" בלי לתת הנחיה. קרא את כל ההיסטוריה, קבע לפי הפלייבוק באיזה שלב השיחה באמת נמצאת ומה עדיין חסר (צ'קליסט המעבר של השלב), זהה את קצה החוט הכי חזק שהלקוח נתן ועוד לא נפתח, וכתוב את השאלה האחת המדויקת שהנציג צריך לשאול עכשיו כדי לקדם את השיחה שלב אחד. ב-why הסבר איזו דלת זה פותח ומה להקשיב לו בתשובה.`:`הנציג מבקש ממך משפט ספציפי לשיחה הזו. הבקשה: "${q}"`)+`
@@ -1392,13 +1403,14 @@ ${transcript}
 $('btnReq').onclick=()=>requestSentence(false); $('btnAsk').onclick=()=>requestSentence(true); $('reqInput').addEventListener('keydown',e=>{if(e.key==='Enter')requestSentence(false)});
 
 /* ───────────────────────── fast lane: "say now" every 10s + instant ask/sentence (small model, last 3 minutes) ───────────────────────── */
-const QUICK_MODELS=['claude-opus-5','claude-haiku-4-5-20251001'];
+const QUICK_MODELS=()=>[coachModel(),'claude-haiku-4-5-20251001'];
 const QUICK_SYS=`אתה מאמן מכירות בזמן אמת שיושב ליד נציג במועדון האיקומרס של אביב מלכה, בשיחת טלפון חיה. אנחנו לא משכנעים לקנות קורס, אנחנו מובילים בן אדם לשינוי: אמונה → החלטה → פעולה → תוצאה.
 שבעת השלבים והמטרה של כל אחד: 1 KYC: אמון, מי האדם ולמה עכשיו, ולתפוס קצוות חוט (טון, מילים עם רגש, נקודות אדומות, אמונות, רצונות); שאלת סיפור, לא חקירה. 2 כאב: להאיר את המחיר של להישאר; להרחיב, לפרק מילים ("מה זה תקוע בשבילך?"), השפעה על הסביבה, רגע ספציפי, ציר זמן, מחיר, השלכה; אחרי שאלה קשה, שתיקה. 3 חסם: לחשוף את האמונה שעוצרת אותו, לסדק בסתירה מהחיים שלו, שאלת החזרה בזמן ("היית מתחיל אז? אז מה באמת עצר אותך?"). 4 מטרה: הזהות החדשה, לקלף מ"כסף" לרגש ("למה זה חשוב לך?"), דמיון עתידי, פער. 5 מניע רכישה: מה ייתן לו ביטחון שזה יעבוד בשבילו; לתרגם מנטור/קהילה/סדר לביטחון/שייכות/פוקוס ולהדהד את המילים שלו. 6 הצגת מוצר כגשר: רק מה שרלוונטי למניעים שנתן, דיאלוג עם שאלות הסכמה, מסע לא רשימה. 7 סגירה: להזכיר את הפער, 3 "כן" קטנים, שאלת המפתח בלי לבקש רשות.
 המשימה: פעם ב-40 שניות אתה נותן לנציג משפט אחד, הכי חזק שאפשר, לא הכי נעים. משפט שמזיז את השיחה: שאלה חדה או שיקוף שנוגע בדיוק במה שחסר בצ'ק-ליסט של השלב, שמשתמש במילים, במספרים וברגעים שהלקוח עצמו נתן, ושהלקוח יזכור אחרי השיחה. לא "איך זה מרגיש לך" גנרי, לא פרפרזה מנומסת, לא הסבר. אם השלב הוא כאב: משפט שמאיר את המחיר. אם חסם: משפט שמסדק את האמונה או שאלת החזרה בזמן. אם מטרה: קילוף למה זה חשוב לו. אם סגירה: להזכיר את הפער ולבקש החלטה בלי לבקש רשות. ב-why כתוב איזה פריט חסר בשלב המשפט סוגר.
 חוקים: עברית מדוברת וחמה. משפט אחד (לכל היותר שניים) שהנציג מקריא מהמסך מיד. הלקוח מדבר 60%; אם הנציג הרצה, המשפט הבא הוא שאלה קצרה. לא לפתור ולא להציג מוצר לפני שהכאב, החסם והמטרה ברורים. משתמשים במילים, במספרים וברגעים שהלקוח עצמו נתן. נציג חזק שואל ושותק; נציג חלש מסביר ומרגיע.
 לשון: קבע מגדר לפי ההנחיה בהודעה ושמור על לשון אחת לאורך כל המשפט. אסור לערבב זכר ונקבה, אסור לוכסנים (ספר/י). אם לא ידוע, ניטרלי.
-פלט: JSON בלבד, בלי טקסט לפני או אחרי, בלי גדרות קוד: {"sentence":"המשפט להגיד עכשיו","why":"למה, עד 12 מילים","customer_state":"משפט אחד: מה הלקוח מרגיש/רוצה/חושש עכשיו","based_on":"מופת / הנחיה / ריק","why_now":"מה בדיוק בתמלול הפעיל את המשפט הזה עכשיו, עד 25 מילים","principle":"העיקרון או הכלי מהשיטה שהמשפט נשען עליו, עד 10 מילים","goal":"מה המשפט מנסה להשיג בשיחה, עד 15 מילים"}`;
+פלט: JSON בלבד, בלי טקסט לפני או אחרי, בלי גדרות קוד: {"sentence":"אפשרות א: המשפט להגיד עכשיו","sentence_b":"אפשרות ב: משפט מכיוון אחר לגמרי (שאלה מול שיקוף, רגש מול מספרים, להעמיק מול לקדם), באותה איכות","angle_a":"2-3 מילים: הכיוון של א","angle_b":"2-3 מילים: הכיוון של ב","why":"למה, עד 12 מילים","customer_state":"משפט אחד: מה הלקוח מרגיש/רוצה/חושש עכשיו","based_on":"מופת / הנחיה / ריק","why_now":"מה בדיוק בתמלול הפעיל את המשפט הזה עכשיו, עד 25 מילים","principle":"העיקרון או הכלי מהשיטה שהמשפט נשען עליו, עד 10 מילים","goal":"מה המשפט מנסה להשיג בשיחה, עד 15 מילים","readiness":0,"bottom_line":"שורה תחתונה לנציג עד 18 מילים: איפה הלקוח עומד ומה הצעד הנכון","solved":"מה כבר נפתר, עד 10 מילים","to_solve":"מה עוד חייב להיפתר לפני סגירה, עד 10 מילים","next_move":"kyc | pain | barrier | goal | forward | close"}
+readiness הוא מספר שלם 0-10: כמה הלקוח מוכן להחלטה עכשיו לפי כל השיחה וההיסטוריה שלו.`;
 const scrubText=t=>String(t==null?'':t).replace(/```[a-z]*/gi,'').replace(/[`*_#]+/g,'').replace(/\\n/g,' ').replace(/^\s*"(.*)"\s*$/s,'$1').replace(/^[a-z_]{2,20}\s*:\s*/i,'').replace(/[{}\[\]<>]/g,'').replace(/\s{2,}/g,' ').trim();
 function scrub(o){ if(typeof o==='string') return scrubText(o); if(Array.isArray(o)) return o.map(scrub); if(o&&typeof o==='object'){ const r={}; for(const k of Object.keys(o)) r[k]=(k==='id'||k==='type'||k==='status'||k==='stage'||k==='temperature'||k==='who'||k==='outcome'||k==='stage_reached'||k==='customer_gender')?o[k]:scrub(o[k]); return r; } return o; }
 function parseLooseJson(raw){
@@ -1407,7 +1419,7 @@ function parseLooseJson(raw){
   const m=txt.match(/\{[\s\S]*\}/); if(m){ try{ return JSON.parse(m[0]); }catch(e){} }
   // truncated / malformed JSON: salvage the fields by regex so the rep never sees raw JSON on screen
   const pick=k=>{ const r=txt.match(new RegExp('"'+k+'"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)')); return r?r[1].replace(/\\"/g,'"').replace(/\\n/g,' ').trim():''; };
-  const sentence=pick('sentence'); if(sentence) return {sentence,why:pick('why'),customer_state:pick('customer_state'),based_on:pick('based_on'),why_now:pick('why_now'),principle:pick('principle'),goal:pick('goal')};
+  const sentence=pick('sentence'); if(sentence) return {sentence,sentence_b:pick('sentence_b'),angle_a:pick('angle_a'),angle_b:pick('angle_b'),why:pick('why'),customer_state:pick('customer_state'),based_on:pick('based_on'),why_now:pick('why_now'),principle:pick('principle'),goal:pick('goal'),bottom_line:pick('bottom_line'),solved:pick('solved'),to_solve:pick('to_solve'),next_move:pick('next_move')};
   if(/^[\[{]/.test(txt)||/"sentence"/.test(txt)) return {sentence:'',why:'',customer_state:'',bad:true};
   return {sentence:txt.replace(/[`{}]/g,'').slice(0,300),why:'',customer_state:''};
 }
@@ -1418,19 +1430,22 @@ function recentTranscript(sec=180,minLines=6,maxLines=40){
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   return {count:finals.length,text:win.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n')||'(אין תמלול עדיין)'};
 }
-const sayEveryMs=()=>(parseInt(S.settings.sayEverySec)||40)*1000;
+const sayEveryMs=()=>(parseInt(S.settings.sayEverySec)||60)*1000;
+const coachModel=()=>S.settings.coachModel||'claude-sonnet-5';
 function quickTick(now){
-  if(!S.running||S.quickInFlight||!S.settings.anthropic) return;
-  if(now-(S.lastQuickAt||S.startedAt)<sayEveryMs()) return;
-  const n=S.lines.filter(l=>l.final&&l.text.trim()).length;
-  if(!n||n===S.lastQuickCount) return;
+  if(!S.running||!S.settings.anthropic) return;
+  if(S.quickInFlight){ if(now-(S.quickStartedAt||now)>35000){ S.quickInFlight=false; log('המשפט התקופתי נתקע 35 שניות, מאפס','err'); } else return; }
+  const since=now-(S.lastQuickAt||S.startedAt); if(since<sayEveryMs()) return;
+  const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(!n) return;
+  if(n===S.lastQuickCount&&since<sayEveryMs()*2) return; // nothing new was said: wait one more interval, then refresh anyway from the situation
   quickSay('quick','');
 }
 async function quickSay(mode,q){
   if(!S.settings.anthropic){openDrawer();return}
+  if(mode==='barrier') return barrierQuestions(q);
   if(S.quickInFlight) return;
   S.quickInFlight=true; const t0=performance.now(); const runCall=S.callId;
-  const tr=recentTranscript(); S.lastQuickCount=tr.count; S.lastQuickAt=Date.now();
+  const tr=recentTranscript(); S.lastQuickCount=tr.count; S.lastQuickAt=Date.now(); S.quickStartedAt=Date.now();
   const st=STAGES.find(x=>x.id===S.stage)||STAGES[0];
   const missing=(STAGE_CHECKS[S.stage]||[]).map((t,i)=>S.checks[S.stage+'.'+(i+1)]?null:t).filter(Boolean);
   const ammo=(S.ammo||[]).slice(0,5).map((a,i)=>(i+1)+'. '+a.text).join(' | ')||'—';
@@ -1450,9 +1465,9 @@ ${tr.text}`;
   if(mode!=='quick'){ $('btnReq').disabled=true; $('btnAsk').disabled=true; }
   $('saynow').classList.add('thinking'); setPill('pAI','busy');
   let o=null, lastErr=null;
-  for(const model of QUICK_MODELS){
+  for(const model of QUICK_MODELS()){
     try{
-      const res=await getClient().messages.create({model,max_tokens:520,system:QUICK_SYS+trainingBlock()+leadBlock()+readinessBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.',...(model.startsWith('claude-opus')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-opus')?20000:9000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:[{type:'text',text:QUICK_SYS+trainingBlock(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.'}],...(model.startsWith('claude-opus')||model.startsWith('claude-sonnet')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-haiku')?9000:20000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -1463,7 +1478,8 @@ ${tr.text}`;
     if(S.callId!==runCall) return;
     const kind=mode==='quick'?'quick':mode;
     const ev=addEvent({kind,request:mode==='ask'?'מה לשאול עכשיו':mode==='custom'?q.slice(0,200):'',text:o.sentence||'',why:o.why||'',reasoning:(o.why_now||o.principle||o.goal)?{why_now:o.why_now||'',principle:o.principle||'',goal:o.goal||''}:null});
-    $('sayText').textContent=o.sentence||''; $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=''; $('sayReason').innerHTML=/מופת|הנחיה/.test(o.based_on||'')?`<span title="מבוסס על ${/מופת/.test(o.based_on)?'שיחת מופת':'הנחיית מנהל'}">🌟</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
+    showSay(o.sentence||'',String(o.sentence_b||'').replace(/[`{}\[\]]/g,'').trim(),o.angle_a||'',o.angle_b||''); if(o.readiness!=null&&o.readiness!==''&&!isNaN(+o.readiness)) setReadiness({score:+o.readiness,line:o.bottom_line||(S.ready||{}).line,solved:o.solved||(S.ready||{}).solved,to_solve:o.to_solve||(S.ready||{}).to_solve,next_move:o.next_move||(S.ready||{}).next_move});
+    $('sayWhy').textContent=o.why?'למה: '+o.why:''; $('sayAvoid').textContent=''; $('sayReason').innerHTML=/מופת|הנחיה/.test(o.based_on||'')?`<span title="מבוסס על ${/מופת/.test(o.based_on)?'שיחת מופת':'הנחיית מנהל'}">🌟</span>`:''; $('sayFb').innerHTML=fbButtons(ev.id);
     if(o.customer_state){ S.custState=o.customer_state; const c=$('custState'); c.style.display=''; c.innerHTML='<b>מצב הלקוח:</b> '+escapeHtml(o.customer_state); }
     const sn=$('saynow'); sn.classList.toggle('custom',mode!=='quick'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
     S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
@@ -1718,7 +1734,8 @@ if(teamTok){ S.importing=true; importTeamToken(teamTok[1]); }
 else if(savedTok&&(!S.settings.anthropic||!S.settings.openai)){ S.importing=true; log('המפתחות חסרים בדפדפן, טוען מחדש מלינק הצוות…'); importTeamToken(savedTok); }
 else postImportChecks();
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
-window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis}; // debug hooks
+renderBarriers();
+window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis,setReadiness,showSay}; // debug hooks
 /* ── lead journey panel: who is this lead, what happened, what to say ── */
 const LEARNINGS=`מה למדנו מ-104 סגירות (יולי-ספטמבר 2026): כמעט אף אחד לא סוגר מנגיעה אחת (חציון 4 שיחות ו-90 דקות מצטברות). הנציג שעשה את השיחה הארוכה הוא זה שסוגר (73 מתוך 83). חצי מהסגירות הן לידים שחזרו אחרי פנייה חוזרת או הרשמה חדשה לוובינר, ורבע נסגרו אחרי יותר מ-60 יום במאגר. לידים שצרכו שני תכנים (וובינר + הדרכה חינמית או מיני-קורס) סוגרים הכי הרבה; ליד שצרך תוכן אחד בלבד צריך קודם את התוכן השני. ליד מהדרכה חינמית סוגר מהר (חציון 7 ימים) ולכן צריך שיחה מלאה מיד. ליד שנרשם לוובינר ולא הגיע הוא לא ליד מת: הוא נסגר בשיחה שמחזירה אותו להקלטה או לוובינר הבא. "לא רלוונטי" אחרי שיחה של דקה הוא לרוב טעות של הנציג.`;
 function leadBlock(){ const j=S.lead; if(!j) return ''; const b=S.leadBrief||{}; const lc=j.last_call; return `\nרקע על הליד מהמערכות (טוצ'אט + פיירברי), השתמש בו בטבעיות ואל תקריא אותו ללקוח כרשימה:\n- ${j.name||'ליד'}: נכנס ${j.created?j.created.slice(0,10):'?'} דרך ${j.first_source||'?'}${j.days_in_system!=null?', '+j.days_in_system+' ימים במערכת':''}. תכנים: ${(j.content||[]).join(', ')||'לא ידוע'}. וובינרים: ${(j.webinars||[]).join(', ')||'אין'}. רמת ליד: ${j.level_now||'-'}. סטטוס פיירברי: ${j.fb_status||'-'}.\n- שיחות קודמות: ${j.n_calls||0} (${j.talk_min||0} דק') עם ${(j.reps||[]).join(', ')||'אף אחד'}.${lc?' שיחה אחרונה: '+lc.rep+' לפני '+lc.days_ago+' ימים ('+lc.dur+'). מה נאמר שם: '+String(lc.ai||'').replace(/[*#]/g,'').slice(0,700):''}\n${b.one_line_profile?'- פרופיל: '+b.one_line_profile+'\n':''}${(b.insights||[]).map(i=>'- '+i.title+': '+i.text).join('\n')}${b.recommended_path?'\n- המסלול המומלץ: '+b.recommended_path.offer+' ('+b.recommended_path.why+')':''}\n`; }
@@ -1769,7 +1786,7 @@ async function leadBrief(j){
       ${o.recommended_path?`<div class="linsight path" style="margin-top:6px"><b>המסלול המומלץ: ${escapeHtml(o.recommended_path.offer)}</b>${escapeHtml(o.recommended_path.why)} · <b style="display:inline;color:var(--text)">הצעד הבא:</b> ${escapeHtml(o.recommended_path.next_step)}</div>`:''}
       ${o.dont_give_up?`<div class="linsight" style="margin-top:6px"><b>למה לא לוותר</b>${escapeHtml(o.dont_give_up)}</div>`:''}${o.watch_out?`<div class="linsight warn" style="margin-top:6px"><b>להיזהר</b>${escapeHtml(o.watch_out)}</div>`:''}</details>`;
     // before the customer said anything, the first opener is what to say now
-    const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length&&(o.opening_lines||[]).length){ const l=o.opening_lines[0]; $('sayText').textContent=l.text; $('sayWhy').textContent='משפט פתיחה לליד הזה: '+(l.why||''); $('sayAvoid').textContent=''; $('sayReason').textContent=''; }
+    const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length&&(o.opening_lines||[]).length){ const l=o.opening_lines[0], l2=o.opening_lines[1]; showSay(l.text,l2?l2.text:'','מחץ',l2?'סקרן':''); $('sayWhy').textContent='משפט פתיחה לליד הזה: '+(l.why||''); $('sayAvoid').textContent=''; $('sayReason').textContent=''; }
   }catch(e){ box.innerHTML='<div class="empty" style="padding:8px">המאמן לא הצליח לכתוב את הבריף: '+escapeHtml(e.error?.error?.message||e.message||String(e))+' <button class="btn btn-sm" onclick="leadBrief(window.__lc.S.lead)">נסה שוב</button></div>'; log('בריף ליד: '+(e.message||e),'err'); }
 }
 window.leadBrief=leadBrief;
@@ -1783,7 +1800,49 @@ function instantOpener(j){
   else if(/הדרכה/.test(src)) t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס. ראיתי שלקחת את ההדרכה של אביב. רגע האמת: מה הדבר האחד שגרם לך להשאיר פרטים?`;
   else if(/מיני/.test(src)) t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס. עברת את המיני-קורס, וזה אומר שאתה כבר יודע יותר מרוב האנשים שמתקשרים אליהם. השאלה היא רק מה עוצר אותך מלהתחיל?`;
   else t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס של אביב מלכה. השארת פרטים אצלנו, ואני מתקשר לבדוק דבר אחד: מה אתה רוצה שיהיה שונה אצלך בעוד חצי שנה?`;
-  $('sayText').textContent=t; $('sayWhy').textContent='משפט פתיחה לפי המסע של הליד. המאמן משפר אותו עוד רגע.'; $('sayAvoid').textContent=''; $('sayReason').textContent='';
+  showSay(t,'','פתיחה',''); $('sayWhy').textContent='משפט פתיחה לפי המסע של הליד. המאמן משפר אותו עוד רגע.'; $('sayAvoid').textContent=''; $('sayReason').textContent='';
+}
+/* ── say-now: two options ── */
+function showSay(a,b,angleA,angleB){ $('sayText').textContent=a||''; const ob=$('optB'); if(b&&b.trim()&&b.trim()!==(a||'').trim()){ $('sayTextB').textContent=b; ob.style.display=''; } else { ob.style.display='none'; $('sayTextB').textContent=''; } $('sayAngleA').textContent=angleA||''; $('sayAngleB').textContent=angleB||''; $('optA').classList.add('on'); $('optB').classList.remove('on'); }
+window.pickSay=w=>{ $('optA').classList.toggle('on',w==='a'); $('optB').classList.toggle('on',w==='b'); const t=w==='a'?$('sayText').textContent:$('sayTextB').textContent; try{ addEvent({kind:'custom',request:'הנציג בחר אפשרות '+(w==='a'?'א':'ב'),text:t,why:'',reasoning:null}); }catch(e){} };
+/* ── manual barrier chips ── */
+const BARRIER_SYS=`אתה מאמן מכירות בזמן אמת לנציגים שמוכרים ליווי אישי להקמת חנות איקומרס.
+כשאני כותב מילת מפתח או מתאר חסם בשיחה, החזר בדיוק שתי אפשרויות לשאלה שאוכל לשאול מיד את הלקוח.
+המטרה היא לחשוף מה באמת עוצר אותו ולעזור לו להתקדם בהחלטה. שאלה חזקה היא שאלה מדויקת שגורמת לחשוב, בלי לתקוף או ללחוץ.
+כללי התגובה:
+• בדיוק שתי אפשרויות ממוספרות, בלי הקדמה או הסבר.
+• כל אפשרות היא משפט אחד עם שאלה אחת, בעברית טבעית וקצרה.
+• אפשרות 1 מבררת את שורש החסם.
+• אפשרות 2 בודקת מה נדרש כדי להתקדם.
+• אלו חלופות לבחירה, לא שתי שאלות שחייבים לשאול ברצף.
+• אם יש תמלול או הקשר, התאם את השאלות למילים ולחששות שהלקוח כבר שיתף.
+• אל תשאל שוב שאלה שכבר נענתה ואל תחזור לחסם שכבר נפתר.
+• אל תניח שההתנגדות היא תירוץ, אל תבטיח רווחים ואל תעודד לעקוף החלטה זוגית או להתחייב מעבר ליכולת.
+• שמור על לשון אחת לפי מגדר הלקוח; אם לא ידוע, נסח ניטרלי בלי לוכסנים.
+חמשת החסמים המרכזיים ודוגמאות לסגנון:
+1. אישה / בעל / להתייעץ: 1. "מה לדעתך הכי יטריד את אשתך כשתספר לה על התהליך?" 2. "מה אתם צריכים לברר יחד כדי להחליט אם זה מתאים לכם?"
+2. כסף / יקר / אין תקציב: 1. "מה עוצר אותך יותר כרגע, היכולת לשלם או החשש לשלם ולא לקבל את הערך שאתה מחפש?" 2. "מה צריך להשתנות כדי שזו תהיה הוצאה שאתה גם יכול לעמוד בה וגם מרגיש שלם איתה?"
+3. זמן / עמוס / לא עכשיו: 1. "איזה חלק בתהליך אתה חושש שלא תצליח לשלב בשבוע שלך?" 2. "כמה זמן מציאותי תוכל לפנות בשבוע כדי שנבדוק אם התהליך בכלל מתאים לך כרגע?"
+4. לחשוב / אחזור אליך / לא מחליט עכשיו: 1. "מה הדבר המרכזי שאתה עדיין מתלבט לגביו?" 2. "מה חסר לך כרגע כדי להחליט בביטחון אם זה מתאים לך?"
+5. סקפטי / מפחד להיכשל / ניסיתי בעבר: 1. "איפה הספק העיקרי שלך, בשיטה שלנו או ביכולת שלך ליישם אותה?" 2. "מה היית צריך לראות או להבין כדי לבדוק אם הפעם יש בסיס שונה להצלחה?"
+הדוגמאות מגדירות את הסגנון. כשההקשר זמין, צור שאלות מדויקות לשיחה עצמה במקום לחזור אוטומטית על הדוגמאות.
+אם אני כותב רק "כסף" או "אישה", ענה מיד בשתי אפשרויות מתאימות. אל תבקש ממני להשלים פרטים.
+פלט: שתי שורות בלבד, "1. שאלה" ו-"2. שאלה".`;
+function barrierBlock(){ const b=S.barriers||{}; const open=BARRIERS.filter(([k])=>b[k]==='open').map(([,l])=>l); const done=BARRIERS.filter(([k])=>b[k]==='done').map(([,l])=>l); if(!open.length&&!done.length) return ''; return `\nחסמים שהנציג סימן ידנית: ${open.length?'פתוחים: '+open.join(', ')+'. ':''}${done.length?'נפתרו (אל תחזור אליהם): '+done.join(', ')+'.':''}\n`; }
+function renderBarriers(){ const box=$('bchips'); if(!box) return; const b=S.barriers||{}; box.innerHTML='<span class="k">חסמים:</span>'+BARRIERS.map(([k,l])=>`<span class="bchip ${b[k]||''}" onclick="toggleBarrier('${k}')" title="לחיצה: עלה ← נפתר ← נקה">${b[k]==='open'?'🔴':b[k]==='done'?'✅':'○'} ${l}<button class="q" title="תן לי 2 שאלות לחסם הזה" onclick="event.stopPropagation();askBarrier('${k}')">?</button></span>`).join(''); }
+window.toggleBarrier=k=>{ S.barriers=S.barriers||{}; const cur=S.barriers[k]; S.barriers[k]=cur==='open'?'done':cur==='done'?'':'open'; if(!S.barriers[k]) delete S.barriers[k]; renderBarriers(); renderJoker(); try{ addEvent({kind:'custom',request:'סימון חסם',text:(BARRIERS.find(x=>x[0]===k)||[])[1]+': '+({open:'עלה',done:'נפתר'}[S.barriers[k]]||'נוקה'),why:'',reasoning:null}); }catch(e){} };
+window.askBarrier=k=>{ const l=(BARRIERS.find(x=>x[0]===k)||[])[1]; S.barriers=S.barriers||{}; if(!S.barriers[k]) { S.barriers[k]='open'; renderBarriers(); renderJoker(); } $('reqInput').value=l; quickSay('barrier',l); };
+async function barrierQuestions(q){
+  const tr=recentTranscript(240,6,40); const runCall=S.callId; $('saynow').classList.add('thinking'); setPill('pAI','busy'); $('btnReq').disabled=true; $('btnAsk').disabled=true;
+  try{
+    const res=await getClient().messages.create({model:coachModel(),max_tokens:300,system:BARRIER_SYS+barrierBlock(),messages:[{role:'user',content:`חסם: ${q}\nמגדר הלקוח: ${GENDER_RULE[S.custGender]||'לא ידוע'}\nפרופיל: ${S.profile||'—'}\nתמלול אחרון:\n${tr.text||'(אין תמלול עדיין)'}`}]},{timeout:20000,maxRetries:0});
+    const txt=res.content.filter(b=>b.type==='text').map(b=>b.text).join('\n'); const qs=txt.split(/\n+/).map(x=>x.replace(/^\s*[12][.)]\s*/,'').replace(/[`*"]/g,'').trim()).filter(Boolean).slice(0,2);
+    if(S.callId!==runCall) return; if(!qs.length) throw new Error('לא התקבלו שאלות');
+    const ev=addEvent({kind:'custom',request:'חסם: '+q,text:qs[0]+(qs[1]?' | '+qs[1]:''),why:'',reasoning:null});
+    showSay(qs[0],qs[1]||'','שורש החסם','מה נדרש להתקדם'); $('sayWhy').textContent='שתי שאלות לחסם "'+q+'": א חושפת את השורש, ב בודקת מה נדרש כדי להתקדם'; $('sayAvoid').textContent=''; $('sayReason').textContent=''; $('sayFb').innerHTML=fbButtons(ev.id);
+    const sn=$('saynow'); sn.classList.add('custom'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation=''; S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
+  }catch(e){ toast('שאלות לחסם: '+(e.error?.error?.message||e.message||e),'t-error'); }
+  finally{ $('saynow').classList.remove('thinking'); setPill('pAI','on'); $('btnReq').disabled=false; $('btnAsk').disabled=false; }
 }
 /* ── joker bar: readiness score, bottom line, contextual buttons ── */
 function readinessBlock(){ const r=S.ready; if(!r||r.score==null) return ''; return `\nמצב הסגירה כרגע (הערכה קודמת שלך): מוכנות ${r.score}/10. נפתר: ${r.solved||'—'}. עוד לפתור: ${r.to_solve||'—'}. עדכן את readiness בכל סבב לפי מה שקרה מאז, ותן say_now שמקדם את הפריט הבא שחסר.\n`; }
@@ -1795,7 +1854,7 @@ function setReadiness(r){
   renderJoker();
 }
 function renderJoker(){
-  const box=$('jBtns'); if(!box) return; const r=S.ready||{}; const sc=r.score==null?-1:r.score; const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved'); const idx=S.stageIdx||0; const next=STAGES[Math.min(STAGES.length-1,idx+1)]; const cur=STAGES[idx];
+  const box=$('jBtns'); if(!box) return; const r=S.ready||{}; const sc=r.score==null?-1:r.score; const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').concat(BARRIERS.filter(([k])=>(S.barriers||{})[k]==='open').map(([,l])=>({text:l}))); const idx=S.stageIdx||0; const next=STAGES[Math.min(STAGES.length-1,idx+1)]; const cur=STAGES[idx];
   const btn=(icon,title,sub,on,cls='')=>`<button class="btn lead ${cls}" onclick="${on}"><i>${icon}</i><span>${title}<small>${sub}</small></span></button>`;
   const out=[];
   if(sc>=8) out.push(btn('🏁','עבור לסגירה',`הלקוח ב-${sc}/10, עכשיו הזמן`,"leadTo('close','')",'hot'));
@@ -1810,7 +1869,7 @@ function renderJoker(){
   box.innerHTML=out.slice(0,2).join('');
 }
 window.renderJoker=renderJoker;
-window.useOpener=i=>{ const l=(S.leadBrief||{}).opening_lines?.[i]; if(!l) return; $('sayText').textContent=l.text; $('sayWhy').textContent=l.why||'משפט פתיחה מהמסע של הליד'; $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'משפט פתיחה מהמסע',text:l.text,why:l.why||'',reasoning:null}); }catch(e){} toast('המשפט בחלון "אמור עכשיו"','t-ok'); };
+window.useOpener=i=>{ const l=(S.leadBrief||{}).opening_lines?.[i]; if(!l) return; showSay(l.text,'','פתיחה',''); $('sayWhy').textContent=l.why||'משפט פתיחה מהמסע של הליד'; $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'משפט פתיחה מהמסע',text:l.text,why:l.why||'',reasoning:null}); }catch(e){} toast('המשפט בחלון "אמור עכשיו"','t-ok'); };
 async function loadLead(phoneIn){
   const ph=String(phoneIn||'').replace(/\D/g,''); const n9=ph.slice(-9); if(n9.length!==9) return toast('הקלד טלפון ישראלי מלא (10 ספרות)','t-error');
   const dataUrl=(S.settings.dataUrl||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,'');
