@@ -118,7 +118,7 @@
   .joker{grid-column:1/-1;order:-1;min-height:0;max-height:none;background:linear-gradient(135deg,var(--surface),var(--surface2))}.joker-b{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:6px 16px;min-height:92px}
   .jscore{display:flex;flex-direction:column;align-items:center;gap:2px}.ring{width:66px;height:66px;border-radius:50%;background:conic-gradient(var(--ring,var(--accent5)) calc(var(--p)*1%),var(--surface3) 0);display:grid;place-items:center;position:relative;transition:background .6s}.ring::before{content:'';position:absolute;inset:6px;border-radius:50%;background:var(--surface)}.ring b,.ring small{position:relative;z-index:1}.ring b{font-size:24px;line-height:1;font-weight:900}.ring small{font-size:10px;color:var(--text-muted)}.jlbl{font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.3px}
   .jtxt{min-width:0}.jline{font-size:15px;font-weight:700;line-height:1.4}.jline b{color:var(--purple)}.jsub{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--text-muted);margin-top:4px}.jsub .ok{color:var(--accent4)}.jsub .todo{color:var(--accent5)}
-  .jfears{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.jfear{border:1px solid rgba(220,38,38,.35);background:rgba(220,38,38,.05);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--red)}.jfear:hover{background:rgba(220,38,38,.12)}.jfear small{font-weight:500;color:var(--text-muted);margin-right:4px}
+  .fearrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}.fearrow .k{font-size:11px;font-weight:800;color:var(--text-muted)}.fchipf{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(220,38,38,.35);background:rgba(220,38,38,.05);border-radius:999px;padding:3px 6px 3px 10px;font-size:12.5px;font-weight:700;color:var(--red);max-width:100%}.fchipf.done{border-color:rgba(15,157,110,.45);background:rgba(15,157,110,.08);color:var(--accent4)}.fchipf .tg{cursor:pointer;user-select:none}.fchipf .go{border:1px solid rgba(124,58,237,.35);background:var(--surface);border-radius:999px;padding:2px 9px;font:inherit;font-size:11.5px;font-weight:800;cursor:pointer;color:var(--purple);white-space:nowrap}.fchipf .go:hover{background:var(--surface2)}.fearrow .scan{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:3px 10px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;color:var(--text)}
   .jbtns{display:flex;flex-direction:column;gap:6px;min-width:190px}.jbtns .btn.lead{min-height:42px;padding:6px 10px}.jbtns .btn.lead i{font-size:18px;width:24px}.jbtns .btn.lead span{font-size:13px}
   @media(max-width:860px){.joker-b{grid-template-columns:auto 1fr;min-height:0}.jbtns{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.jbtns .btn.lead{flex:1}}
   .main-coach{grid-column:1/-1;max-height:none;min-height:0}#coach{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:12px;align-content:start;overflow:visible}#coach>*{grid-column:1;min-width:0}#coach #sayLog{grid-column:2;grid-row:1/span 6;max-height:calc(100vh - 560px);min-height:160px;margin:0}
@@ -390,6 +390,7 @@
         <div class="sayfoot"><span id="sayFb"></span></div>
         <div class="reqbar"><input id="reqInput" placeholder="בקש משפט: 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-primary" id="btnReq">✨ תן משפט</button><button class="btn" id="btnAsk" title="בלי הנחיה: המאמן מבין מההיסטוריה מה לשאול עכשיו" style="border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול?</button></div>
       </div>
+      <div class="fearrow" id="fearRow"></div>
       <div class="bchips" id="bchips"></div>
       <div class="minitr" id="miniTr" style="display:none"></div>
       <div class="cust-state" id="custState" style="display:none"></div>
@@ -411,7 +412,7 @@
   <section class="panel joker" id="jokerWrap">
     <div class="joker-b">
       <div class="jscore"><div class="ring" id="jRing" style="--p:0"><b id="jNum">–</b><small>/10</small></div><div class="jlbl">מוכנות לסגירה</div></div>
-      <div class="jtxt"><div class="jline"><b>שורה תחתונה:</b> <span id="jLine">כשהשיחה תתחיל, כאן תראה בכל רגע כמה הלקוח קרוב להחלטה, מה כבר נפתר ומה עוד לא.</span></div><div class="jsub"><span class="ok">✅ נפתר: <span id="jSolved">—</span></span><span class="todo">🧱 לפתור: <span id="jToSolve">—</span></span></div><div class="jfears" id="jFears"></div></div>
+      <div class="jtxt"><div class="jline"><b>שורה תחתונה:</b> <span id="jLine">כשהשיחה תתחיל, כאן תראה בכל רגע כמה הלקוח קרוב להחלטה, מה כבר נפתר ומה עוד לא.</span></div><div class="jsub"><span class="ok">✅ נפתר: <span id="jSolved">—</span></span><span class="todo">🧱 לפתור: <span id="jToSolve">—</span></span></div></div>
       <div class="jbtns" id="jBtns"></div>
     </div>
   </section>
@@ -1189,6 +1190,12 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       description:'תחמושת: לוח תוצאות חי של השיחה. בדיוק 8 פריטים כשיש מספיק מידע אמיתי, מדורגים מהחזק והרלוונטי ביותר כרגע לפחות. רק מה שהלקוח אמר או רמז בבירור. חסם נחשב פתור רק אם הלקוח אישר. החזר את הרשימה המלאה והמעודכנת בכל סבב'}
   },required:['stage','temperature','customer_state','customer_gender','say_now','say_alt','angle_a','angle_b','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','fears','readiness','bottom_line','solved','to_solve','next_move','reasoning','close_check']};
 
+const LEARNING_LINE=`
+שורת לימוד (הנחיה קבועה של המנהל, עדיפות גבוהה):
+1. מחיר ההישארות במקום: כל לקוח שדוחה צעד הוא אדם שהמצב המצוי שלו מפסיד לו לאורך זמן והוא רחוק מהמצב הרצוי. מאמצע השיחה חובה לשאול שאלות ישירות מאוד שמוציאות ממנו בעצמו כמה הוא מפסיד אם הוא נשאר במקום: "מה עולה לך עוד שנה כזאת?", "מה כבר דחית בגלל זה?", "איפה היית היום אם היית מתחיל לפני שנה?", "מה קורה אם שום דבר לא משתנה?". הלקוח צריך להגיד את המספר, לא הנציג. זה מה שמזיז אותו לעשות את השינוי מהר ולא להתעכב.
+2. אמונה עצמית: ההתנגדות הכי גדולה שלנו היא "האם זה יעבוד לי / האם אני אצליח". היא כמעט אף פעם לא נאמרת, היא מסתתרת בשאלות על זמן, טכנולוגיה, מחיר ו"אתייעץ". לקראת אמצע השיחה חובה להביא אותה לשולחן במפורש ולבנות אמונה: "מה גורם לך לחשוב שדווקא לך זה לא יעבוד?", "ספר לי על משהו שהתחלת בלי לדעת כלום והצלחת", "מה היית צריך לראות כדי להאמין שזה עובד לך?". לא לסגור לפני שהלקוח אמר בעצמו שהוא מאמין שזה יכול לעבוד לו.
+3. חסמים סמויים: בכל סבב לזהות פחדים שלא נאמרו (שדה fears), עם הרמז מהתמלול והשאלה שמוציאה אותם. חסם שלא הוצא החוצה לא נפתר, והנציג לא ירגיש שלם ללכת לסגירה.
+`;
 function systemPrompt(){
   return `אתה מאמן מכירות בזמן אמת שיושב ליד נציג מכירות בזמן שיחת טלפון חיה עם לקוח. אתה רואה את התמלול החי ותפקידך להגיד לנציג, מיד, מה להגיד עכשיו.
 כללי ברזל:
@@ -1208,7 +1215,7 @@ function systemPrompt(){
 ${AMMO_RULES}
 - close_check: כשהנציג עובר להצגת מוצר או לסגירה ויש חסם שהלקוח לא אישר שנפתר, פריט צ'ק-ליסט קריטי חסר, או הסכמה שלא נלקחה, החזר רשימה קצרה "לבדיקה לפני סגירה". זו הארה בלבד, לא עצירה.
 - reasoning: תמיד מלא. המנהל קורא את זה אחרי השיחה כדי להבין למה המלצת מה שהמלצת ולאמן אותך. אם נשענת על דוגמה מהשטח, פתח את reasoning.principle ב-"🌟" בלי לציין שם של נציג. שמות של נציגים אחרים לא מופיעים בשום שדה שהנציג רואה.
-${trainingBlock()}
+${LEARNING_LINE}${trainingBlock()}
 - Latency-sensitive; begin your visible answer immediately.
 - בכל שדה טקסט: עברית מדוברת בלבד. בלי Markdown, בלי כוכביות, בלי קוד, בלי שמות שדות באנגלית, בלי סוגריים מסולסלים. כל משפט צריך להיקרא בקול כמו שהוא.
 - ammo: ברגע שהלקוח אמר משפט אחד, הרשימה לא ריקה: לפחות עובדה, רצון או מניע שהוא נתן, במילים שלו.
@@ -1307,7 +1314,7 @@ ${transcript}
 }
 function applyCoach(o,opt={}){
   o=scrub(o);
-  if(Array.isArray(o.fears)){ S.fears=o.fears.slice(0,3); renderFears(); }
+  if(Array.isArray(o.fears)){ const kept=(S.fears||[]).filter(f=>f.done); S.fears=kept.concat(o.fears.filter(f=>!kept.some(k=>k.fear===f.fear)).slice(0,3)); renderFears(); }
   if(o.readiness!=null) setReadiness({score:o.readiness,line:o.bottom_line,solved:o.solved,to_solve:o.to_solve,next_move:o.next_move});
   for(const sl of (o.speaker_labels||[])) setSpeaker(sl.id,sl.who,false);
   if(o.customer_gender&&o.customer_gender!=='unknown'&&!S.custGenderManual) S.custGender=o.customer_gender;
@@ -1513,7 +1520,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS()){
     try{
-      const res=await getClient().messages.create({model,max_tokens:520,system:[{type:'text',text:QUICK_SYS+trainingBlock(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.'}],...(model.startsWith('claude-opus')||model.startsWith('claude-sonnet')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-haiku')?9000:20000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:[{type:'text',text:QUICK_SYS+LEARNING_LINE+trainingBlock(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.'}],...(model.startsWith('claude-opus')||model.startsWith('claude-sonnet')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-haiku')?9000:20000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -2086,8 +2093,28 @@ function setReadiness(r){
   $('jLine').textContent=S.ready.line||''; $('jSolved').textContent=S.ready.solved||'—'; $('jToSolve').textContent=S.ready.to_solve||'—';
   renderJoker();
 }
-function renderFears(){ const box=$('jFears'); if(!box) return; const f=S.fears||[]; box.innerHTML=f.length?'<span style="font-size:11px;font-weight:800;color:var(--text-muted);align-self:center">🫥 פחדים שלא נאמרו:</span>'+f.map((x,i)=>`<span class="jfear" title="${escapeHtml(x.evidence||'')}\n\nלחץ לשאלה שמוציאה את זה החוצה" onclick="askFear(${i})">${escapeHtml(x.fear)}<small>?</small></span>`).join(''):''; }
+function renderFears(){ const box=$('fearRow'); if(!box) return; const f=S.fears||[];
+  box.innerHTML='<span class="k">🫥 פחדים וחסמים סמויים:</span>'+(f.length?f.map((x,i)=>`<span class="fchipf ${x.done?'done':''}"><span class="tg" title="${escapeHtml(x.evidence||'')}\n\nלחץ לסמן טופל / לא טופל" onclick="toggleFear(${i})">${x.done?'✅':'🫥'} ${escapeHtml(x.fear)}</span><button class="go" onclick="solveFear(${i})" title="שאלה חזקה + הובלה לפתרון והעמקה">גש לפתרון</button></span>`).join(''):'<span class="hint">עדיין לא זוהו. המאמן מוסיף כאן פחדים שהלקוח רומז עליהם ולא אומר.</span>')+`<button class="scan" onclick="rescanFears()" title="עובר על כל התמלול מחדש ומזהה חסמים ופחדים סמויים">🔎 אין חסמים? סרוק מחדש</button>`; }
+window.toggleFear=i=>{ const f=(S.fears||[])[i]; if(!f) return; f.done=!f.done; renderFears(); try{ addEvent({kind:'custom',request:'פחד סמוי '+(f.done?'טופל':'נפתח מחדש'),text:f.fear,why:'',reasoning:null}); }catch(e){} };
+window.solveFear=i=>{ const f=(S.fears||[])[i]; if(!f) return; $('reqInput').value=`תוביל אותי לפתרון החסם הסמוי: "${f.fear}" (הרמז מהתמלול: "${f.evidence||''}"). תן קודם שאלה אחת חזקה מאוד, ישירה, במילים של הלקוח, שמוציאה את זה החוצה. אחר כך תוכנית 3 צעדים לפתרון ולהעמקה: (1) להגדיל את הפער בין המצב היום למצב הרצוי ולתמחר מה עולה לו להישאר במקום עוד שנה, (2) לבנות אמונה שזה יעבוד דווקא לו, דרך משהו שהוא כבר עשה והצליח, (3) לקבל ממנו אישור שהחסם הזה כבר לא עוצר אותו, לפני שממשיכים.`; requestSentence(false); };
 window.askFear=i=>{ const f=(S.fears||[])[i]; if(!f) return; showSay(f.ask||'','','להוציא את הפחד החוצה',''); $('sayWhy').textContent='הפחד שמסתתר: '+f.fear+(f.evidence?' · רמז: "'+f.evidence+'"':''); $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'פחד סמוי: '+f.fear,text:f.ask||'',why:f.evidence||'',reasoning:null}); }catch(e){} };
+const RESCAN_SCHEMA={type:'object',additionalProperties:false,required:['fears','open_barriers','note'],properties:{fears:{type:'array',items:{type:'object',additionalProperties:false,required:['fear','evidence','ask'],properties:{fear:{type:'string'},evidence:{type:'string'},ask:{type:'string'}}}},open_barriers:{type:'array',items:{type:'string'},description:'התנגדויות שנאמרו במפורש ועדיין לא נפתרו'},note:{type:'string',description:'משפט אחד לנציג: מה הכי חשוב לפתור עכשיו ולמה'}}};
+async function rescanFears(){
+  const finals=S.lines.filter(l=>l.final&&l.text.trim()); if(!finals.length) return toast('אין תמלול עדיין','t-error'); if(!S.settings.anthropic) return openDrawer();
+  const btn=document.querySelector('#fearRow .scan'); if(btn){ btn.disabled=true; btn.textContent='סורק את כל השיחה…'; }
+  try{
+    const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח'; const transcript=finals.slice(-400).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
+    const res=await getClient().beta.messages.create({model:coachModel(),max_tokens:1000,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema:RESCAN_SCHEMA}},
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+factsBlock()+barrierBlock()+'\nמשימה: עבור על כל התמלול מחדש, כמו מאמן שקורא את השיחה בשקט, ומצא את הפחדים והאמונות שעוצרים את הלקוח גם אם לא נאמרו במפורש: שאלה על שעות/עלות = פחד מזמן/כסף; "מבולבל"/"בודק כיוונים" = לא החליט שזה הכיוון; "רוצה פרקטיקה"/"ניסיתי" = נכווה מתיאוריה; שתיקה או "אחשוב" אחרי מחיר = יכולת או אמונה עצמית; "אתייעץ" = לא בטוח בעצמו או תלוי בבן/בת זוג; דחיות חוזרות = לא מרגיש את המחיר של להישאר במקום. לכל פחד: הרמז המדויק (ציטוט) והשאלה שמוציאה אותו החוצה, במילים של הלקוח. אל תחזור על מה שכבר נפתר.'}],
+      messages:[{role:'user',content:'התמלול המלא:\n'+transcript}]},{timeout:60000,maxRetries:1});
+    const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join('')));
+    const kept=(S.fears||[]).filter(f=>f.done); S.fears=kept.concat((o.fears||[]).filter(f=>!kept.some(k=>k.fear===f.fear)).slice(0,4)); renderFears();
+    if(o.note) toast(o.note.slice(0,140),'t-ok'); if(!(o.fears||[]).length&&!(o.open_barriers||[]).length) toast('לא זוהו חסמים סמויים בתמלול. אם הלקוח שקט, שאל ישירות: "מה יעצור אותך?"','t-ok');
+    try{ addEvent({kind:'insight',text:'סריקת חסמים: '+((o.fears||[]).map(f=>f.fear).join(' · ')||'לא זוהו')+(o.open_barriers&&o.open_barriers.length?' | פתוחים: '+o.open_barriers.join(' · '):''),why:o.note||'',reasoning:null}); }catch(e){}
+  }catch(e){ toast('סריקה: '+(e.error?.error?.message||e.message||e),'t-error'); }
+  finally{ renderFears(); }
+}
+window.rescanFears=rescanFears;
 function renderJoker(){
   const box=$('jBtns'); if(!box) return; const r=S.ready||{}; const sc=r.score==null?-1:r.score; const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').concat(BARRIERS.filter(([k])=>(S.barriers||{})[k]==='open').map(([,l])=>({text:l}))); const idx=S.stageIdx||0; const next=STAGES[Math.min(STAGES.length-1,idx+1)]; const cur=STAGES[idx];
   const btn=(icon,title,sub,on,cls='')=>`<button class="btn lead ${cls}" onclick="${on}"><i>${icon}</i><span>${title}<small>${sub}</small></span></button>`;
