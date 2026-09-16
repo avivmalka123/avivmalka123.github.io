@@ -180,6 +180,8 @@
   .saynow .t{font-size:19px;font-weight:700;line-height:1.45;color:var(--text)}
   .sayopts{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:right}.sayopt{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px;cursor:pointer;position:relative;transition:border-color .2s}.sayopt.on{border-color:rgba(124,58,237,.55);box-shadow:0 0 0 2px rgba(124,58,237,.12)}.sayopt .lbl{display:inline-block;font-size:11px;font-weight:900;color:var(--purple);background:rgba(124,58,237,.1);border-radius:8px;padding:1px 8px;margin-bottom:6px}.sayopt .lbl em{font-style:normal;font-weight:600;color:var(--text-muted);margin-right:4px}
   @media(max-width:700px){.sayopts{grid-template-columns:1fr}}
+  #coach #idbarWrap{grid-column:1/-1;padding:0!important}#coach #miniTr{grid-column:2;grid-row:7/span 3}.minitr{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:8px 10px;max-height:260px;overflow:auto;font-size:12.5px}.minitr .k{font-size:11px;font-weight:800;color:var(--text-muted);margin-bottom:4px}.minitr .msg{padding:4px 0;border-top:1px dashed var(--border)}.minitr .msg .who{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--text-muted)}.minitr .msg.rep .who b{color:var(--accent3)}.minitr .msg.cust .who b{color:var(--gold)}.minitr .spk button{font:inherit;font-size:11px;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:1px 8px;cursor:pointer}.minitr .spk button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  @media(max-width:860px){#coach #miniTr{grid-column:1;grid-row:auto}}
   .bchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}.bchips .k{font-size:11px;font-weight:800;color:var(--text-muted)}.bchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:3px 6px 3px 10px;font-size:12.5px;font-weight:700;cursor:pointer;user-select:none}.bchip.open{border-color:rgba(15,157,110,.5);background:rgba(15,157,110,.08)}.bchip .q{border:1px solid rgba(124,58,237,.35);background:var(--surface2);border-radius:999px;padding:2px 9px;font:inherit;font-size:11.5px;font-weight:800;cursor:pointer;color:var(--purple)}.bchip .q:hover{background:var(--surface3)}
   .saynow .w{font-size:12.5px;color:#6d28d9;margin-top:8px;line-height:1.5}
   .saynow .avoid{font-size:12px;color:#b91c1c;margin-top:6px}
@@ -371,6 +373,7 @@
         <div class="reqbar"><input id="reqInput" placeholder="בקש משפט: 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-primary" id="btnReq">✨ תן משפט</button><button class="btn" id="btnAsk" title="בלי הנחיה: המאמן מבין מההיסטוריה מה לשאול עכשיו" style="border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול?</button></div>
       </div>
       <div class="bchips" id="bchips"></div>
+      <div class="minitr" id="miniTr" style="display:none"></div>
       <div class="cust-state" id="custState" style="display:none"></div>
       <div class="saylog" id="sayLog"></div>
       <div class="profile" id="profile" style="display:none"></div>
@@ -770,7 +773,7 @@ function renderLine(ln){
   el.className='msg '+ln.who+(ln.final?'':' partial');
   const chips=S.single?`<span class="spk">${ln.spk?`<button disabled style="opacity:.7">${ln.spk}</button>`:''}<button class="${ln.who==='cust'?'on':''}" onclick="setSpeaker('${ln.id}','cust',true)">לקוח</button><button class="${ln.who==='rep'?'on':''}" onclick="setSpeaker('${ln.id}','rep',true)">נציג</button></span>`:'';
   el.innerHTML=`<div class="who"><i></i>${name} · ${time}${ln.manual?' ✓':''}${chips}</div>${escapeHtml(ln.text)}`;
-  box.scrollTop=box.scrollHeight;
+  box.scrollTop=box.scrollHeight; renderMiniTr();
 }
 $('btnAnalyze').onclick=()=>{S.lastAnalyzedCount=-1;scheduleAnalysis()};
 const EMPTY_EL=$('emptyT');
@@ -892,6 +895,12 @@ function smWords(m,final){
 }
 function smStart(spk){ if(spk&&spk!=='UU'&&!S.spkSeen.includes(spk)) S.spkSeen.push(spk); SMW.cur={id:'sm_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),spk,text:'',end:0}; }
 // "Who said this?" banner: the first final sentence of every unlabeled voice (or unlabeled line) is put in front of the listener with two big buttons.
+function renderMiniTr(){
+  const m=$('miniTr'); if(!m) return; if(!S.single||!S.running){ m.style.display='none'; return; }
+  const last=S.lines.filter(l=>l.text.trim()&&l.text!=='…').slice(-6); m.style.display='';
+  m.innerHTML='<div class="k">🎧 מי מדבר? (האזנה) · לחץ כדי לתקן</div>'+last.map(ln=>`<div class="msg ${ln.who}${ln.final?'':' partial'}"><div class="who"><b>${ln.who==='rep'?'נציג':ln.who==='cust'?'לקוח':'?'}</b>${ln.spk?'<span>קול '+escapeHtml(ln.spk)+'</span>':''}<span class="spk"><button class="${ln.who==='cust'?'on':''}" onclick="setSpeaker('${ln.id}','cust',true)">לקוח</button><button class="${ln.who==='rep'?'on':''}" onclick="setSpeaker('${ln.id}','rep',true)">נציג</button></span></div>${escapeHtml(ln.text.slice(0,160))}</div>`).join('');
+  m.scrollTop=m.scrollHeight;
+}
 function renderIdBar(){
   const w=$('idbarWrap'); if(!S.single||!S.running){ w.style.display='none'; return; }
   const cand=S.lines.find(l=>l.final&&l.text.trim()&&l.text!=='…'&&l.who==='unk'&&(!l.spk||!S.spkMap[l.spk]));
@@ -1734,7 +1743,7 @@ if(teamTok){ S.importing=true; importTeamToken(teamTok[1]); }
 else if(savedTok&&(!S.settings.anthropic||!S.settings.openai)){ S.importing=true; log('המפתחות חסרים בדפדפן, טוען מחדש מלינק הצוות…'); importTeamToken(savedTok); }
 else postImportChecks();
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
-renderBarriers();
+renderBarriers(); try{ $('coach').prepend($('idbarWrap')); }catch(e){}
 window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis,setReadiness,showSay}; // debug hooks
 /* ── lead journey panel: who is this lead, what happened, what to say ── */
 const LEARNINGS=`מה למדנו מ-104 סגירות (יולי-ספטמבר 2026): כמעט אף אחד לא סוגר מנגיעה אחת (חציון 4 שיחות ו-90 דקות מצטברות). הנציג שעשה את השיחה הארוכה הוא זה שסוגר (73 מתוך 83). חצי מהסגירות הן לידים שחזרו אחרי פנייה חוזרת או הרשמה חדשה לוובינר, ורבע נסגרו אחרי יותר מ-60 יום במאגר. לידים שצרכו שני תכנים (וובינר + הדרכה חינמית או מיני-קורס) סוגרים הכי הרבה; ליד שצרך תוכן אחד בלבד צריך קודם את התוכן השני. ליד מהדרכה חינמית סוגר מהר (חציון 7 ימים) ולכן צריך שיחה מלאה מיד. ליד שנרשם לוובינר ולא הגיע הוא לא ליד מת: הוא נסגר בשיחה שמחזירה אותו להקלטה או לוובינר הבא. "לא רלוונטי" אחרי שיחה של דקה הוא לרוב טעות של הנציג.`;
@@ -1870,12 +1879,19 @@ function renderJoker(){
 }
 window.renderJoker=renderJoker;
 window.useOpener=i=>{ const l=(S.leadBrief||{}).opening_lines?.[i]; if(!l) return; showSay(l.text,'','פתיחה',''); $('sayWhy').textContent=l.why||'משפט פתיחה מהמסע של הליד'; $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'משפט פתיחה מהמסע',text:l.text,why:l.why||'',reasoning:null}); }catch(e){} toast('המשפט בחלון "אמור עכשיו"','t-ok'); };
+async function dataFetch(path){
+  const base=(S.settings.dataUrl||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,''); const url=(/^https?:\/\//.test(base)?base:'https://'+base)+path; const key=S.settings.dataKey||'';
+  try{ const r=await fetch(url,{headers:{'x-app-key':key}}); return r; }
+  catch(e){ // some networks / extensions block the CORS preflight: retry as a simple request with the key in the query
+    try{ const r=await fetch(url+(url.includes('?')?'&':'?')+'key='+encodeURIComponent(key),{cache:'no-store'}); log('שרת נתונים: החיבור הרגיל נחסם, עובד במסלול חלופי','err'); return r; }
+    catch(e2){ throw new Error('אין חיבור לשרת הנתונים ('+(e2.message||e2)+'). בדוק אינטרנט / חוסם פרסומות / פרוקסי, ושהכתובת בהגדרות היא '+base); } }
+}
 async function loadLead(phoneIn){
   const ph=String(phoneIn||'').replace(/\D/g,''); const n9=ph.slice(-9); if(n9.length!==9) return toast('הקלד טלפון ישראלי מלא (10 ספרות)','t-error');
   const dataUrl=(S.settings.dataUrl||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,'');
   if(!S.settings.dataKey){ openDrawer(); return toast('חסר מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
   $('leadBody').innerHTML='<div class="empty">מושך את המסע של הליד מטוצ\'אט ופיירברי…</div>'; $('leadTag').textContent=''; S.lead=null; S.leadBrief=null;
-  try{ const r=await fetch(dataUrl+'/lead?phone=0'+n9,{headers:{'x-app-key':S.settings.dataKey}}); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
+  try{ const r=await dataFetch('/lead?phone=0'+n9); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
     S.lead=j; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
   catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
 }
@@ -1883,7 +1899,7 @@ $('btnLead').onclick=()=>loadLead($('leadPhone').value);
 let ACTIVE_SEEN=null;
 async function pollActive(){
   if(!S.settings.dataKey||!S.settings.repName||document.hidden) return;
-  try{ const dataUrl=(S.settings.dataUrl||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,''); const r=await fetch(dataUrl+'/active?rep='+encodeURIComponent(S.settings.repName),{headers:{'x-app-key':S.settings.dataKey}}); if(!r.ok) return; const {active}=await r.json();
+  try{ const r=await dataFetch('/active?rep='+encodeURIComponent(S.settings.repName)); if(!r.ok) return; const {active}=await r.json();
     if(active&&active.phone&&active.phone!==ACTIVE_SEEN){ ACTIVE_SEEN=active.phone; $('leadPhone').value=active.phone; toast('שיחה זוהתה בטוצ\'אט: '+(active.name||active.phone),'t-ok'); loadLead(active.phone); } }
   catch(e){}
 }
