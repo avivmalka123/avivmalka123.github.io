@@ -118,6 +118,7 @@
   .joker{grid-column:1/-1;order:-1;min-height:0;max-height:none;background:linear-gradient(135deg,var(--surface),var(--surface2))}.joker-b{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:6px 16px;min-height:92px}
   .jscore{display:flex;flex-direction:column;align-items:center;gap:2px}.ring{width:66px;height:66px;border-radius:50%;background:conic-gradient(var(--ring,var(--accent5)) calc(var(--p)*1%),var(--surface3) 0);display:grid;place-items:center;position:relative;transition:background .6s}.ring::before{content:'';position:absolute;inset:6px;border-radius:50%;background:var(--surface)}.ring b,.ring small{position:relative;z-index:1}.ring b{font-size:24px;line-height:1;font-weight:900}.ring small{font-size:10px;color:var(--text-muted)}.jlbl{font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.3px}
   .jtxt{min-width:0}.jline{font-size:15px;font-weight:700;line-height:1.4}.jline b{color:var(--purple)}.jsub{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--text-muted);margin-top:4px}.jsub .ok{color:var(--accent4)}.jsub .todo{color:var(--accent5)}
+  .jfears{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.jfear{border:1px solid rgba(220,38,38,.35);background:rgba(220,38,38,.05);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;cursor:pointer;color:var(--red)}.jfear:hover{background:rgba(220,38,38,.12)}.jfear small{font-weight:500;color:var(--text-muted);margin-right:4px}
   .jbtns{display:flex;flex-direction:column;gap:6px;min-width:190px}.jbtns .btn.lead{min-height:42px;padding:6px 10px}.jbtns .btn.lead i{font-size:18px;width:24px}.jbtns .btn.lead span{font-size:13px}
   @media(max-width:860px){.joker-b{grid-template-columns:auto 1fr;min-height:0}.jbtns{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.jbtns .btn.lead{flex:1}}
   .main-coach{grid-column:1/-1;max-height:none;min-height:0}#coach{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:12px;align-content:start;overflow:visible}#coach>*{grid-column:1;min-width:0}#coach #sayLog{grid-column:2;grid-row:1/span 6;max-height:calc(100vh - 560px);min-height:160px;margin:0}
@@ -410,7 +411,7 @@
   <section class="panel joker" id="jokerWrap">
     <div class="joker-b">
       <div class="jscore"><div class="ring" id="jRing" style="--p:0"><b id="jNum">–</b><small>/10</small></div><div class="jlbl">מוכנות לסגירה</div></div>
-      <div class="jtxt"><div class="jline"><b>שורה תחתונה:</b> <span id="jLine">כשהשיחה תתחיל, כאן תראה בכל רגע כמה הלקוח קרוב להחלטה, מה כבר נפתר ומה עוד לא.</span></div><div class="jsub"><span class="ok">✅ נפתר: <span id="jSolved">—</span></span><span class="todo">🧱 לפתור: <span id="jToSolve">—</span></span></div></div>
+      <div class="jtxt"><div class="jline"><b>שורה תחתונה:</b> <span id="jLine">כשהשיחה תתחיל, כאן תראה בכל רגע כמה הלקוח קרוב להחלטה, מה כבר נפתר ומה עוד לא.</span></div><div class="jsub"><span class="ok">✅ נפתר: <span id="jSolved">—</span></span><span class="todo">🧱 לפתור: <span id="jToSolve">—</span></span></div><div class="jfears" id="jFears"></div></div>
       <div class="jbtns" id="jBtns"></div>
     </div>
   </section>
@@ -1064,7 +1065,7 @@ function teardownAudio(){
 }
 function beginSession(demo){
   S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.custGender='unknown'; S.insights=[]; S.summary=null; S.events=[]; S.lastEventId=null;
-  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.barriers={}; renderBarriers(); S.facts={}; S.custGenderManual=false; renderFacts(); S.whispers=[]; S.lastWhisperAt=null; $('whisperBar').style.display='none'; if(!(S.ready&&S.ready.pre)) S.ready=null;
+  S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.barriers={}; renderBarriers(); S.fears=[]; renderFears(); S.facts={}; S.custGenderManual=false; renderFacts(); S.whispers=[]; S.lastWhisperAt=null; $('whisperBar').style.display='none'; if(!(S.ready&&S.ready.pre)) S.ready=null;
   setTimeout(()=>{ if(S.running&&!S.ready) setReadiness({score:1,line:'תחילת שיחה: קודם אמון ומי הוא, למה עכשיו, ולתפוס קצה חוט אחד',solved:'',to_solve:'להכיר את הלקוח ולפתוח את הכאב',next_move:'kyc'}); else if(S.running&&S.ready) renderJoker(); },300); S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
   if(!S.simActive) $('liveTag').textContent='LIVE';
@@ -1169,6 +1170,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
     speaker_labels:{type:'array',items:{type:'object',additionalProperties:false,properties:{id:{type:'string'},who:{type:'string',enum:['rep','cust']}},required:['id','who']},description:'לשורות שמסומנות "דובר לא ידוע": מי אמר אותן לפי התוכן. מערך ריק אם אין כאלה'},
     profile:{type:'string',description:'פרופיל הלקוח עד כה ב-2-3 משפטים: מי הוא, מה העסק/המצב, מה הוא ניסה, מה מגביל אותו. מצטבר על כל השיחה'},
     reasoning:{type:'object',additionalProperties:false,properties:{why_now:{type:'string',description:'למה דווקא עכשיו, מה בדיוק בתמלול הפעיל את ההמלצה, עד 25 מילים'},principle:{type:'string',description:'שם העיקרון או הכלי מהפלייבוק שעליו ההמלצה נשענת, עד 10 מילים'},goal:{type:'string',description:'מה ההמלצה מנסה להשיג בשיחה, עד 15 מילים'}},required:['why_now','principle','goal'],description:'הנימוק המלא של say_now, לצורך למידה ובקרה של המנהל'},
+    fears:{type:'array',items:{type:'object',additionalProperties:false,required:['fear','evidence','ask'],properties:{fear:{type:'string',description:'הפחד או האמונה שעוצרת, עד 8 מילים (למשל: לא אצליח טכנולוגית / עוד קורס תיאורטי / מה אשתי תגיד / לא החלטתי שזה הכיוון)'},evidence:{type:'string',description:'ציטוט קצר או רמז מהתמלול שמעיד עליו'},ask:{type:'string',description:'השאלה האחת שתוציא את הפחד החוצה, בלשון הלקוח'}}},description:'0-3 פחדים או אמונות שהלקוח לא אמר במפורש אבל מסתתרים בדבריו (שאלות על שעות ועלות = פחד מזמן/כסף; "מבולבל" = לא החליט שזה הכיוון; "רוצה פרקטיקה" = נכווה מתיאוריה; שתיקה אחרי מחיר = יכולת). רק מה שעדיין לא נפתר'},
     readiness:{type:'integer',description:'0-10: כמה הלקוח מוכן להחלטה עכשיו, לפי כל מה שנאמר בשיחה ובהיסטוריה שלו (0 = קר לגמרי, 10 = מוכן לסגור עכשיו)'},
     bottom_line:{type:'string',description:'שורה תחתונה לנציג במשפט אחד עד 18 מילים: איפה הלקוח עומד ומה הצעד הנכון עכשיו'},
     solved:{type:'string',description:'מה כבר נפתר או הוסכם עם הלקוח, עד 12 מילים, ריק אם כלום'},
@@ -1185,7 +1187,7 @@ const COACH_SCHEMA={type:'object',additionalProperties:false,
       use:{type:'string',description:'משפט או שאלה טבעיים שהנציג יכול להגיד עכשיו בעזרת הפריט, או מחרוזת ריקה'}},
       required:['type','status','text','note','use']},
       description:'תחמושת: לוח תוצאות חי של השיחה. בדיוק 8 פריטים כשיש מספיק מידע אמיתי, מדורגים מהחזק והרלוונטי ביותר כרגע לפחות. רק מה שהלקוח אמר או רמז בבירור. חסם נחשב פתור רק אם הלקוח אישר. החזר את הרשימה המלאה והמעודכנת בכל סבב'}
-  },required:['stage','temperature','customer_state','customer_gender','say_now','say_alt','angle_a','angle_b','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','readiness','bottom_line','solved','to_solve','next_move','reasoning','close_check']};
+  },required:['stage','temperature','customer_state','customer_gender','say_now','say_alt','angle_a','angle_b','why','avoid','cards','speaker_labels','profile','ammo','insight','checks','fears','readiness','bottom_line','solved','to_solve','next_move','reasoning','close_check']};
 
 function systemPrompt(){
   return `אתה מאמן מכירות בזמן אמת שיושב ליד נציג מכירות בזמן שיחת טלפון חיה עם לקוח. אתה רואה את התמלול החי ותפקידך להגיד לנציג, מיד, מה להגיד עכשיו.
@@ -1305,6 +1307,7 @@ ${transcript}
 }
 function applyCoach(o,opt={}){
   o=scrub(o);
+  if(Array.isArray(o.fears)){ S.fears=o.fears.slice(0,3); renderFears(); }
   if(o.readiness!=null) setReadiness({score:o.readiness,line:o.bottom_line,solved:o.solved,to_solve:o.to_solve,next_move:o.next_move});
   for(const sl of (o.speaker_labels||[])) setSpeaker(sl.id,sl.who,false);
   if(o.customer_gender&&o.customer_gender!=='unknown'&&!S.custGenderManual) S.custGender=o.customer_gender;
@@ -1543,7 +1546,9 @@ function snapshotCall(){
 }
 
 /* ───────────────────────── summary ───────────────────────── */
-const FAST_SUMMARY_SCHEMA={type:'object',additionalProperties:false,required:['summary','outcome','next_step','score','stage_reached','opening_feedback','lessons','one_thing','strengths','unresolved','skipped','problems','customer_facts','interest_hook'],properties:{
+const FAST_SUMMARY_SCHEMA={type:'object',additionalProperties:false,required:['summary','outcome','next_step','score','stage_reached','opening_feedback','lessons','one_thing','strengths','unresolved','skipped','problems','customer_facts','interest_hook','hidden_fears','readiness_gap'],properties:{
+  hidden_fears:{type:'array',items:{type:'object',additionalProperties:false,required:['fear','evidence','how'],properties:{fear:{type:'string',description:'הפחד / האמונה שלא נאמרו במפורש'},evidence:{type:'string',description:'הרמז בתמלול (ציטוט קצר)'},how:{type:'string',description:'איך הנציג יכול היה לזהות את זה באמצע השיחה ומה לשאול'}}},description:'הפחדים והאמונות שעצרו את הלקוח בפועל ושהנציג לא עלה עליהם'},
+  readiness_gap:{type:'string',description:'למה הנציג (ולא רק הלקוח) לא הרגיש שלם ללכת לסגירה: מה בדיוק היה חסר לו לדעת, ומה היה צריך לפתור קודם. 2-3 משפטים ישירים'},
   unresolved:{type:'array',items:{type:'string'},description:'חסמים שהלקוח העלה ולא נפתרו עד סוף השיחה (עם ציטוט קצר). ריק אם אין'},
   skipped:{type:'array',items:{type:'string'},description:'מה הנציג דילג עליו או לא שאל לפי הפלייבוק (כאב לא הועמק, מטרה לא נשאלה, לא נקבע צעד הבא…)'},
   problems:{type:'array',items:{type:'string'},description:'בעיות בשיחה: הנציג הרצה, ויכוח, הבטחות, נאום, הצגת מוצר מוקדם, ניתוק'},
@@ -1590,7 +1595,7 @@ async function runSummary(auto,snap){
       output_config:{effort:'low',format:{type:'json_schema',schema:FAST_SUMMARY_SCHEMA}},
       system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}}],
       messages:[{role:'user',content:`השיחה הסתיימה. פרופיל הלקוח: ${ctx.profile||'—'}. תחמושת: ${(ctx.ammo||[]).map((a,i)=>(i+1)+'. ['+a.status+'] '+a.type+': '+a.text+' ('+a.note+')').join(' | ')||'—'}.
-דרג את הנציג לפי הפלייבוק. ציון 10 = שיחה לפי הספר. הנציג קורא את זה מיד אחרי שניתק, אז חד וקונקרטי, אבל מלא: בשיחה ארוכה תעבור על כל החסמים שעלו ותגיד מה נפתר ומה לא, מה דילגו עליו, ואיזה עובדות אישיות הלקוח שיתף.
+דרג את הנציג לפי הפלייבוק. ציון 10 = שיחה לפי הספר. הנציג קורא את זה מיד אחרי שניתק, אז חד וקונקרטי, אבל מלא: בשיחה ארוכה תעבור על כל החסמים שעלו ותגיד מה נפתר ומה לא, מה דילגו עליו, ואיזה עובדות אישיות הלקוח שיתף. חשוב במיוחד: hidden_fears = מה באמת עצר את הלקוח גם אם לא אמר (שאלה על שעות = פחד מזמן; "מבולבל" = לא החליט שזה הכיוון; "רוצה פרקטיקה" = נכווה; שתיקה אחרי מחיר = יכולת; "אתייעץ" = לא בטוח בעצמו), עם הרמז ואיך לזהות באמצע השיחה. readiness_gap = למה הנציג לא הרגיש שלם ללכת לסגירה ומה היה צריך לפתור קודם.
 
 התמלול:
 ${shortTr}`}],
@@ -1732,6 +1737,7 @@ function renderDebrief(o,ctx){
     <div class="db-one"><div class="k">🎯 הדבר האחד לשיחה הבאה</div><div class="t">${escapeHtml(o.one_thing||'')}</div><div class="k" style="margin-top:10px">🗣️ פתיחת השיחה</div><div class="s">${escapeHtml(o.opening_feedback||'')}</div></div>
   </div>
   <div class="daykick" id="dayKick">${S.dayKick&&S.dayKick.callId===(ctx&&ctx.id)?S.dayKick.html:'<div class="k">🔥 היום שלך</div><div class="hint">המאמן מסתכל על כל השיחות שלך היום…</div>'}</div>
+  ${(o.hidden_fears||[]).length||o.readiness_gap?`<div class="openbox" style="margin-top:12px;background:rgba(124,58,237,.05);border-color:rgba(124,58,237,.35)"><b style="color:var(--purple)">🫥 מה באמת עצר את הלקוח (ולא נאמר)</b>${(o.hidden_fears||[]).map(f=>`<div style="margin:6px 0"><b style="display:inline;color:var(--text)">${escapeHtml(f.fear)}</b> <span style="color:var(--text-muted)">· רמז: "${escapeHtml(f.evidence||'')}"</span><div style="font-size:13px">👉 ${escapeHtml(f.how||'')}</div></div>`).join('')}${o.readiness_gap?`<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)"><b style="display:inline;color:var(--text)">למה לא הרגשת שלם ללכת לסגירה:</b> ${escapeHtml(o.readiness_gap)}</div>`:''}</div>`:''}
   ${((o.unresolved||[]).length||(o.skipped||[]).length||(o.problems||[]).length)?`<div class="db-grid" style="margin-top:12px">${(o.unresolved||[]).length?`<div class="openbox"><b>🧱 חסמים שלא נפתרו</b><ul>${o.unresolved.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`:''}${(o.skipped||[]).length?`<div class="openbox"><b>⏭️ מה דילגת עליו</b><ul>${o.skipped.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`:''}${(o.problems||[]).length?`<div class="openbox"><b>⚠️ בעיות בשיחה</b><ul>${o.problems.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>`:''}</div>`:''}
   <div id="fuBox">${o.followup?renderFollowup(o,ctx):'<div class="wa"><div class="k">📲 הודעת וואטסאפ ותוכנית פולואפ</div><div class="hint">המאמן כותב הודעה אישית ותוכנית המשך לפי השיחה, ההיסטוריה של הלקוח והתכנים…</div></div>'}</div>
   <div class="db-grid" style="margin-top:12px">
@@ -2080,6 +2086,8 @@ function setReadiness(r){
   $('jLine').textContent=S.ready.line||''; $('jSolved').textContent=S.ready.solved||'—'; $('jToSolve').textContent=S.ready.to_solve||'—';
   renderJoker();
 }
+function renderFears(){ const box=$('jFears'); if(!box) return; const f=S.fears||[]; box.innerHTML=f.length?'<span style="font-size:11px;font-weight:800;color:var(--text-muted);align-self:center">🫥 פחדים שלא נאמרו:</span>'+f.map((x,i)=>`<span class="jfear" title="${escapeHtml(x.evidence||'')}\n\nלחץ לשאלה שמוציאה את זה החוצה" onclick="askFear(${i})">${escapeHtml(x.fear)}<small>?</small></span>`).join(''):''; }
+window.askFear=i=>{ const f=(S.fears||[])[i]; if(!f) return; showSay(f.ask||'','','להוציא את הפחד החוצה',''); $('sayWhy').textContent='הפחד שמסתתר: '+f.fear+(f.evidence?' · רמז: "'+f.evidence+'"':''); $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'פחד סמוי: '+f.fear,text:f.ask||'',why:f.evidence||'',reasoning:null}); }catch(e){} };
 function renderJoker(){
   const box=$('jBtns'); if(!box) return; const r=S.ready||{}; const sc=r.score==null?-1:r.score; const openB=(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').concat(BARRIERS.filter(([k])=>(S.barriers||{})[k]==='open').map(([,l])=>({text:l}))); const idx=S.stageIdx||0; const next=STAGES[Math.min(STAGES.length-1,idx+1)]; const cur=STAGES[idx];
   const btn=(icon,title,sub,on,cls='')=>`<button class="btn lead ${cls}" onclick="${on}"><i>${icon}</i><span>${title}<small>${sub}</small></span></button>`;
