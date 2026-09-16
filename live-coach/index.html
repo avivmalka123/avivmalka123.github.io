@@ -1659,8 +1659,8 @@ function openCommit(onDone){
   $('commitBody').innerHTML=`<div class="cm-breath"><div class="cm-ring" id="cmRing"><b id="cmNum">3</b></div><div class="cm-txt" id="cmTxt">לפני שמרימים טלפון: שלוש נשימות. שאיפה ארבע שניות, נשיפה ארבע שניות.</div></div>
     <div class="cm-form" id="cmForm" style="display:none">
       <div class="cm-q">היום, ${new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'})}, אני מתחייב ל:</div>
-      <div class="cm-row"><label>שיחות מלאות (7+ דקות, עד הצגת המסלול)</label><input type="number" id="cmFull" min="1" max="40" value="${prev.fullCalls||8}"></div>
-      <div class="cm-row"><label>סליקות</label><input type="number" id="cmClose" min="1" max="10" value="${prev.closes||1}"></div>
+      <div class="cm-row"><label>שיחות מלאות (7+ דקות, עד הצגת המסלול)</label><input type="number" id="cmFull" min="1" max="40" placeholder="כמה?" value="${prev.day===todayKey()?prev.fullCalls:''}"></div>
+      <div class="cm-row"><label>סליקות</label><input type="number" id="cmClose" min="1" max="10" placeholder="כמה?" value="${prev.day===todayKey()?prev.closes:''}"></div>
       <div class="cm-row"><label>למה זה חשוב לי דווקא היום (משפט אחד, כנה)</label><input id="cmWhy" placeholder="למשל: כי אני רוצה לסגור את החודש ב-12 ולהוכיח לעצמי" value="${escapeHtml(prev.why||'')}"></div>
       <div class="cm-row"><label>אם-אז: כשלקוח יגיד "אני צריך לחשוב", אני…</label><input id="cmIf" placeholder='למשל: שואל "מה הדבר המרכזי שאתה עדיין מתלבט לגביו?" ושותק' value="${escapeHtml(prev.ifThen||'')}"></div>
       <div class="hint">קרא את ההתחייבות בקול, פעם אחת, לפני שאתה לוחץ. זה לא בשביל המערכת, זה בשביל המוח שלך.</div>
@@ -1668,7 +1668,7 @@ function openCommit(onDone){
     </div>`;
   const iv=setInterval(()=>{ n--; if(n<=0){ clearInterval(iv); $('cmRing').style.display='none'; $('cmTxt').textContent='יופי. עכשיו ההתחייבות.'; $('cmForm').style.display=''; $('cmFull').focus(); } else { $('cmNum').textContent=n; } },4000);
 }
-window.saveCommit=()=>{ const c={day:todayKey(),fullCalls:Math.max(1,parseInt($('cmFull').value)||8),closes:Math.max(1,parseInt($('cmClose').value)||1),why:$('cmWhy').value.trim(),ifThen:$('cmIf').value.trim(),ts:Date.now()}; S.settings.dayCommit=c; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); $('commitModal').classList.remove('show'); renderDayPill(); toast('התחייבת: '+c.fullCalls+' שיחות מלאות ו-'+c.closes+' סליקות. יאללה.','t-ok'); try{ addEvent({kind:'custom',request:'התחייבות יומית',text:`${c.fullCalls} מלאות · ${c.closes} סליקות · ${c.why}`,why:'',reasoning:null}); }catch(e){} const f=S.commitDone; S.commitDone=null; if(f) f(); };
+window.saveCommit=()=>{ const f=parseInt($('cmFull').value), c0=parseInt($('cmClose').value); if(!f||!c0){ toast('כתוב בעצמך: כמה שיחות מלאות וכמה סליקות היום','t-error'); (!f?$('cmFull'):$('cmClose')).focus(); return; } const c={day:todayKey(),fullCalls:f,closes:c0,why:$('cmWhy').value.trim(),ifThen:$('cmIf').value.trim(),ts:Date.now()}; S.settings.dayCommit=c; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); $('commitModal').classList.remove('show'); renderDayPill(); toast('התחייבת: '+c.fullCalls+' שיחות מלאות ו-'+c.closes+' סליקות. יאללה.','t-ok'); try{ addEvent({kind:'custom',request:'התחייבות יומית',text:`${c.fullCalls} מלאות · ${c.closes} סליקות · ${c.why}`,why:'',reasoning:null}); }catch(e){} const f=S.commitDone; S.commitDone=null; if(f) f(); };
 window.skipCommit=()=>{ $('commitModal').classList.remove('show'); const f=S.commitDone; S.commitDone=null; if(f) f(); };
 async function startDay(){ if(S.running||S.simActive) return toast('סיים קודם את השיחה הנוכחית','t-error'); if(!dayCommit()) return openCommit(startDayNow); return startDayNow(); }
 window.openCommit=openCommit; window.renderDebrief=renderDebrief; window.dayKick=dayKick;
