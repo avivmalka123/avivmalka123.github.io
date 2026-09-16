@@ -429,10 +429,12 @@ $('dayPick').onchange=()=>render();
 function range(){ const now=new Date(); const d=$('dayPick').value; const s=new Date(now); s.setHours(0,0,0,0); if(d==='yesterday'){ s.setDate(s.getDate()-1); const e=new Date(s); e.setDate(e.getDate()+1); return [s,e]; } if(d==='week'){ s.setDate(s.getDate()-6); } return [s,new Date(now.getTime()+3600e3)]; }
 async function fetchRows(){
   const since=new Date(); since.setDate(since.getDate()-8);
-  const LIGHT='id,rep,mode,sim,status,started_at,updated_at,ended_at,duration_sec,stage,stage_idx,stage_reached,temperature,profile,customer_state,say_now,say_a,say_b,readiness,bottom_line,to_solve,solved,barriers,facts,lead_phone,lead_name,whisper,whisper_at,ammo,checks,open_barriers,summary,summary_json,score,outcome,next_step,events';
+  const BASE='id,rep,mode,sim,status,started_at,updated_at,ended_at,duration_sec,stage,stage_idx,stage_reached,temperature,profile,customer_state,say_now,ammo,checks,open_barriers,summary,summary_json,score,outcome,next_step,events';
+  const NEW='say_a,say_b,readiness,bottom_line,to_solve,solved,barriers,facts,lead_phone,lead_name,whisper,whisper_at';
+  const LIGHT=window.__oldSchema?BASE:BASE+','+NEW;
   const url=CFG.sbUrl+'/rest/v1/calls?select='+LIGHT+'&status=neq.void&order=updated_at.desc&limit=400&started_at=gte.'+encodeURIComponent(since.toISOString());
   const r=await fetch(url,{headers:{'apikey':CFG.sbKey,...(CFG.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+CFG.sbKey}:{})}});
-  if(!r.ok){ throw new Error(r.status+' '+(await r.text()).slice(0,140)); }
+  if(!r.ok){ const t=await r.text(); if(!window.__oldSchema&&/42703/.test(t)){ window.__oldSchema=true; toast('טבלת השיחות עוד בלי העמודות החדשות. הרץ את supabase.sql ב-SQL Editor כדי לראות מוכנות, חסמים ולחישה. בינתיים עובד במצב הישן.'); return fetchRows(); } throw new Error(r.status+' '+t.slice(0,140)); }
   return r.json();
 }
 async function fetchTraining(){ try{ const r=await fetch(CFG.sbUrl+'/rest/v1/training?select=*&order=created_at.desc&limit=500',{headers:hdr()}); if(r.ok) TRAIN=await r.json(); }catch(e){} try{ const r=await fetch(CFG.sbUrl+'/rest/v1/reps?select=*',{headers:hdr()}); if(r.ok) REPS=await r.json(); }catch(e){} }
