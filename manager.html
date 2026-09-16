@@ -259,7 +259,7 @@ const STAGES=[{id:'kyc',l:'KYC'},{id:'pain',l:'כאב'},{id:'objection',l:'חס�
 const AL={pain:'כאב',gap:'פער',motive:'מניע',why_now:'למה עכשיו',cost_of_inaction:'מחיר אי-עשייה',past:'ניסיון עבר',barrier:'חסם',fear:'פחד',desire:'רצון',contradiction:'סתירה',urgency:'דחיפות',belief:'אמונה',personal:'אישי',number:'מספר',commitment:'התחייבות'};
 const SE={hot:'🔴',high:'🟠',medium:'🟡',low:'🟢',resolved:'✅'};
 const TEMP={cold:'קר ❄️',warm:'פושר 🌤️',hot:'חם 🔥'};
-const b64u={dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
+const b64u={dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/'))))),enc:o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
 let CFG={}, ROWS=[], SEL=null, pollIv=null, TRAIN=[], REPS=[], VIEW='live', SCOPE='general';
 const SCOPES={general:'כללי',opening:'פתיחת שיחה',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע רכישה',solution:'הצגת מוצר',close:'סגירה',simulation:'סימולציה',motivation:'מוטיבציה'};
 const KIND={quick:'משפט 40 השניות',auto:'המלצה בזמן אמת',listen:'ניתוח בהאזנה',custom:'משפט לפי בקשה',lead:'הובלה',ask:'מה לשאול עכשיו',insight:'תובנה',card:'כרטיס',precheck:'לבדיקה לפני סגירה',sim:'סימולציה'};
