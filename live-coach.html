@@ -558,7 +558,7 @@ function loadSettings(){
   if(s.principles&&s.principles.startsWith('PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה')) s.principles=''; // the previous built-in playbook was saved verbatim; follow the new default instead
   $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES;
   $('sRepName').value=s.repName||''; $('sRepGender').value=s.repGender||'m'; refreshKeysBanner(); $('sCustName').value=s.custName||'';
-  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sDataUrl').value=s.dataUrl||''; $('sDataKey').value=s.dataKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||40;
+  $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sDataUrl').value=s.dataUrl||'https://livecoach-data.aviv1988.workers.dev'; $('sDataKey').value=s.dataKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||40;
   syncAudioUI();
 }
 const cleanKey=v=>(v||'').replace(/[^\x21-\x7E]/g,''); // keep printable ASCII only: strips Hebrew, RTL marks, zero-width chars, spaces
@@ -1745,9 +1745,10 @@ window.leadBrief=leadBrief;
 window.useOpener=i=>{ const l=(S.leadBrief||{}).opening_lines?.[i]; if(!l) return; $('sayText').textContent=l.text; $('sayWhy').textContent=l.why||'משפט פתיחה מהמסע של הליד'; $('sayAvoid').textContent=''; $('sayReason').textContent=''; try{ addEvent({kind:'custom',request:'משפט פתיחה מהמסע',text:l.text,why:l.why||'',reasoning:null}); }catch(e){} toast('המשפט בחלון "אמור עכשיו"','t-ok'); };
 async function loadLead(phoneIn){
   const ph=String(phoneIn||'').replace(/\D/g,''); const n9=ph.slice(-9); if(n9.length!==9) return toast('הקלד טלפון ישראלי מלא (10 ספרות)','t-error');
-  if(!S.settings.dataUrl||!S.settings.dataKey){ openDrawer(); return toast('חסר שרת נתונים / מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
+  const dataUrl=(S.settings.dataUrl||'https://livecoach-data.aviv1988.workers.dev').replace(/\/+$/,'');
+  if(!S.settings.dataKey){ openDrawer(); return toast('חסר מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
   $('leadBody').innerHTML='<div class="empty">מושך את המסע של הליד מטוצ\'אט ופיירברי…</div>'; $('leadTag').textContent=''; S.lead=null; S.leadBrief=null;
-  try{ const r=await fetch(S.settings.dataUrl+'/lead?phone=0'+n9,{headers:{'x-app-key':S.settings.dataKey}}); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
+  try{ const r=await fetch(dataUrl+'/lead?phone=0'+n9,{headers:{'x-app-key':S.settings.dataKey}}); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
     S.lead=j; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); leadBrief(j); }
   catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
 }
