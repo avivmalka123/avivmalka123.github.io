@@ -136,7 +136,7 @@
   .lhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}.lhead b{font-size:15px}.chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-size:11.5px;white-space:nowrap}.chip.warn{color:var(--red);border-color:rgba(220,38,38,.35)}
   .lins2{display:grid;grid-template-columns:1fr 1fr;gap:6px}@media(max-width:860px){.lins2{grid-template-columns:1fr}}.lead-panel .linsight{padding:7px 10px;font-size:12.5px}.lead-panel .linsight b{font-size:11px}
   .lmore{font-size:12px;color:var(--text-muted)}.lmore summary{cursor:pointer;font-weight:700;padding:2px 0}.lmore .opener{font-size:13.5px;padding:8px 10px;margin-top:6px}
-  .leadbar.slim{grid-template-columns:1fr auto;max-width:520px}.leadbar.slim input{padding:4px 10px;font-size:13px}.leadbar.slim .btn{padding:4px 10px}
+  .leadbar.slim{grid-template-columns:1fr auto auto;max-width:560px}.leadbar.slim input{padding:4px 10px;font-size:13px}.leadbar.slim .btn{padding:4px 10px}
   .leadbar{display:grid;grid-template-columns:1fr auto;gap:8px}.leadbar input{font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);direction:ltr;text-align:right}
   .jstrip{display:flex;gap:6px;overflow-x:auto;padding:4px 0}.jst{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:6px 10px;min-width:104px;text-align:center;font-size:12px;opacity:0;transform:translateY(6px);animation:jpop .4s forwards;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}.jst em{font-style:normal;font-size:18px;display:block}.jst b{font-size:12px}.jst small{color:var(--text-muted);font-size:11px}.jarr{align-self:center;color:var(--text-muted);flex:none}@keyframes jpop{to{opacity:1;transform:none}}
   .lfacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}.lfact{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 8px;text-align:center}.lfact b{display:block;font-size:17px}.lfact span{font-size:11px;color:var(--text-muted)}
@@ -404,7 +404,7 @@
   <section class="panel lead-panel" id="leadWrap">
     <div class="panel-h">🧭 מהלך הליד <span class="spacer"></span><span id="leadTag" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
     <div class="panel-b" id="leadPanel">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><b style="font-size:12px;color:var(--text-muted);white-space:nowrap">🧭 מהלך הליד <span id="leadTag2"></span></b><div class="leadbar slim" style="flex:1;max-width:460px"><input id="leadPhone" placeholder="טלפון הליד (או שיזוהה לבד כשהשיחה עולה בטוצ'אט)" inputmode="tel" autocomplete="off"><button class="btn btn-primary btn-sm" id="btnLead">הכר את הליד</button></div></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><b style="font-size:12px;color:var(--text-muted);white-space:nowrap">🧭 מהלך הליד <span id="leadTag2"></span></b><div class="leadbar slim" style="flex:1;max-width:460px"><input id="leadPhone" placeholder="טלפון הליד (או שיזוהה לבד כשהשיחה עולה בטוצ'אט)" inputmode="tel" autocomplete="off"><button class="btn btn-primary btn-sm" id="btnLead">הכר את הליד</button><button class="btn btn-sm" id="btnLeadClear" title="נקה את הליד הנוכחי (למשל אם עברת ללקוח אחר)">🧹 נקה</button></div></div>
       <div id="leadBody"></div>
     </div>
   </section>
@@ -1066,6 +1066,7 @@ function teardownAudio(){
 }
 function beginSession(demo){
   S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.custGender='unknown'; S.insights=[]; S.summary=null; S.events=[]; S.lastEventId=null;
+  if(S.lead&&Date.now()-(S.leadAt||0)>240000&&!demo){ clearLead(true); log('ליד ישן נוקה בתחילת שיחה חדשה (נטען לפני יותר מ-4 דקות)'); }
   S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.barriers={}; renderBarriers(); S.fears=[]; renderFears(); S.facts={}; S.custGenderManual=false; renderFacts(); S.whispers=[]; S.lastWhisperAt=null; $('whisperBar').style.display='none'; if(!(S.ready&&S.ready.pre)) S.ready=null;
   setTimeout(()=>{ if(S.running&&!S.ready) setReadiness({score:1,line:'תחילת שיחה: קודם אמון ומי הוא, למה עכשיו, ולתפוס קצה חוט אחד',solved:'',to_solve:'להכיר את הלקוח ולפתוח את הכאב',next_move:'kyc'}); else if(S.running&&S.ready) renderJoker(); },300); S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
@@ -1590,7 +1591,7 @@ async function runSummary(auto,snap){
   else if(!snap&&S.summary){ return; }
   if(src.summarizing) return; src.summarizing=true;
   const ctx=src.ctx; ctx.leadPhone=ctx.leadPhone||(S.lead&&S.lead.phone)||null; ctx.leadName=ctx.leadName||(S.lead&&S.lead.name)||null; ctx.lead=ctx.lead||S.lead||null;
-  sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:ctx.leadName||S.settings.custName||'',phone:ctx.leadPhone||'',status:'pending'});
+  sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:ctx.leadName||S.settings.custName||'',phone:ctx.leadPhone||'',status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt}; $('btnSummary').disabled=false;
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
   const transcript=finals.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
   const shortTr=finals.slice(-260).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
@@ -1634,10 +1635,13 @@ ${shortTr}`}],
     if(!ctx.demo){ if(S.callId===ctx.id){ syncCall(sumFields); } else { syncRow({id:ctx.id,rep:ctx.rep,mode:ctx.sim?'sim':(ctx.single?'listen':'rep'),sim:ctx.sim,status:'ended',started_at:new Date(ctx.startedAt).toISOString(),updated_at:new Date().toISOString(),ended_at:new Date(ctx.endedAt).toISOString(),duration_sec:Math.round((ctx.endedAt-ctx.startedAt)/1000),stage:ctx.stage,stage_idx:ctx.stageIdx,temperature:ctx.temp,profile:ctx.profile||'',customer_state:ctx.custState||'',checks:ctx.checks,events:ctx.events,ammo:ctx.ammo,transcript:ctx.transcript,insights:ctx.insights,open_barriers:ctx.ammo.filter(a=>a.type==='barrier'&&a.status!=='resolved').length,...sumFields}); } }
     if(!ctx.demo) saveLocalHistory(o,ctx);
     S.lastSummary={o,ctx};
-    if(S.callId===ctx.id||!S.running){ S.summary=o; renderDebrief(o,ctx); $('modal').classList.add('show'); if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok'); dayKick(ctx,o); }
-    else { toast('סיכום השיחה הקודמת מוכן (ציון '+o.score+'/10). יופיע בבורד.','t-ok'); }
+    if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null;
+    const curFinals=S.lines.filter(l=>l.final&&l.text.trim()).length; const quietNow=!S.running||S.callId===ctx.id||curFinals<2||S.sumWatch===ctx.id;
+    if(S.callId===ctx.id) S.summary=o;
+    if(quietNow){ renderDebrief(o,ctx); $('modal').classList.add('show'); S.sumWatch=null; if(auto) toast('השיחה סוכמה. ציון: '+o.score+'/10','t-ok'); dayKick(ctx,o); }
+    else { toast('סיכום השיחה הקודמת מוכן (ציון '+o.score+'/10). לחץ 🏁 סיכום או על הרשימה בצד.','t-ok'); }
     if(!ctx.demo) afterCallHooks(ctx);
-  }catch(e){ const msg='שגיאה: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||e); sumQueue({id:ctx.id,status:'error'}); if(!auto){ $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } log('Claude (סיכום): '+msg.slice(0,200),'err'); }
+  }catch(e){ const msg='שגיאה: '+(e.status?e.status+' ':'')+(e.error?.error?.message||e.message||e); sumQueue({id:ctx.id,status:'error'}); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; S.lastFailedSnap=src; if(!auto){ $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } log('Claude (סיכום): '+msg.slice(0,200),'err'); }
 }
 /* ── today's summaries list (side panel, all day) ── */
 function sumQueue(e){ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const today=todayKey(); q=q.filter(x=>new Date(x.ts||0).toDateString()===today); const i=q.findIndex(x=>x.id===e.id); if(i>=0) q[i]={...q[i],...e}; else q.unshift({ts:Date.now(),...e}); if(e.o&&e.o.crm_text) e.o.crm_text=String(e.o.crm_text).slice(0,6000); try{ localStorage.setItem('lc_sumq',JSON.stringify(q.slice(0,60))); }catch(x){} renderSumList(); }
@@ -1729,12 +1733,14 @@ function renderMorning(out){ const body=$('morningBody'); const items=(out.items
   ${groups.map(g=>{ const L=items.filter(x=>x.group===g); if(!L.length) return ''; return `<h3 style="margin:14px 0 6px;font-size:14px">${g==='פולואפ להיום'?'📅':g==='לבדוק הבוקר'?'🌅':g==='איפה זה עומד'?'🔍':'🧊'} ${g} (${L.length})</h3><div class="mrn">${L.map((x,i)=>{ const id='mm_'+x.phone.replace(/\D/g,''); return `<div class="mcard p${Math.min(3,Math.max(1,Math.ceil(x.priority/4)))}"><div class="h"><b>${escapeHtml(x.name||x.phone)}</b><span class="chip">${escapeHtml(x.phone)}</span><span class="chip">${escapeHtml(x.next_move)} · ${escapeHtml(x.time||'')}</span><a href="#" class="chip" onclick="$('leadPhone').value='${escapeHtml(x.phone)}';loadLead('${escapeHtml(x.phone)}');$('morningModal').classList.remove('show');return false">🧭 מסע</a></div><div class="why"><b>למה:</b> ${escapeHtml(x.why)} · <b>מצב:</b> ${escapeHtml(x.status)}</div><div class="msg" id="${id}">${escapeHtml(x.message)}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="waOpen('${escapeHtml(x.phone)}','${id}')">🟢 וואטסאפ</button><button class="btn btn-sm" onclick="copyText('${id}')">📋 העתק</button></div></div>`; }).join('')}</div>`; }).join('')}
   <div style="display:flex;gap:8px;justify-content:space-between;margin-top:14px"><button class="btn" onclick="S_morning_retry()">🔄 חשב מחדש</button><button class="btn btn-primary" onclick="closeModals()">יאללה, מתחילים</button></div>`; }
 try{ const mm=JSON.parse(localStorage.getItem('lc_morning')||'null'); if(mm&&mm.day===todayKey()) S.morning=mm; }catch(e){}
-window.retrySummary=()=>{ S.summary=null; runSummary(false); };
+window.retrySummary=()=>{ S.summary=null; if(S.lastFailedSnap){ S.lastFailedSnap.summarizing=false; runSummary(false,S.lastFailedSnap); } else runSummary(false); };
 $('btnSummary').onclick=()=>{
-  if(S.summary){ renderDebrief(S.summary,(S.lastSummary&&S.lastSummary.o===S.summary)?S.lastSummary.ctx:null); $('modal').classList.add('show'); }
-  else if(S.lines.some(l=>l.final&&l.text.trim())) runSummary(false);
-  else if(S.lastSummary){ renderDebrief(S.lastSummary.o,S.lastSummary.ctx); $('modal').classList.add('show'); toast('זה סיכום השיחה הקודמת','t-ok'); }
-  else toast('אין עדיין שיחה לסכם','t-error');
+  const cur=S.lines.filter(l=>l.final&&l.text.trim()).length;
+  if(S.sumPending){ setModalTitle('🏁 סיום שיחה: תובנות וציון'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="empty">⏳ מכין את הסיכום של השיחה מ-'+new Date(S.sumPending.startedAt).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+'… (5-15 שניות, יופיע כאן אוטומטית)</div>'; S.sumWatch=S.sumPending.id; return; }
+  if(S.summary&&S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===S.callId){ renderDebrief(S.summary,S.lastSummary.ctx); $('modal').classList.add('show'); return; }
+  if(S.running&&cur>=6){ runSummary(false); return; }
+  if(S.lastSummary){ renderDebrief(S.lastSummary.o,S.lastSummary.ctx); $('modal').classList.add('show'); if(S.running) toast('זה סיכום השיחה הקודמת. השיחה הנוכחית תסוכם כשתסתיים.','t-ok'); return; }
+  if(cur) runSummary(false); else toast('אין עדיין שיחה לסכם','t-error');
 };
 $('btnCloseModal').onclick=()=>$('modal').classList.remove('show');
 $('btnCopy').onclick=()=>{navigator.clipboard.writeText((S.summary&&S.summary.crm_text)||$('modalBody').textContent);toast('הסיכום ל-CRM הועתק','t-ok')};
@@ -2149,15 +2155,18 @@ async function loadLead(phoneIn){
   if(!S.settings.dataKey){ openDrawer(); return toast('חסר מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
   $('leadBody').innerHTML='<div class="empty">מושך את המסע של הליד מטוצ\'אט ופיירברי…</div>'; $('leadTag').textContent=''; S.lead=null; S.leadBrief=null;
   try{ const r=await dataFetch('/lead?phone=0'+n9); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
-    S.lead=j; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
+    S.lead=j; S.leadAt=Date.now(); S.leadAuto=!!S.leadLoadingAuto; S.leadLoadingAuto=false; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
   catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
 }
 $('btnLead').onclick=()=>loadLead($('leadPhone').value);
+function clearLead(silent){ S.lead=null; S.leadBrief=null; S.leadAt=0; S.leadAuto=false; ACTIVE_SEEN=null; $('leadPhone').value=''; $('leadBody').innerHTML=''; $('leadTag').textContent=''; const t2=$('leadTag2'); if(t2) t2.textContent=''; if(!silent) toast('הליד נוקה. הקלד טלפון או חכה לזיהוי מטוצ\'אט.','t-ok'); }
+$('btnLeadClear').onclick=()=>clearLead(false); window.clearLead=clearLead;
 let ACTIVE_SEEN=null;
 async function pollActive(){
   if(!S.settings.dataKey||!S.settings.repName||document.hidden) return;
   try{ const r=await dataFetch('/active?rep='+encodeURIComponent(S.settings.repName)); if(!r.ok) return; const {active}=await r.json();
-    if(active&&active.phone&&active.phone!==ACTIVE_SEEN){ ACTIVE_SEEN=active.phone; $('leadPhone').value=active.phone; toast('שיחה זוהתה בטוצ\'אט: '+(active.name||active.phone),'t-ok'); loadLead(active.phone); } }
+    if(active&&active.phone&&active.phone!==ACTIVE_SEEN){ ACTIVE_SEEN=active.phone; $('leadPhone').value=active.phone; toast('שיחה זוהתה בטוצ\'אט: '+(active.name||active.phone),'t-ok'); S.leadLoadingAuto=true; loadLead(active.phone); }
+    if(!active&&S.leadAuto&&S.lead&&!S.running&&Date.now()-(S.leadAt||0)>120000){ clearLead(true); log('השיחה בטוצ\'אט הסתיימה, הליד נוקה'); } }
   catch(e){}
 }
 setInterval(pollActive,5000); $('leadPhone').addEventListener('keydown',e=>{ if(e.key==='Enter') loadLead(e.target.value); });
