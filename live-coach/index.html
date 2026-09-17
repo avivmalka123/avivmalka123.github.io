@@ -505,7 +505,7 @@
   <button class="btn btn-primary" id="btnSave" style="width:100%;justify-content:center;margin-top:8px">שמור הגדרות</button>
 </aside>
 
-<div class="modal" id="morningModal"><div class="box box-wide"><div class="bh">☀️ היום שלך: פולואפים ולידים <span class="spacer"></span><button class="btn btn-sm" onclick="$('morningModal').classList.remove('show')">✕</button></div><div class="bb" id="morningBody"></div></div></div>
+<div class="modal" id="morningModal"><div class="box box-wide"><div class="bh">☀️ היום שלך: פולואפים ולידים <span class="spacer"></span><button class="btn btn-sm" onclick="closeModals()">✕</button></div><div class="bb" id="morningBody"></div></div></div>
 <div class="modal" id="commitModal"><div class="box"><div class="bh">✊ ההתחייבות של היום</div><div class="bb" id="commitBody"></div></div></div>
 <div class="modal" id="modal"><div class="box box-wide"><div class="bh">🏁 סיום שיחה: תובנות וציון <span><button class="btn btn-sm" id="btnCopy">העתק</button> <button class="btn btn-sm" id="btnCloseModal">✕</button></span></div><div class="bb" id="modalBody"></div></div></div>
 <div class="toast" id="toast"></div>
@@ -1674,7 +1674,7 @@ function renderFollowup(o,ctx){ const fu=o.followup; const ph=(ctx&&ctx.leadPhon
 /* ── end-of-day review ── */
 const REVIEW_SCHEMA={type:'object',additionalProperties:false,required:['headline','day_score','how_was','wins','work_on','tomorrow','note'],properties:{headline:{type:'string',description:'כותרת ענקית עד 12 מילים'},day_score:{type:'integer',description:'1-10 איך היה היום מול ההתחייבות והביצוע'},how_was:{type:'string',description:'3-4 משפטים: מה קרה היום, בכנות'},wins:{type:'array',items:{type:'string'},description:'2-3 דברים שעבדו היום, עם דוגמה מהשיחות'},work_on:{type:'array',items:{type:'string'},description:'3 דברים לעבוד עליהם, כל אחד עם הכלי מהפלייבוק'},tomorrow:{type:'array',items:{type:'string'},description:'3 פעולות קונקרטיות למחר (כולל מי לחזור אליו)'},note:{type:'string',description:'משפט אישי אחד, חם וישיר, בלי קלישאות'}}};
 async function dayReview(forDay){ // forDay: null/false = today, or a date string (yesterday's pending review)
-  const day=forDay||todayKey(); const L=localHistory().filter(x=>new Date(x.ts).toDateString()===day&&x.mode!=='sim'); const m=$('modal'); m.classList.add('show'); $('modalBody').innerHTML='<div class="empty">המאמן עובר על כל השיחות של '+(forDay?'אתמול':'היום')+'…</div>';
+  const day=forDay||todayKey(); const L=localHistory().filter(x=>new Date(x.ts).toDateString()===day&&x.mode!=='sim'); const m=$('modal'); m.classList.add('show'); setModalTitle('🌙 סיכום היום'); $('modalBody').innerHTML='<div class="empty">המאמן עובר על כל השיחות של '+(forDay?'אתמול':'היום')+'…</div>';
   if(!L.length){ $('modalBody').innerHTML='<div class="empty">אין שיחות '+(forDay?'מאתמול':'מהיום')+' לסכם.</div>'; return; }
   const c=(S.settings.dayCommit&&S.settings.dayCommit.day===day)?S.settings.dayCommit:null; const st=dayStats(); const rep=S.settings.repName||'הנציג';
   try{
@@ -1686,7 +1686,7 @@ async function dayReview(forDay){ // forDay: null/false = today, or a date strin
     renderReview(r);
   }catch(e){ $('modalBody').innerHTML='<div class="empty">'+escapeHtml(e.message||e)+'</div>'; }
 }
-function renderReview(r){ const isPast=r.day!==todayKey(); $('modalBody').innerHTML=`<div class="rv"><div class="big">${escapeHtml(r.headline)}</div><div class="db-score" style="display:flex;gap:14px;align-items:center"><div class="big" style="font-size:40px">${r.day_score}<small style="font-size:14px">/10</small></div><div style="font-size:15px;line-height:1.5">${escapeHtml(r.how_was)}</div></div>
+function renderReview(r){ const isPast=r.day!==todayKey(); setModalTitle(isPast?'🌙 סיכום היום של אתמול':'🌙 סיכום היום'); $('modalBody').innerHTML=`<div class="rv"><div class="big">${escapeHtml(r.headline)}</div><div class="db-score" style="display:flex;gap:14px;align-items:center"><div class="big" style="font-size:40px">${r.day_score}<small style="font-size:14px">/10</small></div><div style="font-size:15px;line-height:1.5">${escapeHtml(r.how_was)}</div></div>
   <div class="grid"><div class="box"><b>💪 מה עבד</b><ul>${(r.wins||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div><div class="box"><b>🔧 לעבוד על</b><ul>${(r.work_on||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div></div>
   <div class="box"><b>⚡ ${isPast?'היום':'מחר'}</b><ul>${(r.tomorrow||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div>
   <div class="dk-kick">${escapeHtml(r.note)}</div>
@@ -1716,14 +1716,18 @@ async function openMorning(){
     const out=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); out.day=todayKey(); out.total=d.total; S.morning=out; try{ localStorage.setItem('lc_morning',JSON.stringify(out)); }catch(e){}
     if(sbReady()){ fetch(S.settings.sbUrl+'/rest/v1/morning_plans?on_conflict=rep,day',{method:'POST',headers:sbHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify({rep,day:new Date().toISOString().slice(0,10),data:out,updated_at:new Date().toISOString()})}).catch(()=>{}); }
     renderMorning(out);
-  }catch(e){ body.innerHTML='<div class="empty">'+escapeHtml(e.message||e)+'<br><button class="btn" style="margin-top:8px" onclick="S_morning_retry()">נסה שוב</button></div>'; }
+  }catch(e){ body.innerHTML='<div class="empty">'+escapeHtml(e.message||e)+'<br><div style="display:flex;gap:8px;justify-content:center;margin-top:8px"><button class="btn" onclick="S_morning_retry()">נסה שוב</button><button class="btn" onclick="closeModals()">סגור</button></div></div>'; }
 }
 window.S_morning_retry=()=>{ S.morning=null; openMorning(); };
-window.openMorning=openMorning; window.renderSumList=renderSumList; window.sumQueue=sumQueue;
+window.closeModals=()=>{ for(const id of ['modal','morningModal']) $(id).classList.remove('show'); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('commitModal').classList.contains('show')) return; window.closeModals(); } });
+for(const id of ['modal','morningModal']) $(id).addEventListener('click',e=>{ if(e.target===$(id)) $(id).classList.remove('show'); });
+function setModalTitle(t){ const bh=document.querySelector('#modal .bh'); if(bh&&bh.firstChild&&bh.firstChild.nodeType===3) bh.firstChild.textContent=t+' '; }
+window.openMorning=openMorning; window.renderSumList=renderSumList; window.sumQueue=sumQueue; window.dayReview=dayReview; window.openDrawer=openDrawer; window.$=$;
 function renderMorning(out){ const body=$('morningBody'); const items=(out.items||[]).slice().sort((a,b)=>a.priority-b.priority); const groups=['פולואפ להיום','לבדוק הבוקר','איפה זה עומד','ליד שמחכה'];
   body.innerHTML=`<div class="dk-head" style="font-size:20px">${escapeHtml(out.headline||'')}</div><div class="hint" style="margin-bottom:10px">${out.total!=null?out.total+' פולואפים פתוחים בטוצ\'אט · ':''}${items.length} מובילים להיום · ההודעות מוכנות להעתקה או לפתיחה בוואטסאפ</div>
   ${groups.map(g=>{ const L=items.filter(x=>x.group===g); if(!L.length) return ''; return `<h3 style="margin:14px 0 6px;font-size:14px">${g==='פולואפ להיום'?'📅':g==='לבדוק הבוקר'?'🌅':g==='איפה זה עומד'?'🔍':'🧊'} ${g} (${L.length})</h3><div class="mrn">${L.map((x,i)=>{ const id='mm_'+x.phone.replace(/\D/g,''); return `<div class="mcard p${Math.min(3,Math.max(1,Math.ceil(x.priority/4)))}"><div class="h"><b>${escapeHtml(x.name||x.phone)}</b><span class="chip">${escapeHtml(x.phone)}</span><span class="chip">${escapeHtml(x.next_move)} · ${escapeHtml(x.time||'')}</span><a href="#" class="chip" onclick="$('leadPhone').value='${escapeHtml(x.phone)}';loadLead('${escapeHtml(x.phone)}');$('morningModal').classList.remove('show');return false">🧭 מסע</a></div><div class="why"><b>למה:</b> ${escapeHtml(x.why)} · <b>מצב:</b> ${escapeHtml(x.status)}</div><div class="msg" id="${id}">${escapeHtml(x.message)}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="waOpen('${escapeHtml(x.phone)}','${id}')">🟢 וואטסאפ</button><button class="btn btn-sm" onclick="copyText('${id}')">📋 העתק</button></div></div>`; }).join('')}</div>`; }).join('')}
-  <div style="display:flex;gap:8px;justify-content:space-between;margin-top:14px"><button class="btn" onclick="S_morning_retry()">🔄 חשב מחדש</button><button class="btn btn-primary" onclick="$('morningModal').classList.remove('show')">יאללה, מתחילים</button></div>`; }
+  <div style="display:flex;gap:8px;justify-content:space-between;margin-top:14px"><button class="btn" onclick="S_morning_retry()">🔄 חשב מחדש</button><button class="btn btn-primary" onclick="closeModals()">יאללה, מתחילים</button></div>`; }
 try{ const mm=JSON.parse(localStorage.getItem('lc_morning')||'null'); if(mm&&mm.day===todayKey()) S.morning=mm; }catch(e){}
 window.retrySummary=()=>{ S.summary=null; runSummary(false); };
 $('btnSummary').onclick=()=>{
@@ -1735,7 +1739,7 @@ $('btnSummary').onclick=()=>{
 $('btnCloseModal').onclick=()=>$('modal').classList.remove('show');
 $('btnCopy').onclick=()=>{navigator.clipboard.writeText((S.summary&&S.summary.crm_text)||$('modalBody').textContent);toast('הסיכום ל-CRM הועתק','t-ok')};
 const PARAM_LABEL={opening:'פתיחה',kyc:'KYC',pain:'כאב',objection:'חסם',goal:'מטרה',motive:'מניע',solution:'הצגה',close:'סגירה',talk_ratio:'יחס דיבור'};
-function renderDebrief(o,ctx){
+function renderDebrief(o,ctx){ setModalTitle('🏁 סיום שיחה: תובנות וציון');
   const sc=o.scores||{}; const dur=Math.round((((ctx&&ctx.endedAt)||S.endedAt||Date.now())-((ctx&&ctx.startedAt)||S.startedAt))/1000);
   const bar=(k)=>{const v=sc[k]||0; const c=v>=8?'#10b981':v>=6?'#f5b342':'#ef4444'; return `<div class="pm"><div class="pl">${PARAM_LABEL[k]}</div><div class="pb"><i style="width:${v*10}%;background:${c}"></i></div><div class="pv">${v}</div></div>`};
   $('modalBody').innerHTML=`
