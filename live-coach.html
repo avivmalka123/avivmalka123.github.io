@@ -379,6 +379,7 @@
   <section class="panel main-coach" id="coachWrap">
     <div class="panel-h">🧠 מה להגיד עכשיו <span class="spacer"></span><span id="aiLatency" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
     <div class="panel-b" id="coach">
+      <div class="wbar" id="audioWarn" style="display:none;background:rgba(220,38,38,.08);border-color:rgba(220,38,38,.5);font-size:14px;line-height:1.5;display:none"></div>
       <div class="fchips" id="fchips"></div>
       <div class="wbar" id="whisperBar" style="display:none"></div>
       <div class="saynow" id="saynow">
@@ -746,7 +747,7 @@ function upsertLine(id,who,text,final){
   ln.text=text; ln.final=final;
   if(final&&ln.who==='rep'&&isEcho(ln)){ const el=document.getElementById('ln_'+id); if(el) el.remove(); S.lines=S.lines.filter(l=>l.id!==id); log('סונן הד: הלקוח נקלט גם במיקרופון'); return; }
   renderLine(ln);
-  if(final && text.trim()){ $('btnSummary').disabled=false; onFinalLine(ln); renderIdBar(); }
+  if(final && text.trim()){ $('btnSummary').disabled=false; (S.diag=S.diag||{stt:{},peak:{}}).lastLineAt=Date.now(); hideAudioWarn(); onFinalLine(ln); renderIdBar(); }
 }
 // Trigger policy: the coach speaks when the CUSTOMER finishes a turn (quiet gap, or the rep starts talking). Rep lines alone never trigger.
 function onFinalLine(ln){
@@ -858,7 +859,7 @@ function openStt(who){
           /model/i.test(code+msg)?'מודל התמלול לא זמין בחשבון שלך. נסה מודל אחר בהגדרות.':msg.slice(0,140);
         log('OpenAI ('+label+'): '+code+' — '+friendly,'err');toast('שגיאת תמלול ('+label+'): '+friendly,'t-error');
         if(!settled){settled=true;reject(new Error(friendly))}return}
-      if(m.type==='transcription_session.updated'||m.type==='session.updated'){if(!settled){settled=true;ws.openedAt=Date.now();setPill(pill,S.day&&!S.running?'busy':'on');log('OpenAI ('+label+'): מוכן לתמלול','ok');resolve(ws)}}
+      if(m.type==='transcription_session.updated'||m.type==='session.updated'){diagSet('stt',who,'ok');if(!settled){settled=true;ws.openedAt=Date.now();setPill(pill,S.day&&!S.running?'busy':'on');log('OpenAI ('+label+'): מוכן לתמלול','ok');resolve(ws)}}
       if(m.type==='input_audio_buffer.speech_started'||/transcription\.(delta|completed)$/.test(m.type)){ S.act[who]=Date.now(); if(S.day&&!S.running&&!S.autoStarting&&who==='cust'&&m.type==='input_audio_buffer.speech_started'){ autoStartCall(); } }
       if(m.type==='input_audio_buffer.speech_started') log('OpenAI ('+label+'): זוהה דיבור');
       const spk=S.single?'unk':who;
@@ -866,8 +867,8 @@ function openStt(who){
       if(m.type==='conversation.item.input_audio_transcription.completed'){const id=who+'_'+m.item_id;const t=(m.transcript||'').trim();const ln=S.lines.find(l=>l.id===id);if(t)upsertLine(id,ln?ln.who:spk,t,true);else{const el=document.getElementById('ln_'+id);if(el)el.remove();S.lines=S.lines.filter(l=>l.id!==id)}}
       if(m.type==='input_audio_buffer.speech_started'){const id=who+'_'+m.item_id;if(!S.lines.find(l=>l.id===id))upsertLine(id,spk,'…',false); if(who==='rep'&&!S.single&&S.analysisPending){clearTimeout(S.custQuietTimer);scheduleAnalysis()}}
     };
-    ws.onerror=e=>{setPill(pill,'err');log('OpenAI ('+label+'): החיבור נכשל. מפתח OpenAI לא תקין או חסום','err');if(!settled){settled=true;reject(new Error('לא ניתן להתחבר ל-OpenAI Realtime. בדוק את מפתח OpenAI.'))}};
-    ws.onclose=ev=>{setPill(pill,S.day?'busy':'');console.warn('[stt '+who+'] closed',ev.code,ev.reason);const why=ev.reason?' — '+ev.reason:'';if(!settled){settled=true;reject(new Error('OpenAI סגר את החיבור (קוד '+ev.code+why+'). בדוק שמפתח OpenAI תקין ושיש יתרה בחשבון.'))}
+    ws.onerror=e=>{diagSet('stt',who,'error');setPill(pill,'err');log('OpenAI ('+label+'): החיבור נכשל. מפתח OpenAI לא תקין או חסום','err');if(!settled){settled=true;reject(new Error('לא ניתן להתחבר ל-OpenAI Realtime. בדוק את מפתח OpenAI.'))}};
+    ws.onclose=ev=>{diagSet('stt',who,ev.code===3000?'invalid_key':'closed_'+ev.code);setPill(pill,S.day?'busy':'');console.warn('[stt '+who+'] closed',ev.code,ev.reason);const why=ev.reason?' — '+ev.reason:'';if(!settled){settled=true;reject(new Error('OpenAI סגר את החיבור (קוד '+ev.code+why+'). בדוק שמפתח OpenAI תקין ושיש יתרה בחשבון.'))}
       if(S.day&&S.ws[who]===ws){ S.ws[who]=null; log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+'), מתחבר מחדש…'); setTimeout(()=>{ if(S.day&&!S.ws[who]) openStt(who).then(w=>{S.ws[who]=w}).catch(()=>{}); },1500); return; }
       if(S.running&&!S.demo){log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+why+')','err');toast('חיבור התמלול ('+label+') נסגר','t-error')}};
   });
@@ -989,7 +990,7 @@ async function pipe(stream,who,ws,meterId){
   const {node,sink}=makeCapture(ctx,(pcm,peak)=>{
     if(peak>0.035){ S.act[who]=Date.now(); if(who==='cust'&&peak>0.06){ S.burst.push(Date.now()); if(S.burst.length>60) S.burst.shift(); } }
     tick();
-    (S.lastPeak=S.lastPeak||{})[who]=peak; if(peak>0.012) S.lastAudible=Date.now();
+    (S.lastPeak=S.lastPeak||{})[who]=peak; if(peak>0.012) S.lastAudible=Date.now(); { const d=(S.diag=S.diag||{stt:{},peak:{}}); d.peak[who]=Math.max(peak,(d.peak[who]||0)*0.995); }
     const idleQuiet=S.day&&!S.running&&Date.now()-(S.lastAudible||0)>1500;
     const w0=S.ws[who]; if(w0&&w0.readyState===1&&!idleQuiet){ if(w0.sendAudio) w0.sendAudio(pcm); else w0.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); }
     const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000&&S.running){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
@@ -1088,6 +1089,7 @@ function stopCall(){
   if(S.day&&nFinal<2){ syncCall({status:'void',ended_at:new Date().toISOString()}); log('לא זוהה דיבור אמיתי (צלצול/רעש), השיחה בוטלה'); }
   else syncCall({status:'ended',ended_at:new Date().toISOString()});
   if(nFinal>=6&&S.settings.anthropic){ const snap=snapshotCall(); setTimeout(()=>runSummary(true,snap),1500); }
+  else if(!S.demo&&!S.simActive&&S.settings.anthropic&&(Date.now()-S.startedAt)>=45000){ const snap=snapshotCall(); const ph=(S.lead&&S.lead.phone)||ACTIVE_SEEN||S.lastActivePhone||''; if(ph){ snap.ctx.leadPhone=snap.ctx.leadPhone||ph; awaitTochatSummary(snap,ph); } else log('אין תמלול ואין טלפון מזוהה: לא ניתן להביא סיכום מטוצ׳אט לשיחה הזו','err'); }
   $('btnStart').style.display=S.day?'none':''; $('btnStop').style.display='none'; $('btnDemo').disabled=false; $('liveTag').style.display='none'; $('timer').classList.remove('live');
   if(!S.day){ setPill('pRep','');setPill('pCust',''); } else { setPill('pRep','busy'); setPill('pCust','busy'); $('dayState').textContent='🟢 ממתין לשיחה הבאה…'; }
   if(S.simActive){ S.simActive=false; $('simState').textContent='הסימולציה הסתיימה. הסיכום ייפתח מיד.'; $('btnSimStart').style.display=''; $('btnSimStop').style.display='none'; }
@@ -1400,6 +1402,7 @@ function callRow(extra){
     started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round(((S.running?Date.now():(S.endedAt||Date.now()))-S.startedAt)/1000), sim,
     stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
     checks:S.checks||{}, events:S.events||[], ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length,
+    diag:(d=>({stt:d.stt||{},peak:{rep:+((d.peak||{}).rep||0).toFixed(3),cust:+((d.peak||{}).cust||0).toFixed(3)},lines:finals.length,last_line_at:d.lastLineAt||null,ver:'0917'}))(S.diag||{}),
     say_a:$('sayText').textContent||'', say_b:($('sayTextB')&&$('sayTextB').textContent)||'', readiness:(S.ready&&S.ready.score!=null)?S.ready.score:null, bottom_line:(S.ready&&S.ready.line)||'', solved:(S.ready&&S.ready.solved)||'', to_solve:(S.ready&&S.ready.to_solve)||'', barriers:S.barriers||{}, facts:S.facts||{}, lead_phone:(S.lead&&S.lead.phone)||null, lead_name:(S.lead&&S.lead.name)||null, ...extra};
 }
 async function syncRow(row){
@@ -1486,7 +1489,21 @@ function recentTranscript(sec=180,minLines=6,maxLines=40){
 }
 const sayEveryMs=()=>(parseInt(S.settings.sayEverySec)||60)*1000;
 const coachModel=()=>S.settings.coachModel||'claude-sonnet-5';
-function quickTick(now){
+function diagSet(k,who,v){ const d=(S.diag=S.diag||{stt:{},peak:{}}); d[k]=d[k]||{}; d[k][who]=v; }
+function hideAudioWarn(){ const b=$('audioWarn'); if(b&&b.style.display!=='none'){ b.style.display='none'; } }
+function audioWatch(now){
+  if(!S.running||S.demo||S.simActive) return; const d=S.diag||{stt:{},peak:{}}; const finals=S.lines.filter(l=>l.final&&l.text.trim()).length; if(finals) return;
+  if(now-S.startedAt<25000) return; const b=$('audioWarn'); if(!b||b.style.display!=='none') return;
+  const stt=d.stt||{}; const pk=d.peak||{}; let why,fix;
+  if(stt.cust==='invalid_key'||stt.rep==='invalid_key'){ why='מפתח ה-OpenAI בדפדפן הזה לא תקין, ולכן אין תמלול'; fix='בקש מהמנהל לינק צוות חדש ופתח אותו בכרום'; }
+  else if(stt.cust==='error'||stt.cust==='closed_4000'||!stt.cust){ why='חיבור התמלול לא נפתח'; fix='לחץ "סיים יום" ואז "התחל יום" מחדש. אם זה חוזר: לינק צוות חדש'; }
+  else if((pk.cust||0)<0.01&&(pk.rep||0)<0.01){ why='לא נקלט שמע בכלל: לא מהטאב ולא מהמיקרופון'; fix='לחץ "התחל יום" מחדש, בחר Chrome Tab ← הטאב של טוצ׳אט, וסמן "Also share tab audio"'; }
+  else if((pk.cust||0)<0.01){ why='המיקרופון נקלט, אבל אין שמע מהטאב של טוצ׳אט'; fix='לחץ "התחל יום" מחדש ובחר את הטאב של טוצ׳אט עם "Also share tab audio" מסומן'; }
+  else { why='השמע נקלט אבל התמלול לא מחזיר משפטים'; fix='בדוק אינטרנט, או "סיים יום" ו"התחל יום" מחדש'; }
+  b.style.display=''; b.innerHTML=`<b>⚠️ המאמן לא שומע את השיחה.</b> ${escapeHtml(why)}.<br><b>מה לעשות:</b> ${escapeHtml(fix)}. <span style="color:var(--text-muted)">(בלי תמלול אין "אמור עכשיו" ואין סיכום מהתמלול; הסיכום יגיע מטוצ׳אט אחרי השיחה)</span>`;
+  log('אזהרת שמע: '+why,'err');
+}
+function quickTick(now){ audioWatch(now);
   if(!S.running||!S.settings.anthropic) return;
   if(S.quickInFlight){ if(now-(S.quickStartedAt||now)>35000){ S.quickInFlight=false; log('המשפט התקופתי נתקע 35 שניות, מאפס','err'); } else return; }
   const since=now-(S.lastQuickAt||S.startedAt); if(since<sayEveryMs()) return;
@@ -1586,15 +1603,15 @@ const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
 async function runSummary(auto,snap){
   // snap = state frozen at call end. In day mode the next call auto-starts inside the 1.5s delay and used to wipe
   // S.lines / swap S.callId under this function, so the ended call got no summary or the wrong call got it.
-  const src=snap||snapshotCall(); const finals=src.lines; if(!finals.length) return;
+  const src=snap||snapshotCall(); const finals=src.lines; if(!finals.length&&!src.text) return;
   if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום…'; }
   else if(!snap&&S.summary){ return; }
   if(src.summarizing) return; src.summarizing=true;
   const ctx=src.ctx; ctx.leadPhone=ctx.leadPhone||(S.lead&&S.lead.phone)||null; ctx.leadName=ctx.leadName||(S.lead&&S.lead.name)||null; ctx.lead=ctx.lead||S.lead||null;
   sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:ctx.leadName||S.settings.custName||'',phone:ctx.leadPhone||'',status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt}; $('btnSummary').disabled=false;
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
-  const transcript=finals.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
-  const shortTr=finals.slice(-260).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
+  const transcript=src.text?`(לא היה תמלול חי בשיחה הזו. זהו סיכום ה-AI של טוצ׳אט על השיחה${src.meta&&src.meta.dur?', משך '+src.meta.dur:''}. דרג לפי מה שאפשר להסיק ממנו, וציין בשדות מה לא ניתן לדעת בלי תמלול.)\n${src.text}`:finals.map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
+  const shortTr=src.text?transcript:finals.slice(-260).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?cust+' (לקוח)':'?'}]: ${l.text}`).join('\n');
   const t0=performance.now();
   try{
     // phase 1 (fast, ~5-8s): the debrief the rep reads. phase 2 (background): parameter scores, quotes, CRM text.
@@ -1646,8 +1663,9 @@ ${shortTr}`}],
 /* ── today's summaries list (side panel, all day) ── */
 function sumQueue(e){ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const today=todayKey(); q=q.filter(x=>new Date(x.ts||0).toDateString()===today); const i=q.findIndex(x=>x.id===e.id); if(i>=0) q[i]={...q[i],...e}; else q.unshift({ts:Date.now(),...e}); if(e.o&&e.o.crm_text) e.o.crm_text=String(e.o.crm_text).slice(0,6000); try{ localStorage.setItem('lc_sumq',JSON.stringify(q.slice(0,60))); }catch(x){} renderSumList(); }
 function renderSumList(){ const box=$('sumList'); if(!box) return; let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} q=q.filter(x=>new Date(x.ts||0).toDateString()===todayKey());
-  box.innerHTML='<div class="k">📚 הסיכומים שלי היום ('+q.length+')</div>'+(q.length?q.map(x=>`<div class="sumit ${x.status}" onclick="openSum('${x.id}')"><div class="sc">${x.status==='pending'?'⏳':x.status==='error'?'❌':(x.score??'—')}</div><div><div class="nm">${escapeHtml(x.name||x.phone||'ליד')}</div><div class="st">${new Date(x.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} · ${Math.floor((x.dur||0)/60)} דק' · ${x.status==='pending'?'מכין סיכום…':x.status==='error'?'נכשל, לחץ לניסיון חוזר':({closed:'✅ נסגר',follow_up:'📅 המשך',lost:'❌ לא נסגר'}[x.outcome]||'')}</div></div><div>${x.status==='ready'?'›':''}</div></div>`).join(''):'<div class="hint">אחרי כל שיחה יופיע כאן סיכום. לחיצה פותחת אותו.</div>'); }
-window.openSum=id=>{ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const e=q.find(x=>x.id===id); if(!e) return; if(e.status==='error'){ if(S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===id) retrySummary(); else toast('אין תמלול שמור לשיחה הזו'); return; } if(e.status!=='ready'||!e.o) return toast('הסיכום עדיין בהכנה…'); S.lastSummary={o:e.o,ctx:e.ctx}; renderDebrief(e.o,e.ctx); $('modal').classList.add('show'); };
+  q.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  box.innerHTML='<div class="k">📚 הסיכומים שלי היום ('+q.length+')</div>'+(q.length?q.map(x=>`<div class="sumit ${x.status}" onclick="${x.status==='tochat'?`summarizeTc('${x.id}')`:`openSum('${x.id}')`}"><div class="sc">${x.status==='pending'?'⏳':x.status==='error'?'❌':x.status==='tochat'?'📞':(x.score??'—')}</div><div><div class="nm">${escapeHtml(x.name||x.phone||'ליד')}</div><div class="st">${new Date(x.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} · ${Math.floor((x.dur||0)/60)} דק' · ${x.status==='pending'?'מכין סיכום…':x.status==='error'?'נכשל, לחץ לניסיון חוזר':x.status==='tochat'?'שיחה מטוצ׳אט · לחץ לתובנות':({closed:'✅ נסגר',follow_up:'📅 המשך',lost:'❌ לא נסגר'}[x.outcome]||'')}</div></div><div>${x.status==='ready'?'›':''}</div></div>`).join(''):'<div class="hint">אחרי כל שיחה יופיע כאן סיכום. לחיצה פותחת אותו.</div>'); }
+window.openSum=id=>{ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const e=q.find(x=>x.id===id); if(!e) return; if(e.status==='error'){ if(e.tc&&e.tc.ai) return summarizeTc(id); if(S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===id) retrySummary(); else toast('אין תמלול שמור לשיחה הזו'); return; } if(e.status!=='ready'||!e.o) return toast('הסיכום עדיין בהכנה…'); S.lastSummary={o:e.o,ctx:e.ctx}; renderDebrief(e.o,e.ctx); $('modal').classList.add('show'); };
 /* ── content catalog (YouTube + manual links) ── */
 let CATALOG=[];
 (async()=>{ for(const u of ['content-catalog.json','../content-catalog.json']){ try{ const r=await fetch(u,{cache:'no-cache'}); if(r.ok){ CATALOG=await r.json(); break; } }catch(e){} } })();
@@ -2155,17 +2173,33 @@ async function loadLead(phoneIn){
   if(!S.settings.dataKey){ openDrawer(); return toast('חסר מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
   $('leadBody').innerHTML='<div class="empty">מושך את המסע של הליד מטוצ\'אט ופיירברי…</div>'; $('leadTag').textContent=''; S.lead=null; S.leadBrief=null;
   try{ const r=await dataFetch('/lead?phone=0'+n9); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
-    S.lead=j; S.leadAt=Date.now(); S.leadAuto=!!S.leadLoadingAuto; S.leadLoadingAuto=false; renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
+    S.lead=j; S.leadAt=Date.now(); S.leadAuto=!!S.leadLoadingAuto; S.leadLoadingAuto=false; S.ready=null; setReadiness({score:1,line:'ליד חדש נטען: '+(j.name||j.phone)+'. המאמן מחשב מוכנות…',solved:'',to_solve:'',next_move:'kyc'}); renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
   catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
 }
+async function awaitTochatSummary(snap,phone){
+  const since=new Date(snap.ctx.startedAt-120000).toISOString(); const id=snap.ctx.id; sumQueue({id,ts:snap.ctx.startedAt,dur:Math.round((snap.ctx.endedAt-snap.ctx.startedAt)/1000),name:snap.ctx.leadName||(S.lead&&S.lead.name)||'',phone,status:'pending'}); S.sumPending={id,startedAt:snap.ctx.startedAt};
+  log('אין תמלול חי, ממתין לסיכום של טוצ׳אט לשיחה עם '+phone+'…');
+  for(let i=0;i<15;i++){ await new Promise(r=>setTimeout(r,i?20000:8000)); try{ const r=await dataFetch('/lastcall?phone='+encodeURIComponent(phone)+'&since='+encodeURIComponent(since)); const j=await r.json(); const c=j&&j.call; if(c&&c.ai&&c.ai.length>40){ snap.text=c.ai; snap.meta={dur:c.sec?Math.floor(c.sec/60)+':'+String(c.sec%60).padStart(2,'0'):'',rec:c.rec,name:c.name}; if(!snap.ctx.leadName&&c.name) snap.ctx.leadName=c.name; snap.summarizing=false; log('סיכום טוצ׳אט הגיע, מכין תובנות','ok'); runSummary(true,snap); return; } }catch(e){} }
+  sumQueue({id,status:'error'}); if(S.sumPending&&S.sumPending.id===id) S.sumPending=null; log('סיכום טוצ׳אט לא הגיע תוך 5 דקות לשיחה עם '+phone,'err');
+}
+// today's ToChat calls of this rep → the summaries list (also calls LiveCoach never heard)
+async function loadMyCalls(){
+  if(!S.settings.dataKey||!S.settings.repName) return;
+  try{ const r=await dataFetch('/mycalls?rep='+encodeURIComponent(S.settings.repName)); const j=await r.json(); if(!j||!j.calls) return; let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(e){}
+    for(const c of j.calls){ if(c.sec<60&&!c.ai) continue; const t=new Date(c.t).getTime(); const near=q.find(x=>x.phone&&x.phone.replace(/\D/g,'').slice(-9)===c.phone.replace(/\D/g,'').slice(-9)&&Math.abs((x.ts||0)-t)<15*60000); if(near){ if(!near.tc){ near.tc={ai:c.ai,rec:c.rec,sec:c.sec}; if(!near.name) near.name=c.name; sumQueue(near); } continue; }
+      sumQueue({id:'tc_'+c.phone.replace(/\D/g,'').slice(-9)+'_'+t,ts:t,dur:c.sec,name:c.name||'',phone:c.phone,status:'tochat',tc:{ai:c.ai,rec:c.rec,sec:c.sec}}); }
+  }catch(e){}
+}
+setInterval(loadMyCalls,120000); setTimeout(loadMyCalls,4000);
+window.summarizeTc=id=>{ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(e){} const e=q.find(x=>x.id===id); if(!e||!e.tc||!e.tc.ai) return toast('אין סיכום טוצ׳אט לשיחה הזו עדיין','t-error'); const snap={lines:[],text:e.tc.ai,meta:{dur:Math.floor((e.tc.sec||0)/60)+':'+String((e.tc.sec||0)%60).padStart(2,'0'),rec:e.tc.rec,name:e.name},summarizing:false,ctx:{id:e.id,startedAt:e.ts,endedAt:e.ts+(e.tc.sec||0)*1000,single:false,sim:false,demo:false,rep:S.settings.repName||'',events:[],ammo:[],profile:'',checks:{},stage:'kyc',stageIdx:0,temp:'cold',custState:'',transcript:[],insights:[],leadPhone:e.phone,leadName:e.name}}; sumQueue({id:e.id,status:'pending'}); S.sumPending={id:e.id,startedAt:e.ts}; $('modal').classList.add('show'); setModalTitle('🏁 סיום שיחה: תובנות וציון'); $('modalBody').innerHTML='<div class="empty">⏳ מכין תובנות מסיכום טוצ׳אט…</div>'; S.sumWatch=e.id; runSummary(true,snap); };
 $('btnLead').onclick=()=>loadLead($('leadPhone').value);
-function clearLead(silent){ S.lead=null; S.leadBrief=null; S.leadAt=0; S.leadAuto=false; ACTIVE_SEEN=null; $('leadPhone').value=''; $('leadBody').innerHTML=''; $('leadTag').textContent=''; const t2=$('leadTag2'); if(t2) t2.textContent=''; if(!silent) toast('הליד נוקה. הקלד טלפון או חכה לזיהוי מטוצ\'אט.','t-ok'); }
+function clearLead(silent){ S.lead=null; S.leadBrief=null; S.leadAt=0; S.leadAuto=false; ACTIVE_SEEN=null; S.ready=null; setReadiness({score:S.running?1:0,line:S.running?'תחילת שיחה: אמון, מי הוא, למה עכשיו':'ממתין לליד הבא',solved:'',to_solve:S.running?'להכיר את הלקוח ולפתוח את הכאב':'',next_move:'kyc'}); $('leadPhone').value=''; $('leadBody').innerHTML=''; $('leadTag').textContent=''; const t2=$('leadTag2'); if(t2) t2.textContent=''; if(!silent) toast('הליד נוקה. הקלד טלפון או חכה לזיהוי מטוצ\'אט.','t-ok'); }
 $('btnLeadClear').onclick=()=>clearLead(false); window.clearLead=clearLead;
 let ACTIVE_SEEN=null;
 async function pollActive(){
   if(!S.settings.dataKey||!S.settings.repName||document.hidden) return;
   try{ const r=await dataFetch('/active?rep='+encodeURIComponent(S.settings.repName)); if(!r.ok) return; const {active}=await r.json();
-    if(active&&active.phone&&active.phone!==ACTIVE_SEEN){ ACTIVE_SEEN=active.phone; $('leadPhone').value=active.phone; toast('שיחה זוהתה בטוצ\'אט: '+(active.name||active.phone),'t-ok'); S.leadLoadingAuto=true; loadLead(active.phone); }
+    if(active&&active.phone){ S.lastActivePhone=active.phone; } if(active&&active.phone&&active.phone!==ACTIVE_SEEN){ ACTIVE_SEEN=active.phone; $('leadPhone').value=active.phone; toast('שיחה זוהתה בטוצ\'אט: '+(active.name||active.phone),'t-ok'); S.leadLoadingAuto=true; loadLead(active.phone); }
     if(!active&&S.leadAuto&&S.lead&&!S.running&&Date.now()-(S.leadAt||0)>120000){ clearLead(true); log('השיחה בטוצ\'אט הסתיימה, הליד נוקה'); } }
   catch(e){}
 }

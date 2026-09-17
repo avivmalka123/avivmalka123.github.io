@@ -499,10 +499,10 @@ async function fetchRows(){
   const since=new Date(); since.setDate(since.getDate()-8);
   const BASE='id,rep,mode,sim,status,started_at,updated_at,ended_at,duration_sec,stage,stage_idx,stage_reached,temperature,profile,customer_state,say_now,ammo,checks,open_barriers,summary,summary_json,score,outcome,next_step,events';
   const NEW='say_a,say_b,readiness,bottom_line,to_solve,solved,barriers,facts,lead_phone,lead_name,whisper,whisper_at';
-  const LIGHT=window.__oldSchema?BASE:BASE+','+NEW;
+  const LIGHT=window.__oldSchema===2?BASE:window.__oldSchema===1?BASE+','+NEW:BASE+','+NEW+',diag';
   const url=CFG.sbUrl+'/rest/v1/calls?select='+LIGHT+'&status=neq.void&order=updated_at.desc&limit=400&started_at=gte.'+encodeURIComponent(since.toISOString());
   const r=await fetch(url,{headers:{'apikey':CFG.sbKey,...(CFG.sbKey.startsWith('eyJ')?{'Authorization':'Bearer '+CFG.sbKey}:{})}});
-  if(!r.ok){ const t=await r.text(); if(!window.__oldSchema&&/42703/.test(t)){ window.__oldSchema=true; toast('טבלת השיחות עוד בלי העמודות החדשות. הרץ את supabase.sql ב-SQL Editor כדי לראות מוכנות, חסמים ולחישה. בינתיים עובד במצב הישן.'); return fetchRows(); } throw new Error(r.status+' '+t.slice(0,140)); }
+  if(!r.ok){ const t=await r.text(); if(/42703/.test(t)&&(window.__oldSchema||0)<2){ window.__oldSchema=(window.__oldSchema||0)+1; if(window.__oldSchema===2) toast('טבלת השיחות עוד בלי העמודות החדשות. הרץ את supabase.sql ב-SQL Editor. בינתיים עובד במצב הישן.'); return fetchRows(); } throw new Error(r.status+' '+t.slice(0,140)); }
   return r.json();
 }
 async function fetchTraining(){ try{ const r=await fetch(CFG.sbUrl+'/rest/v1/training?select=*&order=created_at.desc&limit=500',{headers:hdr()}); if(r.ok) TRAIN=await r.json(); }catch(e){} try{ const r=await fetch(CFG.sbUrl+'/rest/v1/reps?select=*',{headers:hdr()}); if(r.ok) REPS=await r.json(); }catch(e){} }
@@ -565,6 +565,7 @@ function render(){
       ${stagesHtml(r)}
       <div class="meta"><span class="tag">${STAGES[stageIdx(r)]?.l||r.stage||''}</span><span class="tag ${'t-'+(r.temperature||'cold')}">${TEMP[r.temperature]||'—'}</span>${r.readiness!=null?`<span class="tag" style="color:${r.readiness>=8?'var(--accent4)':r.readiness>=5?'var(--accent5)':'var(--red)'}">מוכנות ${r.readiness}/10</span>`:''}${r.lead_name?`<span class="tag">🧭 ${esc(r.lead_name)}</span>`:''}</div>
       ${r.bottom_line?`<div class="prof">${esc(r.bottom_line)}</div>`:''}
+      ${(d=>{ if(!d||!isLive(r)) return ''; const dur=(Date.now()-new Date(r.started_at))/1000; if(dur<30||d.lines>0) return ''; const stt=d.stt||{}; const pk=d.peak||{}; const why=stt.cust==='invalid_key'?'מפתח OpenAI לא תקין (לינק צוות ישן)':(!stt.cust||stt.cust==='error')?'חיבור התמלול לא נפתח':(pk.cust||0)<0.01&&(pk.rep||0)<0.01?'אין שמע בכלל (טאב בלי אודיו)':(pk.cust||0)<0.01?'אין שמע מטוצ׳אט (המיקרופון כן)':'שמע נקלט, אין תמלול'; return `<div class="bar" style="border-color:rgba(220,38,38,.5)">⚠️ אין תמלול: ${why}</div>`; })(r.diag)}
       ${ob.length?`<div class="bar">🧱 ${ob.length} חסמים פתוחים: ${esc(ob.map(a=>a.text).join(' · ')).slice(0,120)}</div>`:''}
       ${r.customer_state?`<div class="prof"><b style="color:var(--text)">מצב הלקוח:</b> ${esc(r.customer_state)}</div>`:''}
       ${r.say_now?`<div class="say"><b>המאמן מציע עכשיו</b>${esc(r.say_now)}</div>`:''}

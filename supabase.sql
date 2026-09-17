@@ -274,3 +274,6 @@ do $$ begin
   if not exists (select 1 from pg_policies where tablename='morning_plans' and policyname='anon all morning_plans') then
     create policy "anon all morning_plans" on morning_plans for all to anon using (true) with check (true); end if;
 end $$;
+
+-- ── audio / transcription diagnostics per call (2026-09-17) ──
+alter table calls add column if not exists diag jsonb;
