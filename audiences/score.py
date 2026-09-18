@@ -97,7 +97,19 @@ for x in L.values():
     if x['tc_irrelevant']>=3 and x['longest']<180: s-=10
     x['score']=s; x['why']=why; x['age']=age; x['contents']=contents
     scored.append(x)
-def out(xs): return [{'phone':'0'+x['phone'],'email':x['email'],'name':x['name'],'score':x.get('score',0),'why':', '.join(x.get('why',[])),'last_days':x.get('age'),'owner':x['owner']} for x in xs]
+def origin(x):
+    if x['webinar'] or x['level'] in (4,5,6,7,8): return 'וובינר'
+    if x['ref']=='mini-course' or x['level']==3: return 'מיני-קורס'
+    if x['ref']=='fb-hadracha' or x['level']==1 or x['type']==2: return 'הדרכה חינמית'
+    if x['type']==4: return 'בורד וובינר (ייבוא)'
+    return 'לא ידוע'
+def sources(x):
+    s=['פיירברי']
+    if x['calls']: s.append('סיכומי שיחה (%d)'%x['calls'])
+    if x['tc_followup'] or x['tc_pending']: s.append("טוצ'אט פתוח")
+    if x['tc_irrelevant'] or x['tc_attempts_exceeded']: s.append("טוצ'אט סגור")
+    return s
+def out(xs): return [{'phone':'0'+x['phone'],'email':x['email'],'name':x['name'],'score':x.get('score',0),'why':', '.join(x.get('why',[])),'last_days':x.get('age'),'owner':x['owner'],'origin':origin(x),'sources':sources(x)} for x in xs]
 A={}
 A['hot_long_call']=out(sorted([x for x in scored if x['longest']>=600 and x['age']<=180],key=lambda x:-x['score']))
 A['webinar_no_close']=out(sorted([x for x in scored if (x['webinar'] or x['level'] in (4,5,6,7,8)) and x['age']<=180 and x['longest']<600],key=lambda x:-x['score']))
@@ -110,3 +122,7 @@ json.dump(A,open('/tmp/audiences.json','w'),ensure_ascii=False)
 print('leads:',len(L),'| customers:',len(customers),'| scorable:',len(scored))
 for k,v in A.items(): print(k,len(v),'| with email:',sum(1 for r in v if r['email']),'| top:',[ (r['name'],r['score'],r['why'][:60]) for r in v[:2]])
 print('score dist:',collections.Counter(min(100,max(-20,x['score'])//10*10) for x in scored).most_common())
+rep={}
+for k,v in A.items():
+    rep[k]={'n':len(v),'with_email':sum(1 for r in v if r['email']),'origin':collections.Counter(r['origin'] for r in v).most_common(),'has_calls':sum(1 for r in v if any(s.startswith('סיכומי') for s in r['sources'])),'tochat_open':sum(1 for r in v if "טוצ'אט פתוח" in r['sources']),'tochat_closed':sum(1 for r in v if "טוצ'אט סגור" in r['sources']),'recent_30d':sum(1 for r in v if (r.get('last_days') or 999)<=30),'top_signals':collections.Counter(w.split(' ')[0]+' '+(w.split(' ')[1] if len(w.split(' '))>1 else '') for r in v for w in r['why'].split(', ') if w).most_common(6)}
+json.dump(rep,open('/tmp/audiences_report.json','w'),ensure_ascii=False,indent=1)
