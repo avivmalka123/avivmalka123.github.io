@@ -122,7 +122,12 @@
   .jbtns{display:flex;flex-direction:column;gap:6px;min-width:190px}.jbtns .btn.lead{min-height:42px;padding:6px 10px}.jbtns .btn.lead i{font-size:18px;width:24px}.jbtns .btn.lead span{font-size:13px}
   @media(max-width:860px){.joker-b{grid-template-columns:auto 1fr;min-height:0}.jbtns{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.jbtns .btn.lead{flex:1}}
   .main-coach{grid-column:1/-1;max-height:none;min-height:0}#coach{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:12px;align-content:start;overflow:visible}#coach>*{grid-column:1;min-width:0}#coach #sayLog{grid-column:2;grid-row:1/span 6;max-height:calc(100vh - 560px);min-height:160px;margin:0}
-  #coach #sumList{grid-column:2;grid-row:auto}.sumlist{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:8px 10px;max-height:260px;overflow:auto;font-size:12.5px}.sumlist .k{font-size:11px;font-weight:800;color:var(--text-muted);margin-bottom:4px}.sumit{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:6px 8px;border-radius:10px;background:var(--surface);border:1px solid var(--border);margin-top:5px;cursor:pointer}.sumit:hover{border-color:rgba(124,58,237,.45)}.sumit .sc{font-weight:900;font-size:15px;min-width:28px;text-align:center}.sumit .nm{font-weight:700}.sumit .st{font-size:11px;color:var(--text-muted)}.sumit.pending{opacity:.75}.sumit.pending .sc{animation:pulse 1s infinite}
+  #coach #sumList{grid-column:2;grid-row:auto}
+  body.qual .stagebar,body.qual #checklist,body.qual #sayLog,body.qual #sumList,body.qual .fearrow,body.qual .bchips{display:none!important}
+  body.qual #coach #qualForm{display:block;grid-column:2;grid-row:1/span 9;max-height:calc(100vh - 300px);overflow:auto}
+  .qform{display:none;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:10px 12px;font-size:13px}.qform .qh{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:13px;margin-bottom:6px}.qform .qh .pr{font-weight:600;color:var(--text-muted);font-size:11.5px}.qbar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:8px}.qbar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .qq{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:7px 9px;margin-bottom:6px}.qq.done{border-color:rgba(15,157,110,.45)}.qq.next{border-color:rgba(124,58,237,.6);box-shadow:0 0 0 2px rgba(124,58,237,.12)}.qq label{display:flex;gap:6px;align-items:center;font-weight:800;font-size:12px;margin-bottom:4px}.qq label i{font-style:normal;width:18px;height:18px;border-radius:50%;background:var(--surface3);display:inline-grid;place-items:center;font-size:10px;flex:none}.qq.done label i{background:var(--accent4);color:#fff}.qq .ask{font-size:11.5px;color:var(--text-muted);margin-bottom:4px;cursor:pointer}.qq .ask:hover{color:var(--purple)}.qq input,.qq textarea,.qq select{width:100%;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text)}.qq textarea{min-height:44px;resize:vertical}.qq .row{display:grid;grid-template-columns:1fr 1fr;gap:6px}.qchoices{display:flex;gap:5px;flex-wrap:wrap}.qchoice{border:1px solid var(--border);background:var(--surface2);border-radius:999px;padding:3px 9px;font-size:12px;cursor:pointer}.qchoice.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .qsend{position:sticky;bottom:0;background:var(--surface2);padding-top:8px;display:flex;gap:6px;flex-wrap:wrap}.qethos{font-size:12px;color:var(--text-muted);background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.25);border-radius:10px;padding:6px 9px;margin-bottom:8px;line-height:1.45}.sumlist{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:8px 10px;max-height:260px;overflow:auto;font-size:12.5px}.sumlist .k{font-size:11px;font-weight:800;color:var(--text-muted);margin-bottom:4px}.sumit{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:6px 8px;border-radius:10px;background:var(--surface);border:1px solid var(--border);margin-top:5px;cursor:pointer}.sumit:hover{border-color:rgba(124,58,237,.45)}.sumit .sc{font-weight:900;font-size:15px;min-width:28px;text-align:center}.sumit .nm{font-weight:700}.sumit .st{font-size:11px;color:var(--text-muted)}.sumit.pending{opacity:.75}.sumit.pending .sc{animation:pulse 1s infinite}
   .wa{background:linear-gradient(135deg,rgba(15,157,110,.10),rgba(15,157,110,.04));border:1px solid rgba(15,157,110,.35);border-radius:14px;padding:12px 14px;margin-top:12px}.wa .k{font-size:12px;font-weight:800;color:var(--accent4)}.wa textarea{width:100%;min-height:120px;font:inherit;font-size:14px;line-height:1.6;border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--surface);color:var(--text);margin-top:6px}.wa .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}.wa .pick{font-size:12.5px;color:var(--text-muted);margin-top:6px}
   .plan{margin-top:12px}.plan .k{font-size:12px;font-weight:800;color:var(--purple)}.pstep{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--border)}.pstep .when{font-weight:900;font-size:13px;color:var(--purple);white-space:nowrap}.pstep .g{font-weight:700}.pstep .t{font-size:13px;color:var(--text-muted);white-space:pre-wrap;margin-top:3px}.pstep .acts{display:flex;gap:6px;margin-top:4px}
   .openbox{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.3);border-radius:12px;padding:10px 12px}.openbox b{color:var(--red);font-size:12px;display:block;margin-bottom:4px}.openbox ul{margin:0;padding-right:18px;font-size:13px}
@@ -342,7 +347,7 @@
     <span class="pill" id="pCust"><i class="dot"></i>שמע לקוח <i class="lvl" id="lCust"></i></span>
     <span class="pill" id="pAI"><i class="dot"></i>מאמן AI</span>
   </div>
-  <div class="seg" id="modeSeg" title="מצב עבודה"><button data-mode="rep" class="on">🎧 אני הנציג</button><button data-mode="listen">👂 האזנה לשיחה</button></div>
+  <div class="seg" id="modeSeg" title="מצב עבודה"><button data-mode="rep" class="on">🎧 אני הנציג</button><button data-mode="qual">🎯 שיחת התאמה</button><button data-mode="listen">👂 האזנה לשיחה</button></div>
   <span class="pill" id="pWho" style="cursor:pointer" title="לחץ לשינוי שם">👤 <b id="whoName">—</b></span>
   <span class="pill on" id="dayState" style="display:none"></span>
   <span class="pill" id="dayGoalPill" style="display:none;cursor:pointer" title="ההתחייבות של היום. לחץ לעדכן" onclick="openCommit(null)"></span>
@@ -396,6 +401,7 @@
       <div class="minitr" id="miniTr" style="display:none"></div>
       <div class="cust-state" id="custState" style="display:none"></div>
       <div class="saylog" id="sayLog"></div>
+      <div class="qform" id="qualForm"></div>
       <div class="sumlist" id="sumList"><div class="k">📚 הסיכומים שלי היום</div><div class="hint">אחרי כל שיחה יופיע כאן סיכום. לחיצה פותחת אותו.</div></div>
       <div class="profile" id="profile" style="display:none"></div>
       <div id="cards"></div>
@@ -458,6 +464,7 @@
   <div class="field"><label class="field-label">מצב עבודה</label>
     <select class="field-input" id="sMode">
       <option value="rep">אני הנציג בשיחה: המיקרופון שלי = נציג, שמע הטאב/התקן = לקוח (שני ערוצים, זיהוי ודאי)</option>
+      <option value="qual">שיחת התאמה: לא מוכרים. מחממים, מסננים, ממלאים את הטופס וקובעים ראיון עם מנהל המסלול</option>
       <option value="listen">האזנה לשיחה: שני הדוברים מגיעים באותו ערוץ. זיהוי דובר לפי תוכן + בחירה ידנית</option>
     </select>
     <div class="hint" id="modeHint">במצב נציג, המיקרופון שלך מזוהה תמיד כנציג. הד של הלקוח שנקלט במיקרופון מסונן אוטומטית.</div>
@@ -485,6 +492,7 @@
 
   <div class="sec">🧠 המאמן <span id="ctxTag" style="font-weight:500;font-size:11px;color:var(--text-muted)"></span></div>
   <div class="field"><label class="field-label">על העסק והמוצר</label><textarea class="field-input" id="sContext" style="min-height:160px" placeholder="מה אתה מוכר, למי, מחיר, מה ההצעה, מה הבידול…"></textarea><div class="hint">ברירת המחדל: מועדון האיקומרס של אביב מלכה (מוטמע בכלי). ערוך חופשי, השאר ריק כדי לחזור לברירת המחדל.</div></div>
+  <div class="field"><label class="field-label">שיחת התאמה: שם מנהל המסלול (מופיע בהודעת אישור הראיון)</label><input class="field-input" id="sQualManager" placeholder="עומר"></div>
   <div class="field"><label class="field-label">קישורי תכנים לפולואפ (שורה לכל תוכן: שם, קישור, למי זה מתאים)</label><textarea class="field-input" id="sContentLinks" style="min-height:90px" placeholder="הדרכה חינמית, https://..., למי שעוד לא ראה את השיטה&#10;וובינר הבא, https://..., למי שרוצה לראות מקרה אמיתי&#10;מיני-קורס, https://..., למי שרוצה להתחיל לבד"></textarea><div class="hint">בנוסף, סרטוני היוטיוב מהערוץ נטענים אוטומטית והמאמן בוחר מהם.</div></div>
   <div class="field"><label class="field-label">עקרונות המכירה (המאמן פועל לפיהם)</label><textarea class="field-input" id="sPrinciples" style="min-height:220px"></textarea><div class="hint">ניתן לערוך חופשי. השאר ריק כדי לחזור לברירת המחדל.</div></div>
   <div class="field" style="display:grid;grid-template-columns:1fr auto;gap:8px"><div><label class="field-label">שם הנציג</label><input class="field-input" id="sRepName" placeholder="יובל"></div><div><label class="field-label">פנייה לנציג</label><select class="field-input" id="sRepGender"><option value="m">זכר</option><option value="f">נקבה</option></select></div></div>
@@ -552,6 +560,26 @@ const STAGES = [
 const STAGE_CHECKS = {"kyc":["יודעים מי הוא ומה המצב שלו היום","יודעים למה פנה דווקא עכשיו","נתפס קצה חוט אחד: רגש, רצון או אמונה"],"pain":["הלקוח אמר במילים שלו מה מפריע לו","הכאב קיבל מחיר: כסף, זמן או תחושה","הנציג שתק ונתן לו לדבר"],"objection":["ההתנגדות נאמרה במפורש","נמצא החשש או האמונה שמאחוריה","הלקוח אישר שזה כבר לא עוצר אותו"],"goal":["הלקוח תיאר איך נראית ההצלחה בשבילו","המטרה נוגעת במי שהוא רוצה להיות, לא רק בכסף","הלקוח אמר למה זה חשוב לו"],"motive":["ברור מה הלקוח מאמין שהוא צריך: ליווי, קהילה או סדר","הנציג החזיר את זה במילים של הלקוח","הלקוח אישר"],"solution":["המסלול הוצג כגשר מהמצב היום למטרה שלו","הוצג במילים של הלקוח","התקבלו 2-3 הסכמות קטנות"],"close":["הוזכר הפער בין היום לבין מה שהוא רוצה","שאלת ההחלטה נשאלה ישירות","הצעד הבא נסגר: תשלום או מועד"]};
 const BARRIERS=[['money','כסף'],['spouse','אישה / בן זוג'],['finance','מצב פיננסי'],['time','זמן'],['decision','קבלת החלטה'],['certainty','עיגון וודאי']];
 const FACTS={gender:[['m','👨 גבר'],['f','👩 אישה']],age:[['<25','עד 25'],['25-40','25-40'],['40+','40+']],situation:[['employee','שכיר'],['self','עצמאי'],['student','סטודנט'],['none','בלי עבודה']]};
+const QUAL_WA='972539415600'; // מנהל המסלול (רועי) — same as lead-script
+const QUAL_Q=[
+ {k:'name',l:'שם מלא',t:'text',ask:'מה השם המלא שלך?'},
+ {k:'phone',l:'וואטסאפ',t:'text',ask:''},
+ {k:'why_now',l:'למה דווקא עכשיו',t:'textarea',ask:'מה גרם לך להתעניין בעולם הזה של הכנסה מהאינטרנט דווקא עכשיו?'},
+ {k:'exp',l:'ניסיון באיקומרס / דרופשיפינג',t:'choice',opts:['אפס','ניסה לבד','יש חנות','מוכר היום'],ask:'מה הניסיון שלך בתחום האיקומרס / דרופשיפינג?'},
+ {k:'content',l:'צפה בתכנים של אביב',t:'choice',opts:['לא','קצת ביוטיוב','הדרכה חינמית','וובינר','הרבה'],ask:'צפית בסרטונים של אביב ביוטיוב או בהדרכה?'},
+ {k:'age',l:'גיל',t:'choice',opts:['עד 25','25-35','35-45','45-55','55+'],ask:'בן כמה אתה?'},
+ {k:'job',l:'עיסוק ותפקיד היום',t:'text',ask:'במידה ואיקומרס הוא לא מקור הפרנסה העיקרי שלך, מה תחום העיסוק והתפקיד שלך היום?'},
+ {k:'missing',l:'מה חסר לו כדי להקים / להגדיל (הכאב)',t:'textarea',ask:'מה הדברים העיקריים שאתה מרגיש שחסר לך היום כדי להקים את החנות שלך או להגדיל אותה משמעותית?'},
+ {k:'budget',l:'כמה מוכן להשקיע במותג',t:'choice',opts:['עד 5K','5-10K','10-20K','20K+','לא ענה'],ask:'בהבנה שמדובר בהקמת עסק, כמה אתה מוכן להשקיע במותג האיקומרס שלך כדי שיצליח?'},
+ {k:'business',l:'מבין שזה עסק, לא הכנסה פסיבית',t:'choice',opts:['כן, לגמרי','חלקית','לא'],ask:'אתה מבין שאיקומרס הוא עסק לכל דבר, לא הכנסה פסיבית, ושנדרשת השקעה של זמן, מאמץ וכסף כדי להתחיל?'},
+ {k:'commit',l:'בטוח שמוכן להשקיע בהכשרה אם יתקבל',t:'choice',opts:['בטוח','כנראה','מתלבט','לא'],ask:'במידה ותתקבל, כמה אתה בטוח שאתה מוכן להשקיע בתוכנית הכשרה שנותנת לך את כל המעטפת מא׳ עד ת׳?'},
+ {k:'meet_day',l:'ראיון התאמה: יום',t:'day',ask:'השלב הבא הוא ראיון התאמה עם מנהל המסלול, 20-30 דקות, חינמי ולא מחייב, מהבית במקום שקט עם וויפי. מתי נוח לך?'},
+ {k:'meet_time',l:'שעה',t:'time',ask:''},
+ {k:'meet_where',l:'איפה',t:'choice',opts:['זום','טלפון'],ask:''},
+ {k:'manager',l:'מנהל המסלול',t:'text',ask:''},
+ {k:'verdict',l:'סיווג הנציג',t:'choice',opts:['🔥 חם, מתאים','👍 מתאים','🤔 לבדוק','❌ לא מתאים'],ask:''},
+];
+const QUAL_ETHOS=`אנחנו לא מוכרים בשיחה הזאת. אנחנו בודקים אם הוא מתאים. הלקוח צריך להרגיש שהוא נכנס למועדון הכי חזק בארץ, שמתחייב לתוצאות (10 מכירות תוך 45 יום או הכסף חוזר), עובד רק עם אנשים רציניים, ושהוא צריך להוכיח שהוא ראוי להתקבל. לא נותנים מחיר בטלפון.`;
 const CARD_LABEL = {pain:'כאב זוהה',objection:'חסם זוהה',motive:'מניע רכישה זוהה',goal:'מטרה זוהתה',shift:'שינוי טון',warning:'אזהרה',opportunity:'הזדמנות',close:'סימן קנייה',kyc:'מידע על הלקוח'};
 const LINK_API='https://livecoach-link.aviv1988.workers.dev'; // team-link store (link-worker/): settings live there under a short token
 
@@ -617,7 +645,7 @@ function loadSettings(){
   s.speechmatics=cleanKey(s.speechmatics); s.smSpeakers=Array.isArray(s.smSpeakers)?s.smSpeakers:[];
   $('sOpenai').value=s.openai||''; $('sAnthropic').value=s.anthropic||''; $('sSm').value=s.speechmatics||''; renderEnrolled();
   if(s.principles&&s.principles.startsWith('PLAYBOOK מכירות: מהובלת שיחה לשינוי החלטה')) s.principles=''; // the previous built-in playbook was saved verbatim; follow the new default instead
-  $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES; $('sContentLinks').value=s.contentLinks||'';
+  $('sContext').value=s.context||DEFAULT_CONTEXT; $('sPrinciples').value=s.principles||DEFAULT_PRINCIPLES; $('sContentLinks').value=s.contentLinks||''; $('sQualManager').value=s.qualManager||'';
   $('sRepName').value=s.repName||''; $('sRepGender').value=s.repGender||'m'; refreshKeysBanner(); $('sCustName').value=s.custName||'';
   $('sMode').value=s.mode||'rep'; $('sAutoEnd').value=s.autoEndSec||25; $('sSbUrl').value=s.sbUrl||''; $('sSbKey').value=s.sbKey||''; $('sDataUrl').value=s.dataUrl||'https://livecoach-data.aviv1988.workers.dev'; $('sDataKey').value=s.dataKey||''; $('sAdminPw').value=s.adminPw||''; syncModeSeg(); $('whoName').textContent=s.repName||'ללא שם'; $('sCustSrc').value=(s.custSrc==='none'?'mic':s.custSrc)||'tab'; $('sSttModel').value=s.sttModel||'gpt-transcribe'; $('sEffort').value=s.effort||'low'; $('sSayEvery').value=s.sayEverySec||60; $('sCoachModel').value=s.coachModel||'claude-sonnet-5';
   syncAudioUI();
@@ -630,11 +658,11 @@ function saveSettings(){
   if(ok&&!ok.startsWith('sk-')) toast('שים לב: מפתח OpenAI אמור להתחיל ב-sk-','t-error');
   // built-in texts are stored as '' so future updates to the defaults reach everyone; only real edits are kept
   const customOnly=(v,def)=>{ v=v.trim(); return (!v||v===def)?'':v; };
-  S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:customOnly($('sContext').value,DEFAULT_CONTEXT),contentLinks:$('sContentLinks').value.trim(),
+  S.settings={openai:ok,anthropic:ak,speechmatics:sk,smSpeakers:S.settings.smSpeakers||[],context:customOnly($('sContext').value,DEFAULT_CONTEXT),contentLinks:$('sContentLinks').value.trim(),qualManager:$('sQualManager').value.trim(),
     principles:customOnly($('sPrinciples').value,DEFAULT_PRINCIPLES),repName:$('sRepName').value.trim(),repGender:$('sRepGender').value,custName:$('sCustName').value.trim(),
     mic:$('sMic').value,mode:$('sMode').value,custSrc:$('sCustSrc').value,custDev:$('sCustDev').value,sttModel:$('sSttModel').value,effort:$('sEffort').value,
     sbUrl:$('sSbUrl').value.trim().replace(/\/+$/,''),sbKey:cleanKey($('sSbKey').value),dataUrl:$('sDataUrl').value.trim().replace(/\/+$/,''),dataKey:cleanKey($('sDataKey').value),adminPw:$('sAdminPw').value.trim(),autoEndSec:parseInt($('sAutoEnd').value)||25,sayEverySec:Math.min(180,Math.max(15,parseInt($('sSayEvery').value)||60)),coachModel:$('sCoachModel').value||'claude-sonnet-5',goal:S.settings.goal||null,chatLog:S.settings.chatLog||[]};
-  syncModeSeg(); refreshKeysBanner(); $('whoName').textContent=S.settings.repName||'ללא שם';
+  syncModeSeg(); refreshKeysBanner(); $('whoName').textContent=S.settings.repName||'ללא שם'; applyQualMode();
   localStorage.setItem('lc_settings',JSON.stringify(S.settings));
   S.anthropic=null;
   toast('ההגדרות נשמרו','t-ok'); closeDrawer();
@@ -658,7 +686,7 @@ function refreshKeysBanner(){ const b=$('keysBanner'); if(!b) return; const ok=S
 function syncModeSeg(){ const m=S.settings.mode||'rep'; for(const b of $('modeSeg').querySelectorAll('button')) b.classList.toggle('on',b.dataset.mode===m); }
 $('modeSeg').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; if(S.running) return toast('אפשר להחליף מצב רק כשאין שיחה פעילה','t-error');
   S.settings.mode=b.dataset.mode; $('sMode').value=S.settings.mode; syncAudioUI(); localStorage.setItem('lc_settings',JSON.stringify(S.settings)); syncModeSeg();
-  toast(S.settings.mode==='listen'?'מצב האזנה: שני הדוברים באותו ערוץ, זיהוי לפי קול'+(S.settings.speechmatics?'':' (הוסף מפתח Speechmatics)'):'מצב נציג: המיקרופון שלך = נציג, הטאב = לקוח','t-ok'); };
+  applyQualMode(); toast(S.settings.mode==='listen'?'מצב האזנה: שני הדוברים באותו ערוץ, זיהוי לפי קול'+(S.settings.speechmatics?'':' (הוסף מפתח Speechmatics)'):S.settings.mode==='qual'?'שיחת התאמה: המטרה לא למכור. לחמם, לסנן, למלא את הטופס ולקבוע ראיון עם מנהל המסלול':'מצב נציג: המיקרופון שלך = נציג, הטאב = לקוח','t-ok'); };
 $('pWho').onclick=()=>{ let n=null; try{ n=prompt('מה השם שלך? (יופיע בבורד המנהל)',S.settings.repName||'') }catch(e){} if(n===null) return; S.settings.repName=n.trim(); $('sRepName').value=S.settings.repName; $('whoName').textContent=S.settings.repName||'ללא שם'; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); };
 const b64u={enc:o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),dec:t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,'+').replace(/_/g,'/')))))};
 $('btnInvite').onclick=()=>{ saveSettingsSilent(); const cfg={openai:S.settings.openai,anthropic:S.settings.anthropic,speechmatics:S.settings.speechmatics,sbUrl:S.settings.sbUrl,sbKey:S.settings.sbKey,dataUrl:S.settings.dataUrl,dataKey:S.settings.dataKey,mode:'rep',custSrc:'tab',sttModel:S.settings.sttModel,effort:S.settings.effort,
@@ -1068,6 +1096,7 @@ function teardownAudio(){
 function beginSession(demo){
   S.callId=(crypto.randomUUID?crypto.randomUUID():'c_'+Date.now()+'_'+Math.random().toString(36).slice(2)); S.custState=''; S.custGender='unknown'; S.insights=[]; S.summary=null; S.events=[]; S.lastEventId=null;
   if(S.lead&&Date.now()-(S.leadAt||0)>240000&&!demo){ clearLead(true); log('ליד ישן נוקה בתחילת שיחה חדשה (נטען לפני יותר מ-4 דקות)'); }
+  if(qualOn()&&!demo){ S.qual={manager:S.settings.qualManager||''}; renderQual(); }
   S.running=true; S.demo=demo; S.startedAt=Date.now(); S.stageIdx=0; S.stage='kyc'; S.temp='cold'; S.barriers={}; renderBarriers(); S.fears=[]; renderFears(); S.facts={}; S.custGenderManual=false; renderFacts(); S.whispers=[]; S.lastWhisperAt=null; $('whisperBar').style.display='none'; if(!(S.ready&&S.ready.pre)) S.ready=null;
   setTimeout(()=>{ if(S.running&&!S.ready) setReadiness({score:1,line:'תחילת שיחה: קודם אמון ומי הוא, למה עכשיו, ולתפוס קצה חוט אחד',solved:'',to_solve:'להכיר את הלקוח ולפתוח את הכאב',next_move:'kyc'}); else if(S.running&&S.ready) renderJoker(); },300); S.shownCards=[]; S.lastAnalyzedCount=0; S.ammo=[]; S.profile=''; S.checks={}; S.viewStage=null;
   if(demo){S.single=false;$('modeTag').style.display='none'}
@@ -1296,7 +1325,7 @@ ${transcript}
       model:coachModel(), max_tokens:1800,
       betas:['server-side-fallback-2026-07-01'], fallbacks:'default',
       output_config:{effort:S.settings.effort||'low',format:{type:'json_schema',schema:COACH_SCHEMA}},
-      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()}],
+      system:[{type:'text',text:systemPrompt(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()+qualBlock()}],
       messages:[{role:'user',content:user}],
     });
     if(res.stop_reason==='refusal') throw new Error('המודל סירב לנתח את הקטע הזה');
@@ -1538,7 +1567,7 @@ ${tr.text}`;
   let o=null, lastErr=null;
   for(const model of QUICK_MODELS()){
     try{
-      const res=await getClient().messages.create({model,max_tokens:520,system:[{type:'text',text:QUICK_SYS+LEARNING_LINE+trainingBlock(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.'}],...(model.startsWith('claude-opus')||model.startsWith('claude-sonnet')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-haiku')?9000:20000,maxRetries:0});
+      const res=await getClient().messages.create({model,max_tokens:520,system:[{type:'text',text:QUICK_SYS+LEARNING_LINE+trainingBlock(),cache_control:{type:'ephemeral'}},{type:'text',text:leadBlock()+readinessBlock()+barrierBlock()+factsBlock()+whisperBlock()+qualBlock()+'\nמלא תמיד why_now, principle ו-goal: המנהל קורא אותם אחרי השיחה כדי להבין את ההיגיון שלך ולתקן אותך.\nאם נשענת על דוגמה מהשטח, כתוב ב-based_on את המילה "מופת" בלבד; אם על הנחיית מנהל, "הנחיה"; אחרת ריק. לעולם אל תציין שמות של נציגים אחרים, לא במשפט ולא בשדה הזה.'}],...(model.startsWith('claude-opus')||model.startsWith('claude-sonnet')?{output_config:{effort:'low'}}:{}),messages:[{role:'user',content:user}]},{timeout:model.startsWith('claude-haiku')?9000:20000,maxRetries:0});
       o=scrub(parseLooseJson(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); break;
     }catch(e){ lastErr=e; if(e.status===404||e.status===400) continue; break; }
   }
@@ -1567,7 +1596,7 @@ function renderSayLog(){
 }
 function snapshotCall(){
   const finals=S.lines.filter(l=>l.final&&l.text.trim()).map(l=>({...l}));
-  return {lines:finals, summarizing:false, ctx:{id:S.callId,startedAt:S.startedAt,endedAt:S.endedAt||Date.now(),single:S.single,sim:!!(S.simActive||S.endedSim),demo:!!S.demo,rep:S.settings.repName||'ללא שם',events:S.events.slice(),ammo:S.ammo.slice(),profile:S.profile,checks:{...S.checks},stage:S.stage,stageIdx:S.stageIdx,temp:S.temp,custState:S.custState,transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})),insights:(S.insights||[]).slice()}};
+  return {lines:finals, summarizing:false, ctx:{id:S.callId,startedAt:S.startedAt,endedAt:S.endedAt||Date.now(),single:S.single,qual:qualOn()?{...(S.qual||{})}:null,sim:!!(S.simActive||S.endedSim),demo:!!S.demo,rep:S.settings.repName||'ללא שם',events:S.events.slice(),ammo:S.ammo.slice(),profile:S.profile,checks:{...S.checks},stage:S.stage,stageIdx:S.stageIdx,temp:S.temp,custState:S.custState,transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})),insights:(S.insights||[]).slice()}};
 }
 
 /* ───────────────────────── summary ───────────────────────── */
@@ -1600,6 +1629,26 @@ const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
   improvements:{type:'array',items:{type:'object',additionalProperties:false,properties:{quote:{type:'string'},better:{type:'string',description:'מה היה עדיף להגיד'},principle:{type:'string'}},required:['quote','better','principle']},description:'3 נקודות לשיפור קונקרטיות'},
   crm_text:{type:'string',description:'סיכום מנהלים מלא מוכן להדבקה ב-CRM, ללא Markdown, כותרות עם אימוג׳י: תמצית, פרופיל ופרטים שמסר, חום ליד ושלב, כאבים, התנגדויות ואיך טופלו, מטרה ומניע, הוסכם/צעד הבא, ציון ו-3 שיפורים'}
 },required:['summary','outcome','next_step','score','stage_reached','strengths','improvements','crm_text','scores','opening_feedback','lessons','one_thing']};
+const QUAL_SUM_SCHEMA={type:'object',additionalProperties:false,required:['fit_score','verdict','summary','key_facts','red_flags','msg_personal','content_pick','note_to_manager'],properties:{fit_score:{type:'integer',description:'0-10 רמת התאמה למסלול'},verdict:{type:'string',description:'משפט אחד: מתאים / לא / לבדוק, ולמה'},summary:{type:'string',description:'2 משפטים: מי הוא ומה סוכם'},key_facts:{type:'array',items:{type:'string'},description:'עד 5 עובדות חשובות למנהל המסלול לפני הראיון'},red_flags:{type:'array',items:{type:'string'},description:'דגלים אדומים או חסמים להתאמה, ריק אם אין'},msg_personal:{type:'string',description:'הודעת וואטסאפ אישית וחמה מהנציג: נהניתי לדבר, מתייחסת למשהו שהלקוח אמר, מחזקת שהוא נכנס לתהליך רציני, ומצרפת תוכן אחד לצפות בו עד הראיון (קישור). 50-90 מילים, ירידות שורה, לכל היותר אימוג׳י אחד, חתומה בשם הנציג'},content_pick:{type:'object',additionalProperties:false,required:['title','url','why'],properties:{title:{type:'string'},url:{type:'string'},why:{type:'string'}}},note_to_manager:{type:'string',description:'משפט אחד למנהל המסלול: איך לפתוח את הראיון עם הלקוח הזה'}}};
+function renderQualDebrief(o,ctx){ setModalTitle('🎯 סיום שיחת התאמה'); const a=(ctx&&ctx.qual)||S.qual||{}; const fixed=qualFixedMessage(a); const ph=a.phone||(ctx&&ctx.leadPhone)||''; const col=o.fit_score>=8?'var(--accent4)':o.fit_score>=5?'var(--accent5)':'var(--red)';
+  $('modalBody').innerHTML=`<div class="db-top"><div class="db-score"><div class="big" style="color:${col}">${o.fit_score}<small>/10</small></div><div class="lbl">רמת התאמה</div><div class="sub">${escapeHtml(o.verdict||'')}</div></div><div class="db-one"><div class="k">📌 תמצית</div><div class="t" style="font-size:15px">${escapeHtml(o.summary||'')}</div>${(o.key_facts||[]).length?`<ul style="margin:8px 0 0;padding-right:18px;font-size:13px">${o.key_facts.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul>`:''}${(o.red_flags||[]).length?`<div style="margin-top:6px;color:var(--red);font-size:13px">🚩 ${escapeHtml(o.red_flags.join(' · '))}</div>`:''}${o.note_to_manager?`<div class="hint" style="margin-top:6px">למנהל המסלול: ${escapeHtml(o.note_to_manager)}</div>`:''}</div></div>
+  <div class="wa"><div class="k">📲 הודעה 1 · אישור הראיון (7 דקות אחרי השיחה)${ph?' · '+escapeHtml(ph):''}</div><textarea id="qwa1">${escapeHtml(fixed)}</textarea><div class="acts"><button class="btn btn-primary" onclick="waOpen('${escapeHtml(ph)}','qwa1')">🟢 פתח בוואטסאפ</button><button class="btn" onclick="copyText('qwa1')">📋 העתק</button></div></div>
+  <div class="wa"><div class="k">📲 הודעה 2 · אישית + תוכן עד הראיון</div><textarea id="qwa2">${escapeHtml(o.msg_personal||'')}</textarea><div class="acts"><button class="btn btn-primary" onclick="waOpen('${escapeHtml(ph)}','qwa2')">🟢 פתח בוואטסאפ</button><button class="btn" onclick="copyText('qwa2')">📋 העתק</button></div>${o.content_pick&&o.content_pick.title?`<div class="pick">🎬 ${escapeHtml(o.content_pick.title)} · ${escapeHtml(o.content_pick.why||'')}</div>`:''}</div>
+  <div class="db-actions"><button class="btn btn-primary" onclick="qualSend()">📋 שלח את הטופס למנהל המסלול</button><button class="btn" onclick="qualCopy()">העתק טופס</button></div>`; }
+async function runQualSummary(auto,src){
+  const ctx=src.ctx; const finals=src.lines; const rep=S.settings.repName||'נציג'; const a=ctx.qual||{};
+  const transcript=src.text||finals.slice(-300).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?'לקוח':'?'}]: ${l.text}`).join('\n');
+  sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:a.name||ctx.leadName||'',phone:a.phone||ctx.leadPhone||'',status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt};
+  try{
+    const res=await getClient().beta.messages.create({model:coachModel(),max_tokens:1600,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:QUAL_SUM_SCHEMA}},
+      system:`אתה מנהל ההתאמה של מועדון האיקומרס של אביב מלכה. ${QUAL_ETHOS} סכם שיחת התאמה בקצרה למנהל המסלול, וכתוב הודעה אישית מהנציג ${rep} ללקוח. בלי Markdown. תוכן: בחר תוכן אחד בלבד שמתאים למה שעלה בשיחה (מי שלא ראה את השיטה: הדרכה חינמית; מי שרוצה להבין את המועדון: הסרטון על המועדון; מי שרוצה להתחיל: הקורס החינמי של פתיחת חנות ב-2 דקות).\n${catalogBlock().slice(0,3000)}`,
+      messages:[{role:'user',content:`הטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript}`}]},{timeout:60000,maxRetries:1});
+    const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); o.qual=true; o.score=o.fit_score; o.outcome=a.meet_day?'follow_up':'unknown'; o.stage_reached='kyc'; o.summary=o.summary||''; o.crm_text=qualMessage(); o.one_thing=o.note_to_manager||''; o.lessons=[]; o.strengths=[]; o.improvements=[]; o.scores={};
+    if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.fit_score,outcome:o.outcome,o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:a.phone||ctx.leadPhone,leadName:a.name||ctx.leadName,qual:a}});
+    if(!ctx.demo){ const sf={summary:'שיחת התאמה · '+(o.verdict||''),score:o.fit_score,outcome:o.outcome,next_step:(a.meet_day?'ראיון '+a.meet_day+' '+(a.meet_time||''):'לא נקבע ראיון'),stage_reached:'kyc',summary_json:o}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); saveLocalHistory(o,ctx); }
+    S.lastSummary={o,ctx}; if(S.callId===ctx.id) S.summary=o; renderQualDebrief(o,ctx); $('modal').classList.add('show'); if(auto) toast('שיחת ההתאמה סוכמה. התאמה: '+o.fit_score+'/10','t-ok');
+  }catch(e){ sumQueue({id:ctx.id,status:'error'}); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; S.lastFailedSnap=src; const msg='שגיאה: '+(e.error?.error?.message||e.message||e); if(!auto){ setModalTitle('🎯 סיום שיחת התאמה'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } log('סיכום התאמה: '+msg.slice(0,200),'err'); }
+}
 async function runSummary(auto,snap){
   // snap = state frozen at call end. In day mode the next call auto-starts inside the 1.5s delay and used to wipe
   // S.lines / swap S.callId under this function, so the ended call got no summary or the wrong call got it.
@@ -1607,6 +1656,7 @@ async function runSummary(auto,snap){
   if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום…'; }
   else if(!snap&&S.summary){ return; }
   if(src.summarizing) return; src.summarizing=true;
+  if(src.ctx&&src.ctx.qual){ if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום התאמה…'; } return runQualSummary(auto,src); }
   const ctx=src.ctx; ctx.leadPhone=ctx.leadPhone||(S.lead&&S.lead.phone)||null; ctx.leadName=ctx.leadName||(S.lead&&S.lead.name)||null; ctx.lead=ctx.lead||S.lead||null;
   sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:ctx.leadName||S.settings.custName||'',phone:ctx.leadPhone||'',status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt}; $('btnSummary').disabled=false;
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
@@ -1665,7 +1715,7 @@ function sumQueue(e){ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq'
 function renderSumList(){ const box=$('sumList'); if(!box) return; let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} q=q.filter(x=>new Date(x.ts||0).toDateString()===todayKey());
   q.sort((a,b)=>(b.ts||0)-(a.ts||0));
   box.innerHTML='<div class="k">📚 הסיכומים שלי היום ('+q.length+')</div>'+(q.length?q.map(x=>`<div class="sumit ${x.status}" onclick="${x.status==='tochat'?`summarizeTc('${x.id}')`:`openSum('${x.id}')`}"><div class="sc">${x.status==='pending'?'⏳':x.status==='error'?'❌':x.status==='tochat'?'📞':(x.score??'—')}</div><div><div class="nm">${escapeHtml(x.name||x.phone||'ליד')}</div><div class="st">${new Date(x.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} · ${Math.floor((x.dur||0)/60)} דק' · ${x.status==='pending'?'מכין סיכום…':x.status==='error'?'נכשל, לחץ לניסיון חוזר':x.status==='tochat'?'שיחה מטוצ׳אט · לחץ לתובנות':({closed:'✅ נסגר',follow_up:'📅 המשך',lost:'❌ לא נסגר'}[x.outcome]||'')}</div></div><div>${x.status==='ready'?'›':''}</div></div>`).join(''):'<div class="hint">אחרי כל שיחה יופיע כאן סיכום. לחיצה פותחת אותו.</div>'); }
-window.openSum=id=>{ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const e=q.find(x=>x.id===id); if(!e) return; if(e.status==='error'){ if(e.tc&&e.tc.ai) return summarizeTc(id); if(S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===id) retrySummary(); else toast('אין תמלול שמור לשיחה הזו'); return; } if(e.status!=='ready'||!e.o) return toast('הסיכום עדיין בהכנה…'); S.lastSummary={o:e.o,ctx:e.ctx}; renderDebrief(e.o,e.ctx); $('modal').classList.add('show'); };
+window.openSum=id=>{ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const e=q.find(x=>x.id===id); if(!e) return; if(e.status==='ready'&&e.o&&e.o.qual){ S.lastSummary={o:e.o,ctx:e.ctx}; renderQualDebrief(e.o,e.ctx); $('modal').classList.add('show'); return; } if(e.status==='error'){ if(e.tc&&e.tc.ai) return summarizeTc(id); if(S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===id) retrySummary(); else toast('אין תמלול שמור לשיחה הזו'); return; } if(e.status!=='ready'||!e.o) return toast('הסיכום עדיין בהכנה…'); S.lastSummary={o:e.o,ctx:e.ctx}; renderDebrief(e.o,e.ctx); $('modal').classList.add('show'); };
 /* ── content catalog (YouTube + manual links) ── */
 let CATALOG=[];
 (async()=>{ for(const u of ['content-catalog.json','../content-catalog.json']){ try{ const r=await fetch(u,{cache:'no-cache'}); if(r.ok){ CATALOG=await r.json(); break; } }catch(e){} } })();
@@ -1745,7 +1795,7 @@ window.closeModals=()=>{ for(const id of ['modal','morningModal']) $(id).classLi
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('commitModal').classList.contains('show')) return; window.closeModals(); } });
 for(const id of ['modal','morningModal']) $(id).addEventListener('click',e=>{ if(e.target===$(id)) $(id).classList.remove('show'); });
 function setModalTitle(t){ const bh=document.querySelector('#modal .bh'); if(bh&&bh.firstChild&&bh.firstChild.nodeType===3) bh.firstChild.textContent=t+' '; }
-window.openMorning=openMorning; window.renderSumList=renderSumList; window.sumQueue=sumQueue; window.dayReview=dayReview; window.openDrawer=openDrawer; window.$=$;
+window.openMorning=openMorning; window.renderSumList=renderSumList; window.sumQueue=sumQueue; window.dayReview=dayReview; window.openDrawer=openDrawer; window.$=$; window.renderQualDebrief=renderQualDebrief; window.qualBlock=qualBlock; window.applyQualMode=applyQualMode;
 function renderMorning(out){ const body=$('morningBody'); const items=(out.items||[]).slice().sort((a,b)=>a.priority-b.priority); const groups=['פולואפ להיום','לבדוק הבוקר','איפה זה עומד','ליד שמחכה'];
   body.innerHTML=`<div class="dk-head" style="font-size:20px">${escapeHtml(out.headline||'')}</div><div class="hint" style="margin-bottom:10px">${out.total!=null?out.total+' פולואפים פתוחים בטוצ\'אט · ':''}${items.length} מובילים להיום · ההודעות מוכנות להעתקה או לפתיחה בוואטסאפ</div>
   ${groups.map(g=>{ const L=items.filter(x=>x.group===g); if(!L.length) return ''; return `<h3 style="margin:14px 0 6px;font-size:14px">${g==='פולואפ להיום'?'📅':g==='לבדוק הבוקר'?'🌅':g==='איפה זה עומד'?'🔍':'🧊'} ${g} (${L.length})</h3><div class="mrn">${L.map((x,i)=>{ const id='mm_'+x.phone.replace(/\D/g,''); return `<div class="mcard p${Math.min(3,Math.max(1,Math.ceil(x.priority/4)))}"><div class="h"><b>${escapeHtml(x.name||x.phone)}</b><span class="chip">${escapeHtml(x.phone)}</span><span class="chip">${escapeHtml(x.next_move)} · ${escapeHtml(x.time||'')}</span><a href="#" class="chip" onclick="$('leadPhone').value='${escapeHtml(x.phone)}';loadLead('${escapeHtml(x.phone)}');$('morningModal').classList.remove('show');return false">🧭 מסע</a></div><div class="why"><b>למה:</b> ${escapeHtml(x.why)} · <b>מצב:</b> ${escapeHtml(x.status)}</div><div class="msg" id="${id}">${escapeHtml(x.message)}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="waOpen('${escapeHtml(x.phone)}','${id}')">🟢 וואטסאפ</button><button class="btn btn-sm" onclick="copyText('${id}')">📋 העתק</button></div></div>`; }).join('')}</div>`; }).join('')}
@@ -1755,9 +1805,9 @@ window.retrySummary=()=>{ S.summary=null; if(S.lastFailedSnap){ S.lastFailedSnap
 $('btnSummary').onclick=()=>{
   const cur=S.lines.filter(l=>l.final&&l.text.trim()).length;
   if(S.sumPending){ setModalTitle('🏁 סיום שיחה: תובנות וציון'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="empty">⏳ מכין את הסיכום של השיחה מ-'+new Date(S.sumPending.startedAt).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+'… (5-15 שניות, יופיע כאן אוטומטית)</div>'; S.sumWatch=S.sumPending.id; return; }
-  if(S.summary&&S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===S.callId){ renderDebrief(S.summary,S.lastSummary.ctx); $('modal').classList.add('show'); return; }
+  if(S.summary&&S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===S.callId){ (S.summary.qual?renderQualDebrief:renderDebrief)(S.summary,S.lastSummary.ctx); $('modal').classList.add('show'); return; }
   if(S.running&&cur>=6){ runSummary(false); return; }
-  if(S.lastSummary){ renderDebrief(S.lastSummary.o,S.lastSummary.ctx); $('modal').classList.add('show'); if(S.running) toast('זה סיכום השיחה הקודמת. השיחה הנוכחית תסוכם כשתסתיים.','t-ok'); return; }
+  if(S.lastSummary){ (S.lastSummary.o.qual?renderQualDebrief:renderDebrief)(S.lastSummary.o,S.lastSummary.ctx); $('modal').classList.add('show'); if(S.running) toast('זה סיכום השיחה הקודמת. השיחה הנוכחית תסוכם כשתסתיים.','t-ok'); return; }
   if(cur) runSummary(false); else toast('אין עדיין שיחה לסכם','t-error');
 };
 $('btnCloseModal').onclick=()=>$('modal').classList.remove('show');
@@ -1983,7 +2033,7 @@ if(teamTok){ S.importing=true; importTeamToken(teamTok[1]); }
 else if(savedTok&&(!S.settings.anthropic||!S.settings.openai)){ S.importing=true; log('המפתחות חסרים בדפדפן, טוען מחדש מלינק הצוות…'); importTeamToken(savedTok); }
 else postImportChecks();
 $('ctxTag').textContent=(S.settings.context&&S.settings.context!==DEFAULT_CONTEXT)?'· הקשר מותאם אישית פעיל':'· הקשר ברירת מחדל: מועדון האיקומרס';
-renderBarriers(); renderFacts(); try{ $('coach').prepend($('idbarWrap')); }catch(e){} renderDayPill(); renderSumList();
+renderBarriers(); renderFacts(); try{ $('coach').prepend($('idbarWrap')); }catch(e){} renderDayPill(); renderSumList(); applyQualMode();
 setTimeout(()=>{ if(pendingReview()&&!S.running) insistReview(()=>{}); },2500);
 try{ $('miniTr').addEventListener('mouseenter',()=>S.miniHover=true); $('miniTr').addEventListener('mouseleave',()=>S.miniHover=false); }catch(e){}
 window.__lc={S,applyCoach,upsertLine,beginSession,smWords,smFinalize,setSpeaker,tick,runAnalysis,setReadiness,showSay}; // debug hooks
@@ -2053,6 +2103,38 @@ function instantOpener(j){
   else t=`${hi}זה ${S.settings.repName||'אני'} ממועדון האיקומרס של אביב מלכה. השארת פרטים אצלנו, ואני מתקשר לבדוק דבר אחד: מה אתה רוצה שיהיה שונה אצלך בעוד חצי שנה?`;
   showSay(t,'','פתיחה',''); $('sayWhy').textContent='משפט פתיחה לפי המסע של הליד. המאמן משפר אותו עוד רגע.'; $('sayAvoid').textContent=''; $('sayReason').textContent='';
 }
+/* ── qualification call mode (שיחת התאמה) ── */
+function qualOn(){ return S.settings.mode==='qual'; }
+function applyQualMode(){ document.body.classList.toggle('qual',qualOn()); if(qualOn()){ renderQual(); const l=document.querySelector('.jlbl'); if(l) l.textContent='רמת התאמה'; } else { const l=document.querySelector('.jlbl'); if(l) l.textContent='מוכנות לסגירה'; } }
+function qualNext(){ const a=S.qual||{}; return QUAL_Q.find(q=>q.ask&&!(a[q.k]||'').toString().trim())||null; }
+function qualFilled(){ const a=S.qual||{}; return QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).length; }
+function qualBlock(){ if(!qualOn()) return ''; const a=S.qual||{}; const filled=QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).map(q=>q.l+': '+a[q.k]).join(' | '); const nx=qualNext();
+  return `\nמצב: שיחת התאמה (לא מכירה). ${QUAL_ETHOS}
+תסריט השיחה, בסדר: (1) פתיחה: ראיתי שנרשמת לוובינר, לוודא שהסתדרת וקיבלת את המתנה למייל (קורס: איך פותחים חנות דיגיטלית ב-2 דקות, נשלח גם לוואטסאפ). (2) "מה גרם לך להתעניין דווקא עכשיו?" (3) ההקצאה: פותחים בקרוב הקצאה ל-20 משתתפים למסלול, מ-0 לחנות פעילה שמייצרת מכירות, היחידים בארץ שמתחייבים: 10 מכירות תוך 45 יום או כל הכסף חזרה וממשיכים בחינם. רק אם ספקן: התלמידים לא משלמים הכל בהתחלה, החלק השני רק אחרי מחזור 10,000. (4) "מה הקאץ'?": כי יש שלבי סינון ורק מי שבטוחים שיצליח נכנס. "זה מרגיש כמו משהו שיכול להיות משמעותי עבורך?" (5) "אפשר לשאול כמה שאלות? ואם מתאים אקבע לך ראיון התאמה עם מנהל המסלול" ואז שאלות הסינון לפי הטופס. (6) קביעת ראיון: 20-30 דקות, חינמי, מהבית, מקום שקט, וויפי. יום, שעה, זום/טלפון.
+משפטי אתוס שמותר להשתמש בהם: "בוודאי לא לכולם מתאים להכניס 20 אלף ש"ח בחודש ועדיין לעבוד מהבית", "יש כאלה שמעדיפים לעבוד קשה בזמן שהעולם מתקדם, וזה מתוך בחירה שלהם. באיזו קטגוריה אתה?", "אנחנו לא באים לשחק משחקים, ולכן אנחנו בוחרים עם מי לעבוד", "השאלה היא לא אם אתה רוצה, השאלה היא אם אתה מתאים".
+מחיר: אסור. אם שואל: "זה משתנה לפי המסלול שמתאים לך. אם יש התאמה תקבל את כל הפרטים ממנהל המסלול, נשמע פייר?"
+מה כבר מולא בטופס: ${filled||'כלום'}. ${nx?'השאלה הבאה בסדר התסריט: "'+nx.ask+'"':'הטופס מלא, עכשיו לקבוע ראיון ולסגור מועד'}.
+say_now = הצעד הבא בתסריט, במילים חמות ובטוחות, כשאלה שגורמת ללקוח להוכיח שהוא ראוי. say_alt = אותו צעד בגרסת אתוס חזקה יותר. readiness = רמת ההתאמה (0-10) של הלקוח למסלול לפי מה שנאמר. bottom_line = האם מתאים ומה חסר כדי להחליט. fears = חסמים להתאמה (לא לרכישה).\n`; }
+function renderQual(){ const box=$('qualForm'); if(!box) return; const a=S.qual=S.qual||{}; if(!a.phone&&S.lead&&S.lead.phone) a.phone=S.lead.phone; if(!a.name&&S.lead&&S.lead.name) a.name=S.lead.name; if(!a.manager&&S.settings.qualManager) a.manager=S.settings.qualManager;
+  const nx=qualNext(); const n=qualFilled(); const total=QUAL_Q.length;
+  const days=(()=>{ const D=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת']; const out=[]; for(let i=0;i<=7;i++){ const d=new Date(); d.setDate(d.getDate()+i); out.push({v:'יום '+D[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0'),l:(i===0?'היום ':i===1?'מחר ':'')+D[d.getDay()]+' '+String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')}); } return out; })();
+  box.innerHTML=`<div class="qh"><span>🎯 שיחת התאמה · הטופס</span><span class="pr">${n}/${total}</span></div><div class="qbar"><i style="width:${Math.round(n/total*100)}%"></i></div><div class="qethos">${escapeHtml(QUAL_ETHOS)}</div>`+
+  QUAL_Q.map((q,i)=>{ const v=(a[q.k]||'').toString(); const done=!!v.trim(); const isNext=nx&&nx.k===q.k; let ctl='';
+    if(q.t==='text') ctl=`<input value="${escapeHtml(v)}" oninput="qualSet('${q.k}',this.value,false)" onchange="qualSet('${q.k}',this.value,true)">`;
+    else if(q.t==='textarea') ctl=`<textarea oninput="qualSet('${q.k}',this.value,false)" onchange="qualSet('${q.k}',this.value,true)">${escapeHtml(v)}</textarea>`;
+    else if(q.t==='time') ctl=`<input type="time" value="${escapeHtml(v)}" onchange="qualSet('${q.k}',this.value,true)">`;
+    else if(q.t==='day') ctl=`<div class="qchoices">${days.map(d=>`<span class="qchoice ${v===d.v?'on':''}" onclick="qualSet('${q.k}','${escapeHtml(d.v)}',true)">${escapeHtml(d.l)}</span>`).join('')}</div>`;
+    else ctl=`<div class="qchoices">${q.opts.map(o=>`<span class="qchoice ${v===o?'on':''}" onclick="qualSet('${q.k}','${escapeHtml(o)}',true)">${escapeHtml(o)}</span>`).join('')}</div>`;
+    return `<div class="qq ${done?'done':''} ${isNext?'next':''}" id="qq_${q.k}"><label><i>${done?'✓':i+1}</i>${escapeHtml(q.l)}</label>${q.ask?`<div class="ask" title="לחץ כדי לשים את השאלה ב'אמור עכשיו'" onclick="qualAsk('${q.k}')">🗣 ${escapeHtml(q.ask)}</div>`:''}${ctl}</div>`; }).join('')+
+  `<div class="qsend"><button class="btn btn-primary btn-sm" onclick="qualSend()">🟢 שלח למנהל המסלול (וואטסאפ)</button><button class="btn btn-sm" onclick="qualCopy()">📋 העתק</button><button class="btn btn-sm" onclick="qualReset()" title="מנקה את הטופס לליד הבא">🧹</button></div>`; }
+window.qualSet=(k,v,rerender)=>{ S.qual=S.qual||{}; S.qual[k]=v; try{ localStorage.setItem('lc_qual',JSON.stringify(S.qual)); }catch(e){} if(k==='manager'){ S.settings.qualManager=v; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); } if(rerender) renderQual(); if(rerender&&S.running&&qualOn()&&!S.quickInFlight&&S.lines.some(l=>l.final)){ S.lastQuickAt=0; quickSay('quick',''); } };
+window.qualAsk=k=>{ const q=QUAL_Q.find(x=>x.k===k); if(!q) return; showSay(q.ask,'','שאלת התסריט',''); $('sayWhy').textContent='מהתסריט: '+q.l; $('sayAvoid').textContent=''; $('sayReason').textContent=''; };
+function qualMessage(){ const a=S.qual||{}; let m='📋 ליד חדש — מועדון האיקומרס\n(ממולא ע"י מנהל התאמה, אחרי שיחת התאמה)\n\n'; for(const q of QUAL_Q){ const v=(a[q.k]||'').toString().trim(); if(v) m+=q.l+': '+v+'\n'; } const cust=S.custState?'\nמצב הלקוח: '+S.custState:''; return m+cust+'\n\n— נשלח מ-LiveCoach · '+(S.settings.repName||''); }
+window.qualSend=()=>{ const a=S.qual||{}; if(!(a.name||'').trim()||!(a.phone||'').trim()) return toast('חסר שם או וואטסאפ של הליד','t-error'); if(a.meet_day&&!a.meet_time) return toast('סימנת יום לראיון, חובה גם שעה','t-error'); window.open('https://wa.me/'+QUAL_WA+'?text='+encodeURIComponent(qualMessage()),'_blank'); try{ addEvent({kind:'custom',request:'טופס התאמה נשלח למנהל המסלול',text:qualMessage().slice(0,300),why:'',reasoning:null}); }catch(e){} };
+window.qualCopy=async()=>{ try{ await navigator.clipboard.writeText(qualMessage()); toast('הטופס הועתק'); }catch(e){ toast('לא הצלחתי להעתיק'); } };
+window.qualReset=()=>{ S.qual={manager:S.settings.qualManager||''}; try{ localStorage.setItem('lc_qual',JSON.stringify(S.qual)); }catch(e){} renderQual(); };
+function qualFixedMessage(a){ const nm=(a.name||'').split(' ')[0]; const mgr=a.manager||'מנהל המסלול'; const when=[a.meet_day,a.meet_time].filter(Boolean).join(' בשעה '); return `היי ${nm}, דיברתי עם מנהל המסלול, ${mgr}, ונשמע שיכולה להיות כאן התאמה. הוא יעלה לשיחה איתך ב${when||'[יום ושעה]'} שם תוכל לשאול את כל השאלות ונוכל יחד להתאים הכשרה מדויקת לצרכים שלך. במידה ואכן תימצא התאמה, תוכל להתחיל בהכשרה ולהכניס כסף בתוך 45 ימים.\n\nפרטים יבשים:\n- ${when||'[יום ושעה]'}${a.meet_where?' · '+a.meet_where:''}\n- מבקשים שתקיים את השיחה במקום שקט וללא הסחות דעת.\n- מומלץ להצטייד בכלי כתיבה ומחברת.\n- במקרה של דחיית/ביטול הפגישה נבקש להודיע עד שעתיים מראש למספר הזה. איחור/דחייה ללא התראה מראש יגרור פסילה מהמסלול ולא תוכל להצטרף בעתיד.\n\nמתרגשים לפגוש אותך,\nמועדון האיקומרס`; }
+try{ S.qual=JSON.parse(localStorage.getItem('lc_qual')||'{}'); }catch(e){ S.qual={}; }
 /* ── say-now: two options ── */
 function showSay(a,b,angleA,angleB){ $('sayText').textContent=a||''; const ob=$('optB'); if(b&&b.trim()&&b.trim()!==(a||'').trim()){ $('sayTextB').textContent=b; ob.style.display=''; } else { ob.style.display='none'; $('sayTextB').textContent=''; } $('sayAngleA').textContent=angleA||''; $('sayAngleB').textContent=angleB||''; $('optA').classList.add('on'); $('optB').classList.remove('on'); }
 window.pickSay=w=>{ $('optA').classList.toggle('on',w==='a'); $('optB').classList.toggle('on',w==='b'); const t=w==='a'?$('sayText').textContent:$('sayTextB').textContent; try{ addEvent({kind:'custom',request:'הנציג בחר אפשרות '+(w==='a'?'א':'ב'),text:t,why:'',reasoning:null}); }catch(e){} };
@@ -2173,7 +2255,7 @@ async function loadLead(phoneIn){
   if(!S.settings.dataKey){ openDrawer(); return toast('חסר מפתח נתונים בהגדרות (בקש מהמנהל לינק צוות מעודכן)','t-error'); }
   $('leadBody').innerHTML='<div class="empty">מושך את המסע של הליד מטוצ\'אט ופיירברי…</div>'; $('leadTag').textContent=''; S.lead=null; S.leadBrief=null;
   try{ const r=await dataFetch('/lead?phone=0'+n9); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||('שגיאה '+r.status));
-    S.lead=j; S.leadAt=Date.now(); S.leadAuto=!!S.leadLoadingAuto; S.leadLoadingAuto=false; S.ready=null; setReadiness({score:1,line:'ליד חדש נטען: '+(j.name||j.phone)+'. המאמן מחשב מוכנות…',solved:'',to_solve:'',next_move:'kyc'}); renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
+    S.lead=j; S.leadAt=Date.now(); S.leadAuto=!!S.leadLoadingAuto; S.leadLoadingAuto=false; S.ready=null; if(qualOn()){ S.qual=S.qual||{}; if(!S.qual.name) S.qual.name=j.name||''; S.qual.phone=j.phone||S.qual.phone||''; renderQual(); } setReadiness({score:1,line:'ליד חדש נטען: '+(j.name||j.phone)+'. המאמן מחשב מוכנות…',solved:'',to_solve:'',next_move:'kyc'}); renderLead(j); log('מסע ליד נטען: '+(j.name||n9)+' · '+(j.n_calls||0)+' שיחות','ok'); instantOpener(j); leadBrief(j); }
   catch(e){ $('leadBody').innerHTML='<div class="empty">'+escapeHtml(e.message||String(e))+'</div>'; log('מסע ליד: '+(e.message||e),'err'); }
 }
 async function awaitTochatSummary(snap,phone){
