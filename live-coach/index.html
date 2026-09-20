@@ -1559,7 +1559,7 @@ function endWatch(now){
 }
 function openEndAsk(sec){ let b=$('endAsk'); if(!b){ b=document.createElement('div'); b.id='endAsk'; b.className='endask'; document.body.appendChild(b); } b.innerHTML=`<div class="k">📵 נראה שהשיחה הסתיימה (${sec} שניות שקט)</div><div class="t">לסיים ולהכין את הסיכום? בלי תשובה תוך דקה השיחה תיסגר לבד.</div><div class="acts"><button class="btn btn-primary" onclick="S.endAskAt=0;closeEndAsk();S.endReason='confirm';stopCall()">✅ כן, סיים וסכם</button><button class="btn" onclick="S.endAskAt=0;S.endSnooze=Date.now()+180000;closeEndAsk()">⏳ לא, ממשיכים</button></div>`; b.style.display=''; try{ if('Notification' in window&&Notification.permission==='granted') new Notification('LiveCoach: השיחה הסתיימה?',{body:'לחץ כדי לסיים ולסכם, או "ממשיכים"'}); }catch(e){} }
 function closeEndAsk(){ const b=$('endAsk'); if(b) b.style.display='none'; }
-window.closeEndAsk=closeEndAsk; window.endWatch=endWatch; window.audioWatch=audioWatch; window.quickTick=quickTick; window.quickSay=quickSay; window.LOG=LOG; window.__lc={QUICK_SYS,LEARNING_LINE,trainingBlock,leadBlock,readinessBlock,barrierBlock,factsBlock,whisperBlock,qualBlock,recentTranscript,STAGES,STAGE_CHECKS,GENDER_RULE,QUICK_MODELS,parseLooseJson,scrub};
+window.closeEndAsk=closeEndAsk; window.endWatch=endWatch; window.audioWatch=audioWatch; window.quickTick=quickTick; window.quickSay=quickSay; window.LOG=LOG; window.__lc2={QUICK_SYS,LEARNING_LINE,trainingBlock,leadBlock,readinessBlock,barrierBlock,factsBlock,whisperBlock,qualBlock,recentTranscript,STAGES,STAGE_CHECKS,GENDER_RULE,QUICK_MODELS,parseLooseJson,scrub,salvageCriteria,getClient};
 function quickTick(now){ audioWatch(now); endWatch(now);
   if(!S.running||!S.settings.anthropic) return;
   const every=sayEveryMs(); const since=now-(S.lastQuickAt||S.startedAt);
@@ -1681,7 +1681,7 @@ function renderQualDebrief(o,ctx){ setModalTitle('🎯 סיום שיחת התא�
   <div class="qd-top">
     <div class="qd-ring"><div class="big" style="color:${col}">${total==null?'<span class="spin2 sm"></span>':total}<small>/100</small></div><div class="lbl">רמת התאמה</div><div class="sub">${escapeHtml(o.verdict||'')}</div></div>
     <div class="qd-sum"><div class="k">📌 תמצית</div><div class="t">${escapeHtml(o.summary||'')}</div>${(o.key_facts||[]).length?`<div class="facts">${o.key_facts.map(x=>'<span>'+escapeHtml(x)+'</span>').join('')}</div>`:''}${(o.red_flags||[]).length?`<div class="flags">🚩 ${escapeHtml(o.red_flags.join(' · '))}</div>`:''}${o.note_to_manager?`<div class="hint">למנהל המסלול: ${escapeHtml(o.note_to_manager)}</div>`:''}</div>
-    <div class="qd-crit"><div class="k">📊 5 המדדים · לחיצה פותחת מה היה צריך להגיד</div>${!crit.length?`<div class="hint" style="padding:8px 0">${o.criteriaError?'❌ '+escapeHtml(o.criteriaError):'<span class="spin2 sm"></span> מנתח את 5 המדדים מהתמלול… (10-25 שניות, יופיע כאן לבד)'}</div>`:''}${crit.map((c,i)=>{ const sc=Math.max(0,Math.min(20,+c.score||0)); const cc=sc>=15?'var(--accent4)':sc>=10?'var(--accent5)':'var(--red)'; return `<details class="cr"><summary><span class="n">${i+1}. ${escapeHtml(c.name)}</span><span class="bar"><i style="width:${sc*5}%;background:${cc}"></i></span><b style="color:${cc}">${sc}<small>/20</small></b></summary><div class="crb">${c.quote&&c.quote!=='אין'?`<div class="q">"${escapeHtml(c.quote)}"</div>`:''}<div><b>הנציג:</b> ${escapeHtml(c.rep_said||'')}</div><div><b>הלקוח:</b> ${escapeHtml(c.customer_effect||'')}</div>${(c.should_say||[]).length?`<div class="ss"><b>מה היה צריך להגיד:</b>${c.should_say.map(x=>`<div class="say2" onclick="copyTxt(this.textContent)" title="לחץ להעתקה">🗣 ${escapeHtml(x)}</div>`).join('')}</div>`:''}</div></details>`; }).join('')}</div>
+    <div class="qd-crit"><div class="k">📊 5 המדדים · לחיצה פותחת מה היה צריך להגיד</div>${crit.length<5?`<div class="hint" id="critWait" style="padding:8px 0">${o.criteriaError?'❌ '+escapeHtml(o.criteriaError)+' <button class="btn btn-sm" onclick="qualCritRetry()">🔁 נסה שוב</button>':'<span class="spin2 sm"></span> '+(crit.length?'מדד '+(crit.length+1)+' בדרך…':'מנתח את 5 המדדים מהתמלול…')+' <span id="critSec"></span>'}</div>`:''}${crit.map((c,i)=>{ const sc=Math.max(0,Math.min(20,+c.score||0)); const cc=sc>=15?'var(--accent4)':sc>=10?'var(--accent5)':'var(--red)'; return `<details class="cr"><summary><span class="n">${i+1}. ${escapeHtml(c.name)}</span><span class="bar"><i style="width:${sc*5}%;background:${cc}"></i></span><b style="color:${cc}">${sc}<small>/20</small></b></summary><div class="crb">${c.quote&&c.quote!=='אין'?`<div class="q">"${escapeHtml(c.quote)}"</div>`:''}<div><b>הנציג:</b> ${escapeHtml(c.rep_said||'')}</div><div><b>הלקוח:</b> ${escapeHtml(c.customer_effect||'')}</div>${(c.should_say||[]).length?`<div class="ss"><b>מה היה צריך להגיד:</b>${c.should_say.map(x=>`<div class="say2" onclick="copyTxt(this.textContent)" title="לחץ להעתקה">🗣 ${escapeHtml(x)}</div>`).join('')}</div>`:''}</div></details>`; }).join('')}</div>
   </div>
   <div class="qd-msgs" id="qdMsgs">${qualMsgCards(o,info)}</div>
   <div class="qd-foot"><div class="fb"><b>💪 חוזקה:</b> ${escapeHtml(o.strength||(pending?'…':''))}</div><div class="fb"><b>🔧 פספוסים:</b> ${escapeHtml((o.misses||[]).join(' · ')||(pending?'…':''))}</div><div class="fb alt"><b>🗣 לשיחה הבאה:</b> ${escapeHtml(o.alt_sentence||(pending?'…':''))}</div><div class="acts"><button class="btn btn-primary btn-sm" onclick="qualSend()">📋 שלח את הטופס למנהל המסלול</button><button class="btn btn-sm" onclick="qualCopy()">העתק טופס</button></div></div>
@@ -1690,6 +1690,7 @@ function renderQualDebrief(o,ctx){ setModalTitle('🎯 סיום שיחת התא�
   if(ph){ qualScheduleBase(a,ph,info); $('qdMsgs').innerHTML=qualMsgCards(o,info); }
   else $('qdMsgs').insertAdjacentHTML('afterbegin','<div class="hint" style="grid-column:1/-1;color:var(--red)">⚠️ אין טלפון בטופס, לכן התזכורות לא תוזמנו. הזן טלפון ולחץ שוב על הסיכום.</div>');
 }
+setInterval(()=>{ const el=$('critSec'); const o=S.lastSummary&&S.lastSummary.o; if(!el||!o||!o.critStart) return; const sec=Math.round((Date.now()-o.critStart)/1000); el.innerHTML=sec+' שנ׳'+(sec>=60?' · לוקח יותר מהרגיל <button class="btn btn-sm" onclick="qualCritRetry()">🔁 נסה שוב</button>':''); },1000);
 window.copyTxt=async t=>{ try{ await navigator.clipboard.writeText(String(t).replace(/^🗣\s*/,'')); toast('הועתק'); }catch(e){} };
 function qualMsgCards(o,info){ const a=info.form||{}; const ph=info.phone||''; const st=k=>(S.reminders||[]).find(r=>r.lead===ph&&r.key===k&&!r.done); const fmt=ts=>new Date(ts).toLocaleString('he-IL',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); const mt=meetTs(a);
   const r1=st('confirm'), r2=st('content'), r3=st('pre'); const m1=qualFixedMessage(a,o); const m2=qualCheckMessage(a); const m3=(o&&o.msg_pre_interview)||qualPreMessage(a);
@@ -1727,44 +1728,70 @@ async function runQualSummary(auto,src){
   const transcript=src.text||finals.slice(-300).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?'לקוח':'?'}]: ${l.text}`).join('\n');
   sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:a.name||ctx.leadName||'',phone:ph,status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt};
   const info={name:a.name||ctx.leadName||'',phone:ph,meet_day:a.meet_day||'',meet_time:a.meet_time||'',form:{...a},manager:S.settings.qualManager||''};
-  // phase 0: reminders + fixed messages exist before the model answers (nothing depends on it except the content link)
   qualScheduleBase(a,ph,info);
-  const o={qual:true,criteria:null,total:null,fit_score:null,score:null,outcome:a.meet_day?'follow_up':'unknown',stage_reached:'kyc',summary:'',crm_text:qualMessage(),lessons:[],strengths:[],improvements:[],scores:{}};
+  const o={qual:true,criteria:null,total:null,fit_score:null,score:null,outcome:a.meet_day?'follow_up':'unknown',stage_reached:'kyc',summary:'',crm_text:qualMessage(),lessons:[],strengths:[],improvements:[],scores:{},critStart:Date.now()};
   const t0=performance.now(); const ethos=`אתה מנהל ההתאמה של מועדון האיקומרס של אביב מלכה. ${QUAL_ETHOS}`;
+  const qctx={id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:ph,leadName:a.name||ctx.leadName,qual:a};
   const show=()=>{ S.lastSummary={o,ctx}; if(S.callId===ctx.id) S.summary=o; const open=$('modal').classList.contains('show'); const mine=S.sumWatch===ctx.id||(S.lastSummary&&S.lastSummary.ctx===ctx); if(!open||mine){ renderQualDebrief(o,ctx); $('modal').classList.add('show'); S.sumWatch=ctx.id; } };
-  const parse=r=>{ const txt=r.content.filter(b=>b.type==='text').map(b=>b.text).join(''); if(r.stop_reason==='max_tokens') log('סיכום התאמה: התשובה נחתכה, משלים ממה שיש','err'); let v=null; try{ v=JSON.parse(txt); }catch(e){ v=parseLooseJson(txt); } if(!v) throw new Error('התשובה לא נקראה (JSON חתוך)'); return scrub(v); };
+  const parse=r=>{ const txt=r.content.filter(b=>b.type==='text').map(b=>b.text).join(''); if(r.stop_reason==='max_tokens') log('סיכום התאמה: התשובה נחתכה, משלים ממה שיש','err'); let v=null; try{ v=JSON.parse(txt); }catch(e){ v=parseLooseJson(txt); } if(!v||v.bad) throw new Error('התשובה לא נקראה'); return scrub(v); };
+  const finishCrit=d=>{ o.criteria=(d.criteria||[]).slice(0,5); o.total=Math.max(0,Math.min(100,+d.total||o.criteria.reduce((x,c)=>x+(+c.score||0),0))); o.fit_score=Math.round(o.total/10); o.score=o.fit_score; o.strength=d.strength||''; o.misses=d.misses||[]; o.alt_sentence=d.alt_sentence||''; o.critStart=null; };
+  // phase 2 starts right away, in parallel with phase 1, and streams: each criterion shows up the moment it is complete
+  const critP=qualCriteria(ethos,rep,a,transcript,partial=>{ if(!partial.criteria.length) return; o.criteria=partial.criteria; o.total=null; if(S.lastSummary&&S.lastSummary.o===o&&$('modal').classList.contains('show')) renderQualDebrief(o,ctx); });
+  S.qualCritRetry=()=>{ o.criteria=null; o.total=null; o.criteriaError=''; o.critStart=Date.now(); show(); qualCriteria(ethos,rep,a,transcript,partial=>{ if(!partial.criteria.length) return; o.criteria=partial.criteria; if(S.lastSummary&&S.lastSummary.o===o&&$('modal').classList.contains('show')) renderQualDebrief(o,ctx); }).then(d=>{ finishCrit(d); sumQueue({id:ctx.id,status:'ready',score:o.total,o,ctx:qctx}); if(ph) remUpdate(ph,null,{info:{...info,total:o.total,verdict:o.verdict||'',summary:o.summary||''}}); show(); }).catch(e=>{ o.criteria=[]; o.critStart=null; o.criteriaError=String(e.error?.error?.message||e.message||e).slice(0,160); show(); }); };
   try{
     const r1=await getClient().beta.messages.create({model:coachModel(),max_tokens:1800,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:QUAL_FAST_SCHEMA}},
       system:`${ethos}\nסכם שיחת התאמה בקצרה למנהל המסלול (תמצית, עובדות, דגלים אדומים, איך לפתוח את הראיון), בחר תוכן אחד בלבד לצפייה עד הראיון (מי שלא ראה את השיטה: הדרכה חינמית; מי שרוצה להבין את המועדון: הסרטון על המועדון; מי שרוצה להתחיל: הקורס החינמי של פתיחת חנות ב-2 דקות), וכתוב הודעה לבוקר יום הראיון מהנציג ${rep}. בלי Markdown.\n${catalogBlock().slice(0,3000)}`,
       messages:[{role:'user',content:`הנציג: ${rep}. מנהל המסלול: ${S.settings.qualManager||'מנהל המסלול'}.\nהטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript}`}]},{timeout:60000,maxRetries:1});
     Object.assign(o,parse(r1)); o.summary=o.summary||''; o.one_thing=o.note_to_manager||'';
     log('סיכום התאמה (שלב 1) מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות','ok');
-    // reminders get the real content link + the personal morning message
     if(ph){ remUpdate(ph,'confirm',{msg:qualFixedMessage(a,o)}); if(o.msg_pre_interview) remUpdate(ph,'pre',{msg:o.msg_pre_interview}); }
-    sumQueue({id:ctx.id,status:'pending',o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:ph,leadName:a.name||ctx.leadName,qual:a}});
+    sumQueue({id:ctx.id,status:'pending',o,ctx:qctx});
     show();
-    // phase 2: the 5-criteria analysis
-    let r2; try{ r2=await getClient().beta.messages.create({model:coachModel(),max_tokens:7000,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema:QUAL_DEEP_SCHEMA}},
-      system:`${ethos}
+  }catch(e){ const msg='שגיאה: '+(e.error?.error?.message||e.message||e); sumQueue({id:ctx.id,status:'error'}); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; S.lastFailedSnap=src; if(!auto||S.sumWatch===ctx.id){ setModalTitle('🎯 סיום שיחת התאמה'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } log('סיכום התאמה: '+msg.slice(0,200),'err'); return; }
+  try{
+    const d=await critP; finishCrit(d);
+    log('ניתוח 5 המדדים מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות: '+o.total+'/100','ok');
+    if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.total,outcome:o.outcome,o,ctx:qctx});
+    if(!ctx.demo){ const sf={summary:'שיחת התאמה · '+(o.verdict||''),score:o.fit_score,outcome:o.outcome,next_step:(a.meet_day?'ראיון '+a.meet_day+' '+(a.meet_time||''):'לא נקבע ראיון'),stage_reached:'kyc',summary_json:o}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); saveLocalHistory(o,ctx); }
+    if(ph) remUpdate(ph,null,{info:{...info,total:o.total,verdict:o.verdict||'',summary:o.summary||''}});
+    show(); if(auto) toast('שיחת ההתאמה סוכמה: '+o.total+'/100','t-ok');
+  }catch(e){ const msg=String(e.error?.error?.message||e.message||e); o.criteria=[]; o.critStart=null; o.criteriaError=msg.slice(0,160); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:null,o,ctx:qctx}); show(); log('ניתוח המדדים: '+msg.slice(0,200),'err'); }
+}
+window.qualCritRetry=()=>{ if(S.qualCritRetry) S.qualCritRetry(); };
+// streams the 5-criteria analysis; onPartial gets the criteria that are already complete while the model is still writing
+async function qualCriteria(ethos,rep,a,transcript,onPartial){
+  const sys=`${ethos}
 נתח את תמלול שיחת ההתאמה ותן לנציג ${rep} ציון מתוך 100 לפי חמישה מדדים שווים (20 כל אחד):
 1. בניית סמכות ויוקרה באמצעות ניסיון, בידול והוכחות.
 2. הובלת ראיון התאמה עם קריטריונים אמיתיים לקבלה, בלי לרדוף אחרי הלקוח.
 3. בירור הפער בין המצב הנוכחי לרצוי, המוטיבציה והנכונות להשקיע.
 4. הצגת ערך ותהליך ברור, כשהכנסה בתוך 45 יום מוצגת כיעד ולא כהבטחה, תוך כיבוד האפשרות שהמסלול אינו מתאים.
 5. תגובת הלקוח: האם הסביר למה הוא מתאים, הפגין מחויבות והביע רצון להתקבל.
-לכל מדד: ציון, ציטוט תומך קצר, הסבר קצר שמפריד בין דברי הנציג לבין ההשפעה שניכרת בתגובות הלקוח, ו-2-3 משפטים קצרים שהנציג כן היה צריך להגיד כדי לייצר את האתוס הזה. אל תנחש רגשות, אל תתגמל לחץ, סינון מדומה או טענות עליונות ללא ביסוס. סיים בחוזקה אחת, שני פספוסים ומשפט חלופי מדויק לשיחה הבאה. total = סכום המדדים. קצר וחד, בלי Markdown.`,
-      messages:[{role:'user',content:`הנציג: ${rep}.\nהטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript}`}]},{timeout:120000,maxRetries:1}); }
-    catch(e){ log('ניתוח המדדים: '+(e.error?.error?.message||e.message||e)+', מנסה שוב קצר יותר','err'); r2=await getClient().beta.messages.create({model:coachModel(),max_tokens:7000,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:QUAL_DEEP_SCHEMA}},system:`${ethos}\nתן לנציג ${rep} ציון /100 לפי 5 מדדים שווים (סמכות ויוקרה; הובלת ראיון התאמה בלי לרדוף; פער מצוי-רצוי ומוטיבציה; ערך ותהליך עם 45 יום כיעד; תגובת הלקוח ומחויבותו). לכל מדד ציון, ציטוט קצר, מה הנציג עשה, מה ניכר אצל הלקוח, ו-2 משפטים שהיה צריך להגיד. קצר מאוד.`,messages:[{role:'user',content:`התמלול:\n${transcript.slice(-9000)}`}]},{timeout:120000,maxRetries:1}); }
-    const d=parse(r2); o.criteria=(d.criteria||[]).slice(0,5); o.total=Math.max(0,Math.min(100,+d.total||o.criteria.reduce((x,c)=>x+(+c.score||0),0))); o.fit_score=Math.round(o.total/10); o.score=o.fit_score; o.strength=d.strength||''; o.misses=d.misses||[]; o.alt_sentence=d.alt_sentence||'';
-    log('ניתוח 5 המדדים מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות: '+o.total+'/100','ok');
-    if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.total,outcome:o.outcome,o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:ph,leadName:a.name||ctx.leadName,qual:a}});
-    if(!ctx.demo){ const sf={summary:'שיחת התאמה · '+(o.verdict||''),score:o.fit_score,outcome:o.outcome,next_step:(a.meet_day?'ראיון '+a.meet_day+' '+(a.meet_time||''):'לא נקבע ראיון'),stage_reached:'kyc',summary_json:o}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); saveLocalHistory(o,ctx); }
-    if(ph) remUpdate(ph,null,{info:{...info,total:o.total,verdict:o.verdict||'',summary:o.summary||''}});
-    show(); if(auto) toast('שיחת ההתאמה סוכמה: '+o.total+'/100','t-ok');
-  }catch(e){ const msg='שגיאה: '+(e.error?.error?.message||e.message||e); if(o.summary){ if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.total,o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:ph,leadName:a.name||ctx.leadName,qual:a}}); o.criteriaError=msg; show(); }
-    else { sumQueue({id:ctx.id,status:'error'}); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; S.lastFailedSnap=src; if(!auto||S.sumWatch===ctx.id){ setModalTitle('🎯 סיום שיחת התאמה'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } }
-    log('סיכום התאמה: '+msg.slice(0,200),'err'); }
+לכל מדד: ציון, ציטוט תומך (עד 15 מילים), מה הנציג עשה (עד 20 מילים), ההשפעה שניכרת בתגובות הלקוח (עד 20 מילים), ו-2 משפטים (עד 18 מילים כל אחד) שהנציג כן היה צריך להגיד כדי לייצר את האתוס הזה. אל תנחש רגשות, אל תתגמל לחץ, סינון מדומה או טענות עליונות ללא ביסוס. סיים בחוזקה אחת, שני פספוסים ומשפט חלופי מדויק לשיחה הבאה. total = סכום המדדים. קצר וחד, בלי Markdown. כתוב את המדדים לפי הסדר, מדד 1 ראשון.`;
+  let txt=''; let lastEmit=0;
+  const stream=getClient().beta.messages.stream({model:coachModel(),max_tokens:6000,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:QUAL_DEEP_SCHEMA}},system:sys,
+    messages:[{role:'user',content:`הנציג: ${rep}.\nהטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript.slice(-14000)}`}]},{timeout:150000,maxRetries:1});
+  stream.on('text',t=>{ txt+=t; const now=Date.now(); if(now-lastEmit>1200){ lastEmit=now; try{ onPartial&&onPartial(salvageCriteria(txt)); }catch(e){} } });
+  const fin=await stream.finalMessage();
+  const full=fin.content.filter(b=>b.type==='text').map(b=>b.text).join('')||txt;
+  if(fin.stop_reason==='max_tokens') log('ניתוח המדדים: התשובה נחתכה, משלים ממה שיש','err');
+  let d=null; try{ d=JSON.parse(full); }catch(e){ d=salvageCriteria(full); if(!d.criteria.length) throw new Error('התשובה לא נקראה (JSON חתוך)'); }
+  d=scrub(d); if(!(d.criteria||[]).length) throw new Error('המודל לא החזיר מדדים');
+  return d;
 }
+// pulls every complete criterion object (and the trailing fields) out of a partial or truncated JSON string
+function salvageCriteria(txt){
+  const out={criteria:[],total:null,strength:'',misses:[],alt_sentence:''}; const start=txt.indexOf('"criteria"'); if(start<0) return out;
+  let i=txt.indexOf('[',start); if(i<0) return out; i++;
+  while(i<txt.length){ const b=txt.indexOf('{',i); if(b<0) break; let depth=0,inStr=false,esc=false,e=-1;
+    for(let k=b;k<txt.length;k++){ const c=txt[k]; if(inStr){ if(esc) esc=false; else if(c==='\\') esc=true; else if(c==='"') inStr=false; continue; } if(c==='"') inStr=true; else if(c==='{') depth++; else if(c==='}'){ depth--; if(!depth){ e=k; break; } } }
+    if(e<0) break; try{ const c=JSON.parse(txt.slice(b,e+1)); if(c&&c.name!=null) out.criteria.push(c); }catch(x){} i=e+1; const nb=txt.indexOf('{',i), close=txt.indexOf(']',i); if(close>=0&&(nb<0||close<nb)) break; }
+  const pick=k=>{ const r=txt.match(new RegExp('"'+k+'"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"')); return r?r[1].replace(/\\"/g,'"').replace(/\\n/g,' ').trim():''; };
+  const tm=txt.match(/"total"\s*:\s*(\d+)/); if(tm) out.total=+tm[1]; out.strength=pick('strength'); out.alt_sentence=pick('alt_sentence');
+  const mm=txt.match(/"misses"\s*:\s*\[([\s\S]*?)\]/); if(mm) out.misses=[...mm[1].matchAll(/"((?:[^"\\]|\\.)*)"/g)].map(m=>m[1]);
+  return out;
+}
+
 function qualScheduleBase(a,ph,info){ if(!ph) return; const have=k=>(S.reminders||[]).some(r=>r.lead===ph&&r.key===k&&!r.done); const now=Date.now(); const mt=meetTs(a);
   if(!have('confirm')) remAdd(ph,'confirm',now+2*60000,'הודעה 1 · אישור הראיון',info.name,qualFixedMessage(a,null),info,true);
   if(!have('content')){ let at=new Date(now+864e5); at.setHours(10,0,0,0); at=at.getTime(); if(mt&&mt<at) at=Math.max(now+2*3600e3,now+(mt-now)/2); remAdd(ph,'content','הודעה 2 · איך היה הסרטון?'&&at,'הודעה 2 · איך היה הסרטון?',info.name,qualCheckMessage(a),info,true); }
