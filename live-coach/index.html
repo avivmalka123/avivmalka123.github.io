@@ -774,7 +774,7 @@ function isEcho(ln){ // rep-channel line that duplicates a recent customer-chann
 function upsertLine(id,who,text,final){
   let ln=S.lines.find(l=>l.id===id);
   if(!ln){ln={id,who,text:'',final:false,ts:Date.now(),manual:false};S.lines.push(ln);}
-  ln.text=text; ln.final=final;
+  ln.text=text; ln.final=final; if(text&&text.trim()&&text!=='…') hideAudioWarn();
   if(final&&ln.who==='rep'&&isEcho(ln)){ const el=document.getElementById('ln_'+id); if(el) el.remove(); S.lines=S.lines.filter(l=>l.id!==id); log('סונן הד: הלקוח נקלט גם במיקרופון'); return; }
   renderLine(ln);
   if(final && text.trim()){ $('btnSummary').disabled=false; (S.diag=S.diag||{stt:{},peak:{}}).lastLineAt=Date.now(); hideAudioWarn(); onFinalLine(ln); renderIdBar(); }
@@ -890,7 +890,7 @@ function openStt(who){
         log('OpenAI ('+label+'): '+code+' — '+friendly,'err');toast('שגיאת תמלול ('+label+'): '+friendly,'t-error');
         if(!settled){settled=true;reject(new Error(friendly))}return}
       if(m.type==='transcription_session.updated'||m.type==='session.updated'){diagSet('stt',who,'ok');if(!settled){settled=true;ws.openedAt=Date.now();setPill(pill,S.day&&!S.running?'busy':'on');log('OpenAI ('+label+'): מוכן לתמלול','ok');resolve(ws)}}
-      if(m.type==='input_audio_buffer.speech_started'||/transcription\.(delta|completed)$/.test(m.type)){ S.act[who]=Date.now(); if(S.day&&!S.running&&!S.autoStarting&&who==='cust'&&m.type==='input_audio_buffer.speech_started'){ autoStartCall(); } }
+      if(m.type==='input_audio_buffer.speech_started'||/transcription\.(delta|completed)$/.test(m.type)){ S.act[who]=Date.now(); (S.diag=S.diag||{stt:{},peak:{}}).lastSpeechAt=Date.now(); hideAudioWarn(); if(S.day&&!S.running&&!S.autoStarting&&who==='cust'&&m.type==='input_audio_buffer.speech_started'){ autoStartCall(); } }
       if(m.type==='input_audio_buffer.speech_started') log('OpenAI ('+label+'): זוהה דיבור');
       const spk=S.single?'unk':who;
       if(m.type==='conversation.item.input_audio_transcription.delta'){const id=who+'_'+m.item_id;const ln=S.lines.find(l=>l.id===id);upsertLine(id,ln?ln.who:spk,(ln?ln.text:'')+(m.delta||''),false)}
@@ -1523,8 +1523,8 @@ const coachModel=()=>S.settings.coachModel||'claude-sonnet-5';
 function diagSet(k,who,v){ const d=(S.diag=S.diag||{stt:{},peak:{}}); d[k]=d[k]||{}; d[k][who]=v; }
 function hideAudioWarn(){ const b=$('audioWarn'); if(b&&b.style.display!=='none'){ b.style.display='none'; } }
 function audioWatch(now){
-  if(!S.running||S.demo||S.simActive) return; const d=S.diag||{stt:{},peak:{}}; const finals=S.lines.filter(l=>l.final&&l.text.trim()).length; if(finals) return;
-  if(now-S.startedAt<25000) return; const b=$('audioWarn'); if(!b||b.style.display!=='none') return;
+  if(!S.running||S.demo||S.simActive) return; const d=S.diag||{stt:{},peak:{}}; const anyText=S.lines.some(l=>l.text&&l.text.trim()&&l.text!=='…'); if(anyText) return;
+  if(now-S.startedAt<45000) return; if(d.lastSpeechAt&&now-d.lastSpeechAt<30000) return; const b=$('audioWarn'); if(!b||b.style.display!=='none') return;
   const stt=d.stt||{}; const pk=d.peak||{}; let why,fix;
   if(stt.cust==='invalid_key'||stt.rep==='invalid_key'){ why='מפתח ה-OpenAI בדפדפן הזה לא תקין, ולכן אין תמלול'; fix='בקש מהמנהל לינק צוות חדש ופתח אותו בכרום'; }
   else if(stt.cust==='error'||stt.cust==='closed_4000'||!stt.cust){ why='חיבור התמלול לא נפתח'; fix='לחץ "סיים יום" ואז "התחל יום" מחדש. אם זה חוזר: לינק צוות חדש'; }
