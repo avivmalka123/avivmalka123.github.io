@@ -1559,15 +1559,20 @@ function endWatch(now){
 }
 function openEndAsk(sec){ let b=$('endAsk'); if(!b){ b=document.createElement('div'); b.id='endAsk'; b.className='endask'; document.body.appendChild(b); } b.innerHTML=`<div class="k">📵 נראה שהשיחה הסתיימה (${sec} שניות שקט)</div><div class="t">לסיים ולהכין את הסיכום? בלי תשובה תוך דקה השיחה תיסגר לבד.</div><div class="acts"><button class="btn btn-primary" onclick="S.endAskAt=0;closeEndAsk();S.endReason='confirm';stopCall()">✅ כן, סיים וסכם</button><button class="btn" onclick="S.endAskAt=0;S.endSnooze=Date.now()+180000;closeEndAsk()">⏳ לא, ממשיכים</button></div>`; b.style.display=''; try{ if('Notification' in window&&Notification.permission==='granted') new Notification('LiveCoach: השיחה הסתיימה?',{body:'לחץ כדי לסיים ולסכם, או "ממשיכים"'}); }catch(e){} }
 function closeEndAsk(){ const b=$('endAsk'); if(b) b.style.display='none'; }
-window.closeEndAsk=closeEndAsk; window.endWatch=endWatch; window.audioWatch=audioWatch;
+window.closeEndAsk=closeEndAsk; window.endWatch=endWatch; window.audioWatch=audioWatch; window.quickTick=quickTick; window.quickSay=quickSay; window.LOG=LOG; window.__lc={QUICK_SYS,LEARNING_LINE,trainingBlock,leadBlock,readinessBlock,barrierBlock,factsBlock,whisperBlock,qualBlock,recentTranscript,STAGES,STAGE_CHECKS,GENDER_RULE,QUICK_MODELS,parseLooseJson,scrub};
 function quickTick(now){ audioWatch(now); endWatch(now);
   if(!S.running||!S.settings.anthropic) return;
+  const every=sayEveryMs(); const since=now-(S.lastQuickAt||S.startedAt);
+  if(qualOn()&&!S.demo){ const el=$('aiLatency'); if(el&&now-(S.cdAt||0)>900){ S.cdAt=now; el.textContent=S.quickInFlight?'🧠 חושב…':(S.lastLat?'⚡ '+S.lastLat+' · ':'')+'⏱ הבא בעוד '+Math.max(0,Math.ceil((every-since)/1000))+' שנ׳'; } }
   if(S.quickInFlight){ if(now-(S.quickStartedAt||now)>35000){ S.quickInFlight=false; log('המשפט התקופתי נתקע 35 שניות, מאפס','err'); } else return; }
-  const since=now-(S.lastQuickAt||S.startedAt); if(since<sayEveryMs()) return;
-  const n=S.lines.filter(l=>l.final&&l.text.trim()).length; if(!n) return;
-  if(n===S.lastQuickCount&&since<sayEveryMs()*(qualOn()?1:2)) return; // nothing new was said: wait one more interval, then refresh anyway from the situation
+  if(since<every) return;
+  const n=S.lines.filter(l=>l.final&&l.text.trim()).length;
+  if(!n){ if(qualOn()&&now-S.startedAt>every) qualFallbackSay('עדיין אין תמלול'); return; }
+  if(n===S.lastQuickCount&&since<every*(qualOn()?1:2)) return; // nothing new was said: wait one more interval, then refresh anyway from the situation
   quickSay('quick','');
 }
+// qual mode never leaves the rep without a sentence: the next script question fills in when there is no transcript or the model fails
+function qualFallbackSay(reason){ if(!qualOn()) return; const nx=qualNext(); S.lastQuickAt=Date.now(); S.sayAt=Date.now(); if(!nx) return; showSay(nx.ask,'','שאלת התסריט',''); $('sayWhy').textContent=reason+' · השאלה הבאה מהתסריט: '+nx.l; $('sayAvoid').textContent=''; addEvent({kind:'quick',request:'',text:nx.ask,why:reason}); renderSayLog(); }
 async function quickSay(mode,q){
   if(!S.settings.anthropic){openDrawer();return}
   if(mode==='barrier') return barrierQuestions(q);
@@ -1611,8 +1616,8 @@ ${tr.text}`;
     if(o.customer_state){ S.custState=o.customer_state; const c=$('custState'); c.style.display=''; c.innerHTML='<b>מצב הלקוח:</b> '+escapeHtml(o.customer_state); }
     const sn=$('saynow'); sn.classList.toggle('custom',mode!=='quick'); sn.style.animation='none'; void sn.offsetWidth; sn.style.animation='';
     S.sayAt=Date.now(); S.lastQuickAt=S.sayAt; renderSayLog();
-    $('aiLatency').textContent='⚡ '+sec+'s'; setPill('pAI','on'); if(mode==='custom') $('reqInput').value='';
-  }catch(e){ console.error(e); setPill('pAI','err'); toast('שגיאה: '+(e.error?.error?.message||e.message||e).slice(0,140),'t-error'); log('Claude (מהיר): '+(e.status?e.status+' ':'')+String(e.message||e).slice(0,160),'err'); }
+    S.lastLat=sec+'s'; $('aiLatency').textContent='⚡ '+sec+'s'; setPill('pAI','on'); if(mode==='custom') $('reqInput').value='';
+  }catch(e){ console.error(e); setPill('pAI','err'); const em=(e.error?.error?.message||e.message||e); toast('שגיאה: '+String(em).slice(0,140),'t-error'); log('Claude (מהיר): '+(e.status?e.status+' ':'')+String(e.message||e).slice(0,160),'err'); if(mode==='quick'&&qualOn()) qualFallbackSay('המאמן לא ענה ('+String(em).slice(0,60)+')'); }
   finally{ S.quickInFlight=false; $('saynow').classList.remove('thinking'); $('btnReq').disabled=false; $('btnAsk').disabled=false; }
 }
 const SAYLOG_KINDS={quick:'⚡',auto:'🧠',listen:'👂',ask:'🎯',custom:'✨',lead:'🧭'};
