@@ -121,10 +121,13 @@
   .fearrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}.fearrow .k{font-size:13px;font-weight:800;color:var(--text-muted)}.fchipf{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(220,38,38,.35);background:rgba(220,38,38,.05);border-radius:999px;padding:5px 8px 5px 12px;font-size:14.5px;font-weight:700;color:var(--red);max-width:100%}.fchipf.done{border-color:rgba(15,157,110,.45);background:rgba(15,157,110,.08);color:var(--accent4)}.fchipf .tg{cursor:pointer;user-select:none}.fchipf .go{border:1px solid rgba(124,58,237,.35);background:var(--surface);border-radius:999px;padding:3px 11px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;color:var(--purple);white-space:nowrap}.fchipf .go:hover{background:var(--surface2)}.fearrow .scan{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--text)}
   .jbtns{display:flex;flex-direction:column;gap:6px;min-width:190px}.jbtns .btn.lead{min-height:42px;padding:6px 10px}.jbtns .btn.lead i{font-size:18px;width:24px}.jbtns .btn.lead span{font-size:13px}
   @media(max-width:860px){.joker-b{grid-template-columns:auto 1fr;min-height:0}.jbtns{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}.jbtns .btn.lead{flex:1}}
-  .main-coach{grid-column:1/-1;max-height:none;min-height:0}#coach{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:12px;align-content:start;overflow:visible}#coach>*{grid-column:1;min-width:0}#coach #sayLog{grid-column:2;grid-row:1/span 6;max-height:calc(100vh - 560px);min-height:160px;margin:0}
-  #coach #sumList{grid-column:2;grid-row:auto}
-  body.qual .stagebar,body.qual #checklist,body.qual #sumList,body.qual .fearrow,body.qual .bchips,body.qual #jokerWrap,body.qual #custState,body.qual #profile{display:none!important}
-  body.qual #coach #qualForm{display:block;grid-column:2;grid-row:1/span 12;max-height:calc(100vh - 220px);overflow:auto}
+  .main-coach{grid-column:1/-1;max-height:none;min-height:0}#coach{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:12px;align-content:start;overflow:visible}#coach>*{grid-column:1;min-width:0}#coach #sayLog{grid-column:2;grid-row:2/span 6;max-height:calc(100vh - 700px);min-height:140px;margin:0}#coach #sumList{grid-column:2;grid-row:1;max-height:170px}
+  .btn-big{font-size:17px;font-weight:900;padding:12px 18px;border-radius:14px;justify-content:center;width:100%;background:rgba(239,68,68,.12)}.btn-big:hover{background:rgba(239,68,68,.2)}
+  .endask{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:1200;background:var(--surface);border:2px solid var(--red);border-radius:16px;padding:12px 16px;box-shadow:0 12px 40px rgba(0,0,0,.25);max-width:520px;width:calc(100% - 24px);animation:in .25s ease}.endask .k{font-weight:900;font-size:15px}.endask .t{font-size:12.5px;color:var(--text-muted);margin:4px 0 8px}.endask .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .pend{display:flex;gap:14px;align-items:center;padding:18px 8px;font-size:14px}.spin2{width:26px;height:26px;border:3px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:rot .8s linear infinite;flex:none;display:inline-block}.spin2.sm{width:18px;height:18px;border-width:2px;vertical-align:middle}@keyframes rot{to{transform:rotate(360deg)}}
+  #coach #sumList{grid-column:2;grid-row:1}
+  body.qual .stagebar,body.qual #checklist,body.qual .fearrow,body.qual .bchips,body.qual #jokerWrap,body.qual #custState,body.qual #profile{display:none!important}
+  body.qual #coach #qualForm{display:block;grid-column:2;grid-row:2/span 12;max-height:calc(100vh - 400px);overflow:auto}
   body.qual #coach #sayLog{grid-column:1;grid-row:auto;max-height:340px;min-height:160px}
   .qform{display:none;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:10px 12px;font-size:13px}.qform .qh{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:13px;margin-bottom:6px}.qform .qh .pr{font-weight:600;color:var(--text-muted);font-size:11.5px}.qbar{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:8px}.qbar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
   .qq{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:7px 9px;margin-bottom:6px}.qq.done{border-color:rgba(15,157,110,.45)}.qq.next{border-color:rgba(124,58,237,.6);box-shadow:0 0 0 2px rgba(124,58,237,.12)}.qq label{display:flex;gap:6px;align-items:center;font-weight:800;font-size:12px;margin-bottom:4px}.qq label i{font-style:normal;width:18px;height:18px;border-radius:50%;background:var(--surface3);display:inline-grid;place-items:center;font-size:10px;flex:none}.qq.done label i{background:var(--accent4);color:#fff}.qq .ask{font-size:11.5px;color:var(--text-muted);margin-bottom:4px;cursor:pointer}.qq .ask:hover{color:var(--purple)}.qq input,.qq textarea,.qq select{width:100%;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text)}.qq textarea{min-height:44px;resize:vertical}.qq .row{display:grid;grid-template-columns:1fr 1fr;gap:6px}.qchoices{display:flex;gap:5px;flex-wrap:wrap}.qchoice{border:1px solid var(--border);background:var(--surface2);border-radius:999px;padding:3px 9px;font-size:12px;cursor:pointer}.qchoice.on{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -142,7 +145,7 @@
   .mrn{display:grid;gap:10px}.mcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px}.mcard.p1{border-right:4px solid var(--red)}.mcard.p2{border-right:4px solid var(--accent5)}.mcard.p3{border-right:4px solid var(--accent3)}.mcard .h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.mcard .h b{font-size:15px}.mcard .why{font-size:13px;color:var(--text-muted);margin-top:4px}.mcard .msg{white-space:pre-wrap;background:var(--surface2);border-radius:10px;padding:8px 10px;font-size:13.5px;line-height:1.55;margin-top:8px}.mcard .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
   .rv{display:grid;gap:10px}.rv .big{font-size:26px;font-weight:900;line-height:1.3}.rv .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rv .box{background:var(--surface2);border-radius:12px;padding:10px 12px}.rv .box b{display:block;font-size:12px;color:var(--text-muted);margin-bottom:4px}.rv ul{margin:0;padding-right:18px}@media(max-width:700px){.rv .grid{grid-template-columns:1fr}}
   .saynow{text-align:center}.saynow .reqbar{text-align:right}
-  @media(max-width:860px){#coach{grid-template-columns:1fr}#coach #sayLog{grid-column:1;grid-row:auto}}
+  @media(max-width:860px){#coach{grid-template-columns:1fr}#coach #sayLog,#coach #sumList,body.qual #coach #qualForm{grid-column:1;grid-row:auto}}
   .tr-panel{display:none!important}
   .lead-panel .linsight{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:5px 10px}.lead-panel .linsight b{display:inline;margin-left:6px}.lead-panel .panel-b{padding:6px 14px 6px;gap:3px;overflow:visible}.lead-panel .panel-h{display:none}
   .lead-panel .jst{min-width:80px;padding:3px 7px;font-size:10.5px}.lead-panel .jst em{font-size:13px}.lead-panel .jst b{font-size:11px}.lead-panel .jst small{font-size:10px}
@@ -406,6 +409,7 @@
         <div class="sayfoot"><span id="sayFb"></span></div>
         <div class="reqbar"><input id="reqInput" placeholder="בקש משפט: 'משפט סגירה', 'לטפל ביקר לי', 'להחזיר אותו לכאב'…"><button class="btn btn-primary" id="btnReq">✨ תן משפט</button><button class="btn" id="btnAsk" title="בלי הנחיה: המאמן מבין מההיסטוריה מה לשאול עכשיו" style="border-color:rgba(45,212,191,.45);color:var(--teal)">🎯 מה לשאול?</button></div>
       </div>
+      <button class="btn btn-danger btn-big" id="btnBigSum" style="display:none">🏁 סיים שיחה וסכם עכשיו</button>
       <div class="fearrow" id="fearRow"></div>
       <div class="bchips" id="bchips"></div>
       <div class="minitr" id="miniTr" style="display:none"></div>
@@ -906,7 +910,7 @@ function openStt(who){
     };
     ws.onerror=e=>{diagSet('stt',who,'error');setPill(pill,'err');log('OpenAI ('+label+'): החיבור נכשל. מפתח OpenAI לא תקין או חסום','err');if(!settled){settled=true;reject(new Error('לא ניתן להתחבר ל-OpenAI Realtime. בדוק את מפתח OpenAI.'))}};
     ws.onclose=ev=>{diagSet('stt',who,ev.code===3000?'invalid_key':'closed_'+ev.code);setPill(pill,S.day?'busy':'');console.warn('[stt '+who+'] closed',ev.code,ev.reason);const why=ev.reason?' — '+ev.reason:'';if(!settled){settled=true;reject(new Error('OpenAI סגר את החיבור (קוד '+ev.code+why+'). בדוק שמפתח OpenAI תקין ושיש יתרה בחשבון.'))}
-      if(S.day&&S.ws[who]===ws){ S.ws[who]=null; log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+'), מתחבר מחדש…'); setTimeout(()=>{ if(S.day&&!S.ws[who]) openStt(who).then(w=>{S.ws[who]=w}).catch(()=>{}); },1500); return; }
+      if((S.day||(S.running&&!S.demo&&!S.simActive))&&S.ws[who]===ws){ S.ws[who]=null; log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+'), מתחבר מחדש…'); setTimeout(()=>{ if((S.day||S.running)&&!S.ws[who]) sttReopen(who); },1500); return; }
       if(S.running&&!S.demo){log('OpenAI ('+label+'): החיבור נסגר ('+ev.code+why+')','err');toast('חיבור התמלול ('+label+') נסגר','t-error')}};
   });
 }
@@ -1019,15 +1023,17 @@ function renderEnrolled(){
 window.removeEnrolled=i=>{ S.settings.smSpeakers.splice(i,1); localStorage.setItem('lc_settings',JSON.stringify(S.settings)); renderEnrolled(); };
 $('btnEnroll').onclick=enrollVoice;
 
+function sttReopen(who){ if(S.sttOpening&&S.sttOpening[who]) return; (S.sttOpening=S.sttOpening||{})[who]=true; openStt(who).then(w=>{ S.ws[who]=w; log('תמלול ('+who+'): חובר מחדש','ok'); }).catch(e=>log('תמלול ('+who+'): חיבור מחדש נכשל: '+(e.message||e),'err')).finally(()=>{ S.sttOpening[who]=false; }); }
+setInterval(()=>{ if(!(S.day||(S.running&&!S.demo&&!S.simActive))) return; for(const k of ['rep','cust']){ if(!(S.piped&&S.piped[k])) continue; const w=S.ws[k]; if(!w||w.readyState>1){ if(!(S.sttOpening&&S.sttOpening[k])) log('תמלול ('+k+'): אין חיבור פעיל, מתחבר מחדש אוטומטית'); sttReopen(k); } } },8000);
 async function pipe(stream,who,ws,meterId){
-  const ctx=await getCtx();
+  const ctx=await getCtx(); (S.piped=S.piped||{})[who]=true; try{ const tr=stream.getAudioTracks()[0]; if(tr) (S.tracks=S.tracks||{})[who]=tr; }catch(e){}
   const src=ctx.createMediaStreamSource(stream);
   const lvl=$(who==='rep'?'lRep':'lCust'); let lastLog=0;
   if(ws) S.ws[who]=ws;
   const {node,sink}=makeCapture(ctx,(pcm,peak)=>{
     if(peak>0.035){ S.act[who]=Date.now(); if(who==='cust'&&peak>0.06){ S.burst.push(Date.now()); if(S.burst.length>60) S.burst.shift(); } }
     tick();
-    (S.lastPeak=S.lastPeak||{})[who]=peak; if(peak>0.012) S.lastAudible=Date.now(); { const d=(S.diag=S.diag||{stt:{},peak:{}}); d.peak[who]=Math.max(peak,(d.peak[who]||0)*0.995); }
+    (S.lastPeak=S.lastPeak||{})[who]=peak; if(peak>0.012) S.lastAudible=Date.now(); { const d=(S.diag=S.diag||{stt:{},peak:{}}); d.peak[who]=Math.max(peak,(d.peak[who]||0)*0.995); if(peak>0.012) (d.heard=d.heard||{})[who]=Date.now(); }
     const idleQuiet=S.day&&!S.running&&Date.now()-(S.lastAudible||0)>1500;
     const w0=S.ws[who]; if(w0&&w0.readyState===1&&!idleQuiet){ if(w0.sendAudio) w0.sendAudio(pcm); else w0.send(JSON.stringify({type:'input_audio_buffer.append',audio:b64(pcm)})); }
     const w=Math.min(100,peak*140); $(meterId).style.width=w+'%'; lvl.style.setProperty('--w',w+'%'); if(peak>0.05&&Date.now()-lastLog>4000&&S.running){lastLog=Date.now();log((who==='rep'?'מיקרופון':'שמע לקוח')+': נקלט שמע')} });
@@ -1097,7 +1103,7 @@ function closeSockets(){
 }
 function teardownAudio(){
   for(const n of S.audio.nodes){try{n.disconnect()}catch(e){}} S.audio.nodes=[];
-  for(const s of S.audio.streams){s.getTracks().forEach(t=>t.stop())} S.audio.streams=[];
+  for(const s of S.audio.streams){s.getTracks().forEach(t=>t.stop())} S.audio.streams=[]; S.piped={}; S.tracks={};
   try{smFinalize()}catch(e){}
   for(const k of ['rep','cust']){try{if(S.ws[k]&&S.ws[k].endStream)S.ws[k].endStream();}catch(e){} try{setTimeout((w=>()=>{try{w&&w.close()}catch(e){}})(S.ws[k]),1500)}catch(e){} S.ws[k]=null}
   $('mRep').style.width='0';$('mCust').style.width='0';$('lRep').style.setProperty('--w','0%');$('lCust').style.setProperty('--w','0%');
@@ -1113,7 +1119,7 @@ function beginSession(demo){
   $('modal').classList.remove('show'); S.endedSim=false; S.endedAt=null; loadTraining();
   $('btnClear').click(); renderStages();
   $('btnStart').style.display='none'; $('btnStop').style.display=''; $('btnStart').disabled=false; $('btnDemo').disabled=true; $('liveTag').style.display='';
-  $('timer').classList.add('live');
+  $('timer').classList.add('live'); $('btnBigSum').style.display=demo?'none':''; S.endReason=null; S.endAskAt=0; S.endSnooze=0;
   S.timerIv=setInterval(()=>{const s=Math.floor((Date.now()-S.startedAt)/1000);$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')},500);
   clearInterval(S.syncIv); S.syncIv=setInterval(()=>{ if(S.running) syncCall(); },15000); if(!demo) syncCall();
   clearInterval(S.insightIv);
@@ -1126,7 +1132,8 @@ function stopCall(){
   const nFinal=S.lines.filter(l=>l.final&&l.text.trim()).length;
   if(S.day&&nFinal<2){ syncCall({status:'void',ended_at:new Date().toISOString()}); log('לא זוהה דיבור אמיתי (צלצול/רעש), השיחה בוטלה'); }
   else syncCall({status:'ended',ended_at:new Date().toISOString()});
-  if(nFinal>=6&&S.settings.anthropic){ const snap=snapshotCall(); setTimeout(()=>runSummary(true,snap),1500); }
+  closeEndAsk(); S.endAskAt=0; $('btnBigSum').style.display='none';
+  if(nFinal>=3&&S.settings.anthropic){ const snap=snapshotCall(); openPendingModal(snap.ctx); setTimeout(()=>runSummary(true,snap),150); }
   else if(!S.demo&&!S.simActive&&S.settings.anthropic&&(Date.now()-S.startedAt)>=45000){ const snap=snapshotCall(); const ph=(S.lead&&S.lead.phone)||ACTIVE_SEEN||S.lastActivePhone||''; if(ph){ snap.ctx.leadPhone=snap.ctx.leadPhone||ph; awaitTochatSummary(snap,ph); } else log('אין תמלול ואין טלפון מזוהה: לא ניתן להביא סיכום מטוצ׳אט לשיחה הזו','err'); }
   $('btnStart').style.display=S.day?'none':''; $('btnStop').style.display='none'; $('btnDemo').disabled=false; $('liveTag').style.display='none'; $('timer').classList.remove('live');
   if(!S.day){ setPill('pRep','');setPill('pCust',''); } else { setPill('pRep','busy'); setPill('pCust','busy'); $('dayState').textContent='🟢 ממתין לשיחה הבאה…'; }
@@ -1161,7 +1168,7 @@ async function startDayNow(){
     setPill('pRep','busy'); setPill('pCust','busy');
     log('מתחבר לתמלול (נשאר מחובר כל היום)…');
     const [wsRep,wsCust]=await Promise.all([openStt('rep'),openStt('cust')]); S.ws.rep=wsRep; S.ws.cust=wsCust;
-    S.dayRefresh=setInterval(()=>{ if(!S.day||S.running) return; for(const k of ['rep','cust']){ const w=S.ws[k]; if(w&&w.openedAt&&Date.now()-w.openedAt>45*60000){ S.ws[k]=null; try{w.close()}catch(e){} } } },60000);
+    S.dayRefresh=setInterval(()=>{ if(!S.day||S.running) return; for(const k of ['rep','cust']){ const w=S.ws[k]; if(w&&w.openedAt&&Date.now()-w.openedAt>45*60000){ log('תמלול ('+k+'): רענון חיבור מתוזמן'); try{w.close()}catch(e){} } } },60000);
     $('btnDay').textContent='⏹ סיים יום'; $('btnDay').classList.remove('btn-primary'); $('btnDay').classList.add('btn-danger'); $('btnStart').style.display='none'; $('dayState').style.display=''; $('dayState').textContent='🟢 מאזין לחייגן. ממתין לשיחה…';
     log('מצב יום פעיל: כשהלקוח יתחיל לדבר, השיחה תיפתח אוטומטית. '+(parseInt(S.settings.autoEndSec)||25)+' שניות שקט = סיום שיחה.','ok');
     toast('מצב יום פעיל. אפשר לעבור ל-ToChat ולעבוד רגיל.','t-ok');
@@ -1177,6 +1184,7 @@ function autoStartCall(){
 }
 $('btnDay').onclick=()=>{ if(S.day) endDay(); else startDay(); };
 $('btnStart').onclick=startCall; $('btnStop').onclick=stopCall;
+$('btnBigSum').onclick=()=>{ if(!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; S.endReason='manual'; stopCall(); if(n<3){ const ph=(S.lead&&S.lead.phone)||ACTIVE_SEEN||S.lastActivePhone||(qualOn()&&S.qual&&S.qual.phone)||''; if(!ph) toast('אין מספיק תמלול ואין טלפון מזוהה, אין ממה לסכם','t-error'); } };
 
 /* ───────────────────────── demo ───────────────────────── */
 $('btnDemo').onclick=async()=>{
@@ -1531,17 +1539,28 @@ function diagSet(k,who,v){ const d=(S.diag=S.diag||{stt:{},peak:{}}); d[k]=d[k]|
 function hideAudioWarn(){ const b=$('audioWarn'); if(b&&b.style.display!=='none'){ b.style.display='none'; } }
 function audioWatch(now){
   if(!S.running||S.demo||S.simActive) return; const d=S.diag||{stt:{},peak:{}}; const anyText=S.lines.some(l=>l.text&&l.text.trim()&&l.text!=='…'); if(anyText) return;
-  if(now-S.startedAt<45000) return; if(d.lastSpeechAt&&now-d.lastSpeechAt<30000) return; const b=$('audioWarn'); if(!b||b.style.display!=='none') return;
-  const stt=d.stt||{}; const pk=d.peak||{}; let why,fix;
+  if(now-S.startedAt<60000) return; if(d.lastSpeechAt&&now-d.lastSpeechAt<30000) return; const b=$('audioWarn'); if(!b||b.style.display!=='none') return;
+  const stt=d.stt||{}; const heard=d.heard||{}; const wsOk=k=>S.ws[k]&&S.ws[k].readyState===1; const tr=(S.tracks||{}).cust; let why,fix;
   if(stt.cust==='invalid_key'||stt.rep==='invalid_key'){ why='מפתח ה-OpenAI בדפדפן הזה לא תקין, ולכן אין תמלול'; fix='בקש מהמנהל לינק צוות חדש ופתח אותו בכרום'; }
-  else if(stt.cust==='error'||stt.cust==='closed_4000'||!stt.cust){ why='חיבור התמלול לא נפתח'; fix='לחץ "סיים יום" ואז "התחל יום" מחדש. אם זה חוזר: לינק צוות חדש'; }
-  else if((pk.cust||0)<0.01&&(pk.rep||0)<0.01){ why='לא נקלט שמע בכלל: לא מהטאב ולא מהמיקרופון'; fix='לחץ "התחל יום" מחדש, בחר Chrome Tab ← הטאב של טוצ׳אט, וסמן "Also share tab audio"'; }
-  else if((pk.cust||0)<0.01){ why='המיקרופון נקלט, אבל אין שמע מהטאב של טוצ׳אט'; fix='לחץ "התחל יום" מחדש ובחר את הטאב של טוצ׳אט עם "Also share tab audio" מסומן'; }
-  else { why='השמע נקלט אבל התמלול לא מחזיר משפטים'; fix='בדוק אינטרנט, או "סיים יום" ו"התחל יום" מחדש'; }
-  b.style.display=''; b.innerHTML=`<b>⚠️ המאמן לא שומע את השיחה.</b> ${escapeHtml(why)}.<br><b>מה לעשות:</b> ${escapeHtml(fix)}. <span style="color:var(--text-muted)">(בלי תמלול אין "אמור עכשיו" ואין סיכום מהתמלול; הסיכום יגיע מטוצ׳אט אחרי השיחה)</span>`;
+  else if(!wsOk('cust')||!wsOk('rep')){ why='חיבור התמלול נפל'; fix='מתחבר מחדש אוטומטית, המשך את השיחה רגיל'; for(const k of ['rep','cust']) if(S.piped&&S.piped[k]&&!wsOk(k)) sttReopen(k); }
+  else if(tr&&(tr.readyState!=='live'||tr.muted)){ why='הטאב של טוצ׳אט הפסיק לשלוח שמע (השיתוף נסגר או הושתק)'; fix='לחץ "התחל יום" מחדש ובחר Chrome Tab ← הטאב של טוצ׳אט עם "Also share tab audio"'; }
+  else if(!heard.cust&&!heard.rep){ why='לא נקלט שמע בכלל: לא מהטאב ולא מהמיקרופון'; fix='לחץ "התחל יום" מחדש, בחר Chrome Tab ← הטאב של טוצ׳אט, וסמן "Also share tab audio"'; }
+  else if(!heard.cust||now-heard.cust>180000){ why='המיקרופון נקלט, אבל מהטאב של טוצ׳אט לא הגיע שמע כבר 3 דקות'; fix='אם הלקוח מדבר ואתה לא רואה תמלול: "התחל יום" מחדש ובחר את הטאב של טוצ׳אט עם "Also share tab audio"'; }
+  else { why='השמע נקלט אבל התמלול לא מחזיר משפטים'; fix='מחבר מחדש את התמלול אוטומטית. אם זה נמשך: "סיים יום" ו"התחל יום"'; for(const k of ['rep','cust']){ try{ S.ws[k]&&S.ws[k].close(); }catch(e){} } }
+  b.style.display=''; b.innerHTML=`<b>⚠️ המאמן לא שומע את השיחה.</b> ${escapeHtml(why)}.<br><b>מה לעשות:</b> ${escapeHtml(fix)}. <span style="color:var(--text-muted)">(בלי תמלול אין "אמור עכשיו"; הסיכום יגיע מטוצ׳אט אחרי השיחה)</span>`;
   log('אזהרת שמע: '+why,'err');
 }
-function quickTick(now){ audioWatch(now);
+function endWatch(now){
+  if(!S.running||S.day||S.demo||S.simActive) return; if(now-S.startedAt<30000) return;
+  const last=Math.max(S.act.rep||0,S.act.cust||0,S.startedAt); const quiet=now-last;
+  if(S.endAskAt){ if(quiet<8000){ S.endAskAt=0; closeEndAsk(); return; } if(now-S.endAskAt>60000){ log('אין תשובה 60 שניות ואין דיבור: השיחה נסגרת ומסוכמת'); closeEndAsk(); S.endReason='silence'; stopCall(); } return; }
+  if(S.endSnooze&&now<S.endSnooze) return;
+  if(quiet>40000){ S.endAskAt=now; openEndAsk(Math.round(quiet/1000)); }
+}
+function openEndAsk(sec){ let b=$('endAsk'); if(!b){ b=document.createElement('div'); b.id='endAsk'; b.className='endask'; document.body.appendChild(b); } b.innerHTML=`<div class="k">📵 נראה שהשיחה הסתיימה (${sec} שניות שקט)</div><div class="t">לסיים ולהכין את הסיכום? בלי תשובה תוך דקה השיחה תיסגר לבד.</div><div class="acts"><button class="btn btn-primary" onclick="S.endAskAt=0;closeEndAsk();S.endReason='confirm';stopCall()">✅ כן, סיים וסכם</button><button class="btn" onclick="S.endAskAt=0;S.endSnooze=Date.now()+180000;closeEndAsk()">⏳ לא, ממשיכים</button></div>`; b.style.display=''; try{ if('Notification' in window&&Notification.permission==='granted') new Notification('LiveCoach: השיחה הסתיימה?',{body:'לחץ כדי לסיים ולסכם, או "ממשיכים"'}); }catch(e){} }
+function closeEndAsk(){ const b=$('endAsk'); if(b) b.style.display='none'; }
+window.closeEndAsk=closeEndAsk; window.endWatch=endWatch; window.audioWatch=audioWatch;
+function quickTick(now){ audioWatch(now); endWatch(now);
   if(!S.running||!S.settings.anthropic) return;
   if(S.quickInFlight){ if(now-(S.quickStartedAt||now)>35000){ S.quickInFlight=false; log('המשפט התקופתי נתקע 35 שניות, מאפס','err'); } else return; }
   const since=now-(S.lastQuickAt||S.startedAt); if(since<sayEveryMs()) return;
@@ -1638,29 +1657,33 @@ const SUMMARY_SCHEMA={type:'object',additionalProperties:false,properties:{
   improvements:{type:'array',items:{type:'object',additionalProperties:false,properties:{quote:{type:'string'},better:{type:'string',description:'מה היה עדיף להגיד'},principle:{type:'string'}},required:['quote','better','principle']},description:'3 נקודות לשיפור קונקרטיות'},
   crm_text:{type:'string',description:'סיכום מנהלים מלא מוכן להדבקה ב-CRM, ללא Markdown, כותרות עם אימוג׳י: תמצית, פרופיל ופרטים שמסר, חום ליד ושלב, כאבים, התנגדויות ואיך טופלו, מטרה ומניע, הוסכם/צעד הבא, ציון ו-3 שיפורים'}
 },required:['summary','outcome','next_step','score','stage_reached','strengths','improvements','crm_text','scores','opening_feedback','lessons','one_thing']};
-const QUAL_SUM_SCHEMA={type:'object',additionalProperties:false,required:['criteria','total','verdict','summary','key_facts','red_flags','strength','misses','alt_sentence','content_pick','msg_pre_interview','note_to_manager'],properties:{
-  criteria:{type:'array',description:'בדיוק 5 מדדים בסדר הזה: 1 סמכות ויוקרה (ניסיון, בידול, הוכחות) 2 הובלת ראיון התאמה עם קריטריונים אמיתיים, בלי לרדוף 3 בירור הפער בין המצוי לרצוי, מוטיבציה ונכונות להשקיע 4 ערך ותהליך ברור, 45 יום כיעד ולא הבטחה, כיבוד האפשרות שלא מתאים 5 תגובת הלקוח: הסביר למה מתאים, הפגין מחויבות, ביקש להתקבל',items:{type:'object',additionalProperties:false,required:['name','score','quote','rep_said','customer_effect','should_say'],properties:{name:{type:'string',description:'שם המדד, עד 5 מילים'},score:{type:'integer',description:'0-20'},quote:{type:'string',description:'ציטוט תומך מהתמלול, או "אין" אם לא נאמר'},rep_said:{type:'string',description:'מה הנציג עשה בפועל, משפט אחד, בלי לנחש רגשות'},customer_effect:{type:'string',description:'ההשפעה שניכרת בתגובות הלקוח, משפט אחד, רק ממה שנאמר'},should_say:{type:'array',items:{type:'string'},description:'2-3 משפטים שהנציג היה צריך להגיד כדי לייצר את האתוס הזה, מוכנים להקראה'}}}},
-  total:{type:'integer',description:'סכום 5 המדדים, 0-100'},verdict:{type:'string',description:'משפט אחד: מתאים / לא / לבדוק, ולמה'},summary:{type:'string',description:'2 משפטים: מי הוא ומה סוכם'},
+const QUAL_FAST_SCHEMA={type:'object',additionalProperties:false,required:['verdict','summary','key_facts','red_flags','content_pick','msg_pre_interview','note_to_manager'],properties:{
+  verdict:{type:'string',description:'משפט אחד: מתאים / לא / לבדוק, ולמה'},summary:{type:'string',description:'2 משפטים: מי הוא ומה סוכם'},
   key_facts:{type:'array',items:{type:'string'},description:'עד 4 עובדות חשובות למנהל המסלול, קצרות'},red_flags:{type:'array',items:{type:'string'},description:'דגלים אדומים להתאמה, ריק אם אין'},
-  strength:{type:'string',description:'חוזקה אחת של הנציג, עם ציטוט'},misses:{type:'array',items:{type:'string'},description:'בדיוק 2 פספוסים'},alt_sentence:{type:'string',description:'משפט חלופי מדויק לשיפור בשיחה הבאה'},
   content_pick:{type:'object',additionalProperties:false,required:['title','url','why'],properties:{title:{type:'string'},url:{type:'string'},why:{type:'string'}}},
   msg_pre_interview:{type:'string',description:'הודעת וואטסאפ לבוקר יום הראיון: מזכירה את הראיון (יום, שעה), מתייחסת לפרט אחד שהלקוח אמר ולמה הראיון חשוב לו, מבקשת מקום שקט ומחברת. 40-70 מילים, ירידות שורה, לכל היותר אימוג׳י אחד, חתומה בשם הנציג'},
   note_to_manager:{type:'string',description:'משפט אחד למנהל המסלול: איך לפתוח את הראיון עם הלקוח הזה'}}};
-function renderQualDebrief(o,ctx){ setModalTitle('🎯 סיום שיחת התאמה'); const a=(ctx&&ctx.qual)||S.qual||{}; const ph=a.phone||(ctx&&ctx.leadPhone)||''; const total=o.total!=null?o.total:(o.fit_score||0)*10; const col=total>=75?'var(--accent4)':total>=50?'var(--accent5)':'var(--red)';
+const QUAL_DEEP_SCHEMA={type:'object',additionalProperties:false,required:['criteria','total','strength','misses','alt_sentence'],properties:{
+  criteria:{type:'array',description:'בדיוק 5 מדדים בסדר הזה: 1 סמכות ויוקרה (ניסיון, בידול, הוכחות) 2 הובלת ראיון התאמה עם קריטריונים אמיתיים, בלי לרדוף 3 בירור הפער בין המצוי לרצוי, מוטיבציה ונכונות להשקיע 4 ערך ותהליך ברור, 45 יום כיעד ולא הבטחה, כיבוד האפשרות שלא מתאים 5 תגובת הלקוח: הסביר למה מתאים, הפגין מחויבות, ביקש להתקבל',items:{type:'object',additionalProperties:false,required:['name','score','quote','rep_said','customer_effect','should_say'],properties:{name:{type:'string',description:'שם המדד, עד 5 מילים'},score:{type:'integer',description:'0-20'},quote:{type:'string',description:'ציטוט תומך קצר מהתמלול (עד 20 מילים), או "אין" אם לא נאמר'},rep_said:{type:'string',description:'מה הנציג עשה בפועל, משפט אחד, בלי לנחש רגשות'},customer_effect:{type:'string',description:'ההשפעה שניכרת בתגובות הלקוח, משפט אחד, רק ממה שנאמר'},should_say:{type:'array',items:{type:'string'},description:'2-3 משפטים קצרים שהנציג היה צריך להגיד כדי לייצר את האתוס הזה, מוכנים להקראה'}}}},
+  total:{type:'integer',description:'סכום 5 המדדים, 0-100'},
+  strength:{type:'string',description:'חוזקה אחת של הנציג, עם ציטוט קצר'},misses:{type:'array',items:{type:'string'},description:'בדיוק 2 פספוסים, משפט כל אחד'},alt_sentence:{type:'string',description:'משפט חלופי מדויק לשיפור בשיחה הבאה'}}};
+const QUAL_SUM_SCHEMA=QUAL_DEEP_SCHEMA;
+function renderQualDebrief(o,ctx){ setModalTitle('🎯 סיום שיחת התאמה'); const a=(ctx&&ctx.qual)||S.qual||{}; const ph=a.phone||(ctx&&ctx.leadPhone)||''; const pending=o.total==null&&!o.criteria; const total=o.total!=null?o.total:(o.fit_score!=null?o.fit_score*10:null); const col=total==null?'var(--text-muted)':total>=75?'var(--accent4)':total>=50?'var(--accent5)':'var(--red)';
   const info={name:a.name||ctx&&ctx.leadName||'',phone:ph,meet_day:a.meet_day||'',meet_time:a.meet_time||'',total,verdict:o.verdict||'',summary:o.summary||'',form:{...a},manager:S.settings.qualManager||''};
   S.qualInfo=info; S.qualO=o;
   const crit=(o.criteria||[]).slice(0,5);
   $('modalBody').innerHTML=`<div class="qd">
   <div class="qd-top">
-    <div class="qd-ring"><div class="big" style="color:${col}">${total}<small>/100</small></div><div class="lbl">רמת התאמה</div><div class="sub">${escapeHtml(o.verdict||'')}</div></div>
+    <div class="qd-ring"><div class="big" style="color:${col}">${total==null?'<span class="spin2 sm"></span>':total}<small>/100</small></div><div class="lbl">רמת התאמה</div><div class="sub">${escapeHtml(o.verdict||'')}</div></div>
     <div class="qd-sum"><div class="k">📌 תמצית</div><div class="t">${escapeHtml(o.summary||'')}</div>${(o.key_facts||[]).length?`<div class="facts">${o.key_facts.map(x=>'<span>'+escapeHtml(x)+'</span>').join('')}</div>`:''}${(o.red_flags||[]).length?`<div class="flags">🚩 ${escapeHtml(o.red_flags.join(' · '))}</div>`:''}${o.note_to_manager?`<div class="hint">למנהל המסלול: ${escapeHtml(o.note_to_manager)}</div>`:''}</div>
-    <div class="qd-crit"><div class="k">📊 5 המדדים · לחיצה פותחת מה היה צריך להגיד</div>${crit.map((c,i)=>{ const sc=Math.max(0,Math.min(20,+c.score||0)); const cc=sc>=15?'var(--accent4)':sc>=10?'var(--accent5)':'var(--red)'; return `<details class="cr"><summary><span class="n">${i+1}. ${escapeHtml(c.name)}</span><span class="bar"><i style="width:${sc*5}%;background:${cc}"></i></span><b style="color:${cc}">${sc}<small>/20</small></b></summary><div class="crb">${c.quote&&c.quote!=='אין'?`<div class="q">"${escapeHtml(c.quote)}"</div>`:''}<div><b>הנציג:</b> ${escapeHtml(c.rep_said||'')}</div><div><b>הלקוח:</b> ${escapeHtml(c.customer_effect||'')}</div>${(c.should_say||[]).length?`<div class="ss"><b>מה היה צריך להגיד:</b>${c.should_say.map(x=>`<div class="say2" onclick="copyTxt(this.textContent)" title="לחץ להעתקה">🗣 ${escapeHtml(x)}</div>`).join('')}</div>`:''}</div></details>`; }).join('')}</div>
+    <div class="qd-crit"><div class="k">📊 5 המדדים · לחיצה פותחת מה היה צריך להגיד</div>${!crit.length?`<div class="hint" style="padding:8px 0">${o.criteriaError?'❌ '+escapeHtml(o.criteriaError):'<span class="spin2 sm"></span> מנתח את 5 המדדים מהתמלול… (10-25 שניות, יופיע כאן לבד)'}</div>`:''}${crit.map((c,i)=>{ const sc=Math.max(0,Math.min(20,+c.score||0)); const cc=sc>=15?'var(--accent4)':sc>=10?'var(--accent5)':'var(--red)'; return `<details class="cr"><summary><span class="n">${i+1}. ${escapeHtml(c.name)}</span><span class="bar"><i style="width:${sc*5}%;background:${cc}"></i></span><b style="color:${cc}">${sc}<small>/20</small></b></summary><div class="crb">${c.quote&&c.quote!=='אין'?`<div class="q">"${escapeHtml(c.quote)}"</div>`:''}<div><b>הנציג:</b> ${escapeHtml(c.rep_said||'')}</div><div><b>הלקוח:</b> ${escapeHtml(c.customer_effect||'')}</div>${(c.should_say||[]).length?`<div class="ss"><b>מה היה צריך להגיד:</b>${c.should_say.map(x=>`<div class="say2" onclick="copyTxt(this.textContent)" title="לחץ להעתקה">🗣 ${escapeHtml(x)}</div>`).join('')}</div>`:''}</div></details>`; }).join('')}</div>
   </div>
   <div class="qd-msgs" id="qdMsgs">${qualMsgCards(o,info)}</div>
-  <div class="qd-foot"><div class="fb"><b>💪 חוזקה:</b> ${escapeHtml(o.strength||'')}</div><div class="fb"><b>🔧 פספוסים:</b> ${escapeHtml((o.misses||[]).join(' · '))}</div><div class="fb alt"><b>🗣 לשיחה הבאה:</b> ${escapeHtml(o.alt_sentence||'')}</div><div class="acts"><button class="btn btn-primary btn-sm" onclick="qualSend()">📋 שלח את הטופס למנהל המסלול</button><button class="btn btn-sm" onclick="qualCopy()">העתק טופס</button></div></div>
+  <div class="qd-foot"><div class="fb"><b>💪 חוזקה:</b> ${escapeHtml(o.strength||(pending?'…':''))}</div><div class="fb"><b>🔧 פספוסים:</b> ${escapeHtml((o.misses||[]).join(' · ')||(pending?'…':''))}</div><div class="fb alt"><b>🗣 לשיחה הבאה:</b> ${escapeHtml(o.alt_sentence||(pending?'…':''))}</div><div class="acts"><button class="btn btn-primary btn-sm" onclick="qualSend()">📋 שלח את הטופס למנהל המסלול</button><button class="btn btn-sm" onclick="qualCopy()">העתק טופס</button></div></div>
   </div>`;
-  // auto-schedule message 1 (2 min) and message 3 (interview morning) once per lead
-  if(ph){ const have=k=>(S.reminders||[]).some(r=>r.lead===ph&&r.key===k&&!r.done); if(!have('confirm')) remAdd(ph,'confirm',Date.now()+2*60000,'הודעה 1 · אישור הראיון',info.name,qualFixedMessage(a,o),info,true); const mt=meetTs(a); if(mt&&!have('pre')){ const m=new Date(mt); m.setHours(8,30,0,0); remAdd(ph,'pre',Math.max(m.getTime(),Date.now()+60000),'הודעה 3 · בוקר הראיון',info.name,o.msg_pre_interview||qualPreMessage(a),info,true); } $('qdMsgs').innerHTML=qualMsgCards(o,info); }
+  // all three reminders are scheduled automatically (message 2 defaults to tomorrow 10:00, the rep can move it)
+  if(ph){ qualScheduleBase(a,ph,info); $('qdMsgs').innerHTML=qualMsgCards(o,info); }
+  else $('qdMsgs').insertAdjacentHTML('afterbegin','<div class="hint" style="grid-column:1/-1;color:var(--red)">⚠️ אין טלפון בטופס, לכן התזכורות לא תוזמנו. הזן טלפון ולחץ שוב על הסיכום.</div>');
 }
 window.copyTxt=async t=>{ try{ await navigator.clipboard.writeText(String(t).replace(/^🗣\s*/,'')); toast('הועתק'); }catch(e){} };
 function qualMsgCards(o,info){ const a=info.form||{}; const ph=info.phone||''; const st=k=>(S.reminders||[]).find(r=>r.lead===ph&&r.key===k&&!r.done); const fmt=ts=>new Date(ts).toLocaleString('he-IL',{weekday:'short',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}); const mt=meetTs(a);
@@ -1668,7 +1691,7 @@ function qualMsgCards(o,info){ const a=info.form||{}; const ph=info.phone||''; c
   const def2=(()=>{ const d=new Date(Date.now()+864e5); d.setHours(10,0,0,0); return d; })(); const dl=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
   const card=(n,title,when,id,msg,rem,extra)=>`<div class="qm ${rem?'sch':''}"><div class="k">${n} · ${escapeHtml(title)}<span class="w">${when}</span></div><textarea id="${id}">${escapeHtml(msg)}</textarea>${extra||''}<div class="acts"><button class="btn btn-primary btn-sm" onclick="waOpen('${escapeHtml(ph)}','${id}')">🟢 וואטסאפ</button><button class="btn btn-sm" onclick="copyText('${id}')">📋</button>${rem?`<span class="chip ok">⏰ ${fmt(rem.at)}</span>`:''}</div></div>`;
   return card('1','אישור הראיון','2 דקות אחרי השיחה','qwa1',m1,r1,'')+
-    card('2','בדיקה: איך היה הסרטון?','הנציג בוחר מתי','qwa2',m2,r2,`<div class="pick2"><input type="datetime-local" id="qwa2at" value="${r2?dl(new Date(r2.at)):dl(def2)}"><button class="btn btn-sm" onclick="remSchedule2()">⏰ ${r2?'עדכן זמן':'תזמן'}</button></div>`)+
+    card('2','בדיקה: איך היה הסרטון?',r2?'תוזמן אוטומטית, אפשר לשנות':'הנציג בוחר מתי','qwa2',m2,r2,`<div class="pick2"><input type="datetime-local" id="qwa2at" value="${r2?dl(new Date(r2.at)):dl(def2)}"><button class="btn btn-sm" onclick="remSchedule2()">⏰ ${r2?'שנה זמן':'תזמן'}</button></div>`)+
     card('3','בוקר הראיון',mt?'08:30 ביום הראיון':'אין יום ושעה בטופס','qwa3',m3,r3,''); }
 window.remSchedule2=()=>{ const info=S.qualInfo; if(!info||!info.phone) return toast('אין טלפון לליד','t-error'); const v=$('qwa2at').value; if(!v) return toast('בחר תאריך ושעה','t-error'); const at=new Date(v).getTime(); if(!(at>Date.now())) return toast('הזמן צריך להיות בעתיד','t-error'); remAdd(info.phone,'content',at,'הודעה 2 · איך היה הסרטון?',info.name,$('qwa2').value,info,false); $('qdMsgs').innerHTML=qualMsgCards(S.qualO||{},info); };
 function qualCheckMessage(a){ const nm=(a.name||'').split(' ')[0]; return `היי ${nm}, מריץ בדיקה איך היה הסרטון, צפית?`; }
@@ -1695,35 +1718,63 @@ window.renderRemList=renderRemList; window.renderRemBoard=renderRemBoard;
 setInterval(()=>{ const due=(S.reminders||[]).filter(r=>!r.done&&r.at<=Date.now()&&!r.notified); for(const r of due){ r.notified=true; toast('⏰ הגיע הזמן: '+r.label+' ל-'+(r.name||r.lead),'t-error'); try{ if('Notification' in window&&Notification.permission==='granted') new Notification('LiveCoach: '+r.label,{body:(r.name||r.lead)+' · לחץ על ⏰ בכותרת'}); }catch(e){} } if(due.length) remSave(); else { renderRemPill(); const b=$('remBoard'); if(b&&(S.reminders||[]).some(r=>!r.done)) renderRemBoard(); } },30000);
 setTimeout(()=>{ renderRemPill(); renderRemBoard(); },500);
 async function runQualSummary(auto,src){
-  const ctx=src.ctx; const finals=src.lines; const rep=S.settings.repName||'נציג'; const a=ctx.qual||{};
+  const ctx=src.ctx; const finals=src.lines; const rep=S.settings.repName||'נציג'; const a=ctx.qual||{}; const ph=a.phone||ctx.leadPhone||(S.lead&&S.lead.phone)||'';
   const transcript=src.text||finals.slice(-300).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?'לקוח':'?'}]: ${l.text}`).join('\n');
-  sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:a.name||ctx.leadName||'',phone:a.phone||ctx.leadPhone||'',status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt};
+  sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:a.name||ctx.leadName||'',phone:ph,status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt};
+  const info={name:a.name||ctx.leadName||'',phone:ph,meet_day:a.meet_day||'',meet_time:a.meet_time||'',form:{...a},manager:S.settings.qualManager||''};
+  // phase 0: reminders + fixed messages exist before the model answers (nothing depends on it except the content link)
+  qualScheduleBase(a,ph,info);
+  const o={qual:true,criteria:null,total:null,fit_score:null,score:null,outcome:a.meet_day?'follow_up':'unknown',stage_reached:'kyc',summary:'',crm_text:qualMessage(),lessons:[],strengths:[],improvements:[],scores:{}};
+  const t0=performance.now(); const ethos=`אתה מנהל ההתאמה של מועדון האיקומרס של אביב מלכה. ${QUAL_ETHOS}`;
+  const show=()=>{ S.lastSummary={o,ctx}; if(S.callId===ctx.id) S.summary=o; const open=$('modal').classList.contains('show'); const mine=S.sumWatch===ctx.id||(S.lastSummary&&S.lastSummary.ctx===ctx); if(!open||mine){ renderQualDebrief(o,ctx); $('modal').classList.add('show'); S.sumWatch=ctx.id; } };
+  const parse=r=>{ const txt=r.content.filter(b=>b.type==='text').map(b=>b.text).join(''); if(r.stop_reason==='max_tokens') log('סיכום התאמה: התשובה נחתכה, משלים ממה שיש','err'); let v=null; try{ v=JSON.parse(txt); }catch(e){ v=parseLooseJson(txt); } if(!v) throw new Error('התשובה לא נקראה (JSON חתוך)'); return scrub(v); };
   try{
-    const res=await getClient().beta.messages.create({model:coachModel(),max_tokens:4000,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema:QUAL_SUM_SCHEMA}},
-      system:`אתה מנהל ההתאמה של מועדון האיקומרס של אביב מלכה. ${QUAL_ETHOS}
+    const r1=await getClient().beta.messages.create({model:coachModel(),max_tokens:1800,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:QUAL_FAST_SCHEMA}},
+      system:`${ethos}\nסכם שיחת התאמה בקצרה למנהל המסלול (תמצית, עובדות, דגלים אדומים, איך לפתוח את הראיון), בחר תוכן אחד בלבד לצפייה עד הראיון (מי שלא ראה את השיטה: הדרכה חינמית; מי שרוצה להבין את המועדון: הסרטון על המועדון; מי שרוצה להתחיל: הקורס החינמי של פתיחת חנות ב-2 דקות), וכתוב הודעה לבוקר יום הראיון מהנציג ${rep}. בלי Markdown.\n${catalogBlock().slice(0,3000)}`,
+      messages:[{role:'user',content:`הנציג: ${rep}. מנהל המסלול: ${S.settings.qualManager||'מנהל המסלול'}.\nהטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript}`}]},{timeout:60000,maxRetries:1});
+    Object.assign(o,parse(r1)); o.summary=o.summary||''; o.one_thing=o.note_to_manager||'';
+    log('סיכום התאמה (שלב 1) מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות','ok');
+    // reminders get the real content link + the personal morning message
+    if(ph){ remUpdate(ph,'confirm',{msg:qualFixedMessage(a,o)}); if(o.msg_pre_interview) remUpdate(ph,'pre',{msg:o.msg_pre_interview}); }
+    sumQueue({id:ctx.id,status:'pending',o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:ph,leadName:a.name||ctx.leadName,qual:a}});
+    show();
+    // phase 2: the 5-criteria analysis
+    let r2; try{ r2=await getClient().beta.messages.create({model:coachModel(),max_tokens:7000,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'medium',format:{type:'json_schema',schema:QUAL_DEEP_SCHEMA}},
+      system:`${ethos}
 נתח את תמלול שיחת ההתאמה ותן לנציג ${rep} ציון מתוך 100 לפי חמישה מדדים שווים (20 כל אחד):
 1. בניית סמכות ויוקרה באמצעות ניסיון, בידול והוכחות.
 2. הובלת ראיון התאמה עם קריטריונים אמיתיים לקבלה, בלי לרדוף אחרי הלקוח.
 3. בירור הפער בין המצב הנוכחי לרצוי, המוטיבציה והנכונות להשקיע.
 4. הצגת ערך ותהליך ברור, כשהכנסה בתוך 45 יום מוצגת כיעד ולא כהבטחה, תוך כיבוד האפשרות שהמסלול אינו מתאים.
 5. תגובת הלקוח: האם הסביר למה הוא מתאים, הפגין מחויבות והביע רצון להתקבל.
-לכל מדד: ציון, ציטוט תומך, הסבר קצר שמפריד בין דברי הנציג לבין ההשפעה שניכרת בתגובות הלקוח, ו-2-3 משפטים שהנציג כן היה צריך להגיד כדי לייצר את האתוס הזה. אל תנחש רגשות, אל תתגמל לחץ, סינון מדומה או טענות עליונות ללא ביסוס. סיים בחוזקה אחת, שני פספוסים ומשפט חלופי מדויק לשיחה הבאה. total = סכום המדדים.
-בנוסף: תמצית קצרה למנהל המסלול, תוכן אחד לצפייה עד הראיון (קישור), והודעה לבוקר יום הראיון. בלי Markdown. תוכן: בחר תוכן אחד בלבד שמתאים למה שעלה בשיחה (מי שלא ראה את השיטה: הדרכה חינמית; מי שרוצה להבין את המועדון: הסרטון על המועדון; מי שרוצה להתחיל: הקורס החינמי של פתיחת חנות ב-2 דקות).\n${catalogBlock().slice(0,3000)}`,
-      messages:[{role:'user',content:`הנציג: ${rep}. מנהל המסלול: ${S.settings.qualManager||'מנהל המסלול'}.\nהטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript}`}]},{timeout:90000,maxRetries:1});
-    const o=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); o.qual=true; o.criteria=(o.criteria||[]).slice(0,5); o.total=Math.max(0,Math.min(100,+o.total||o.criteria.reduce((s,c)=>s+(+c.score||0),0))); o.fit_score=Math.round(o.total/10); o.score=o.fit_score; o.outcome=a.meet_day?'follow_up':'unknown'; o.stage_reached='kyc'; o.summary=o.summary||''; o.crm_text=qualMessage(); o.one_thing=o.note_to_manager||''; o.lessons=[]; o.strengths=[]; o.improvements=[]; o.scores={};
-    if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.total,outcome:o.outcome,o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:a.phone||ctx.leadPhone,leadName:a.name||ctx.leadName,qual:a}});
+לכל מדד: ציון, ציטוט תומך קצר, הסבר קצר שמפריד בין דברי הנציג לבין ההשפעה שניכרת בתגובות הלקוח, ו-2-3 משפטים קצרים שהנציג כן היה צריך להגיד כדי לייצר את האתוס הזה. אל תנחש רגשות, אל תתגמל לחץ, סינון מדומה או טענות עליונות ללא ביסוס. סיים בחוזקה אחת, שני פספוסים ומשפט חלופי מדויק לשיחה הבאה. total = סכום המדדים. קצר וחד, בלי Markdown.`,
+      messages:[{role:'user',content:`הנציג: ${rep}.\nהטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript}`}]},{timeout:120000,maxRetries:1}); }
+    catch(e){ log('ניתוח המדדים: '+(e.error?.error?.message||e.message||e)+', מנסה שוב קצר יותר','err'); r2=await getClient().beta.messages.create({model:coachModel(),max_tokens:7000,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:QUAL_DEEP_SCHEMA}},system:`${ethos}\nתן לנציג ${rep} ציון /100 לפי 5 מדדים שווים (סמכות ויוקרה; הובלת ראיון התאמה בלי לרדוף; פער מצוי-רצוי ומוטיבציה; ערך ותהליך עם 45 יום כיעד; תגובת הלקוח ומחויבותו). לכל מדד ציון, ציטוט קצר, מה הנציג עשה, מה ניכר אצל הלקוח, ו-2 משפטים שהיה צריך להגיד. קצר מאוד.`,messages:[{role:'user',content:`התמלול:\n${transcript.slice(-9000)}`}]},{timeout:120000,maxRetries:1}); }
+    const d=parse(r2); o.criteria=(d.criteria||[]).slice(0,5); o.total=Math.max(0,Math.min(100,+d.total||o.criteria.reduce((x,c)=>x+(+c.score||0),0))); o.fit_score=Math.round(o.total/10); o.score=o.fit_score; o.strength=d.strength||''; o.misses=d.misses||[]; o.alt_sentence=d.alt_sentence||'';
+    log('ניתוח 5 המדדים מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות: '+o.total+'/100','ok');
+    if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.total,outcome:o.outcome,o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:ph,leadName:a.name||ctx.leadName,qual:a}});
     if(!ctx.demo){ const sf={summary:'שיחת התאמה · '+(o.verdict||''),score:o.fit_score,outcome:o.outcome,next_step:(a.meet_day?'ראיון '+a.meet_day+' '+(a.meet_time||''):'לא נקבע ראיון'),stage_reached:'kyc',summary_json:o}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); saveLocalHistory(o,ctx); }
-    S.lastSummary={o,ctx}; if(S.callId===ctx.id) S.summary=o; renderQualDebrief(o,ctx); $('modal').classList.add('show'); if(auto) toast('שיחת ההתאמה סוכמה. התאמה: '+o.fit_score+'/10','t-ok');
-  }catch(e){ sumQueue({id:ctx.id,status:'error'}); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; S.lastFailedSnap=src; const msg='שגיאה: '+(e.error?.error?.message||e.message||e); if(!auto){ setModalTitle('🎯 סיום שיחת התאמה'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } log('סיכום התאמה: '+msg.slice(0,200),'err'); }
+    if(ph) remUpdate(ph,null,{info:{...info,total:o.total,verdict:o.verdict||'',summary:o.summary||''}});
+    show(); if(auto) toast('שיחת ההתאמה סוכמה: '+o.total+'/100','t-ok');
+  }catch(e){ const msg='שגיאה: '+(e.error?.error?.message||e.message||e); if(o.summary){ if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.total,o,ctx:{id:ctx.id,startedAt:ctx.startedAt,endedAt:ctx.endedAt,leadPhone:ph,leadName:a.name||ctx.leadName,qual:a}}); o.criteriaError=msg; show(); }
+    else { sumQueue({id:ctx.id,status:'error'}); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; S.lastFailedSnap=src; if(!auto||S.sumWatch===ctx.id){ setModalTitle('🎯 סיום שיחת התאמה'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div><div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="retrySummary()">🔁 נסה שוב</button></div>'; } }
+    log('סיכום התאמה: '+msg.slice(0,200),'err'); }
 }
+function qualScheduleBase(a,ph,info){ if(!ph) return; const have=k=>(S.reminders||[]).some(r=>r.lead===ph&&r.key===k&&!r.done); const now=Date.now(); const mt=meetTs(a);
+  if(!have('confirm')) remAdd(ph,'confirm',now+2*60000,'הודעה 1 · אישור הראיון',info.name,qualFixedMessage(a,null),info,true);
+  if(!have('content')){ let at=new Date(now+864e5); at.setHours(10,0,0,0); at=at.getTime(); if(mt&&mt<at) at=Math.max(now+2*3600e3,now+(mt-now)/2); remAdd(ph,'content','הודעה 2 · איך היה הסרטון?'&&at,'הודעה 2 · איך היה הסרטון?',info.name,qualCheckMessage(a),info,true); }
+  if(mt&&!have('pre')){ const m=new Date(mt); m.setHours(8,30,0,0); remAdd(ph,'pre',Math.max(m.getTime(),now+60000),'הודעה 3 · בוקר הראיון',info.name,qualPreMessage(a),info,true); } }
+window.remUpdate=(lead,key,patch)=>{ let n=0; for(const r of (S.reminders||[])){ if(r.lead===lead&&!r.done&&(!key||r.key===key)){ if(patch.info) r.info={...(r.info||{}),...patch.info}; if(patch.msg!=null) r.msg=patch.msg; if(patch.at) r.at=patch.at; n++; } } if(n) remSave(); return n; };
+function openPendingModal(ctx){ const q=ctx&&ctx.qual; setModalTitle(q?'🎯 סיום שיחת התאמה':'🏁 סיום שיחה: תובנות וציון'); $('modal').classList.add('show'); $('modalBody').innerHTML='<div class="pend"><div class="spin2"></div><div><b>⏳ מכין את הסיכום'+(q?' של שיחת ההתאמה':'')+'…</b><div class="hint">קורא את כל מה שנאמר, בונה את ההודעות והתזכורות. בדרך כלל 5-12 שניות. אפשר לסגור, הסיכום יחכה ביומן הסיכומים משמאל.</div></div></div>'; S.sumWatch=ctx&&ctx.id; }
+window.openPendingModal=openPendingModal;
 async function runSummary(auto,snap){
   // snap = state frozen at call end. In day mode the next call auto-starts inside the 1.5s delay and used to wipe
   // S.lines / swap S.callId under this function, so the ended call got no summary or the wrong call got it.
   const src=snap||snapshotCall(); const finals=src.lines; if(!finals.length&&!src.text) return;
-  if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום…'; }
+  if(!auto){ openPendingModal(src.ctx); }
   else if(!snap&&S.summary){ return; }
   if(src.summarizing) return; src.summarizing=true;
-  if(src.ctx&&src.ctx.qual){ if(!auto){ $('modal').classList.add('show'); $('modalBody').textContent='מכין סיכום התאמה…'; } return runQualSummary(auto,src); }
+  if(src.ctx&&src.ctx.qual){ return runQualSummary(auto,src); }
   const ctx=src.ctx; ctx.leadPhone=ctx.leadPhone||(S.lead&&S.lead.phone)||null; ctx.leadName=ctx.leadName||(S.lead&&S.lead.name)||null; ctx.lead=ctx.lead||S.lead||null;
   sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:ctx.leadName||S.settings.custName||'',phone:ctx.leadPhone||'',status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt}; $('btnSummary').disabled=false;
   const rep=S.settings.repName||'נציג', cust=S.settings.custName||'לקוח';
@@ -1781,8 +1832,8 @@ ${shortTr}`}],
 function sumQueue(e){ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const today=todayKey(); q=q.filter(x=>new Date(x.ts||0).toDateString()===today); const i=q.findIndex(x=>x.id===e.id); if(i>=0) q[i]={...q[i],...e}; else q.unshift({ts:Date.now(),...e}); if(e.o&&e.o.crm_text) e.o.crm_text=String(e.o.crm_text).slice(0,6000); try{ localStorage.setItem('lc_sumq',JSON.stringify(q.slice(0,60))); }catch(x){} renderSumList(); }
 function renderSumList(){ const box=$('sumList'); if(!box) return; let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} q=q.filter(x=>new Date(x.ts||0).toDateString()===todayKey());
   q.sort((a,b)=>(b.ts||0)-(a.ts||0));
-  box.innerHTML='<div class="k">📚 הסיכומים שלי היום ('+q.length+')</div>'+(q.length?q.map(x=>`<div class="sumit ${x.status}" onclick="${x.status==='tochat'?`summarizeTc('${x.id}')`:`openSum('${x.id}')`}"><div class="sc">${x.status==='pending'?'⏳':x.status==='error'?'❌':x.status==='tochat'?'📞':(x.score??'—')}</div><div><div class="nm">${escapeHtml(x.name||x.phone||'ליד')}</div><div class="st">${new Date(x.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} · ${Math.floor((x.dur||0)/60)} דק' · ${x.status==='pending'?'מכין סיכום…':x.status==='error'?'נכשל, לחץ לניסיון חוזר':x.status==='tochat'?'שיחה מטוצ׳אט · לחץ לתובנות':({closed:'✅ נסגר',follow_up:'📅 המשך',lost:'❌ לא נסגר'}[x.outcome]||'')}</div></div><div>${x.status==='ready'?'›':''}</div></div>`).join(''):'<div class="hint">אחרי כל שיחה יופיע כאן סיכום. לחיצה פותחת אותו.</div>'); }
-window.openSum=id=>{ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const e=q.find(x=>x.id===id); if(!e) return; if(e.status==='ready'&&e.o&&e.o.qual){ S.lastSummary={o:e.o,ctx:e.ctx}; renderQualDebrief(e.o,e.ctx); $('modal').classList.add('show'); return; } if(e.status==='error'){ if(e.tc&&e.tc.ai) return summarizeTc(id); if(S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===id) retrySummary(); else toast('אין תמלול שמור לשיחה הזו'); return; } if(e.status!=='ready'||!e.o) return toast('הסיכום עדיין בהכנה…'); S.lastSummary={o:e.o,ctx:e.ctx}; renderDebrief(e.o,e.ctx); $('modal').classList.add('show'); };
+  box.innerHTML='<div class="k">📚 הסיכומים שלי היום ('+q.length+')</div>'+(q.length?q.map(x=>`<div class="sumit ${x.status}" onclick="${x.status==='tochat'?`summarizeTc('${x.id}')`:`openSum('${x.id}')`}"><div class="sc">${x.status==='pending'?'⏳':x.status==='error'?'❌':x.status==='tochat'?'📞':(x.score??'—')}</div><div><div class="nm">${escapeHtml(x.name||x.phone||'ליד')}</div><div class="st">${new Date(x.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})} · ${Math.floor((x.dur||0)/60)} דק' · ${x.status==='pending'?'⏳ בעבודה, יופיע לבד':x.status==='error'?'נכשל, לחץ לניסיון חוזר':x.status==='tochat'?'שיחה מטוצ׳אט · לחץ לתובנות':({closed:'✅ נסגר',follow_up:'📅 המשך',lost:'❌ לא נסגר'}[x.outcome]||'')}</div></div><div>${x.status==='ready'?'›':''}</div></div>`).join(''):'<div class="hint">אחרי כל שיחה יופיע כאן סיכום. לחיצה פותחת אותו.</div>'); }
+window.openSum=id=>{ let q=[]; try{ q=JSON.parse(localStorage.getItem('lc_sumq')||'[]'); }catch(x){} const e=q.find(x=>x.id===id); if(!e) return; if(e.status==='pending'){ if(e.o&&e.o.qual){ S.lastSummary={o:e.o,ctx:e.ctx}; renderQualDebrief(e.o,e.ctx); $('modal').classList.add('show'); S.sumWatch=e.id; } else openPendingModal({id:e.id,qual:e.o&&e.o.qual}); return; } if(e.status==='ready'&&e.o&&e.o.qual){ S.lastSummary={o:e.o,ctx:e.ctx}; renderQualDebrief(e.o,e.ctx); $('modal').classList.add('show'); return; } if(e.status==='error'){ if(e.tc&&e.tc.ai) return summarizeTc(id); if(S.lastSummary&&S.lastSummary.ctx&&S.lastSummary.ctx.id===id) retrySummary(); else toast('אין תמלול שמור לשיחה הזו'); return; } if(e.status!=='ready'||!e.o) return toast('הסיכום עדיין בהכנה…'); S.lastSummary={o:e.o,ctx:e.ctx}; renderDebrief(e.o,e.ctx); $('modal').classList.add('show'); };
 /* ── content catalog (YouTube + manual links) ── */
 let CATALOG=[];
 (async()=>{ for(const u of ['content-catalog.json','../content-catalog.json']){ try{ const r=await fetch(u,{cache:'no-cache'}); if(r.ok){ CATALOG=await r.json(); break; } }catch(e){} } })();
@@ -1862,7 +1913,7 @@ window.closeModals=()=>{ for(const id of ['modal','morningModal']) $(id).classLi
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if($('commitModal').classList.contains('show')) return; window.closeModals(); } });
 for(const id of ['modal','morningModal']) $(id).addEventListener('click',e=>{ if(e.target===$(id)) $(id).classList.remove('show'); });
 function setModalTitle(t){ const bh=document.querySelector('#modal .bh'); if(bh&&bh.firstChild&&bh.firstChild.nodeType===3) bh.firstChild.textContent=t+' '; }
-window.openMorning=openMorning; window.renderSumList=renderSumList; window.sumQueue=sumQueue; window.dayReview=dayReview; window.openDrawer=openDrawer; window.$=$; window.renderQualDebrief=renderQualDebrief; window.S=S; window.qualBlock=qualBlock; window.applyQualMode=applyQualMode;
+window.openMorning=openMorning; window.renderSumList=renderSumList; window.sumQueue=sumQueue; window.dayReview=dayReview; window.openDrawer=openDrawer; window.$=$; window.renderQualDebrief=renderQualDebrief; window.S=S; window.stopCall=stopCall; window.loadLead=loadLead; window.qualBlock=qualBlock; window.applyQualMode=applyQualMode;
 function renderMorning(out){ const body=$('morningBody'); const items=(out.items||[]).slice().sort((a,b)=>a.priority-b.priority); const groups=['פולואפ להיום','לבדוק הבוקר','איפה זה עומד','ליד שמחכה'];
   body.innerHTML=`<div class="dk-head" style="font-size:20px">${escapeHtml(out.headline||'')}</div><div class="hint" style="margin-bottom:10px">${out.total!=null?out.total+' פולואפים פתוחים בטוצ\'אט · ':''}${items.length} מובילים להיום · ההודעות מוכנות להעתקה או לפתיחה בוואטסאפ</div>
   ${groups.map(g=>{ const L=items.filter(x=>x.group===g); if(!L.length) return ''; return `<h3 style="margin:14px 0 6px;font-size:14px">${g==='פולואפ להיום'?'📅':g==='לבדוק הבוקר'?'🌅':g==='איפה זה עומד'?'🔍':'🧊'} ${g} (${L.length})</h3><div class="mrn">${L.map((x,i)=>{ const id='mm_'+x.phone.replace(/\D/g,''); return `<div class="mcard p${Math.min(3,Math.max(1,Math.ceil(x.priority/4)))}"><div class="h"><b>${escapeHtml(x.name||x.phone)}</b><span class="chip">${escapeHtml(x.phone)}</span><span class="chip">${escapeHtml(x.next_move)} · ${escapeHtml(x.time||'')}</span><a href="#" class="chip" onclick="$('leadPhone').value='${escapeHtml(x.phone)}';loadLead('${escapeHtml(x.phone)}');$('morningModal').classList.remove('show');return false">🧭 מסע</a></div><div class="why"><b>למה:</b> ${escapeHtml(x.why)} · <b>מצב:</b> ${escapeHtml(x.status)}</div><div class="msg" id="${id}">${escapeHtml(x.message)}</div><div class="acts"><button class="btn btn-sm btn-primary" onclick="waOpen('${escapeHtml(x.phone)}','${id}')">🟢 וואטסאפ</button><button class="btn btn-sm" onclick="copyText('${id}')">📋 העתק</button></div></div>`; }).join('')}</div>`; }).join('')}
@@ -2347,8 +2398,13 @@ function clearLead(silent){ S.lead=null; S.leadBrief=null; S.leadAt=0; S.leadAut
 $('btnLeadClear').onclick=()=>clearLead(false); window.clearLead=clearLead;
 let ACTIVE_SEEN=null;
 async function pollActive(){
-  if(!S.settings.dataKey||!S.settings.repName||document.hidden) return;
+  if(!S.settings.dataKey||!S.settings.repName) return;
   try{ const r=await dataFetch('/active?rep='+encodeURIComponent(S.settings.repName)); if(!r.ok) return; const {active}=await r.json();
+    const prev=S.tcPrev||null; S.tcPrev=active&&active.phone?{phone:active.phone,at:Date.now()}:null;
+    if(S.running&&!S.demo&&!S.simActive&&!S.single&&Date.now()-S.startedAt>15000){
+      if(prev&&!S.tcPrev){ log('טוצ׳אט: השיחה עם '+prev.phone+' נותקה, מסיים ומסכם אוטומטית','ok'); S.endReason='tochat'; stopCall(); }
+      else if(prev&&S.tcPrev&&S.tcPrev.phone!==prev.phone){ log('טוצ׳אט: שיחה חדשה ('+S.tcPrev.phone+'), מסיים את הקודמת ומסכם','ok'); S.endReason='tochat-next'; stopCall(); if(S.day) setTimeout(autoStartCall,400); }
+    }
     if(active&&active.phone){ S.lastActivePhone=active.phone; } if(active&&active.phone&&active.phone!==ACTIVE_SEEN){ ACTIVE_SEEN=active.phone; $('leadPhone').value=active.phone; toast('שיחה זוהתה בטוצ\'אט: '+(active.name||active.phone),'t-ok'); S.leadLoadingAuto=true; loadLead(active.phone); }
     if(!active&&S.leadAuto&&S.lead&&!S.running&&Date.now()-(S.leadAt||0)>120000){ clearLead(true); log('השיחה בטוצ\'אט הסתיימה, הליד נוקה'); } }
   catch(e){}
