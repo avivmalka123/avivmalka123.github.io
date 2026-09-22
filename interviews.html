@@ -43,7 +43,7 @@
     <div style="font-size:34px">🔐</div>
     <div style="font-weight:900;font-size:16px">יומן ראיונות ההתאמה</div>
     <div class="hint">הזן סיסמה. סיסמת מנהל המסלול פותחת גם את האישורים.</div>
-    <input id="pw" type="password" inputmode="numeric" placeholder="••••••">
+    <input id="pw" type="password" inputmode="numeric" autocomplete="one-time-code" placeholder="••••••" autofocus>
     <button class="btn btn-primary" id="enter" style="width:100%">כניסה</button>
     <div class="hint" id="gateErr" style="color:var(--red);margin-top:8px"></div>
   </div>
@@ -67,7 +67,10 @@ const ST={pending:'ממתין לאישור',approved:'מאושר',rejected:'אי
 let PW='',ROLE='',WEEK=0,ROWS=[],PENDING=[];
 function toast(m){ const t=$('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2500); }
 function weekStart(off){ const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()-d.getDay()+off*7); return d; }
-async function api(path,opt={}){ const r=await fetch(API+path,{...opt,headers:{'x-cal-pw':PW,'content-type':'application/json',...(opt.headers||{})}}); if(r.status===401) throw new Error('סיסמה שגויה'); if(!r.ok) throw new Error((await r.text()).slice(0,120)); return r.json(); }
+async function api(path,opt={}){ let r; try{ r=await fetch(API+path,{...opt,headers:{'x-cal-pw':PW,'content-type':'application/json',...(opt.headers||{})}}); }
+  catch(e){ // some networks / in-app browsers strip custom headers or block the preflight: retry with the password in the query
+    try{ r=await fetch(API+path+(path.includes('?')?'&':'?')+'pw='+encodeURIComponent(PW),{method:opt.method||'GET',body:opt.body}); }catch(e2){ throw new Error('אין חיבור לשרת הנתונים. בדוק אינטרנט, או פתח את הלינק בכרום רגיל (לא בדפדפן של וואטסאפ/אינסטגרם).'); } }
+  if(r.status===401) throw new Error('סיסמה שגויה (הוזנו '+PW.length+' תווים). הסיסמה היא 6 ספרות בלי רווחים.'); if(!r.ok) throw new Error('שגיאת שרת '+r.status+': '+(await r.text()).slice(0,120)); return r.json(); }
 async function load(){ const from=new Date(weekStart(WEEK).getTime()-60*864e5).toISOString(); const to=new Date(weekStart(WEEK).getTime()+120*864e5).toISOString();
   const j=await api('/cal/list?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)); ROLE=j.role; ROWS=j.rows||[]; PENDING=j.pending||[]; $('roleTag').textContent=ROLE==='admin'?'👑 מנהל המסלול: אתה מאשר מה נכנס ליומן':'👥 תצוגת אנשי מכירות: רק ראיונות שאושרו';
   render(); }
@@ -93,7 +96,7 @@ window.open_=id=>{ const x=ROWS.find(r=>r.id===id)||PENDING.find(r=>r.id===id); 
   ${ROLE==='admin'?`<div class="card"><b>החלטה</b><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><button class="btn btn-sm g" onclick="decide('${x.id}','approved')">✅ אשר</button><button class="btn btn-sm r" onclick="decide('${x.id}','rejected')">❌ אין אישור</button><button class="btn btn-sm o" onclick="decide('${x.id}','moved')">↪️ עבר לאיש מכירות אחר</button><button class="btn btn-sm" onclick="decide('${x.id}','pending')">⏳ החזר להמתנה</button></div><input id="note" placeholder="הערה (לא חובה)" value="${esc(x.manager_note||'')}" style="font:inherit;width:100%;margin-top:6px;padding:6px 8px;border:1px solid var(--border);border-radius:8px"></div>`:''}`;
   $('modal').classList.add('show'); };
 window.decide=async(id,status)=>{ try{ const note=$('note')?$('note').value.trim():''; await api('/cal/decide',{method:'POST',body:JSON.stringify({id,status,note})}); toast(status==='approved'?'אושר, נכנס ליומן':status==='pending'?'הוחזר להמתנה':'סומן: '+ST[status]); $('modal').classList.remove('show'); await load(); }catch(e){ toast('שגיאה: '+e.message); } };
-async function enter(){ PW=$('pw').value.trim(); if(!PW) return; $('gateErr').textContent=''; try{ await load(); sessionStorage.setItem('cal_pw',PW); $('gate').style.display='none'; $('app').style.display=''; }catch(e){ $('gateErr').textContent=e.message; } }
+async function enter(){ PW=$('pw').value.replace(/[^0-9A-Za-z]/g,''); if(!PW) return; $('enter').disabled=true; $('enter').textContent='בודק…'; $('gateErr').textContent=''; try{ await load(); sessionStorage.setItem('cal_pw',PW); $('gate').style.display='none'; $('app').style.display=''; }catch(e){ $('gateErr').textContent=e.message; } finally{ $('enter').disabled=false; $('enter').textContent='כניסה'; } }
 $('enter').onclick=enter; $('pw').addEventListener('keydown',e=>{ if(e.key==='Enter') enter(); });
 $('prev').onclick=()=>{ WEEK--; load().catch(e=>toast(e.message)); }; $('next').onclick=()=>{ WEEK++; load().catch(e=>toast(e.message)); }; $('today').onclick=()=>{ WEEK=0; load().catch(e=>toast(e.message)); }; $('reload').onclick=()=>load().then(()=>toast('עודכן')).catch(e=>toast(e.message));
 $('logout').onclick=()=>{ sessionStorage.removeItem('cal_pw'); location.reload(); };
