@@ -295,3 +295,20 @@ do $$ begin
     create policy "anon all interviews" on interviews for all to anon using (true) with check (true); end if;
 end $$;
 create index if not exists interviews_meet_at on interviews(meet_at);
+
+-- ── interviews: outcomes, manual entries, interviewer working hours (2026-09-22) ──
+alter table interviews add column if not exists outcome text;          -- closed | failed | rescheduled
+alter table interviews add column if not exists outcome_reason text;
+alter table interviews add column if not exists amount numeric;
+alter table interviews add column if not exists outcome_at timestamptz;
+alter table interviews add column if not exists source text default 'call';   -- call | manual
+alter table interviews add column if not exists notes text;
+alter table interviews add column if not exists history jsonb;
+create table if not exists work_hours (
+  day date primary key, start_t text, end_t text, updated_at timestamptz default now()
+);
+alter table work_hours enable row level security;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='work_hours' and policyname='anon all work_hours') then
+    create policy "anon all work_hours" on work_hours for all to anon using (true) with check (true); end if;
+end $$;
