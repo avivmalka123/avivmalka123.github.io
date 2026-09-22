@@ -351,36 +351,63 @@
     .logfoot{margin:0 12px 100px}
   }
 </style>
+<style id="uiV2">
+  body{font-size:14px}
+  header.hv2{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:8px 18px}
+  header.hv2 .logo{font-size:18px}header.hv2 .logo-icon{width:36px;height:36px}
+  .seg2{justify-self:center;border-radius:14px;padding:4px;gap:4px}.seg2 button{font-size:13.5px;padding:6px 14px;border-radius:10px;line-height:1.1;display:flex;flex-direction:column;align-items:center;gap:1px;color:var(--text-muted)}.seg2 button small{font-size:10px;font-weight:600;opacity:.85}.seg2 button.on{background:var(--surface);color:var(--purple);box-shadow:0 2px 8px rgba(124,58,237,.18)}
+  .hright{display:flex;align-items:center;gap:8px;justify-self:end}
+  .btn-hero{font-size:15px;font-weight:900;padding:10px 20px;border-radius:12px;box-shadow:0 6px 18px rgba(124,58,237,.28)}
+  .more{position:relative}.more .menu{display:none;position:absolute;left:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:6px;min-width:190px;box-shadow:0 12px 30px rgba(0,0,0,.14);z-index:50;flex-direction:column;gap:4px}.more.open .menu{display:flex}.more .menu .btn{justify-content:flex-start;width:100%;border:none;background:transparent}.more .menu .btn:hover{background:var(--surface2)}.more .menu .btn:disabled{opacity:.45}
+  .strip{display:flex;align-items:center;gap:12px;padding:7px 18px;font-weight:700;border-bottom:1px solid var(--border);font-size:13.5px}.strip .sdot{width:10px;height:10px;border-radius:50%;flex:none}.strip .sstep{font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.strip .schk{display:flex;gap:10px;font-size:12px;font-weight:600;white-space:nowrap}
+  .strip.ready,.strip.wait{background:#eefbf4;color:#0b6b48}.strip.ready .sdot,.strip.wait .sdot{background:var(--accent4);box-shadow:0 0 0 4px rgba(16,185,129,.18)}
+  .strip.live{background:rgba(124,58,237,.08);color:#4c1d95}.strip.live .sdot{background:var(--red);box-shadow:0 0 0 4px rgba(220,38,38,.18);animation:pulse 1.2s infinite}
+  .strip.err{background:rgba(220,38,38,.08);color:#991b1b}.strip.err .sdot{background:var(--red)}
+  .stagebar{margin-top:8px!important}.kbanner{margin-top:8px}
+  main{gap:10px;padding:10px 18px 30px}
+  .lead-panel .panel-h{display:none}.lead-panel .panel-b{padding:8px 14px}
+  .leadrow{display:flex;align-items:center;gap:10px;min-width:0}.leadrow .leadbar.slim{grid-template-columns:1fr auto auto;gap:6px}.leadrow .leadbar.slim input{padding:6px 10px;font-size:13.5px}
+  #leadBody{flex:1;min-width:0;display:flex;align-items:center;gap:10px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;border-right:1px solid var(--border);padding-right:12px;scrollbar-width:thin}#leadBody:empty{display:none}#leadBody>*{flex:none;margin:0!important}#leadBody .chips,#leadBody .jrow,#leadBody .lins2{display:inline-flex;flex-wrap:nowrap;gap:6px}#leadBody .empty{padding:0;font-size:12.5px;white-space:nowrap}
+  .remboard{padding:6px 12px 0}.rb-h{font-size:11.5px;margin-bottom:4px}.rb{width:132px;padding:6px 9px;font-size:11px;line-height:1.3;border-radius:11px}.rb-name{font-size:12.5px}.rb.add{width:78px;font-size:12px}.rb.add .plus{font-size:18px}.rb-row{padding-bottom:4px}
+  .panel-h{padding:8px 14px;min-height:0;font-size:12.5px}
+  .saynow .t{font-size:24px;line-height:1.4}.saynow .sayopt.on .t{font-size:24px}
+  body.qual #coach #qualForm{grid-row:1/span 12;max-height:calc(100vh - 290px);min-height:420px}
+  #coach #sumList{grid-row:14;max-height:200px}
+  #coach #sayLog{grid-row:1/span 6}
+  .qform .qq{padding:7px 10px;margin-top:6px}.qform .qq label{font-size:13px}.qform input,.qform textarea{font-size:13px;padding:7px 9px}
+  .logfoot{font-size:12px}
+  @media(max-width:1100px){header.hv2{grid-template-columns:1fr;gap:8px}.seg2{justify-self:start}.hright{justify-self:start;flex-wrap:wrap}.leadrow{flex-wrap:wrap}#leadBody{border-right:none;padding-right:0;width:100%}}
+</style>
 </head>
 <body>
 
-<header>
+<header class="hv2">
   <div class="logo"><div class="logo-icon">🎧</div><div>LiveCoach<small>מאמן מכירות בזמן אמת</small></div></div>
-  <div class="pills">
+  <div class="seg seg2" id="modeSeg" title="מצב עבודה"><button data-mode="rep" class="on">🎧 אני הנציג<small>שיחת מכירה</small></button><button data-mode="qual">🎯 שיחת התאמה<small>טופס + ראיון</small></button><button data-mode="listen">👂 האזנה<small>מנהל מאזין</small></button></div>
+  <div class="hright">
+    <span class="pill" id="pWho" style="cursor:pointer" title="לחץ לשינוי שם">👤 <b id="whoName">—</b></span>
+    <span class="pill" id="dayGoalPill" style="display:none;cursor:pointer" title="ההתחייבות של היום. לחץ לעדכן" onclick="openCommit(null)"></span>
+    <span class="pill" id="remPill" style="display:none;cursor:pointer" title="תזכורות להודעות" onclick="renderRemList()"></span>
+    <button class="btn btn-primary btn-hero" id="btnDay" title="מאזין לחייגן כל היום: מתחיל ומסיים שיחות אוטומטית">🌅 התחל יום</button>
+    <button class="btn" id="btnStart" title="פתיחת שיחה אחת ידנית">▶ שיחה אחת</button>
+    <button class="btn btn-danger" id="btnStop" style="display:none">■ סיים שיחה</button>
+    <div class="more" id="moreWrap"><button class="btn" id="btnMore">⋯ עוד</button><div class="menu" id="moreMenu">
+      <button class="btn" id="btnSummary" disabled title="סיכום וציון השיחה האחרונה">🏁 הסיכום האחרון</button>
+      <button class="btn" id="btnMorning" title="הפולואפים והלידים שמחכים לך היום" onclick="openMorning()">☀️ הפולואפים שלי</button>
+      <button class="btn" id="btnReview" title="סיכום היום: איך היה, על מה לעבוד מחר" onclick="dayReview(false)">🌙 סיכום יום</button>
+      <button class="btn" id="btnDemo" title="הדגמה על שיחה מדומה">🎬 הדגמה</button>
+      <button class="btn" id="btnSettings" title="הגדרות">⚙️ הגדרות</button>
+    </div></div>
+  </div>
+  <div class="pills" style="display:none">
     <span class="pill" id="pRep"><i class="dot"></i>מיקרופון נציג <i class="lvl" id="lRep"></i></span>
     <span class="pill" id="pCust"><i class="dot"></i>שמע לקוח <i class="lvl" id="lCust"></i></span>
     <span class="pill" id="pAI"><i class="dot"></i>מאמן AI</span>
   </div>
-  <div class="seg" id="modeSeg" title="מצב עבודה"><button data-mode="rep" class="on">🎧 אני הנציג</button><button data-mode="qual">🎯 שיחת התאמה</button><button data-mode="listen">👂 האזנה לשיחה</button></div>
-  <span class="pill" id="pWho" style="cursor:pointer" title="לחץ לשינוי שם">👤 <b id="whoName">—</b></span>
   <span class="pill on" id="dayState" style="display:none"></span>
-  <span class="pill" id="dayGoalPill" style="display:none;cursor:pointer" title="ההתחייבות של היום. לחץ לעדכן" onclick="openCommit(null)"></span>
-  <span class="pill" id="remPill" style="display:none;cursor:pointer" title="תזכורות להודעות" onclick="renderRemList()"></span>
-  <div class="spacer"></div>
-  <div class="timer" id="timer">00:00</div>
-  <div class="grp">
-    <button class="btn" id="btnMorning" title="הפולואפים והלידים שמחכים לך היום" onclick="openMorning()">☀️ הפולואפים שלי</button>
-    <button class="btn" id="btnReview" title="סיכום היום: איך היה, על מה לעבוד מחר" onclick="dayReview(false)">🌙 סיכום יום</button>
-    <button class="btn btn-primary" id="btnDay" title="מאזין לחייגן כל היום: מתחיל ומסיים שיחות אוטומטית">🌅 התחל יום</button>
-    <button class="btn" id="btnStart" title="פתיחת שיחה אחת ידנית">▶ שיחה</button>
-    <button class="btn btn-danger" id="btnStop" style="display:none">■ סיים שיחה</button>
-  </div>
-  <div class="grp">
-    <button class="btn" id="btnDemo" title="הדגמה על שיחה מדומה">🎬 הדגמה</button>
-    <button class="btn" id="btnSummary" disabled title="סיכום וציון השיחה האחרונה">🏁 סיכום</button>
-    <button class="btn" id="btnSettings" title="הגדרות">⚙️ הגדרות</button>
-  </div>
+  <div class="timer" id="timer" style="display:none">00:00</div>
 </header>
+<div class="strip ready" id="statusStrip"><span class="sdot"></span><b id="stMain">מוכן לעבודה</b><span class="sstep" id="stStep"></span><span class="schk" id="stChk"></span></div>
 <div id="keysBanner" class="kbanner" style="display:none">🔑 בדפדפן הזה חסרים מפתחות, לכן המאמן, הסימולציה והצ'אט לא יעבדו. פתח את הלינק שקיבלת מהמנהל, או <a href="#" onclick="openDrawer();return false">הזן מפתחות בהגדרות</a>.</div>
 
 <section class="stagebar">
@@ -428,9 +455,9 @@
   <section class="panel lead-panel" id="leadWrap">
     <div class="panel-h">🧭 מהלך הליד <span class="spacer"></span><span id="leadTag" style="font-weight:500;text-transform:none;letter-spacing:0"></span></div>
     <div class="panel-b" id="leadPanel">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><b style="font-size:12px;color:var(--text-muted);white-space:nowrap">🧭 מהלך הליד <span id="leadTag2"></span></b><div class="leadbar slim" style="flex:1;max-width:460px"><input id="leadPhone" placeholder="טלפון הליד (או שיזוהה לבד כשהשיחה עולה בטוצ'אט)" inputmode="tel" autocomplete="off"><button class="btn btn-primary btn-sm" id="btnLead">הכר את הליד</button><button class="btn btn-sm" id="btnLeadClear" title="נקה את הליד הנוכחי (למשל אם עברת ללקוח אחר)">🧹 נקה</button></div></div>
+      <div class="leadrow"><b style="font-size:13px;white-space:nowrap">🧭 ליד <span id="leadTag2"></span></b><div class="leadbar slim" style="flex:none;width:300px"><input id="leadPhone" placeholder="טלפון הלקוח…" inputmode="tel" autocomplete="off"><button class="btn btn-primary btn-sm" id="btnLead">הכר</button><button class="btn btn-sm" id="btnLeadClear" title="נקה את הליד הנוכחי (למשל אם עברת ללקוח אחר)">נקה</button></div>
+      <div id="leadBody"></div></div>
       <div class="candbar" id="candBar" style="display:none"></div>
-      <div id="leadBody"></div>
     </div>
   </section>
 
@@ -1192,6 +1219,18 @@ function autoStartCall(){
 }
 $('btnDay').onclick=()=>{ if(S.day) endDay(); else startDay(); };
 $('btnStart').onclick=startCall; $('btnStop').onclick=stopCall;
+$('btnMore').onclick=e=>{ e.stopPropagation(); $('moreWrap').classList.toggle('open'); }; document.addEventListener('click',e=>{ if(!e.target.closest('#moreWrap')) $('moreWrap').classList.remove('open'); }); $('moreMenu').addEventListener('click',()=>setTimeout(()=>$('moreWrap').classList.remove('open'),50));
+function renderStrip(){ const el=$('statusStrip'); if(!el) return; const st=id=>{ const p=$(id); if(!p) return '–'; return p.classList.contains('on')?'✓':p.classList.contains('busy')?'…':p.classList.contains('err')?'✗':'–'; };
+  let mode='ready', main='מוכן לעבודה', step='לחץ "התחל יום", בחר את הטאב של טוצ׳אט וסמן Also share tab audio. אחר כך עבור לטוצ׳אט, השיחות ייפתחו וייסגרו לבד.';
+  if(S.running&&S.demo){ mode='live'; main='🎬 הדגמה רצה'; step='כך המאמן עובד בשיחה אמיתית.'; }
+  else if(S.running){ mode='live'; main='🔴 בשיחה · '+$('timer').textContent; step=qualOn()?'קרא את המשפט מ"מה להגיד עכשיו" ומלא את הטופס משמאל. בסיום לחץ "סיים שיחה וסכם".':'קרא את המשפט מ"מה להגיד עכשיו". בסיום לחץ "סיים שיחה וסכם".'; }
+  else if(S.day){ mode='wait'; main='🟢 מאזין לחייגן'; step=(S.sumPending?'מכין את הסיכום של השיחה הקודמת… ':'')+'עבור לטוצ׳אט וחייג. ברגע שהלקוח מדבר השיחה נפתחת לבד.'; }
+  else if(S.sumPending){ mode='wait'; main='⏳ מכין סיכום'; step='הסיכום יופיע לבד תוך כמה שניות, גם ביומן הסיכומים משמאל.'; }
+  const aw=$('audioWarn'); if(aw&&aw.style.display!=='none'&&S.running){ mode='err'; main='⚠️ המאמן לא שומע את השיחה'; step=aw.textContent.replace(/\s+/g,' ').slice(0,160); }
+  if(!S.settings.anthropic||!S.settings.openai){ mode='err'; main='🔑 חסרים מפתחות בדפדפן הזה'; step='פתח את הלינק שקיבלת מהמנהל, או הזן מפתחות בהגדרות (⋯ עוד).'; }
+  el.className='strip '+mode; $('stMain').textContent=main; $('stStep').textContent=step;
+  const sync=($('syncTag')&&$('syncTag').textContent)||''; $('stChk').innerHTML=(S.day||S.running)?`<span>🎙️ מיקרופון ${st('pRep')}</span><span>🔊 שמע לקוח ${st('pCust')}</span><span>🧠 מאמן ${st('pAI')}</span>${sync?'<span>'+escapeHtml(sync.slice(0,28))+'</span>':''}`:(sync?'<span>'+escapeHtml(sync.slice(0,28))+'</span>':''); }
+setInterval(renderStrip,1000); setTimeout(renderStrip,300); window.renderStrip=renderStrip;
 $('btnBigSum').onclick=()=>{ if(!S.running) return; const n=S.lines.filter(l=>l.final&&l.text.trim()).length; S.endReason='manual'; stopCall(); if(n<3){ const ph=(S.lead&&S.lead.phone)||ACTIVE_SEEN||S.lastActivePhone||(qualOn()&&S.qual&&S.qual.phone)||''; if(!ph) toast('אין מספיק תמלול ואין טלפון מזוהה, אין ממה לסכם','t-error'); } };
 
 /* ───────────────────────── demo ───────────────────────── */
@@ -2308,6 +2347,8 @@ function qualNext(){ const a=S.qual||{}; return QUAL_Q.find(q=>q.ask&&!(a[q.k]||
 function qualFilled(){ const a=S.qual||{}; return QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).length; }
 function qualBlock(){ if(!qualOn()) return ''; const a=S.qual||{}; const filled=QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).map(q=>q.l+': '+a[q.k]).join(' | '); const nx=qualNext();
   return `\nמצב: שיחת התאמה (לא מכירה). ${QUAL_ETHOS}
+וידוי לפני הכל: המטרה הראשונה היא להבין איפה הלקוח באמת נמצא, לא מה הוא אומר שהוא רוצה: מה מצבו היום, כמה הוא באמת "בפנים", האם צפה בתוכן, כמה הוא מבין את התחום, מה באמת עוצר אותו. שאלות וידוי קצרות שגורמות לו להודות בעצמו: "תגיד לי את האמת, כמה אתה באמת מכיר את התחום?", "ראית משהו מהתכנים או שרק נרשמת?", "מה באמת מונע ממך להתחיל עד היום?", "אם אני שואל אותך ישר, אתה כאן כי אתה סקרן או כי אתה מחליט?". רק אחרי שיש וידוי ברור מחליטים לאן להוביל.
+אישור מנהל, הטקטיקה הכי חזקה שלנו, להשתמש בה כמה שיותר: אם מהווידוי עולה שהלקוח לא ברמת ידע גבוהה, לא צפה בתוכן או לא בשל, לא דוחפים לראיון. מובילים אותו לצפייה בתוכן דרך "אישור מנהל": "תראה, אני יכול לבקש ממנהל המסלול אישור לפתוח לך היום את קורס ההכנה, שעולה 1,000 ש"ח, בחינם. זה רק להיום ולהקצאה מוגבלת של אנשים, ואני צריך לקבל אישור מנהל בשבילך. אם אני משיג לך את זה, אתה מתחייב לצפות עד מחר בערב?". תמיד ארבעה מרכיבים: (א) ההטבה ממוסגרת כמשהו שדורש אישור מיוחד ולא ניתן לכל אחד, (ב) מוגבלת בזמן ("רק היום") ובכמות ("הקצאה מצומצמת"), (ג) הלקוח מתחייב למשהו בתמורה (צפייה עד מועד, להגיע לראיון בזמן, מקום שקט), (ד) הנציג "הולך לבדוק" ו"משיג" ולא נותן בקלות. אותה טקטיקה לכל תוכן וכל צעד: הדרכה חינמית, סרטון המועדון, מיני-קורס, וגם הראיון עצמו ("אני אבקש ממנו לפנות לך מקום, הוא לא פותח יומן לכל אחד"). readiness נמוך = קודם תוכן באישור מנהל והתחייבות לצפייה, ורק אז ראיון. readiness גבוה = ראיון עכשיו, גם הוא באישור מנהל.
 תסריט השיחה, בסדר: (1) פתיחה: ראיתי שנרשמת לוובינר, לוודא שהסתדרת וקיבלת את המתנה למייל (קורס: איך פותחים חנות דיגיטלית ב-2 דקות, נשלח גם לוואטסאפ). (2) "מה גרם לך להתעניין דווקא עכשיו?" (3) ההקצאה: פותחים בקרוב הקצאה ל-20 משתתפים למסלול, מ-0 לחנות פעילה שמייצרת מכירות, היחידים בארץ שמתחייבים: 10 מכירות תוך 45 יום או כל הכסף חזרה וממשיכים בחינם. רק אם ספקן: התלמידים לא משלמים הכל בהתחלה, החלק השני רק אחרי מחזור 10,000. (4) "מה הקאץ'?": כי יש שלבי סינון ורק מי שבטוחים שיצליח נכנס. "זה מרגיש כמו משהו שיכול להיות משמעותי עבורך?" (5) "אפשר לשאול כמה שאלות? ואם מתאים אקבע לך ראיון התאמה עם מנהל המסלול" ואז שאלות הסינון לפי הטופס. (6) קביעת ראיון: 20-30 דקות, חינמי, מהבית, מקום שקט, וויפי. יום, שעה, זום/טלפון.
 משפטי אתוס שמותר להשתמש בהם: "בוודאי לא לכולם מתאים להכניס 20 אלף ש"ח בחודש ועדיין לעבוד מהבית", "יש כאלה שמעדיפים לעבוד קשה בזמן שהעולם מתקדם, וזה מתוך בחירה שלהם. באיזו קטגוריה אתה?", "אנחנו לא באים לשחק משחקים, ולכן אנחנו בוחרים עם מי לעבוד", "השאלה היא לא אם אתה רוצה, השאלה היא אם אתה מתאים".
 מחיר: אסור. אם שואל: "זה משתנה לפי המסלול שמתאים לך. אם יש התאמה תקבל את כל הפרטים ממנהל המסלול, נשמע פייר?"
