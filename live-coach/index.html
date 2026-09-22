@@ -1454,7 +1454,7 @@ function callRow(extra){
     started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round(((S.running?Date.now():(S.endedAt||Date.now()))-S.startedAt)/1000), sim,
     stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
     checks:S.checks||{}, events:S.events||[], ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length,
-    diag:(d=>({stt:d.stt||{},peak:{rep:+((d.peak||{}).rep||0).toFixed(3),cust:+((d.peak||{}).cust||0).toFixed(3)},lines:finals.length,last_line_at:d.lastLineAt||null,ver:'0917'}))(S.diag||{}),
+    diag:(d=>({stt:d.stt||{},peak:{rep:+((d.peak||{}).rep||0).toFixed(3),cust:+((d.peak||{}).cust||0).toFixed(3)},lines:finals.length,last_line_at:d.lastLineAt||null,ver:'0922'}))(S.diag||{}),
     say_a:$('sayText').textContent||'', say_b:($('sayTextB')&&$('sayTextB').textContent)||'', readiness:(S.ready&&S.ready.score!=null)?S.ready.score:null, bottom_line:(S.ready&&S.ready.line)||'', solved:(S.ready&&S.ready.solved)||'', to_solve:(S.ready&&S.ready.to_solve)||'', barriers:S.barriers||{}, facts:S.facts||{}, lead_phone:(S.lead&&S.lead.phone)||null, lead_name:(S.lead&&S.lead.name)||null, ...extra};
 }
 async function syncRow(row){
@@ -1935,7 +1935,8 @@ function renderFollowup(o,ctx){ const fu=o.followup; const ph=(ctx&&ctx.leadPhon
 const REVIEW_SCHEMA={type:'object',additionalProperties:false,required:['headline','day_score','how_was','wins','work_on','tomorrow','note'],properties:{headline:{type:'string',description:'כותרת ענקית עד 12 מילים'},day_score:{type:'integer',description:'1-10 איך היה היום מול ההתחייבות והביצוע'},how_was:{type:'string',description:'3-4 משפטים: מה קרה היום, בכנות'},wins:{type:'array',items:{type:'string'},description:'2-3 דברים שעבדו היום, עם דוגמה מהשיחות'},work_on:{type:'array',items:{type:'string'},description:'3 דברים לעבוד עליהם, כל אחד עם הכלי מהפלייבוק'},tomorrow:{type:'array',items:{type:'string'},description:'3 פעולות קונקרטיות למחר (כולל מי לחזור אליו)'},note:{type:'string',description:'משפט אישי אחד, חם וישיר, בלי קלישאות'}}};
 async function dayReview(forDay){ // forDay: null/false = today, or a date string (yesterday's pending review)
   const day=forDay||todayKey(); const L=localHistory().filter(x=>new Date(x.ts).toDateString()===day&&x.mode!=='sim'); const m=$('modal'); m.classList.add('show'); setModalTitle('🌙 סיכום היום'); $('modalBody').innerHTML='<div class="empty">המאמן עובר על כל השיחות של '+(forDay?'אתמול':'היום')+'…</div>';
-  if(!L.length){ $('modalBody').innerHTML='<div class="empty">אין שיחות '+(forDay?'מאתמול':'מהיום')+' לסכם.</div>'; return; }
+  const goOn=why=>{ const f=S.afterReview; if(!f) return; S.afterReview=null; m.classList.remove('show'); if(why) toast(why,'t-error'); f(); };
+  if(!L.length){ $('modalBody').innerHTML='<div class="empty">אין שיחות '+(forDay?'מאתמול':'מהיום')+' לסכם.</div>'; goOn(); return; }
   const c=(S.settings.dayCommit&&S.settings.dayCommit.day===day)?S.settings.dayCommit:null; const st=dayStats(); const rep=S.settings.repName||'הנציג';
   try{
     const res=await getClient().beta.messages.create({model:coachModel(),max_tokens:1400,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:REVIEW_SCHEMA}},
@@ -1944,7 +1945,7 @@ async function dayReview(forDay){ // forDay: null/false = today, or a date strin
     const r=scrub(JSON.parse(res.content.filter(b=>b.type==='text').map(b=>b.text).join(''))); r.day=day; r.seen=false; S.settings.dayReview=r; localStorage.setItem('lc_settings',JSON.stringify(S.settings));
     if(sbReady()){ try{ await fetch(S.settings.sbUrl+'/rest/v1/day_reviews?on_conflict=rep,day',{method:'POST',headers:sbHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify({rep,day:new Date(day).toISOString().slice(0,10),data:r,seen:false,updated_at:new Date().toISOString()})}); }catch(e){} }
     renderReview(r);
-  }catch(e){ $('modalBody').innerHTML='<div class="empty">'+escapeHtml(e.message||e)+'</div>'; }
+  }catch(e){ const msg=(e.error?.error?.message||e.message||e); $('modalBody').innerHTML='<div class="empty">'+escapeHtml(msg)+'</div>'; log('סיכום יום: '+String(msg).slice(0,160),'err'); goOn('סיכום אתמול לא נוצר ('+String(msg).slice(0,60)+'). ממשיכים ביום.'); }
 }
 function renderReview(r){ const isPast=r.day!==todayKey(); setModalTitle(isPast?'🌙 סיכום היום של אתמול':'🌙 סיכום היום'); $('modalBody').innerHTML=`<div class="rv"><div class="big">${escapeHtml(r.headline)}</div><div class="db-score" style="display:flex;gap:14px;align-items:center"><div class="big" style="font-size:40px">${r.day_score}<small style="font-size:14px">/10</small></div><div style="font-size:15px;line-height:1.5">${escapeHtml(r.how_was)}</div></div>
   <div class="grid"><div class="box"><b>💪 מה עבד</b><ul>${(r.wins||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div><div class="box"><b>🔧 לעבוד על</b><ul>${(r.work_on||[]).map(x=>'<li>'+escapeHtml(x)+'</li>').join('')}</ul></div></div>
