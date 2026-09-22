@@ -277,3 +277,21 @@ end $$;
 
 -- ── audio / transcription diagnostics per call (2026-09-17) ──
 alter table calls add column if not exists diag jsonb;
+
+-- ── qualification interviews calendar with manager approval (2026-09-22) ──
+create table if not exists interviews (
+  id text primary key,                 -- the qualification call id
+  phone text, name text, rep text,
+  meet_at timestamptz, meet_label text,
+  status text default 'pending',       -- pending | approved | rejected | moved
+  manager_note text, decided_by text, decided_at timestamptz,
+  sent_at timestamptz,                 -- when the rep copied / sent the confirmation message
+  fit integer, verdict text, summary text, note_to_manager text, form jsonb, criteria jsonb,
+  created_at timestamptz default now(), updated_at timestamptz default now()
+);
+alter table interviews enable row level security;
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename='interviews' and policyname='anon all interviews') then
+    create policy "anon all interviews" on interviews for all to anon using (true) with check (true); end if;
+end $$;
+create index if not exists interviews_meet_at on interviews(meet_at);

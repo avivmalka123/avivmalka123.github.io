@@ -15,7 +15,7 @@ const ST = {2:'לקוח סגר',5:'חזרה עתידית',9:'ליד חדש',13:'
 const TYPE = {2:'הדרכה חינמית (Aviv CRM)',4:'בורד וובינר'};
 const REFN = {'mini-course':'מיני-קורס','fb-hadracha':'הדרכה חינמית (פייסבוק)','mezoraz_yashir':'ישיר (מזורז)'};
 
-function cors(req){ const o=req.headers.get('Origin')||''; const ok=ALLOWED.includes(o)||/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o); return {'Access-Control-Allow-Origin':ok?o:ALLOWED[0],'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'content-type,x-app-key','Vary':'Origin'}; }
+function cors(req){ const o=req.headers.get('Origin')||''; const ok=ALLOWED.includes(o)||/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o); return {'Access-Control-Allow-Origin':ok?o:ALLOWED[0],'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'content-type,x-app-key,x-cal-pw','Vary':'Origin'}; }
 const json=(d,s=200,h={})=>new Response(JSON.stringify(d),{status:s,headers:{'content-type':'application/json; charset=utf-8',...h}});
 function safeEq(a,b){ if(a.length!==b.length) return false; let d=0; for(let i=0;i<a.length;i++) d|=a.charCodeAt(i)^b.charCodeAt(i); return d===0; }
 const digits=s=>String(s||'').replace(/\D/g,'');
@@ -222,12 +222,26 @@ export default {
         if(callRec){ const pk='calls:'+nine(ev.phone); const pa=JSON.parse((await env.CACHE.get(pk))||'[]'); pa.push({t:ev.ts.slice(0,19),type:ev.type,rep:ev.agent,sec:callRec.sec,rec:callRec.rec,ai:callRec.ai}); await kvPutSafe(env,pk,JSON.stringify(pa.slice(-60)),{expirationTtl:120*86400}); }
       }
       return json({ok:true,parsed:{type:ev.type,phone:ev.phone,agent:ev.agent,duration:ev.duration,hasSummary:!!ev.summary},store:sbReady(env)?'supabase':'kv'},200,h); }
+// ── interviews calendar (password-gated, no app key: the public page holds no secrets) ──
+    if(url.pathname.startsWith('/cal/')){
+      const pw=req.headers.get('x-cal-pw')||url.searchParams.get('pw')||''; const role=(env.CAL_ADMIN_PW&&safeEq(pw,env.CAL_ADMIN_PW))?'admin':(env.CAL_PW&&safeEq(pw,env.CAL_PW))?'sales':null;
+      if(!role) return json({error:'password'},401,h); if(!sbReady(env)) return json({error:'no supabase'},500,h);
+      try{
+      if(url.pathname==='/cal/list'){ const from=url.searchParams.get('from')||new Date(Date.now()-30*864e3).toISOString(); const to=url.searchParams.get('to')||new Date(Date.now()+120*864e3).toISOString();
+        let rows=await sb(env,'interviews?select=*&order=meet_at.asc&limit=1000&meet_at=gte.'+encodeURIComponent(from)+'&meet_at=lte.'+encodeURIComponent(to));
+        const pending=await sb(env,'interviews?select=*&status=eq.pending&order=meet_at.asc&limit=300');
+        if(role==='sales') rows=rows.filter(r=>r.status==='approved');
+        return json({role,rows,pending:role==='admin'?pending:[],pendingCount:pending.length},200,h); }
+      if(url.pathname==='/cal/decide'&&req.method==='POST'){ if(role!=='admin') return json({error:'admin only'},403,h); const b=await req.json().catch(()=>({})); if(!b.id||!['pending','approved','rejected','moved'].includes(b.status)) return json({error:'id/status'},400,h);
+        await sb(env,'interviews?id=eq.'+encodeURIComponent(b.id),'PATCH',{status:b.status,manager_note:b.note||null,decided_by:b.by||'מנהל המסלול',decided_at:new Date().toISOString(),updated_at:new Date().toISOString()},'return=minimal'); return json({ok:true},200,h); }
+      return json({error:'not found'},404,h); }catch(e){ const m=String(e.message||e); return json({error:/PGRST205|does not exist/.test(m)?'טבלת interviews עוד לא קיימת ב-Supabase. הרץ את supabase.sql ב-SQL Editor.':m},500,h); } }
     if(!env.APP_KEY||!safeEq(key,env.APP_KEY)) return json({error:'unauthorized'},401,h);
     const cache=async(k,ttl,fn)=>{ if(url.searchParams.get('fresh')!=='1'){ try{ const v=await env.CACHE.get(k); if(v) return JSON.parse(v); }catch(e){} } const d=await fn(); await kvPutSafe(env,k,JSON.stringify(d),{expirationTtl:ttl}); return d; };
     try{
       if(url.pathname==='/campaigns') return json(await campaigns(env),200,h);
       if(url.pathname==='/prepare'){ const rep=url.searchParams.get('rep')||''; const what=url.searchParams.get('what')||'morning,review'; if(!rep) return json({error:'rep'},400,h); if(rep==='all') return json(await prepareNext(env,what,1),200,h); if(rep==='status') return json(await pendingReps(env,what),200,h); try{ return json(await prepareRep(env,rep,what),200,h); }catch(e){ return json({rep,error:String(e.message||e).slice(0,300)},500,h); } }
       if(url.pathname==='/reps') return json({reps:await activeReps(env)},200,h);
+
       if(url.pathname==='/mycalls'){ const rp=url.searchParams.get('rep')||''; const d=url.searchParams.get('date')||ilDate(); if(!rp||!sbReady(env)) return json({calls:[]},200,h); const next=new Date(new Date(d+'T00:00:00Z').getTime()+864e5).toISOString().slice(0,10);
         const rows=await sb(env,`tc_calls?select=phone,t,type,rep,sec,rec,ai,name,campaign&t=gte.${d}T00:00:00&t=lt.${next}T00:00:00&order=t.asc&limit=2000`); const rn=normName(rp); const mine=rows.filter(r=>{ const k=normName(r.rep); return k&&(k===rn||k.includes(rn)||rn.includes(k)); });
         const agg={}; for(const e of mine){ const k=nine(e.phone)+'|'+String(e.t).slice(0,13); const m=agg[k]||(agg[k]={phone:'0'+nine(e.phone),t:String(e.t).slice(0,19),rep:e.rep,name:e.name||'',campaign:e.campaign||'',sec:0,rec:'',ai:''}); if(e.sec) m.sec=Math.max(m.sec,e.sec); if(e.ai) m.ai=e.ai; if(e.rec) m.rec=e.rec; if(e.name) m.name=e.name; }

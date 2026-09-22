@@ -1674,7 +1674,7 @@ const QUAL_DEEP_SCHEMA={type:'object',additionalProperties:false,required:['crit
   strength:{type:'string',description:'חוזקה אחת של הנציג, עם ציטוט קצר'},misses:{type:'array',items:{type:'string'},description:'בדיוק 2 פספוסים, משפט כל אחד'},alt_sentence:{type:'string',description:'משפט חלופי מדויק לשיפור בשיחה הבאה'}}};
 const QUAL_SUM_SCHEMA=QUAL_DEEP_SCHEMA;
 function renderQualDebrief(o,ctx){ setModalTitle('🎯 סיום שיחת התאמה'); const a=(ctx&&ctx.qual)||S.qual||{}; const ph=a.phone||(ctx&&ctx.leadPhone)||''; const pending=o.total==null&&!o.criteria; const total=o.total!=null?o.total:(o.fit_score!=null?o.fit_score*10:null); const col=total==null?'var(--text-muted)':total>=75?'var(--accent4)':total>=50?'var(--accent5)':'var(--red)';
-  const info={name:a.name||ctx&&ctx.leadName||'',phone:ph,meet_day:a.meet_day||'',meet_time:a.meet_time||'',total,verdict:o.verdict||'',summary:o.summary||'',form:{...a},manager:S.settings.qualManager||''};
+  const info={name:a.name||ctx&&ctx.leadName||'',phone:ph,meet_day:a.meet_day||'',meet_time:a.meet_time||'',total,verdict:o.verdict||'',summary:o.summary||'',form:{...a},manager:S.settings.qualManager||'',callId:ctx&&ctx.id};
   S.qualInfo=info; S.qualO=o;
   const crit=(o.criteria||[]).slice(0,5);
   $('modalBody').innerHTML=`<div class="qd">
@@ -1708,7 +1708,7 @@ try{ S.reminders=JSON.parse(localStorage.getItem('lc_rem')||'[]'); }catch(e){ S.
 function remSave(){ try{ localStorage.setItem('lc_rem',JSON.stringify(S.reminders||[])); }catch(e){} renderRemPill(); renderRemBoard(); }
 window.remAdd=(lead,key,at,label,name,msg,info,silent)=>{ S.reminders=(S.reminders||[]).filter(r=>!(r.lead===lead&&r.key===key&&!r.done)); S.reminders.push({id:'r_'+Date.now()+'_'+key,lead,key,at,label,name,msg,info:info||null,done:false,created:Date.now()}); remSave(); if(!silent) toast('תוזמן: '+label+' · '+new Date(at).toLocaleString('he-IL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}),'t-ok'); if('Notification' in window&&Notification.permission==='default') Notification.requestPermission().catch(()=>{}); };
 window.remCancel=id=>{ S.reminders=(S.reminders||[]).filter(r=>r.id!==id); remSave(); closeModals(); };
-window.remDone=id=>{ const r=(S.reminders||[]).find(x=>x.id===id); if(r){ r.done=true; r.doneAt=Date.now(); } remSave(); closeModals(); toast('סומן כנשלח','t-ok'); };
+window.remDone=id=>{ const r=(S.reminders||[]).find(x=>x.id===id); if(r){ r.done=true; r.doneAt=Date.now(); if(r.key==='confirm'&&r.info&&r.info.callId) interviewSent(r.info.callId); } remSave(); closeModals(); toast('סומן כנשלח','t-ok'); };
 window.remSnooze=(id,mins)=>{ const r=(S.reminders||[]).find(x=>x.id===id); if(r){ r.at=Date.now()+mins*60000; r.notified=false; } remSave(); closeModals(); toast('נדחה ב-'+mins+' דקות','t-ok'); };
 function renderRemPill(){ const p=$('remPill'); if(!p) return; const due=(S.reminders||[]).filter(r=>!r.done&&r.at<=Date.now()).length; const pend=(S.reminders||[]).filter(r=>!r.done).length; p.style.display=pend?'':'none'; p.innerHTML='⏰ '+(due?'<b style="color:var(--red)">'+due+' לשליחה</b>':pend+' מתוזמנות'); p.classList.toggle('on',due>0); }
 function remState(r){ const now=Date.now(); if(r.done) return 'done'; if(r.at<=now) return 'due'; if(new Date(r.at).toDateString()===new Date().toDateString()) return 'today'; return 'future'; }
@@ -1727,7 +1727,7 @@ async function runQualSummary(auto,src){
   const ctx=src.ctx; const finals=src.lines; const rep=S.settings.repName||'נציג'; const a=ctx.qual||{}; const ph=a.phone||ctx.leadPhone||(S.lead&&S.lead.phone)||'';
   const transcript=src.text||finals.slice(-300).map(l=>`[${l.who==='rep'?rep+' (נציג)':l.who==='cust'?'לקוח':'?'}]: ${l.text}`).join('\n');
   sumQueue({id:ctx.id,ts:ctx.startedAt,dur:Math.round((ctx.endedAt-ctx.startedAt)/1000),name:a.name||ctx.leadName||'',phone:ph,status:'pending'}); S.sumPending={id:ctx.id,startedAt:ctx.startedAt};
-  const info={name:a.name||ctx.leadName||'',phone:ph,meet_day:a.meet_day||'',meet_time:a.meet_time||'',form:{...a},manager:S.settings.qualManager||''};
+  const info={name:a.name||ctx.leadName||'',phone:ph,meet_day:a.meet_day||'',meet_time:a.meet_time||'',form:{...a},manager:S.settings.qualManager||'',callId:ctx.id};
   qualScheduleBase(a,ph,info);
   const o={qual:true,criteria:null,total:null,fit_score:null,score:null,outcome:a.meet_day?'follow_up':'unknown',stage_reached:'kyc',summary:'',crm_text:qualMessage(),lessons:[],strengths:[],improvements:[],scores:{},critStart:Date.now()};
   const t0=performance.now(); const ethos=`אתה מנהל ההתאמה של מועדון האיקומרס של אביב מלכה. ${QUAL_ETHOS}`;
@@ -1742,7 +1742,8 @@ async function runQualSummary(auto,src){
     const r1=await getClient().beta.messages.create({model:coachModel(),max_tokens:1800,betas:['server-side-fallback-2026-07-01'],fallbacks:'default',output_config:{effort:'low',format:{type:'json_schema',schema:QUAL_FAST_SCHEMA}},
       system:`${ethos}\nסכם שיחת התאמה בקצרה למנהל המסלול (תמצית, עובדות, דגלים אדומים, איך לפתוח את הראיון), בחר תוכן אחד בלבד לצפייה עד הראיון (מי שלא ראה את השיטה: הדרכה חינמית; מי שרוצה להבין את המועדון: הסרטון על המועדון; מי שרוצה להתחיל: הקורס החינמי של פתיחת חנות ב-2 דקות), וכתוב הודעה לבוקר יום הראיון מהנציג ${rep}. בלי Markdown.\n${catalogBlock().slice(0,3000)}`,
       messages:[{role:'user',content:`הנציג: ${rep}. מנהל המסלול: ${S.settings.qualManager||'מנהל המסלול'}.\nהטופס שמולא: ${JSON.stringify(a)}\n\nהתמלול:\n${transcript}`}]},{timeout:60000,maxRetries:1});
-    Object.assign(o,parse(r1)); o.summary=o.summary||''; o.one_thing=o.note_to_manager||'';
+    Object.assign(o,parse(r1)); o.summary=o.summary||''; o.one_thing=o.note_to_manager||''; o.form={...a}; o.meet_ts=meetTs(a)||null; o.manager=S.settings.qualManager||''; if(!ctx.demo) interviewUpsert(ctx.id,a,o);
+    if(!ctx.demo){ const sf={summary:'שיחת התאמה · '+(o.verdict||''),outcome:o.outcome,next_step:(a.meet_day?'ראיון '+a.meet_day+' '+(a.meet_time||''):'לא נקבע ראיון'),stage_reached:'kyc',summary_json:o,lead_name:a.name||ctx.leadName||null,lead_phone:ph||null}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); }
     log('סיכום התאמה (שלב 1) מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות','ok');
     if(ph){ remUpdate(ph,'confirm',{msg:qualFixedMessage(a,o)}); if(o.msg_pre_interview) remUpdate(ph,'pre',{msg:o.msg_pre_interview}); }
     sumQueue({id:ctx.id,status:'pending',o,ctx:qctx});
@@ -1752,12 +1753,18 @@ async function runQualSummary(auto,src){
     const d=await critP; finishCrit(d);
     log('ניתוח 5 המדדים מוכן ב-'+((performance.now()-t0)/1000).toFixed(1)+' שניות: '+o.total+'/100','ok');
     if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:o.total,outcome:o.outcome,o,ctx:qctx});
-    if(!ctx.demo){ const sf={summary:'שיחת התאמה · '+(o.verdict||''),score:o.fit_score,outcome:o.outcome,next_step:(a.meet_day?'ראיון '+a.meet_day+' '+(a.meet_time||''):'לא נקבע ראיון'),stage_reached:'kyc',summary_json:o}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); saveLocalHistory(o,ctx); }
-    if(ph) remUpdate(ph,null,{info:{...info,total:o.total,verdict:o.verdict||'',summary:o.summary||''}});
+    if(!ctx.demo){ const sf={summary:'שיחת התאמה · '+(o.verdict||''),score:o.fit_score,outcome:o.outcome,next_step:(a.meet_day?'ראיון '+a.meet_day+' '+(a.meet_time||''):'לא נקבע ראיון'),stage_reached:'kyc',summary_json:o,lead_name:a.name||ctx.leadName||null,lead_phone:ph||null}; if(S.callId===ctx.id) syncCall(sf); else syncRow({id:ctx.id,updated_at:new Date().toISOString(),...sf}); saveLocalHistory(o,ctx); }
+    if(ph) remUpdate(ph,null,{info:{...info,total:o.total,verdict:o.verdict||'',summary:o.summary||''}}); if(!ctx.demo) interviewUpsert(ctx.id,a,o);
     show(); if(auto) toast('שיחת ההתאמה סוכמה: '+o.total+'/100','t-ok');
   }catch(e){ const msg=String(e.error?.error?.message||e.message||e); o.criteria=[]; o.critStart=null; o.criteriaError=msg.slice(0,160); if(S.sumPending&&S.sumPending.id===ctx.id) S.sumPending=null; sumQueue({id:ctx.id,status:'ready',score:null,o,ctx:qctx}); show(); log('ניתוח המדדים: '+msg.slice(0,200),'err'); }
 }
 window.qualCritRetry=()=>{ if(S.qualCritRetry) S.qualCritRetry(); };
+/* ── interviews table: every scheduled qualification interview, for the weekly calendar + manager approval ── */
+async function interviewUpsert(callId,a,o,extra){ if(!sbReady()||!callId) return; const mt=meetTs(a); if(!mt) return; const ph=(a.phone||'').trim(); if(!ph) return;
+  const row={id:callId,phone:ph,name:a.name||'',rep:S.settings.repName||'',meet_at:new Date(mt).toISOString(),meet_label:[a.meet_day,a.meet_time].filter(Boolean).join(' '),fit:o&&o.total!=null?o.total:null,verdict:(o&&o.verdict)||null,summary:(o&&o.summary)||null,note_to_manager:(o&&o.note_to_manager)||null,form:{...a},criteria:(o&&o.criteria)||null,updated_at:new Date().toISOString(),...(extra||{})};
+  try{ const r=await fetch(S.settings.sbUrl+'/rest/v1/interviews?on_conflict=id',{method:'POST',headers:{...sbHdr(),'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},body:JSON.stringify(row)}); if(!r.ok){ const t=await r.text(); if(/PGRST205|interviews/.test(t)) log('טבלת interviews חסרה ב-Supabase (המנהל צריך להריץ את supabase.sql)','err'); else log('יומן ראיונות: '+t.slice(0,100),'err'); } }catch(e){} }
+async function interviewSent(callId){ if(!sbReady()||!callId) return; try{ await fetch(S.settings.sbUrl+'/rest/v1/interviews?id=eq.'+encodeURIComponent(callId),{method:'PATCH',headers:{...sbHdr(),'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({sent_at:new Date().toISOString(),updated_at:new Date().toISOString()})}); }catch(e){} }
+window.interviewSent=interviewSent;
 // streams the 5-criteria analysis; onPartial gets the criteria that are already complete while the model is still writing
 async function qualCriteria(ethos,rep,a,transcript,onPartial){
   const sys=`${ethos}
@@ -1888,8 +1895,9 @@ async function followupPlan(ctx,o){
   }catch(e){ log('פולואפ: '+(e.message||e),'err'); if($('fuBox')) $('fuBox').innerHTML='<div class="wa"><div class="k">📲 הודעת וואטסאפ</div><div class="hint">לא הצלחתי לכתוב: '+escapeHtml(e.message||e)+'</div></div>'; }
 }
 const waLink=(phone,text)=>{ const d=String(phone||'').replace(/\D/g,''); const p=d.startsWith('972')?d:'972'+d.replace(/^0/,''); return 'https://wa.me/'+p+'?text='+encodeURIComponent(text||''); };
-window.waOpen=(phone,elId)=>{ const t=$(elId)?$(elId).value:''; if(!phone){ const p=prompt('מה הטלפון של הלקוח?'); if(!p) return; phone=p; } window.open(waLink(phone,t),'_blank'); try{ addEvent({kind:'custom',request:'הודעת וואטסאפ נפתחה',text:t.slice(0,200),why:'',reasoning:null}); }catch(e){} };
-window.copyText=async(elId)=>{ const t=$(elId)?($(elId).value||$(elId).textContent):''; try{ await navigator.clipboard.writeText(t); toast('הועתק'); }catch(e){ toast('לא הצלחתי להעתיק'); } };
+function sentHook(elId){ try{ if(elId==='qwa1'&&S.qualInfo&&S.qualInfo.callId) interviewSent(S.qualInfo.callId); else if(/^rm_/.test(elId||'')){ const r=(S.reminders||[]).find(x=>'rm_'+x.id===elId); if(r&&r.key==='confirm'&&r.info&&r.info.callId) interviewSent(r.info.callId); } }catch(e){} }
+window.waOpen=(phone,elId)=>{ sentHook(elId); const t=$(elId)?$(elId).value:''; if(!phone){ const p=prompt('מה הטלפון של הלקוח?'); if(!p) return; phone=p; } window.open(waLink(phone,t),'_blank'); try{ addEvent({kind:'custom',request:'הודעת וואטסאפ נפתחה',text:t.slice(0,200),why:'',reasoning:null}); }catch(e){} };
+window.copyText=async(elId)=>{ sentHook(elId); const t=$(elId)?($(elId).value||$(elId).textContent):''; try{ await navigator.clipboard.writeText(t); toast('הועתק'); }catch(e){ toast('לא הצלחתי להעתיק'); } };
 function renderFollowup(o,ctx){ const fu=o.followup; const ph=(ctx&&ctx.leadPhone)||''; const pick=fu.content_pick||{};
   return `<div class="wa"><div class="k">📲 הודעת וואטסאפ ללקוח${ph?' · '+escapeHtml(ph):' · אין טלפון מזוהה, יתבקש בפתיחה'}</div><textarea id="waMsg">${escapeHtml(fu.whatsapp||'')}</textarea><div class="acts"><button class="btn btn-primary" onclick="waOpen('${escapeHtml(ph)}','waMsg')">🟢 פתח בוואטסאפ עם ההודעה</button><button class="btn" onclick="copyText('waMsg')">📋 העתק</button></div>${pick.title?`<div class="pick">🎬 התוכן שנבחר: <b>${escapeHtml(pick.title)}</b> · ${escapeHtml(pick.why||'')}</div>`:''}${fu.interest_hook?`<div class="pick">💛 בפעם הבאה לשאול על: ${escapeHtml(fu.interest_hook)}</div>`:''}</div>
   <div class="plan"><div class="k">🗓️ תוכנית הפולואפ ללקוח הזה</div>${(fu.plan||[]).map((p,i)=>`<div class="pstep"><div class="when">${escapeHtml(p.when)}<br><small style="font-weight:600;color:var(--text-muted)">${p.channel==='שיחה'?'📞 שיחה':'💬 הודעה'}</small></div><div><div class="g">${escapeHtml(p.goal)}</div><div class="t" id="pst_${i}">${escapeHtml(p.text||'')}</div><div class="hint">לבדוק: ${escapeHtml(p.check||'')}</div><div class="acts">${p.channel==='הודעה'?`<button class="btn btn-sm" onclick="waOpen('${escapeHtml(ph)}','pst_${i}')">🟢 וואטסאפ</button>`:''}<button class="btn btn-sm" onclick="copyText('pst_${i}')">📋</button></div></div></div>`).join('')}</div>`; }
