@@ -312,3 +312,6 @@ do $$ begin
   if not exists (select 1 from pg_policies where tablename='work_hours' and policyname='anon all work_hours') then
     create policy "anon all work_hours" on work_hours for all to anon using (true) with check (true); end if;
 end $$;
+
+-- ── interviewer day blocks (breaks / not working) inside work_hours (2026-09-23) ──
+alter table work_hours add column if not exists blocks jsonb;
