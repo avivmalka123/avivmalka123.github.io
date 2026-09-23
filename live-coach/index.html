@@ -528,10 +528,9 @@
   <div class="field"><label class="field-label">מצב יום: שניות שקט לסיום שיחה אוטומטי</label><input class="field-input" id="sAutoEnd" type="number" min="10" max="120" placeholder="25"></div>
   <div class="field"><label class="field-label">מודל תמלול</label>
     <select class="field-input" id="sSttModel">
-      <option value="gpt-transcribe">gpt-transcribe (מומלץ, דיוק גבוה)</option>
-      <option value="gpt-live-transcribe">gpt-live-transcribe (השהיה הכי נמוכה)</option>
-      <option value="gpt-4o-transcribe">gpt-4o-transcribe (דור קודם)</option>
-      <option value="gpt-4o-mini-transcribe">gpt-4o-mini-transcribe (דור קודם, זול)</option>
+      <option value="gpt-4o-transcribe">gpt-4o-transcribe (מומלץ: זיהוי דיבור אוטומטי)</option>
+      <option value="gpt-4o-mini-transcribe">gpt-4o-mini-transcribe (זול יותר)</option>
+      <option value="gpt-transcribe">gpt-transcribe (לא נתמך כרגע: בלי זיהוי דיבור, ימופה ל-gpt-4o-transcribe)</option>
     </select>
   </div>
 
@@ -915,11 +914,11 @@ function openStt(who){
     const pill=who==='rep'?'pRep':'pCust';
     let settled=false, legacyTried=false;
     const label=who==='rep'?'נציג':'לקוח';
-    const model=S.settings.sttModel||'gpt-transcribe', prompt=[S.settings.repName,S.settings.custName].filter(Boolean).join(', ');
+    let model=S.settings.sttModel||'gpt-4o-transcribe'; if(/^gpt-(live-)?transcribe$/.test(model)){ model='gpt-4o-transcribe'; } if(S.sttFallback) model='gpt-4o-mini-transcribe'; const prompt=[S.settings.repName,S.settings.custName].filter(Boolean).join(', ');
     const vad={type:'server_vad',threshold:0.5,prefix_padding_ms:300,silence_duration_ms:600};
     const sendNew=()=>ws.send(JSON.stringify({type:'session.update',session:{type:'transcription',audio:{input:{format:{type:'audio/pcm',rate:24000},transcription:{model,language:'he',prompt},turn_detection:vad}}}}));
     const sendLegacy=()=>ws.send(JSON.stringify({type:'transcription_session.update',session:{input_audio_format:'pcm16',input_audio_transcription:{model,language:'he',prompt},turn_detection:vad}}));
-    ws.onopen=()=>{log('OpenAI ('+label+'): חיבור נפתח, שולח הגדרות');sendNew()};
+    ws.onopen=()=>{log('OpenAI ('+label+'): חיבור נפתח, שולח הגדרות ('+model+(S.sttFallback?', פורמט ישן':'')+')'); if(S.sttFallback){ legacyTried=true; sendLegacy(); } else sendNew(); };
     ws.onmessage=ev=>{
       let m; try{m=JSON.parse(ev.data)}catch(e){return}
       if(!/delta|append/.test(m.type)) console.log('[stt '+who+']',m.type,m);
@@ -933,8 +932,10 @@ function openStt(who){
           /model/i.test(code+msg)?'מודל התמלול לא זמין בחשבון שלך. נסה מודל אחר בהגדרות.':msg.slice(0,140);
         log('OpenAI ('+label+'): '+code+' — '+friendly,'err');toast('שגיאת תמלול ('+label+'): '+friendly,'t-error');
         if(!settled){settled=true;reject(new Error(friendly))}return}
-      if(m.type==='transcription_session.updated'||m.type==='session.updated'){diagSet('stt',who,'ok');if(!settled){settled=true;ws.openedAt=Date.now();setPill(pill,S.day&&!S.running?'busy':'on');log('OpenAI ('+label+'): מוכן לתמלול','ok');resolve(ws)}}
-      if(m.type==='input_audio_buffer.speech_started'||/transcription\.(delta|completed)$/.test(m.type)){ S.act[who]=Date.now(); (S.diag=S.diag||{stt:{},peak:{}}).lastSpeechAt=Date.now(); hideAudioWarn(); if(S.day&&!S.running&&!S.autoStarting&&who==='cust'&&m.type==='input_audio_buffer.speech_started'){ autoStartCall(); } }
+      if(m.type==='transcription_session.updated'||m.type==='session.updated'){ const ss=m.session||{}; const em=(ss.audio&&ss.audio.input&&ss.audio.input.transcription&&ss.audio.input.transcription.model)||(ss.input_audio_transcription&&ss.input_audio_transcription.model)||''; const td=(ss.audio&&ss.audio.input&&ss.audio.input.turn_detection)||ss.turn_detection||null;
+        if(!em&&!legacyTried){ legacyTried=true; log('OpenAI ('+label+'): ההגדרות התקבלו בלי מודל תמלול, שולח בפורמט הישן'); sendLegacy(); return; }
+        diagSet('stt',who,'ok'); ws.sttModel=em; if(!settled){settled=true;ws.openedAt=Date.now();setPill(pill,S.day&&!S.running?'busy':'on');log('OpenAI ('+label+'): מוכן לתמלול ('+(em||'?')+(td?', זיהוי דיבור פעיל':', בלי זיהוי דיבור!')+')',td?'ok':'err');resolve(ws)} }
+      if(m.type==='input_audio_buffer.speech_started'||/transcription\.(delta|completed)$/.test(m.type)){ S.act[who]=Date.now(); const dg=(S.diag=S.diag||{stt:{},peak:{}}); dg.lastSpeechAt=Date.now(); (dg.evt=dg.evt||{})[who]=Date.now(); hideAudioWarn(); if(S.day&&!S.running&&!S.autoStarting&&who==='cust'&&m.type==='input_audio_buffer.speech_started'){ autoStartCall(); } }
       if(m.type==='input_audio_buffer.speech_started') log('OpenAI ('+label+'): זוהה דיבור');
       const spk=S.single?'unk':who;
       if(m.type==='conversation.item.input_audio_transcription.delta'){const id=who+'_'+m.item_id;const ln=S.lines.find(l=>l.id===id);upsertLine(id,ln?ln.who:spk,(ln?ln.text:'')+(m.delta||''),false)}
@@ -1057,7 +1058,10 @@ window.removeEnrolled=i=>{ S.settings.smSpeakers.splice(i,1); localStorage.setIt
 $('btnEnroll').onclick=enrollVoice;
 
 function sttReopen(who){ if(S.sttOpening&&S.sttOpening[who]) return; (S.sttOpening=S.sttOpening||{})[who]=true; openStt(who).then(w=>{ S.ws[who]=w; log('תמלול ('+who+'): חובר מחדש','ok'); }).catch(e=>log('תמלול ('+who+'): חיבור מחדש נכשל: '+(e.message||e),'err')).finally(()=>{ S.sttOpening[who]=false; }); }
-setInterval(()=>{ if(!(S.day||(S.running&&!S.demo&&!S.simActive))) return; for(const k of ['rep','cust']){ if(!(S.piped&&S.piped[k])) continue; const w=S.ws[k]; if(!w||w.readyState>1){ if(!(S.sttOpening&&S.sttOpening[k])) log('תמלול ('+k+'): אין חיבור פעיל, מתחבר מחדש אוטומטית'); sttReopen(k); } } },8000);
+setInterval(()=>{ if(!(S.day||(S.running&&!S.demo&&!S.simActive))) return; const d=S.diag||{}; const now=Date.now();
+  for(const k of ['rep','cust']){ if(!(S.piped&&S.piped[k])) continue; const w=S.ws[k]; if(!w||w.readyState>1){ if(!(S.sttOpening&&S.sttOpening[k])) log('תמלול ('+k+'): אין חיבור פעיל, מתחבר מחדש אוטומטית'); sttReopen(k); continue; }
+    // audio was clearly audible on this channel in the last 20s, the socket has been open 30s+, and not a single transcription event came back
+    const heard=(d.heard||{})[k]||0, evt=(d.evt||{})[k]||0; if(w.openedAt&&now-w.openedAt>30000&&now-heard<20000&&heard-w.openedAt>8000&&evt<w.openedAt){ const n=(S.sttSilent=S.sttSilent||{}); n[k]=(n[k]||0)+1; diagSet('stt',k,'silent'); if(!S.sttFallback){ S.sttFallback=true; log('תמלול ('+k+'): שמע נשלח 30 שניות ולא חזר תמלול. מחליף למודל gpt-4o-mini-transcribe בפורמט הישן ומתחבר מחדש','err'); } else log('תמלול ('+k+'): עדיין אין תמלול, מתחבר מחדש','err'); try{ w.close(); }catch(e){} } } },8000);
 async function pipe(stream,who,ws,meterId){
   const ctx=await getCtx(); (S.piped=S.piped||{})[who]=true; try{ const tr=stream.getAudioTracks()[0]; if(tr) (S.tracks=S.tracks||{})[who]=tr; }catch(e){}
   const src=ctx.createMediaStreamSource(stream);
@@ -1495,7 +1499,7 @@ function callRow(extra){
     started_at:new Date(S.startedAt).toISOString(), updated_at:new Date().toISOString(), duration_sec:Math.round(((S.running?Date.now():(S.endedAt||Date.now()))-S.startedAt)/1000), sim,
     stage:S.stage, stage_idx:S.stageIdx, temperature:S.temp, profile:S.profile||'', customer_state:S.custState||'', say_now:$('sayText').textContent||'',
     checks:S.checks||{}, events:S.events||[], ammo:S.ammo||[], transcript:finals.map(l=>({who:l.who,t:l.text,ts:l.ts})), insights:S.insights||[], open_barriers:(S.ammo||[]).filter(a=>a.type==='barrier'&&a.status!=='resolved').length,
-    diag:(d=>({stt:d.stt||{},peak:{rep:+((d.peak||{}).rep||0).toFixed(3),cust:+((d.peak||{}).cust||0).toFixed(3)},lines:finals.length,last_line_at:d.lastLineAt||null,ver:'0922'}))(S.diag||{}),
+    diag:(d=>({stt:d.stt||{},peak:{rep:+((d.peak||{}).rep||0).toFixed(3),cust:+((d.peak||{}).cust||0).toFixed(3)},lines:finals.length,last_line_at:d.lastLineAt||null,ver:'0923'}))(S.diag||{}),
     say_a:$('sayText').textContent||'', say_b:($('sayTextB')&&$('sayTextB').textContent)||'', readiness:(S.ready&&S.ready.score!=null)?S.ready.score:null, bottom_line:(S.ready&&S.ready.line)||'', solved:(S.ready&&S.ready.solved)||'', to_solve:(S.ready&&S.ready.to_solve)||'', barriers:S.barriers||{}, facts:S.facts||{}, lead_phone:(S.lead&&S.lead.phone)||null, lead_name:(S.lead&&S.lead.name)||null, ...extra};
 }
 async function syncRow(row){
