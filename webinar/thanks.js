@@ -32,7 +32,7 @@
   var now = new Date();
   var il = new Date(now.toLocaleString('en-US', {timeZone:'Asia/Jerusalem'}));
   var add = (WEBINAR_DAY - il.getDay() + 7) % 7;
-  if (add === 0 && il.getHours() >= WEBINAR_HOUR + 1) add = 7;
+  if (add === 0 && (il.getHours() * 60 + il.getMinutes()) >= WEBINAR_HOUR * 60 + 1) add = 7; // rolls to next Tuesday at 18:01
   var d = new Date(il); d.setDate(il.getDate() + add);
   var pad = function(n){ return (n<10?'0':'')+n; };
   var ymd = d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate());
