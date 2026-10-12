@@ -51,15 +51,12 @@
     where: {k:'נתקע ב', q:'איפה נתקעת?', o:[['בבחירת מוצר',1,'spent'],['בבניית החנות',1,'spent'],['בפרסום ובשיווק',1,'spent'],['החנות עלתה ולא הגיעו מכירות',2,'spent']]},
     spent: {k:'השקיע עד היום', q:'כמה השקעת עד היום (קורסים, פרסום, מלאי)?', o:[['לא השקעתי',0,'help'],['עד 2,000 ש״ח',1,'help'],['2,000 עד 10,000 ש״ח',2,'help'],['יותר מ-10,000 ש״ח',3,'help']]},
     help: {k:'צריך', q:'מה היה עוזר לך הכי הרבה עכשיו?', o:[['שמישהו יבדוק מה עשיתי ויגיד מה לתקן',2,'start'],['תוכנית צעד אחר צעד',1,'start'],['ליווי צמוד עד המכירה הראשונה',3,'start'],['רק להבין מה השתנה בתחום',0,'start']]},
-    start: {k:'רוצה להתחיל', q:'אם תראה בשידור דרך שמתאימה לך, מתי היית רוצה להתחיל?', o:[['מיד, אני מוכן',3,'close'],['בחודש הקרוב',2,'close'],['בעוד כמה חודשים',0,'close'],['רק בודק בינתיים',0,'close']]},
+    start: {k:'רוצה להתחיל', q:'אם תראה בשידור דרך שמתאימה לך, מתי היית רוצה להתחיל?', o:[['מיד, אני מוכן',3,'end'],['בחודש הקרוב',2,'end'],['בעוד כמה חודשים',0,'end'],['רק בודק בינתיים',0,'end']]},
     state: {k:'מצב', q:'מה המצב שלך היום?', o:[['יש לי חנות שמוכרת',3,'rev'],['יש לי חנות, אבל בלי מכירות קבועות',2,'rev'],['מכרתי באמזון, איביי או בשוק',2,'rev'],['ניסיון במכירות, בלי חנות משלי',1,'rev']]},
     rev: {k:'מחזור חודשי', q:'מה המחזור החודשי שלך בערך?', o:[['עוד אין מחזור',0,'next'],['עד 10 אלף ש״ח',1,'next'],['10 עד 50 אלף ש״ח',2,'next'],['מעל 50 אלף ש״ח',3,'next']]},
-    next: {k:'צעד הבא', q:'מה הצעד הבא שאתה מחפש?', o:[['להגדיל את המכירות',1,'closePro'],['לבנות מותג משלי',2,'closePro'],['להכניס AI ואוטומציות',1,'closePro'],['לצאת למכירות בחו״ל',2,'closePro']]},
-    close: {k:'שיחה עם נציג', q:'רוצה שנציג מהצוות של אביב ייצור איתך קשר לפני השידור, יעבור איתך על התשובות ויבנה לך תוכנית מותאמת?', call:true, o:[['כן, אשמח',4,'when'],['עדיף אחרי השידור',1,'end'],['לא, תודה',0,'end']]},
-    closePro: {k:'שיחה עם נציג', q:'השידור בנוי בעיקר למי שמתחיל. לשלב שלך יש מסלול אחר: שיחה אישית עם נציג שבונה איתך תוכנית לצמיחה. לתאם שיחה?', call:true, o:[['כן, אשמח',4,'when'],['אגיע לשידור בכל זאת',0,'end']]},
-    when: {k:'מתי לחזור', q:'מתי נוח לך שנתקשר?', o:[['היום',1,'end'],['מחר בבוקר',0,'end'],['מחר אחרי הצהריים',0,'end'],['בערב, אחרי 19:00',0,'end']]}
+    next: {k:'צעד הבא', q:'מה הצעד הבא שאתה מחפש?', o:[['להגדיל את המכירות',1,'start'],['לבנות מותג משלי',2,'start'],['להכניס AI ואוטומציות',1,'start'],['לצאת למכירות בחו״ל',2,'start']]}
   };
-  var EST = 7, hist = [], path = '', wantsCall = '', callTime = '';
+  var EST = 5, hist = [], path = '', wantsCall = '', callTime = '';
   var stage = $('almStage');
   function render(id){
     var n = FLOW[id];
@@ -67,7 +64,7 @@
     var k = hist.length + 1;
     if (id === 'end') {
       $('almCount').textContent = 'שליחה'; $('almFill').style.width = '100%';
-      stage.innerHTML = '<div class="alm-q show"><p class="alm-qt">' + (wantsCall === 'כן' ? 'מעולה, נציג יחזור אליך. נשאר רק לשלוח' : 'מעולה, נשאר רק לשלוח') + '</p>' +
+      stage.innerHTML = '<div class="alm-q show"><p class="alm-qt">' + 'מעולה, נשאר רק לשלוח' + '</p>' +
         '<label class="alm-commit"><input type="checkbox" id="almCommit" checked><span>אני מגיע לשידור ביום שלישי ב-18:00</span></label>' +
         '<button class="alm-cta" id="almSend">שליחה וכניסה לקבוצת הוואטסאפ</button></div>';
       $('almSend').addEventListener('click', send);
@@ -104,11 +101,12 @@
 
   function send(){
     var score = 0; hist.forEach(function(h){ score += h.s; });
-    var tier = wantsCall === 'כן' ? 'חם, ביקש שיחה' : score >= 9 ? 'חם' : score >= 5 ? 'פושר' : 'קר';
+    var ready = hist.some(function(h){ return h.id === 'start' && h.a === 'מיד, אני מוכן'; });
+    var tier = (ready && score >= 6) || score >= 9 ? 'חם' : score >= 5 ? 'פושר' : 'קר';
     var name = lead.name || '', phone = (lead.phone || '').replace(/[^\d+]/g,'');
     var lines = hist.filter(function(h){ return h.id !== 'when'; }).map(function(h){ return h.k + ': ' + h.a; });
     var summary = 'ליד חדש מהוובינר (' + tier + ')\n' + (name || 'ללא שם') + ' · ' + (phone || 'ללא טלפון') + '\nמסלול: ' + path +
-      (wantsCall === 'כן' ? '\nביקש שיחה: ' + (callTime || 'כן') : '') + '\n\n' + lines.join('\n');
+      '\n\n' + lines.join('\n');
     var payload = {source:'webinar-thanks', submitted_at:new Date().toISOString(), webinar_date:d.getDate()+'.'+(d.getMonth()+1),
       name:name, phone:phone, email:lead.email || '', path:path, wants_call:wantsCall, call_time:callTime, score:score, tier:tier,
       committed: ($('almCommit') && $('almCommit').checked) ? 'כן' : 'לא', answers:hist.map(function(h){ return {id:h.id, k:h.k, q:h.q, a:h.a}; }), summary:summary};
