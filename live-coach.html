@@ -351,6 +351,19 @@
     .logfoot{margin:0 12px 100px}
   }
 </style>
+<style id="uiSimple">
+  /* אני הנציג: only what a rep needs. Everything else keeps running in the background (summaries still get barriers, fears, facts). */
+  body.simple .stagebar,body.simple #jokerWrap,body.simple #trWrap,body.simple #ammoWrap,body.simple #fchips,body.simple .fearrow,body.simple .bchips,body.simple #custState,body.simple #profile,body.simple #cards,body.simple #miniTr,body.simple #sayLog,body.simple #sayWhy,body.simple #sayAvoid,body.simple #sayReason,body.simple .sayfoot,body.simple footer.logfoot,body.simple #btnAsk,body.simple .sayopt .lbl{display:none!important}
+  body.simple main{grid-template-columns:1fr;max-width:1100px;margin:0 auto}
+  body.simple #coach{grid-template-columns:1fr}body.simple #coach>*{grid-column:1!important;grid-row:auto!important}
+  body.simple #coach #sumList{max-height:260px;margin-top:6px}
+  body.simple .saynow{padding:26px 28px}body.simple .saynow .t,body.simple .saynow .sayopt.on .t{font-size:30px;line-height:1.45}body.simple .sayopts{grid-template-columns:1fr}body.simple .sayopt{padding:16px 18px}body.simple .sayopt:not(.on) .t{font-size:18px;color:var(--text-muted)}
+  body.simple .lead-panel .panel-b{padding:6px 14px}body.simple #leadBody{font-size:12px}
+  body.simple #dayGoalPill{font-size:14px;font-weight:900;padding:8px 14px;background:rgba(124,58,237,.1);border-color:rgba(124,58,237,.35)}
+  body.simple .hright .btn-hero{font-size:17px;padding:12px 24px}
+  body.simple .strip{font-size:14px;padding:9px 18px}
+  body.simple .btn-big{font-size:18px;padding:14px}
+</style>
 <style id="uiV2">
   body{font-size:14px}
   header.hv2{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:8px 18px}
@@ -2125,6 +2138,7 @@ function openCommit(onDone){
     </div>`;
   const iv=setInterval(()=>{ n--; if(n<=0){ clearInterval(iv); $('cmRing').style.display='none'; $('cmTxt').textContent='יופי. עכשיו ההתחייבות.'; $('cmForm').style.display=''; $('cmFull').focus(); } else { $('cmNum').textContent=n; } },4000);
 }
+setTimeout(renderDayPill,400); setInterval(renderDayPill,60000); window.renderDayPill=renderDayPill;
 window.saveCommit=()=>{ const nf=parseInt($('cmFull').value), nc=parseInt($('cmClose').value); if(!nf||!nc){ toast('כתוב בעצמך: כמה שיחות מלאות וכמה סליקות היום','t-error'); (!nf?$('cmFull'):$('cmClose')).focus(); return; } const c={day:todayKey(),fullCalls:nf,closes:nc,why:$('cmWhy').value.trim(),ifThen:$('cmIf').value.trim(),ts:Date.now()}; S.settings.dayCommit=c; localStorage.setItem('lc_settings',JSON.stringify(S.settings)); $('commitModal').classList.remove('show'); if(sbReady()){ fetch(S.settings.sbUrl+'/rest/v1/day_commits?on_conflict=rep,day',{method:'POST',headers:sbHdr({'Prefer':'resolution=merge-duplicates,return=minimal'}),body:JSON.stringify({rep:S.settings.repName||'',day:new Date().toISOString().slice(0,10),data:c,updated_at:new Date().toISOString()})}).catch(()=>{}); } renderDayPill(); toast('התחייבת: '+c.fullCalls+' שיחות מלאות ו-'+c.closes+' סליקות. יאללה.','t-ok'); try{ addEvent({kind:'custom',request:'התחייבות יומית',text:`${c.fullCalls} מלאות · ${c.closes} סליקות · ${c.why}`,why:'',reasoning:null}); }catch(e){} const f=S.commitDone; S.commitDone=null; if(f) f(); setTimeout(openMorning,600); };
 window.skipCommit=()=>{ $('commitModal').classList.remove('show'); const f=S.commitDone; S.commitDone=null; if(f) f(); };
 async function startDay(){ if(S.running||S.simActive) return toast('סיים קודם את השיחה הנוכחית','t-error'); return insistReview(()=>{ if(!dayCommit()) return openCommit(startDayNow); return startDayNow(); }); }
@@ -2354,7 +2368,7 @@ function instantOpener(j){
 }
 /* ── qualification call mode (שיחת התאמה) ── */
 function qualOn(){ return S.settings.mode==='qual'; }
-function applyQualMode(){ document.body.classList.toggle('qual',qualOn()); try{ renderRemBoard(); }catch(e){} if(qualOn()){ renderQual(); const l=document.querySelector('.jlbl'); if(l) l.textContent='רמת התאמה'; } else { const l=document.querySelector('.jlbl'); if(l) l.textContent='מוכנות לסגירה'; } }
+function applyQualMode(){ document.body.classList.toggle('qual',qualOn()); document.body.classList.toggle('simple',S.settings.mode==='rep'); try{ renderRemBoard(); }catch(e){} if(qualOn()){ renderQual(); const l=document.querySelector('.jlbl'); if(l) l.textContent='רמת התאמה'; } else { const l=document.querySelector('.jlbl'); if(l) l.textContent='מוכנות לסגירה'; } }
 function qualNext(){ const a=S.qual||{}; return QUAL_Q.find(q=>q.ask&&!(a[q.k]||'').toString().trim())||null; }
 function qualFilled(){ const a=S.qual||{}; return QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).length; }
 function qualBlock(){ if(!qualOn()) return ''; const a=S.qual||{}; const filled=QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).map(q=>q.l+': '+a[q.k]).join(' | '); const nx=qualNext();
