@@ -102,7 +102,7 @@
     try { localStorage.setItem('alm_lead', JSON.stringify({name:name, phone:phone, email:lead.email||''})); } catch(e) {}
     var done = function(){ finish(name, tier, lock); };
     try {
-      fetch(MAKE_WEBHOOK, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=UTF-8'}, body:JSON.stringify(payload), keepalive:true}).then(done, done);
+      fetch(MAKE_WEBHOOK, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload), keepalive:true}).then(done, done);
     } catch(e) { done(); }
     setTimeout(done, 2500);
   }
