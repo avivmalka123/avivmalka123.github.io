@@ -369,6 +369,10 @@
   body.simple .hright .btn-hero{font-size:17px;padding:12px 24px}
   body.simple .strip{font-size:14px;padding:9px 18px}
   body.simple .btn-big{font-size:18px;padding:14px}
+  /* listen mode: same clean screen; one button to start listening; the "who said this?" question is the only extra and appears only when needed */
+  body.simple #miniTr{display:none!important}
+  body.listen #btnDay,body.listen #dayGoalPill,body.listen #remBoard{display:none!important}
+  body.listen #idbarWrap{margin-bottom:6px}
 </style>
 <style id="uiV2">
   body{font-size:14px}
@@ -1244,8 +1248,9 @@ $('btnDay').onclick=()=>{ if(S.day) endDay(); else startDay(); };
 $('btnStart').onclick=startCall; $('btnStop').onclick=stopCall;
 $('btnMore').onclick=e=>{ e.stopPropagation(); $('moreWrap').classList.toggle('open'); }; document.addEventListener('click',e=>{ if(!e.target.closest('#moreWrap')) $('moreWrap').classList.remove('open'); }); $('moreMenu').addEventListener('click',()=>setTimeout(()=>$('moreWrap').classList.remove('open'),50));
 function renderStrip(){ const el=$('statusStrip'); if(!el) return; const st=id=>{ const p=$(id); if(!p) return '–'; return p.classList.contains('on')?'✓':p.classList.contains('busy')?'…':p.classList.contains('err')?'✗':'–'; };
-  let mode='ready', main='מוכן לעבודה', step='לחץ "התחל יום", בחר את הטאב של טוצ׳אט וסמן Also share tab audio. אחר כך עבור לטוצ׳אט, השיחות ייפתחו וייסגרו לבד.';
+  let mode='ready', main='מוכן לעבודה', step=S.settings.mode==='listen'?'לחץ "התחל האזנה", בחר את הטאב של השיחה וסמן Also share tab audio. המאמן יציע משפטים לנציג בזמן אמת.':'לחץ "התחל יום", בחר את הטאב של טוצ׳אט וסמן Also share tab audio. אחר כך עבור לטוצ׳אט, השיחות ייפתחו וייסגרו לבד.';
   if(S.running&&S.demo){ mode='live'; main='🎬 הדגמה רצה'; step='כך המאמן עובד בשיחה אמיתית.'; }
+  else if(S.running&&S.single){ mode='live'; main='👂 מאזין · '+$('timer').textContent; step='המשפט ב"מה להגיד עכשיו" הוא מה שהנציג צריך להגיד. אם המאמן שואל "מי אמר?", לחץ לקוח או נציג פעם אחת.'; }
   else if(S.running){ mode='live'; main='🔴 בשיחה · '+$('timer').textContent; step=qualOn()?'קרא את המשפט מ"מה להגיד עכשיו" ומלא את הטופס משמאל. בסיום לחץ "סיים שיחה וסכם".':'קרא את המשפט מ"מה להגיד עכשיו". בסיום לחץ "סיים שיחה וסכם".'; }
   else if(S.day){ mode='wait'; main='🟢 מאזין לחייגן'; step=(S.sumPending?'מכין את הסיכום של השיחה הקודמת… ':'')+'עבור לטוצ׳אט וחייג. ברגע שהלקוח מדבר השיחה נפתחת לבד.'; }
   else if(S.sumPending){ mode='wait'; main='⏳ מכין סיכום'; step='הסיכום יופיע לבד תוך כמה שניות, גם ביומן הסיכומים משמאל.'; }
@@ -2374,7 +2379,7 @@ function instantOpener(j){
 }
 /* ── qualification call mode (שיחת התאמה) ── */
 function qualOn(){ return S.settings.mode==='qual'; }
-function applyQualMode(){ document.body.classList.toggle('qual',qualOn()); document.body.classList.toggle('simple',S.settings.mode==='rep'); try{ renderRemBoard(); }catch(e){} if(qualOn()){ renderQual(); const l=document.querySelector('.jlbl'); if(l) l.textContent='רמת התאמה'; } else { const l=document.querySelector('.jlbl'); if(l) l.textContent='מוכנות לסגירה'; } }
+function applyQualMode(){ document.body.classList.toggle('qual',qualOn()); document.body.classList.toggle('simple',S.settings.mode==='rep'||S.settings.mode==='listen'); document.body.classList.toggle('listen',S.settings.mode==='listen'); try{ const b=$('btnStart'); if(b&&!S.running){ b.innerHTML=S.settings.mode==='listen'?'👂 התחל האזנה':'▶ שיחה אחת'; b.classList.toggle('btn-primary',S.settings.mode==='listen'); b.classList.toggle('btn-hero',S.settings.mode==='listen'); } }catch(e){} try{ renderRemBoard(); }catch(e){} if(qualOn()){ renderQual(); const l=document.querySelector('.jlbl'); if(l) l.textContent='רמת התאמה'; } else { const l=document.querySelector('.jlbl'); if(l) l.textContent='מוכנות לסגירה'; } }
 function qualNext(){ const a=S.qual||{}; return QUAL_Q.find(q=>q.ask&&!(a[q.k]||'').toString().trim())||null; }
 function qualFilled(){ const a=S.qual||{}; return QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).length; }
 function qualBlock(){ if(!qualOn()) return ''; const a=S.qual||{}; const filled=QUAL_Q.filter(q=>(a[q.k]||'').toString().trim()).map(q=>q.l+': '+a[q.k]).join(' | '); const nx=qualNext();
