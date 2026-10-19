@@ -23,7 +23,7 @@
         video: {yt: 'KOTHkQxhjY8'}, tools: [['🤖', 'הסוכן האישי', 'סוכן ה־GPT שעוזר לך למצוא מוצר', 'https://chatgpt.com/g/g-6860eaaecc108191a6f5a1f5efe3a3b1-mmn-mvtsr-rshvn-bdrvpshypyng', 'לסוכן ←']],
         next: ['בשיעור הבא, האחרון', 'הצעד הבא שלך', 'איך ממשיכים מכאן לחנות שמוכרת, ומה מפריד בין מי שמצליח למי שנשאר בחוץ.'], href: BASE + '5'},
     5: {pill: 'שיעור 5 · סיום', title: 'חשוב לי <em>שתדעו מראש</em>', sub: 'אחוזי ההצלחה שלנו מטורפים, ואנחנו רוצים לשמר אותם.',
-        video: {yt: 'LxWMa8pJDMI'}, final: true,
+        video: {yt: 'eD0cN1hTcsU'}, final: true,
         href: 'https://api.whatsapp.com/send/?phone=972525535537&text=%D7%94%D7%99%D7%99+%D7%90%D7%91%D7%99%D7%91+%D7%A1%D7%99%D7%99%D7%9E%D7%AA%D7%99+%D7%9C%D7%A6%D7%A4%D7%95%D7%AA+%D7%91%D7%A7%D7%95%D7%A8%D7%A1+%D7%91%D7%9E%D7%95%D7%A2%D7%93%D7%95%D7%9F+%D7%94%D7%A1%D7%92%D7%95%D7%A8+%D7%95%D7%90%D7%A0%D7%99+%D7%A8%D7%95%D7%A6%D7%94+%D7%9C%D7%93%D7%91%D7%A8+%D7%90%D7%99%D7%AA%D7%9A+%D7%9C%D7%92%D7%91%D7%99+%D7%94%D7%9E%D7%A9%D7%9A+%D7%AA%D7%94%D7%9C%D7%99%D7%9A+%D7%90%D7%99%D7%A9%D7%99&type=phone_number&app_absent=0'}
   };
   var ST = {
