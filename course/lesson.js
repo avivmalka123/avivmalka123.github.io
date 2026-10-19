@@ -139,6 +139,10 @@
   $('lsPill').textContent = c.pill; $('lsTitle').innerHTML = c.title; $('lsSub').textContent = c.sub;
 
   if (c.video.yt) $('lsVideo').innerHTML = '<div class="yt"><iframe src="https://www.youtube.com/embed/' + c.video.yt + '?rel=0&modestbranding=1" title="שיעור ' + L + '" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+  else if (document.getElementById('vidalytics_embed_' + c.video.vid)) {
+    /* the original Kajabi section already embeds this player (same element id): move it into the new design instead of embedding twice */
+    $('lsVideo').appendChild(document.getElementById('vidalytics_embed_' + c.video.vid));
+  }
   else {
     $('lsVideo').innerHTML = '<div id="vidalytics_embed_' + c.video.vid + '" style="width:100%;position:relative;padding-top:56.25%;"></div>';
     (function (v, i, d, a, l, y, t, cc, s) {
