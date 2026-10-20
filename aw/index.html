@@ -134,6 +134,16 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 .qo:hover,.qo.sel{border-color:var(--gold2);background:#FFFBEA}
 .qb{display:block;margin:10px auto 0;background:none;border:0;color:var(--mute);text-decoration:underline;cursor:pointer;font-size:15px;font-family:inherit}
 .qdone{text-align:center;padding:10px 0}.qdone p{color:var(--mute);margin:8px 0 16px}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:640px;margin:4px auto 18px;text-align:right}
+.how div{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:15px;font-weight:700;color:var(--ink2);line-height:1.35}
+.how b{display:flex;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#1a1205;align-items:center;justify-content:center;font-weight:900;margin:0 0 6px}
+.qm{position:fixed;inset:0;z-index:90;background:rgba(14,15,20,.72);display:none;align-items:center;justify-content:center;padding:16px}
+.qm.on{display:flex}
+.qmi{position:relative;width:100%;max-width:560px;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow-y:auto;background:#fff;border-radius:24px;padding:26px 20px 22px;box-shadow:0 40px 90px -30px rgba(0,0,0,.6);animation:qmUp .28s ease-out}
+@keyframes qmUp{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.qx{position:absolute;top:12px;left:12px;width:38px;height:38px;border-radius:50%;border:0;background:var(--bg2);font-size:22px;cursor:pointer;color:var(--ink)}
+.qlab{color:var(--gold2);font-weight:800;font-size:14px;letter-spacing:.06em;margin:0 0 4px;text-align:center}
+.qmt{font-weight:900;font-size:19px;text-align:center;margin:0 0 16px;color:var(--ink)}
 /* faq */
 details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0 18px;margin:0 0 10px}
 summary{cursor:pointer;list-style:none;padding:17px 0;font-weight:800;font-size:17px;display:flex;justify-content:space-between;gap:12px}
@@ -153,6 +163,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16.5px}
 .lb .x{position:absolute;top:14px;left:14px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;font-size:24px;cursor:pointer}
 .small{color:#8a8c98;font-size:12.5px;margin:10px 0 0}
 @media (max-width:760px){
+  .how{grid-template-columns:1fr}
   .bar{font-size:13px;gap:8px;flex-wrap:nowrap}.bar .hm{display:none}
   .feat,.story,.me{grid-template-columns:1fr}.story.rev .txt{order:0}
   .feat .vbox{max-width:340px;margin:0 auto}
@@ -177,8 +188,8 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16.5px}
       <div class="n"><b>שלב 2 · אתה כאן</b>מכירים את התלמידים</div>
       <div><b>שלב 3</b>שיחה עם הצוות</div>
     </div>
-    <a class="btn wa" data-go href="#awQuiz">💬 לא רוצה לחכות? אני רוצה לממש את ההטבה עכשיו</a>
-    <p class="under">4 שאלות קצרות, ואז ישר לוואטסאפ של רועי מהצוות</p>
+    <a class="btn wa" data-go href="#awQuiz">🎁 לא רוצה לחכות? לממש את ההטבה עכשיו</a>
+    <p class="under">4 שאלות קצרות (פחות מדקה), ואז ישר לוואטסאפ של רועי מהצוות</p>
     <div class="stats">
       <div class="stat"><b>‎$19M</b><small>מכירות שאביב בנה</small></div>
       <div class="stat"><b>650+</b><small>יזמים בקהילה</small></div>
@@ -338,11 +349,13 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16.5px}
       <h2 style="margin:6px 0 4px">הנחה על כל התוכנית<br><em>+ קורס קלוד קוד במתנה</em></h2>
       <p class="lead" style="margin:6px 0 0">ל־24 שעות בלבד. אחרי זה ההטבה נסגרת. אפשר גם בתשלומים, ללא ריבית.</p>
       <div class="cd" data-cd><div><b data-h>24</b><small>שעות</small></div><div><b data-m>00</b><small>דקות</small></div><div><b data-s>00</b><small>שניות</small></div></div>
-      <div class="qz" id="awQuiz">
-        <div class="qh"><span class="qc" id="qzCount">1/4</span><div class="qp"><i id="qzFill" style="width:25%"></i></div></div>
-        <p class="qnote">כדי לשריין לך את ההטבה, 4 שאלות קצרות. בסוף נפתח לך וואטסאפ עם רועי, וההודעה כבר כתובה.</p>
-        <div id="qzStage"></div>
+      <div class="how">
+        <div><b>1</b>עונים על 4 שאלות קצרות</div>
+        <div><b>2</b>נפתח וואטסאפ עם רועי, ההודעה כבר כתובה</div>
+        <div><b>3</b>מממשים 50% + קורס קלוד קוד במתנה</div>
       </div>
+      <a class="btn" data-go href="#awQuiz">🎁 להתחלת 4 השאלות ולמימוש ההטבה ←</a>
+      <p class="under">פחות מדקה. בלי להשאיר פרטים נוספים.</p>
     </div>
   </section>
 
@@ -369,6 +382,15 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16.5px}
 </div>
 <p class="foot">© אביב מלכה · מועדון האיקומרס · avivmalka.com</p>
 
+<div class="qm" id="qm" aria-hidden="true"><div class="qmi" role="dialog" aria-modal="true" aria-labelledby="qmT">
+  <button class="qx" id="qmX" aria-label="סגירה">×</button>
+  <p class="qlab">🎁 שלב אחרון לפני ההטבה</p>
+  <p class="qmt" id="qmT">4 שאלות קצרות, ורועי מחכה לך בוואטסאפ</p>
+  <div class="qz" id="awQuiz">
+    <div class="qh"><span class="qc" id="qzCount">1/4</span><div class="qp"><i id="qzFill" style="width:25%"></i></div></div>
+    <div id="qzStage"></div>
+  </div>
+</div></div>
 <div class="sticky" id="sticky"><a class="btn wa" data-go href="#awQuiz">💬 50% + מתנה · נשאר <span data-clock style="font-variant-numeric:tabular-nums">24:00:00</span></a></div>
 <div class="lb" id="lb"><button class="x" aria-label="סגירה">×</button><div id="lbIn"></div></div>
 
@@ -403,7 +425,13 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16.5px}
     if (step) $q('qzBack').onclick = function(){ step--; render(); };
   }
   render();
-  [].forEach.call(document.querySelectorAll('[data-go]'), function(a){ a.addEventListener('click', function(e){ e.preventDefault(); $q('awQuiz').scrollIntoView({behavior: 'smooth', block: 'start'}); }); });
+  var qm = $q('qm');
+  function openQ(){ qm.classList.add('on'); qm.setAttribute('aria-hidden', 'false'); document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden'; try { window.fbq && fbq('trackCustom', 'QuizOpen'); } catch(e){} }
+  function closeQ(){ qm.classList.remove('on'); qm.setAttribute('aria-hidden', 'true'); document.documentElement.style.overflow = ''; document.body.style.overflow = ''; }
+  [].forEach.call(document.querySelectorAll('[data-go]'), function(a){ a.addEventListener('click', function(e){ e.preventDefault(); openQ(); }); });
+  $q('qmX').onclick = closeQ;
+  qm.addEventListener('click', function(e){ if (e.target === qm) closeQ(); });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape' && qm.classList.contains('on')) closeQ(); });
 
   /* 24h window from the first visit (per visitor) */
   var KEY = 'aw_deadline', end;
