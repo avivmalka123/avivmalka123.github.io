@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>אביב מלכה · הצעד הבא שלך</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2731672797072992');fbq('track','PageView');</script>
+<style>
+:root{--bg:#FAF8F3;--bg2:#F3EFE6;--card:#fff;--line:#E8E3D8;--ink:#121318;--ink2:#2a2c35;--mute:#5F6170;--gold:#F2B705;--gold2:#E08A00;--soft:#FFF6DA;--ok:#16A34A;--okbg:#EEF9F1;--wa:#1FA855;--night:#14161D}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Heebo',Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+.w{max-width:980px;margin:0 auto;padding:0 18px}
+.nw{max-width:720px;margin:0 auto}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:900;line-height:1.14}
+h1{font-size:clamp(32px,7.4vw,58px)}
+h2{font-size:clamp(27px,5.8vw,42px);margin:0 0 14px}
+h3{font-size:21px;line-height:1.3}
+em{font-style:normal;background:linear-gradient(180deg,transparent 58%,#FFE07A 58%);padding:0 3px}
+.eye{display:inline-block;color:var(--gold2);font-weight:800;font-size:13.5px;letter-spacing:.14em;margin:0 0 8px}
+.lead{color:var(--mute);font-size:clamp(17px,4vw,20px);margin:0 0 20px;text-wrap:balance}
+section{padding:64px 0 0}
+.c{text-align:center}
+/* top bar */
+.bar{position:sticky;top:0;z-index:50;background:var(--night);color:#fff;font-size:14.5px;font-weight:700;text-align:center;padding:9px 12px calc(9px);display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+.bar b{color:var(--gold)}
+.clock{font-variant-numeric:tabular-nums;background:#2a2d38;border-radius:8px;padding:2px 9px;color:#FFD84D;font-weight:900;letter-spacing:.04em}
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:560px;margin:0 auto;border:0;border-radius:18px;padding:20px 22px;font-size:clamp(18px,4.6vw,21px);font-weight:900;color:#1a1205;text-decoration:none;cursor:pointer;
+background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shadow:0 16px 34px -12px rgba(224,138,0,.65);animation:glow 2.6s ease-in-out infinite;text-align:center}
+.btn.wa{background:linear-gradient(180deg,#3BDC7A,var(--wa));color:#fff;box-shadow:0 16px 34px -12px rgba(31,168,85,.6)}
+.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none;animation:none}
+@keyframes glow{0%,100%{box-shadow:0 16px 34px -12px rgba(224,138,0,.6)}50%{box-shadow:0 16px 44px -8px rgba(224,138,0,.9)}}
+.under{color:var(--mute);font-size:14.5px;text-align:center;margin:10px 0 0}
+/* hero */
+.hero{padding:34px 0 0;text-align:center}
+.ok{display:inline-flex;align-items:center;gap:10px;background:var(--okbg);color:#14532d;border:1px solid #BFE8CB;border-radius:999px;padding:8px 16px;font-weight:800;font-size:15.5px;margin:0 0 18px}
+.ok i{width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;font-style:normal;display:flex;align-items:center;justify-content:center;font-size:13px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:620px;margin:22px auto 26px}
+.steps div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 8px;font-size:13.5px;font-weight:800;color:var(--mute);line-height:1.3}
+.steps div b{display:block;font-size:12px;letter-spacing:.1em;margin:0 0 3px}
+.steps .d{color:var(--ok)}.steps .n{border-color:var(--gold);background:var(--soft);color:var(--ink)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:28px 0 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 10px;text-align:center}
+.stat b{display:block;font-size:clamp(22px,5vw,30px);font-weight:900;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat small{color:var(--mute);font-size:13.5px;font-weight:600}
+/* feature (Maayan) */
+.feat{display:grid;grid-template-columns:330px 1fr;gap:26px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 30px 70px -50px rgba(0,0,0,.45)}
+.vbox{position:relative;border-radius:20px;overflow:hidden;background:#000;aspect-ratio:9/16;max-width:100%}
+.vbox video{width:100%;height:100%;object-fit:cover}
+.play{position:absolute;inset:0;border:0;padding:0;background:transparent;cursor:pointer}
+.play img{width:100%;height:100%;object-fit:cover}
+.play:after{content:"";position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:rgba(242,183,5,.96) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%231a1205'/%3E%3C/svg%3E") center/34px no-repeat;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.play .tag{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.65);color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:4px 11px;z-index:1}
+.who{display:flex;align-items:center;gap:10px;margin:0 0 6px;flex-wrap:wrap}
+.who b{font-size:25px;font-weight:900}
+.chip{background:var(--okbg);color:var(--ok);border-radius:10px;padding:3px 10px;font-weight:800;font-size:14.5px}
+.chip.g{background:var(--soft);color:#7A5300}
+.meta{color:var(--mute);font-size:15px;margin:0 0 14px}
+.q{position:relative;margin:0 0 12px;padding:12px 16px;background:var(--bg);border-right:4px solid var(--gold);border-radius:12px;font-size:17px;color:var(--ink2)}
+.shot{border-radius:16px;border:1px solid var(--line);cursor:zoom-in;background:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 0}
+/* dark band */
+.band{background:var(--night);color:#fff;border-radius:30px;padding:46px 24px;margin:64px 0 0;text-align:center}
+.band h2{color:#fff}.band .lead{color:#B9BCC8}
+.band em{background:none;color:var(--gold)}
+.lw{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0 0;text-align:right}
+.lw div{background:#1E212B;border:1px solid #2E3240;border-radius:18px;padding:18px}
+.lw b{display:block;font-size:18px;margin:0 0 4px;color:#fff}.lw p{margin:0;color:#B9BCC8;font-size:15.5px}
+/* stories */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;margin:0 0 16px}
+.story.rev .txt{order:2}
+.story .txt p{margin:0 0 12px;font-size:17px;color:var(--ink2)}
+.story .num{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+.story .num span{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;color:var(--mute)}
+.story .num b{display:block;color:var(--ink);font-size:20px;font-weight:900}
+.story img{max-height:560px;margin:0 auto;object-fit:contain}
+/* wall */
+.wall{columns:3 240px;column-gap:12px}
+.wall img{width:100%;margin:0 0 12px;break-inside:avoid;border-radius:16px;border:1px solid var(--line);cursor:zoom-in;background:#fff}
+/* video grid */
+.vg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.vc{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;min-width:0}
+.vc .play{position:relative;display:block;width:100%;aspect-ratio:16/10}
+.vc .play:after{width:56px;height:56px;margin:-28px 0 0 -28px;background-size:26px}
+.vc .c2{padding:12px 14px 14px}.vc b{font-size:17px}.vc small{display:block;color:var(--mute);font-size:14px}
+/* reviews */
+.rv{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rv div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+.rv .st{color:var(--gold2);letter-spacing:2px;font-size:15px}
+.rv p{margin:6px 0 10px;font-size:16px;color:var(--ink2)}
+.rv b{font-size:15px}.rv small{color:var(--mute)}
+/* compare */
+.cmp{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;font-size:15.5px}
+.cmp th,.cmp td{padding:13px 12px;border-bottom:1px solid var(--line);text-align:center}
+.cmp th{background:var(--bg2);font-weight:900}.cmp td:first-child,.cmp th:first-child{text-align:right;font-weight:700}
+.cmp .us{background:var(--soft);font-weight:800}
+.cmp tr:last-child td{border-bottom:0}
+.y{color:var(--ok);font-weight:900}.x{color:#B42318;font-weight:900}
+.tw{overflow-x:auto}
+/* aviv */
+.me{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px}
+.me img{border-radius:18px;cursor:zoom-in}
+.me p{margin:0 0 12px;font-size:17.5px;color:var(--ink2)}
+.sig{font-weight:900;font-size:22px;color:var(--gold2);margin:0}
+/* get */
+.get{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.get div{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.get i{flex:none;width:34px;height:34px;border-radius:10px;background:var(--soft);font-style:normal;display:flex;align-items:center;justify-content:center;font-size:18px}
+.get b{display:block;font-size:16.5px}.get small{color:var(--mute);font-size:14.5px}
+.gift{margin:12px 0 0;background:linear-gradient(160deg,#FFF6DA,#FFFDF5);border:1px solid #F5D77A;border-radius:20px;padding:18px 20px;display:flex;gap:14px;align-items:center}
+.gift .ic{font-size:34px}.gift b{font-size:18px}.gift p{margin:2px 0 0;color:#5a4a20;font-size:15.5px}
+/* offer */
+.offer{background:#fff;border:2px solid #F5D77A;border-radius:30px;padding:32px 22px;text-align:center;box-shadow:0 40px 80px -50px rgba(224,138,0,.7)}
+.big{font-size:clamp(70px,18vw,120px);font-weight:900;line-height:.95;background:linear-gradient(180deg,#FFC21A,#E08A00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cd{display:flex;gap:8px;justify-content:center;margin:16px 0 20px;direction:ltr}
+.cd div{background:var(--night);color:#FFD84D;border-radius:14px;min-width:76px;padding:10px 8px;font-variant-numeric:tabular-nums}
+.cd b{display:block;font-size:32px;font-weight:900;line-height:1}.cd small{color:#B9BCC8;font-size:12px;font-weight:700}
+.or{display:flex;align-items:center;gap:12px;color:var(--mute);font-size:14px;max-width:560px;margin:14px auto}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+/* faq */
+details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0 18px;margin:0 0 10px}
+summary{cursor:pointer;list-style:none;padding:17px 0;font-weight:800;font-size:17px;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}summary:after{content:"+";color:var(--gold2);font-size:22px;line-height:1}
+details[open] summary:after{content:"–"}
+details p{margin:0 0 16px;color:var(--mute);font-size:16.5px}
+.ps{font-size:18px;color:var(--ink2);max-width:640px;margin:22px auto 0;text-align:center}
+.foot{color:#8a8c98;font-size:12.5px;text-align:center;padding:50px 18px 120px}
+/* sticky + lightbox */
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(250,248,243,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
+.sticky.on{transform:none}
+.sticky .btn{padding:15px;font-size:17.5px;animation:none}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(10,10,14,.93);display:none;align-items:center;justify-content:center;padding:16px}
+.lb.on{display:flex}.lb img{max-height:92vh;border-radius:12px}
+.lb .v{width:min(960px,96vw);aspect-ratio:16/9}.lb .v.tall{width:min(420px,92vw);aspect-ratio:9/16;max-height:90vh}
+.lb iframe,.lb video{width:100%;height:100%;border:0;border-radius:12px;background:#000}
+.lb .x{position:absolute;top:14px;left:14px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;font-size:24px;cursor:pointer}
+.small{color:#8a8c98;font-size:12.5px;margin:10px 0 0}
+@media (max-width:760px){
+  .bar{font-size:13px;gap:8px;flex-wrap:nowrap}.bar .hm{display:none}
+  .feat,.story,.me{grid-template-columns:1fr}.story.rev .txt{order:0}
+  .feat .vbox{max-width:340px;margin:0 auto}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .lw,.get,.rv,.two{grid-template-columns:1fr}
+  .me img{max-width:320px;margin:0 auto}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">🔥 <span class="hm">הטבה למשתתפי הוובינר: </span><b>50% הנחה + קורס קלוד קוד במתנה</b> <span class="hm">· נסגרת בעוד</span> <span class="clock" data-clock>24:00:00</span></div>
+
+<div class="w">
+  <!-- HERO: waiting for the call -->
+  <header class="hero">
+    <span class="ok"><i>✓</i> הפרטים שלך אצלנו. מישהו מהצוות שלי יתקשר אליך בקרוב</span>
+    <h1>עד שהטלפון מצלצל,<br><em>תכיר את מי שכבר עשה את זה</em></h1>
+    <p class="lead" style="margin-top:14px">שכירים, הורים, לוחמים במילואים. כולם עמדו בדיוק איפה שאתה עומד עכשיו, ובנו עסק משלהם בצד. 3 דקות גלילה, ותבין למה השיחה הזו יכולה לשנות לך את השנה.</p>
+    <div class="steps">
+      <div class="d"><b>שלב 1 ✓</b>השארת פרטים</div>
+      <div class="n"><b>שלב 2 · אתה כאן</b>מכירים את התלמידים</div>
+      <div><b>שלב 3</b>שיחה עם הצוות</div>
+    </div>
+    <a class="btn wa" data-wa="claim" href="#">💬 לא רוצה לחכות? אני רוצה לממש את ההטבה עכשיו</a>
+    <p class="under">לחיצה פותחת וואטסאפ ישירות עם רועי מהצוות</p>
+    <div class="stats">
+      <div class="stat"><b>‎$19M</b><small>מכירות שאביב בנה</small></div>
+      <div class="stat"><b>650+</b><small>יזמים בקהילה</small></div>
+      <div class="stat"><b>15</b><small>שנה באיקומרס</small></div>
+      <div class="stat"><b>24/7</b><small>מנטור AI זמין</small></div>
+    </div>
+  </header>
+
+  <!-- FEATURED: Maayan -->
+  <section>
+    <div class="c"><span class="eye">הסיפור של מעיין</span><h2>"הייתי מאוד סקפטי. <em>זה שינה לי את החיים</em>"</h2><p class="lead">שכיר, בן 42, נשוי ואבא לארבעה. הקשיבו לו 4 דקות, במילים שלו, מהאוטו בדרך לעבודה.</p></div>
+    <div class="feat">
+      <div class="vbox" id="maayanBox"><button class="play" data-local="vid/maayan.mp4" aria-label="צפייה בסרטון של מעיין"><span class="tag">▶ 4:24</span><img src="img/maayan-poster.jpg" alt="מעיין מספר על התהליך"></button></div>
+      <div>
+        <div class="who"><b>מעיין</b><span class="chip">832 הזמנות</span><span class="chip g">8 חודשים</span></div>
+        <p class="meta">התחיל בדצמבר 2025 · עובד במשרה מלאה במקביל</p>
+        <p class="q">"חיפשתי איך להכניס עוד כסף למשפחה. ראיתי מלא קורסים ב־12 עד 15 אלף שקל, ואמרתי שאין לי את הכסף ואת הזמן."</p>
+        <p class="q">"אחרי שבעה־שמונה חודשים יש לי הכנסה נוספת של כמעט 10 אלף שקל נטו, בצד."</p>
+        <p class="q">"צוות תותחים. כל אחד מהם מנטור בפני עצמו, שמלווה אותך ובונה אותך להצלחה. אם אני הצלחתי, גם אתם יכולים."</p>
+        <img class="shot" src="img/maayan-graph.jpg" alt="832 הזמנות ו־135,813 ש״ח מכירות בין דצמבר 2025 לספטמבר 2026" loading="lazy">
+        <div class="two"><img class="shot" src="img/maayan-chat.jpg" alt="מעיין: ברור אחי, לכולם" loading="lazy"><p class="q" style="margin:0;align-self:center">כשביקשתי לפרסם את התוצאות שלו, התשובה הייתה: <b>"ברורררר אחי!! לכולםםםם"</b></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LONE WOLF -->
+  <div class="band">
+    <span class="eye" style="color:var(--gold)">הנקודה שרוב האנשים מפספסים</span>
+    <h2>זאב בודד. <em>אבל לא לבד.</em></h2>
+    <p class="lead nw">העסק הוא שלך: בלי בוס, בלי שותף, בלי לעזוב את העבודה. מה שמפיל אנשים זה לא חוסר מידע, יש יוטיוב. זה להיות לבד מול כל החלטה, בשתיים בלילה, כשמשהו לא עובד.</p>
+    <div class="lw">
+      <div><b>💼 גם כשאתה שכיר</b><p>מעיין, דביר ורוב התלמידים בנו את העסק בערבים ובסופי שבוע, לצד עבודה מלאה.</p></div>
+      <div><b>⏱️ כמה שעות בשבוע</b><p>שיטה מסודרת, שלב אחרי שלב. בלי לבזבז חודשים על ניסוי וטעייה.</p></div>
+      <div><b>🎯 החלטה אחת</b><p>כל מה שמפריד בינך לבין הסיפורים בדף הזה הוא ההחלטה להתחיל עם מי שכבר עשה את זה.</p></div>
+    </div>
+  </div>
+
+  <!-- STORIES -->
+  <section>
+    <div class="c"><span class="eye">עוד תוצאות מהשבועות האחרונים</span><h2>הם לא חיכו <em>לזמן המתאים</em></h2><p class="lead">צילומי מסך אמיתיים מהוואטסאפ שלי. טשטשתי רק מספרי טלפון ושמות של חנויות.</p></div>
+
+    <div class="story">
+      <div class="txt">
+        <div class="who"><b>דביר ביטון</b><span class="chip">3 חודשים בתוכנית</span></div>
+        <p>"גם אני בהתחלה תירצתי לעצמי שאין זמן (לוחם סיירת, הרבה בחול 😅). אבל ברגע שפועלים נכון, בצורה מסודרת ועקבית, כפי מה שאביב מסביר, זה לגמרי אפשרי 🚀"</p>
+        <div class="num"><span><b>₪22,947</b>הכנסה ב־23 ימים</span><span><b>₪4,300</b>הוצאה על שיווק</span><span><b>₪10–12K</b>רווח נקי, לדבריו</span></div>
+      </div>
+      <img class="shot" src="img/dvir.jpg" alt="ההודעה של דביר בקבוצה" loading="lazy">
+    </div>
+
+    <div class="story rev">
+      <div class="txt">
+        <div class="who"><b>יהב</b><span class="chip">137 הזמנות ב־30 יום</span></div>
+        <p>שני צילומי מסך מהחנות של יהב: ₪12,775 ב־30 הימים האחרונים, ועוד ₪5,898 רק בתחילת החודש הנוכחי.</p>
+        <p>"מחילה, לא היה לי אינטרנט. זה ה־30 יום האחרונים ומתחילת החודש."</p>
+        <div class="num"><span><b>₪12,775</b>ב־30 יום</span><span><b>+51%</b>בתחילת החודש</span></div>
+      </div>
+      <img class="shot" src="img/yahav.jpg" alt="נתוני החנות של יהב" loading="lazy">
+    </div>
+
+    <div class="story">
+      <div class="txt">
+        <div class="who"><b>רון</b><span class="chip g">ההזמנה הראשונה</span></div>
+        <p>"היי אחי! רציתי לשתף אותך בהזמנה הראשונה שנכנסה מאז שהתחלתי את הליווי עם אביב 🔥 מתרגש כמו ילד קטן חחח, כיף לראות דברים מתחילים לזוז 🙏"</p>
+        <p style="color:var(--mute);font-size:15.5px">ככה מתחיל כל אחד מהסיפורים בדף הזה: בהתראה אחת. Order #1010, ₪214.14.</p>
+      </div>
+      <img class="shot" src="img/ron.jpg" alt="ההזמנה הראשונה של רון" loading="lazy">
+    </div>
+
+    <div class="story rev">
+      <div class="txt">
+        <div class="who"><b>דינה</b><span class="chip">ROAS 7.32</span></div>
+        <p>"אביב בוקר אורררר. אני לא מאמינה. הייתי חייבת לשתף אותך. אני בהלםםם. עלה לי הדופק."</p>
+        <p style="color:var(--mute);font-size:15.5px">פי 7 על כל שקל פרסום, עם המודל והקריאייטיב החדש. 10 שניות מהשיחה האמיתית:</p>
+      </div>
+      <div class="vbox" style="max-width:300px;margin:0 auto;aspect-ratio:600/1025"><button class="play" data-local="vid/dina.mp4" data-tall aria-label="צפייה בשיחה עם דינה"><span class="tag">▶ 0:10</span><img src="img/dina-poster.jpg" alt="השיחה עם דינה"></button></div>
+    </div>
+  </section>
+
+  <!-- VIDEO TESTIMONIALS -->
+  <section>
+    <div class="c"><span class="eye">בווידאו</span><h2>תשמע את זה <em>מהם</em>, לא ממני</h2></div>
+    <div class="vg">
+      <div class="vc"><button class="play" data-w="9jwg71zrya" aria-label="רואי"><img src="https://avivmalka123.github.io/club/img/poster-roi.jpg" alt="רואי" loading="lazy"></button><div class="c2"><b>רואי</b><small>118,000 ש״ח בחצי שנה</small></div></div>
+      <div class="vc"><button class="play" data-w="5mntv13f3k" aria-label="ניבן"><img src="https://avivmalka123.github.io/club/img/poster-niven.jpg" alt="ניבן" loading="lazy"></button><div class="c2"><b>ניבן</b><small>27,000 ש״ח ב־3 חודשים</small></div></div>
+      <div class="vc"><button class="play" data-w="4vf0nnjrq6" data-tall aria-label="תלמיד מספר"><img src="https://avivmalka123.github.io/club/img/poster-1.jpg" alt="תלמיד מספר" loading="lazy"></button><div class="c2"><b>תלמידים מספרים</b><small>"עשיתי את זה מהבית"</small></div></div>
+      <div class="vc"><button class="play" data-w="uso5vl68e1" aria-label="תלמיד מספר"><img src="https://avivmalka123.github.io/club/img/poster-2.jpg" alt="תלמיד מספר" loading="lazy"></button><div class="c2"><b>תלמידים מספרים</b><small>"הלוואי שהייתי מתחיל קודם"</small></div></div>
+      <div class="vc"><button class="play" data-w="6ujyzfnt0y" data-tall aria-label="תלמיד מספר"><img src="https://avivmalka123.github.io/club/img/poster-3.jpg" alt="תלמיד מספר" loading="lazy"></button><div class="c2"><b>תלמידים מספרים</b><small>מה עשה את ההבדל</small></div></div>
+      <div class="vc"><button class="play" data-w="hh3hr7vomq" aria-label="סיור במועדון"><img src="img/club-tour.jpg" alt="סיור בתוך המועדון" loading="lazy"></button><div class="c2"><b>סיור בתוך המועדון</b><small>איך זה נראה מבפנים · 17 דק׳</small></div></div>
+    </div>
+  </section>
+
+  <!-- WALL -->
+  <section>
+    <div class="c"><span class="eye">קיר התוצאות</span><h2>כל יום נכנסות לי <em>הודעות כאלה</em></h2></div>
+    <div class="wall">
+      <img src="img/hani.jpg" alt="חני: עזבתי קורס אחר כי לא היה מענה" loading="lazy">
+      <img src="https://avivmalka123.github.io/club/img/chat-75k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+      <img src="https://avivmalka123.github.io/club/img/sales-22k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+      <img src="https://avivmalka123.github.io/club/img/chat-daniel.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+      <img src="https://avivmalka123.github.io/club/img/orders-1.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+      <img src="https://avivmalka123.github.io/club/img/chat-raviv.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+      <img src="https://avivmalka123.github.io/club/img/sales-778k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+      <img src="https://avivmalka123.github.io/club/img/orders-2.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+    </div>
+    <div style="margin-top:22px"><a class="btn" data-wa="claim" href="#">אני רוצה להיות הסיפור הבא ←</a></div>
+  </section>
+
+  <!-- WHY NOT ALONE -->
+  <section>
+    <div class="c"><span class="eye">למה לא לבד, ולמה לא עוד קורס</span><h2>"פשוט עזבתי, <em>לא היה מענה לכלום</em>"</h2><p class="lead nw">ככה חני, יחסית חדשה אצלנו, תיארה את הקורס הקודם שלה: "היו עונים בקושי פעם ביום, אין בוט, אין קבוצה, אין מועדון. פשוט להתמודד כמעט לבד. תעריכו את אביב מלכה והצוות, נותנים את הנשמה 🙏"</p></div>
+    <div class="tw"><table class="cmp">
+      <tr><th></th><th>לבד</th><th>עוד קורס</th><th class="us">המועדון</th></tr>
+      <tr><td>שיטה שלב אחרי שלב</td><td class="x">✕</td><td class="y">✓</td><td class="us y">✓</td></tr>
+      <tr><td>מנטור אנושי שמכיר אותך</td><td class="x">✕</td><td class="x">✕</td><td class="us y">✓ חצי שנה</td></tr>
+      <tr><td>תשובה בשתיים בלילה</td><td class="x">✕</td><td class="x">✕</td><td class="us y">✓ מנטור AI</td></tr>
+      <tr><td>קהילה שכבר בדרך</td><td class="x">✕</td><td>לפעמים</td><td class="us y">✓ 650+</td></tr>
+      <tr><td>מה שעובד החודש, לא לפני שנתיים</td><td class="x">✕</td><td class="x">✕</td><td class="us y">✓ 4–8 לייבים</td></tr>
+    </table></div>
+  </section>
+
+  <!-- AVIV -->
+  <section>
+    <div class="me">
+      <img src="https://avivmalka123.github.io/club/img/aviv-19m.jpg" alt="19 מיליון דולר מכירות" loading="lazy">
+      <div>
+        <span class="eye">מי אני</span>
+        <p><b>אביב מלכה. ‎$19M במכירות</b> בחנויות ובמותגים שבניתי, 15 שנה בתחום, ומעל 650 יזמים בקהילה שלי.</p>
+        <p>אני לא אבטיח לך הבטחות ריקות על הצלחה מהירה. אני מבטיח דבר אחד: אם תעשה, שלב אחרי שלב, בדיוק את מה שאלמד אותך, בשיטה שעבדה לי ולמאות תלמידים, אתה בדרך הנכונה.</p>
+        <p class="sig">אביב</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section>
+    <div class="c"><span class="eye">מה מקבלים, תכלס</span><h2>מטרה אחת: <em>העסק שלך, למכירות</em></h2></div>
+    <div class="get">
+      <div><i>🎓</i><span><b>9 שעות הכשרה מעשית</b><small>מוצר, אתר עם AI ויסודות השיווק. בלי חפירות.</small></span></div>
+      <div><i>🛒</i><span><b>אתר מוכן למכירות</b><small>מיישמים תוך כדי ומוציאים את העסק לדרך.</small></span></div>
+      <div><i>🤝</i><span><b>ליווי אישי ממני ומצוות המנטורים</b><small>מענה מהיר בימים א׳ עד ה׳, לאורך חצי שנה.</small></span></div>
+      <div><i>🤖</i><span><b>מנטור AI אישי 24/7</b><small>מכיר את השיטה ואת 15 השנים שלי בתחום.</small></span></div>
+      <div><i>💬</i><span><b>קבוצת וואטסאפ סגורה</b><small>מעל 650 תלמידים, ויד ימיני שעוקב אחרי ההתקדמות שלך.</small></span></div>
+      <div><i>📡</i><span><b>מועדון סגור, 4 עד 8 לייבים בחודש</b><small>מה עובד עכשיו בשוק, בזמן אמת.</small></span></div>
+      <div><i>📚</i><span><b>קרוב ל־100 שעות תוכן מוקלט</b><small>מיתוג, שיווק, ומוצרים שאנחנו מאתרים בשבילך.</small></span></div>
+      <div><i>🧰</i><span><b>כלי שאושר על ידי שופיפיי</b><small>ללא עלות לחברי המועדון שמתחילים איתנו.</small></span></div>
+      <div><i>⚖️</i><span><b>מודל שמחבר את ההצלחה שלך לשלנו</b><small>ככל שאתה מרוויח יותר, גם אנחנו, בהתאם למודל בתוכנית.</small></span></div>
+    </div>
+    <div class="gift"><span class="ic">🎁</span><div><b>ובמתנה: קורס קלוד קוד, צוות שיווק שלם</b><p>צלם, עורך, קמפיינר, אסטרטג ובונה אתרים. אתה לומד להפעיל AI שעושה את העבודה שלהם, לעסק שלך.</p></div></div>
+  </section>
+
+  <!-- OFFER -->
+  <section id="offer">
+    <div class="offer">
+      <span class="eye">הטבה בלעדית למשתתפי הוובינר</span>
+      <div class="big">50%</div>
+      <h2 style="margin:6px 0 4px">הנחה על כל התוכנית<br><em>+ קורס קלוד קוד במתנה</em></h2>
+      <p class="lead" style="margin:6px 0 0">ל־24 שעות בלבד. אחרי זה ההטבה נסגרת. אפשר גם בתשלומים, ללא ריבית.</p>
+      <div class="cd" data-cd><div><b data-h>24</b><small>שעות</small></div><div><b data-m>00</b><small>דקות</small></div><div><b data-s>00</b><small>שניות</small></div></div>
+      <a class="btn wa" data-wa="claim" href="#">💬 אני רוצה 50% + את הקורס במתנה</a>
+      <p class="under">לחיצה פותחת וואטסאפ ישירות עם רועי, לממש את ההטבה</p>
+      <div class="or">עדיין מתלבט?</div>
+      <a class="btn ghost" data-wa="ask" href="#">יש לי כמה שאלות, דברו איתי בוואטסאפ</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="c"><span class="eye">שאלות</span><h2>מה שאתה בטח <em>שואל את עצמך</em></h2></div>
+    <div class="nw">
+      <details><summary>אני עובד במשרה מלאה. זה באמת אפשרי?</summary><p>כן. מעיין ודביר בנו את העסק לצד עבודה מלאה. השיטה בנויה שלב אחרי שלב, וגם כמה שעות בשבוע מספיקות כדי להתקדם. מנטור ה־AI זמין 24/7 בדיוק בשביל מי שעובד במקביל.</p></details>
+      <details><summary>כמה כסף צריך כדי להתחיל?</summary><p>מעבר לתוכנית, צריך תקציב התחלתי לפרסום ולמוצרים, כמו בכל עסק אמיתי. בתוכנית לומדים איך להתחיל בקטן ובזהירות, ולגדול לפי התוצאות, בלי לשרוף כסף על ניחושים. בשיחה נעבור על זה יחד לפי המצב שלך.</p></details>
+      <details><summary>ניסיתי בעבר ולא הצליח לי. מה שונה פה?</summary><p>רוב מי שנתקע, נתקע כי היה לבד: בלי מי שיגיד "זה הצעד הבא", ובלי תשובה כשמשהו לא עובד. פה יש מנטור אנושי לחצי שנה, מנטור AI, קהילה של 650+ ולייבים כל חודש.</p></details>
+      <details><summary>האם איקומרס עדיין עובד ב־2026?</summary><p>יותר מתמיד. הביקוש לקנייה אונליין רק גדל, והתחרות מסננת את מי שעובד לפי שיטה מול מי שמנחש. בדיוק בשביל זה לומדים מוצר מנצח, קריאייטיב וקמפיינים שעובדים היום.</p></details>
+      <details><summary>מה קורה בסוף 6 החודשים?</summary><p>בסוף הליווי יש לך חנות פעילה והידע להפעיל אותה לבד. אפשר להישאר חבר במועדון ולהמשיך לקבל תכנים, לייבים ועדכונים, או להמשיך לבד עם כל מה שבנית.</p></details>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="c">
+    <h2>אתה במרחק <em>של החלטה אחת</em></h2>
+    <p class="lead nw">המערכת מוכנה. המנטורים מוכנים. הקהילה כבר שם. החלק היחיד שחסר הוא ההחלטה שלך.</p>
+    <a class="btn wa" data-wa="claim" href="#">💬 כן, אני מתחיל עכשיו</a>
+    <p class="ps">נ.ב. בעוד שנה מהיום תהיה במקום כלשהו. השאלה היא רק אם זה יהיה עם עסק שבנית, או עם עוד שנה של "יום אחד אני אעשה את זה".</p>
+    <p class="small">הסיפורים וצילומי המסך הם של תלמידים אמיתיים, ופורסמו באישורם. התוצאות משתנות מאדם לאדם ואינן הבטחה להכנסה.</p>
+  </section>
+</div>
+<p class="foot">© אביב מלכה · מועדון האיקומרס · avivmalka.com</p>
+
+<div class="sticky" id="sticky"><a class="btn wa" data-wa="claim" href="#">💬 50% + מתנה · נשאר <span data-clock style="font-variant-numeric:tabular-nums">24:00:00</span></a></div>
+<div class="lb" id="lb"><button class="x" aria-label="סגירה">×</button><div id="lbIn"></div></div>
+
+<script>
+(function(){
+  /* WhatsApp CTAs: Roi, same messages as the current after-webinar page */
+  var WA = 'https://wa.me/972539415600?text=';
+  var MSG = {
+    claim: 'היי, הייתי בוובינר של אביב ואני רוצה לממש את ההטבה של 50% הנחה + הקורס במתנה ולהיכנס לתוכנית הליווי',
+    ask: 'היי, הייתי בוובינר של אביב ויש לי כמה שאלות לפני שאני נכנס לתוכנית הליווי'
+  };
+  [].forEach.call(document.querySelectorAll('[data-wa]'), function(a){
+    var k = a.getAttribute('data-wa');
+    a.href = WA + encodeURIComponent(MSG[k]); a.target = '_blank'; a.rel = 'noopener';
+    a.addEventListener('click', function(){ try { fbq('track', 'Contact', {content_name: 'after-webinar-' + k}); } catch(e){} });
+  });
+
+  /* 24h window from the first visit (per visitor) */
+  var KEY = 'aw_deadline', end;
+  try { end = +localStorage.getItem(KEY); } catch(e){}
+  if (!end || end < Date.now() - 864e5 * 3){ end = Date.now() + 864e5; try { localStorage.setItem(KEY, end); } catch(e){} }
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function tick(){
+    var left = Math.max(0, end - Date.now()), h = Math.floor(left / 36e5), m = Math.floor(left % 36e5 / 6e4), s = Math.floor(left % 6e4 / 1e3);
+    var txt = pad(h) + ':' + pad(m) + ':' + pad(s);
+    [].forEach.call(document.querySelectorAll('[data-clock]'), function(el){ el.textContent = txt; });
+    [].forEach.call(document.querySelectorAll('[data-cd]'), function(el){ el.querySelector('[data-h]').textContent = pad(h); el.querySelector('[data-m]').textContent = pad(m); el.querySelector('[data-s]').textContent = pad(s); });
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* sticky CTA after the hero */
+  var st = document.getElementById('sticky'), hero = document.querySelector('.hero .btn');
+  function onScroll(){ var r = hero.getBoundingClientRect(), o = document.getElementById('offer').getBoundingClientRect(); st.classList.toggle('on', r.bottom < 0 && !(o.top < innerHeight && o.bottom > 0)); }
+  addEventListener('scroll', onScroll, {passive: true}); onScroll();
+
+  /* lightbox: videos only play on click, screenshots zoom */
+  var lb = document.getElementById('lb'), lbIn = document.getElementById('lbIn');
+  function close(){ lb.classList.remove('on'); lbIn.innerHTML = ''; }
+  lb.addEventListener('click', function(e){ if (e.target === lb || e.target.classList.contains('x')) close(); });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+  document.addEventListener('click', function(e){
+    var p = e.target.closest && e.target.closest('.play');
+    if (p){
+      var tall = p.hasAttribute('data-tall') || p.closest('#maayanBox');
+      if (p.getAttribute('data-local')){
+        if (p.closest('#maayanBox')){ var box = p.parentNode; box.innerHTML = '<video src="' + p.getAttribute('data-local') + '" controls autoplay playsinline></video>'; return; }
+        lbIn.innerHTML = '<div class="v tall"><video src="' + p.getAttribute('data-local') + '" controls autoplay playsinline></video></div>';
+      } else {
+        lbIn.innerHTML = '<div class="v' + (tall ? ' tall' : '') + '"><iframe src="https://fast.wistia.net/embed/iframe/' + p.getAttribute('data-w') + '?autoPlay=true&playerColor=F2B705" allow="autoplay; fullscreen" allowfullscreen></iframe></div>';
+      }
+      lb.classList.add('on'); return;
+    }
+    var im = e.target.closest && e.target.closest('.shot, .wall img, .me img');
+    if (im){ lbIn.innerHTML = '<img src="' + im.src + '" alt="">'; lb.classList.add('on'); }
+  });
+})();
+</script>
+</body>
+</html>
