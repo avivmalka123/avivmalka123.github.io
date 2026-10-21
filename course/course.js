@@ -11,13 +11,13 @@
   /* social proof */
   var STORIES = [
     ['רואי', '118,000 ש״ח בחצי שנה', 'בלי ניסיון בתחום, ניסה להבין לבד מאיפה מתחילים', 'חנות שמוכרת כל יום, מהמוצר הראשון'],
-    ['ניבן', '27,000 ש״ח ב־3 חודשים', 'ניסתה לפתוח חנות לבד, ולא היו מכירות', 'מכירות קבועות, אחרי שמישהו ראה את הטעויות'],
+    ['ניבין', '27,000 ש״ח ב־3 חודשים', 'ניסתה לפתוח חנות לבד, ולא היו מכירות', 'מכירות קבועות, אחרי שמישהו ראה את הטעויות'],
     ['רביד', '5,397 ש״ח ב־30 יום', 'התחיל מאפס, בלי חנות ובלי מוצר', 'מוכר כל חודש, וכבר בונה מותג שני']
   ];
   $('chStories').innerHTML = STORIES.map(function(s){
     return '<div class="ch-story"><div class="ch-story-h"><b>' + s[0] + '</b><span>' + s[1] + '</span></div><div class="ch-bae"><div class="b"><i>לפני</i>' + s[2] + '</div><div class="ar">←</div><div class="a"><i>אחרי</i>' + s[3] + '</div></div></div>';
   }).join('');
-  var VIDS = [['9jwg71zrya', 'poster-roi.jpg', 'רואי', '118,000 ש״ח בחצי שנה'], ['5mntv13f3k', 'poster-niven.jpg', 'ניבן', '27,000 ש״ח ב־3 חודשים'], ['4vf0nnjrq6', 'poster-1.jpg', 'תלמידים מספרים', 'דקה וחצי מהשטח', 1], ['6ujyzfnt0y', 'poster-3.jpg', 'תלמידים מספרים', '"זה מה שעשה את ההבדל"', 1]];
+  var VIDS = [['9jwg71zrya', 'poster-roi.jpg', 'רואי', '118,000 ש״ח בחצי שנה'], ['5mntv13f3k', 'poster-niven.jpg', 'ניבין', '27,000 ש״ח ב־3 חודשים'], ['4vf0nnjrq6', 'poster-1.jpg', 'תלמידים מספרים', 'דקה וחצי מהשטח', 1], ['6ujyzfnt0y', 'poster-3.jpg', 'תלמידים מספרים', '"זה מה שעשה את ההבדל"', 1]];
   $('chVideos').innerHTML = VIDS.map(function(v){
     return '<div class="ch-vc"><button class="ch-play" data-w="' + v[0] + '"' + (v[4] ? ' data-tall' : '') + ' aria-label="צפייה: ' + v[2] + '"><img src="' + IMG + v[1] + '" alt="' + v[2] + '" loading="lazy"></button><div class="c"><b>' + v[2] + '</b><small>' + v[3] + '</small></div></div>';
   }).join('');
