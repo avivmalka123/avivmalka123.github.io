@@ -67,7 +67,7 @@ markup = ('<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;5
 
 pre = ("/* Aviv Malka direct lead page (loaded from Kajabi; source dl/index.html, built by dl/build.py) */\n(function(){\n"
        " var root=document.getElementById('dl-root'); if(!root){root=document.createElement('div');root.id='dl-root';document.body.appendChild(root);}\n"
-       " try{ document.body.style.background='" + BG + "'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='" + BG + "'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; } p=p.parentElement; } document.querySelectorAll('header.header, footer.footer, .block-type--video').forEach(function(el){ if(!el.contains(root)) el.style.display='none'; }); }catch(e){}\n"
+       " try{ document.body.style.background='" + BG + "'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='" + BG + "'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; } p=p.parentElement; } document.querySelectorAll('header.header, footer.footer').forEach(function(el){ el.style.display='none'; }); var hs=document.createElement('style'); hs.textContent='.block-type--video{display:none !important}'; document.head.appendChild(hs); }catch(e){}\n"
        " root.innerHTML=" + json.dumps(markup, ensure_ascii=False) + ";\n})();\n")
 
 open(D + 'dl.js', 'w', encoding='utf-8').write(pre + logic)
