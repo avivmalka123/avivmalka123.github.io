@@ -7,7 +7,7 @@
 
 (function(){
   var VSL_WISTIA = 's0rd5e8vcy'; /* Wistia media id of the main video. Empty = poster only */
-  var HOOK = 'https://hook.eu2.make.com/nltpw48e2sf4of2g8ijohahvrat6angt';
+  var HOOK = 'https://hook.eu2.make.com/vyco5ocnauh8o7ue72gj2lldn1wfv0xt';
   var Q = [
     {k:'מה קרה עד היום', q:'מה הכי קרוב למה שקרה לך עד היום?', o:['עשיתי קורס, אבל לא הגעתי לשלב של מכירות', 'פתחתי חנות, היו כמה מכירות ונתקעתי', 'אני מסתובב סביב זה הרבה זמן ועוד לא באמת התחלתי']},
     {k:'מה עצר', q:'בהסתכלות אחורה, מה באמת עצר אותך עד עכשיו להצליח בתחום האיקומרס?', o:['לא ידעתי איזה מוצר באמת יימכר', 'שמתי כסף על פרסום ולא חזר כלום', 'לא היה לי עם מי להתייעץ כשנתקעתי']},
