@@ -204,6 +204,15 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
 /* close */
 .close{padding:70px 0 0}
 .foot{color:#6E7891;font-size:12.5px;text-align:center;padding:40px 16px 110px;line-height:1.6}
+.qopen{text-align:center;margin-top:22px}.qnote{color:var(--mute,#AEB8CC);font-size:15px;margin:10px 0 0}
+.qm{position:fixed;inset:0;z-index:90;background:rgba(4,8,18,.78);display:none;align-items:center;justify-content:center;padding:14px}
+.qm.on{display:flex}
+.qmi{position:relative;width:100%;max-width:620px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;animation:qmUp .28s ease-out}
+@keyframes qmUp{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.qmi .qz{margin:0}
+.qx{position:absolute;top:12px;left:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+.qlab{color:#F28C28;font-weight:800;font-size:14px;letter-spacing:.08em;text-align:center;margin:6px 0 2px}
+.qmt{font-weight:900;font-size:22px;text-align:center;color:#fff;margin:0 0 14px}
 /* sticky + lightbox */
 .sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(11,20,38,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
 .sticky.on{transform:none}
@@ -456,10 +465,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
 <section class="qwrap" id="quiz">
   <div class="w">
     <div class="c"><span class="eye">הצעד הבא</span><h2>בוא נבין <em>איפה אתה עומד</em></h2><p class="lead nw">4 שאלות קצרות, ואז נחזור אליך לשיחה קצרה שבה נבנה לך תוכנית לשלב הבא.</p></div>
-    <div class="qz" id="dlQuiz" tabindex="-1">
-      <div class="qh"><span class="qc" id="qzCount">1/4</span><div class="qp"><i id="qzFill" style="width:25%"></i></div></div>
-      <div id="qzStage"></div>
-    </div>
+    <div class="qopen"><a class="btn" data-go href="#dlQuiz">🎯 להתחלת 4 השאלות ←</a><p class="qnote">פחות מדקה · בסוף נחזור אליך לשיחה קצרה</p></div>
   </div>
 </section>
 
@@ -483,6 +489,15 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
 </div>
 <p class="foot">הסיפורים וצילומי המסך הם של תלמידים אמיתיים ופורסמו באישורם. התוצאות משתנות מאדם לאדם ותלויות ביישום, ואינן הבטחה להכנסה.<br>© אביב מלכה · מועדון האיקומרס</p>
 
+<div class="qm" id="qm" aria-hidden="true"><div class="qmi" role="dialog" aria-modal="true" aria-labelledby="qmT">
+  <button class="qx" id="qmX" aria-label="סגירה">×</button>
+  <p class="qlab">הצעד הבא</p>
+  <p class="qmt" id="qmT">בוא נבין איפה אתה עומד</p>
+  <div class="qz" id="dlQuiz" tabindex="-1">
+    <div class="qh"><span class="qc" id="qzCount">1/4</span><div class="qp"><i id="qzFill" style="width:25%"></i></div></div>
+    <div id="qzStage"></div>
+  </div>
+</div></div>
 <div class="sticky" id="sticky"><a class="btn" data-go href="#dlQuiz">לבדוק מה עצר אותי ←</a></div>
 <div class="lb" id="lb"><button class="x" type="button" aria-label="סגירה">×</button><div id="lbIn"></div></div>
 
@@ -564,11 +579,19 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
   render();
 
   /* every CTA goes to the quiz */
-  var quiz = $('dlQuiz');
+  var quiz = $('dlQuiz'), st = $('sticky');
+  var qm = $('qm');
   function goQuiz(){
-    quiz.scrollIntoView({behavior: 'smooth', block: 'start'});
-    setTimeout(function(){ var f = quiz.querySelector('.qo, input, .btn'); try { (f || quiz).focus({preventScroll: true}); } catch(e){} }, 700);
+    qm.classList.add('on'); qm.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
+    st.classList.remove('on');
+    try { window.fbq && fbq('trackCustom', 'QuizOpen'); } catch(e){}
+    setTimeout(function(){ var f = quiz.querySelector('.qo, input, .btn'); try { (f || quiz).focus({preventScroll: true}); } catch(e){} }, 300);
   }
+  function closeQuiz(){ qm.classList.remove('on'); qm.setAttribute('aria-hidden', 'true'); document.documentElement.style.overflow = ''; document.body.style.overflow = ''; onScroll(); }
+  $('qmX').onclick = closeQuiz;
+  qm.addEventListener('click', function(e){ if (e.target === qm) closeQuiz(); });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape' && qm.classList.contains('on')) closeQuiz(); });
   [].forEach.call(document.querySelectorAll('[data-go]'), function(a){ a.addEventListener('click', function(e){ e.preventDefault(); goQuiz(); }); });
 
   /* main video: poster until clicked */
@@ -587,9 +610,10 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
   $('wallMore').onclick = function(){ $('wallw').classList.remove('clip'); };
 
   /* sticky CTA (mobile): after the hero button, hidden while the quiz is on screen */
-  var st = $('sticky'), heroBtn = document.querySelector('.hero .btn');
+  var heroBtn = document.querySelector('.hero .btn'), qsec = $('quiz');
   function onScroll(){
-    var r = heroBtn.getBoundingClientRect(), q = quiz.getBoundingClientRect();
+    if (qm.classList.contains('on')) return;
+    var r = heroBtn.getBoundingClientRect(), q = qsec.getBoundingClientRect();
     st.classList.toggle('on', r.bottom < 0 && !(q.top < innerHeight && q.bottom > 0));
   }
   addEventListener('scroll', onScroll, {passive: true}); onScroll();
