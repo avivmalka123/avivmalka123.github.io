@@ -213,6 +213,17 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
 .qx{position:absolute;top:12px;left:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1;cursor:pointer}
 .qlab{color:#F28C28;font-weight:800;font-size:14px;letter-spacing:.08em;text-align:center;margin:6px 0 2px}
 .qmt{font-weight:900;font-size:22px;text-align:center;color:#fff;margin:0 0 14px}
+/* maayan feature */
+.mf{padding:64px 0 0}
+.mfg{display:grid;grid-template-columns:1fr;gap:22px;align-items:center;background:linear-gradient(160deg,#1A2B4D,var(--n1));border:2px solid rgba(242,140,40,.45);border-radius:28px;padding:20px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
+.mfv{position:relative;width:100%;max-width:340px;margin:0 auto;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:#000}
+.mfv .play,.mfv video{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;background:#000;cursor:pointer}
+.mfv img{width:100%;height:100%;object-fit:cover}
+.mft h2{margin:6px 0 12px}
+.mfl{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:10px}
+.mfl li{display:flex;gap:10px;align-items:flex-start;font-size:17px;font-weight:700;line-height:1.35}
+.mfl li:before{content:"✓";flex:none;width:26px;height:26px;border-radius:8px;background:var(--or);color:#0b1426;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:15px}
+@media (min-width:860px){.mfg{grid-template-columns:340px 1fr;gap:36px;padding:28px 34px}}
 /* sticky + lightbox */
 .sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(11,20,38,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
 .sticky.on{transform:none}
@@ -338,7 +349,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
         <ol class="arc">
           <li><small>איפה היה</small><p>עובד במשרה מלאה, מחפש איך להכניס עוד כסף הביתה.</p></li>
           <li><small>מה עצר אותו</small><p>ראה המון קורסים ב־12 עד 15 אלף שקל, היה סקפטי, ואמר לעצמו שאין לו את הכסף ואת הזמן.</p></li>
-          <li class="now"><small>מה השתנה</small><p>התחיל בדצמבר 2025, לצד העבודה. אחרי 7–8 חודשים: הכנסה נוספת של כמעט 10 אלף ש״ח נטו בחודש.</p></li>
+          <li class="now"><small>מה השתנה</small><p>התחיל בדצמבר 2025, לצד העבודה. אחרי 7–8 חודשים: הכנסה נוספת של כמעט 10 אלף ש״ח נטו בחודש. ועכשיו הוא יוצא לאתר נוסף בחו״ל.</p></li>
         </ol>
         <div class="nums"><span><b>832</b>הזמנות</span><span><b>₪135,813</b>מכירות מצטברות</span><span><b><bdi dir="ltr">~₪10K</bdi></b>נטו בחודש, לדבריו</span></div>
         <p class="q">"צוות תותחים. כל אחד מהם מנטור בפני עצמו, שמלווה אותך ובונה אותך להצלחה. אם אני הצלחתי, גם אתם יכולים."</p>
@@ -461,6 +472,26 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
     </div>
   </section>
 </div>
+
+<!-- 8b. MAAYAN FEATURE -->
+<section class="mf">
+  <div class="w">
+    <div class="mfg">
+      <div class="mfv" id="maayanBox2"><button class="play" data-local="../aw/vid/maayan.mp4" aria-label="צפייה בסרטון של מעיין"><span class="tag">▶ 4 דקות · מעיין מספר</span><img src="../aw/img/maayan-poster.jpg" alt="מעיין מספר איך הוא מרוויח לצד העבודה" loading="lazy"></button></div>
+      <div class="mft">
+        <span class="eye">4 דקות שכדאי לראות</span>
+        <h2>שכיר. כמעט <em>10 אלף ₪ בחודש</em> בצד.<br>ועכשיו אתר נוסף בחו״ל.</h2>
+        <p class="lead">מעיין, בן 42, נשוי ואבא לארבעה, מספר במילים שלו איך בנה את העסק תוך כדי העבודה, ואיך הוא ממשיך לגדול.</p>
+        <ul class="mfl">
+          <li>עובד במשרה מלאה, בנה את העסק בערבים</li>
+          <li>832 הזמנות מאז דצמבר 2025</li>
+          <li>היה סקפטי, היום ממליץ "בחום"</li>
+        </ul>
+        <a class="btn" data-go href="#dlQuiz">אני רוצה להתחיל כמו מעיין ←</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- 9. QUIZ + FORM -->
 <section class="qwrap" id="quiz">
@@ -629,7 +660,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
     if (p){
       var tall = p.hasAttribute('data-tall'), src = p.getAttribute('data-local');
       if (src){
-        if (p.closest('#maayanBox')){ p.parentNode.innerHTML = '<video src="' + src + '" controls autoplay playsinline></video>'; return; }
+        if (p.closest('#maayanBox, #maayanBox2')){ p.parentNode.innerHTML = '<video src="' + src + '" controls autoplay playsinline></video>'; return; }
         lbIn.innerHTML = '<div class="v tall"><video src="' + src + '" controls autoplay playsinline></video></div>';
       } else {
         lbIn.innerHTML = '<div class="v' + (tall ? ' tall' : '') + '"><iframe src="https://fast.wistia.net/embed/iframe/' + p.getAttribute('data-w') + '?autoPlay=true&playerColor=F28C28" allow="autoplay; fullscreen" allowfullscreen></iframe></div>';
