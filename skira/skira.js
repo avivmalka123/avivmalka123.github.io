@@ -198,6 +198,9 @@
     er.style.display = 'none';
     try { localStorage.setItem('alm_lead', JSON.stringify({name: n, phone: ph, email: em})); } catch(e){}
     try { window.fbq && fbq('track', 'Lead'); } catch(e){}
+    /* WhatsApp alert to Aviv (Make 9966621 → 2Chat private), same as the other pages */
+    var watched = []; try { watched = (JSON.parse(localStorage.getItem('skira_prog') || '{}').done || []).map(function(i){ return i + 1; }).sort(function(a, b){ return a - b; }); } catch(e){}
+    try { fetch('https://hook.eu2.make.com/aos52nvubr4hbal7r1a9a9i7tvfjqcny', {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify({source: 'skira-weekly', submitted_at: new Date().toLocaleString('he-IL', {timeZone: 'Asia/Jerusalem'}), name: n, phone: ph, email: em, summary: '📝 ליד מדף אתגר 9 הימים (skira-weekly): רוצה פרטים על המועדון\n' + n + ' · ' + ph + ' · ' + em + '\nצפה בימים: ' + (watched.length ? watched.join(', ') : 'עוד לא סיים אף יום')})}); } catch(e){}
     var f = document.querySelector('form[action*="/forms/2148213109/"]');
     if (f) {
       var set = function(sel, v){ var x = f.querySelector(sel); if (x) { x.value = v; x.dispatchEvent(new Event('input', {bubbles: true})); } };
