@@ -34,6 +34,7 @@ h1 em{font-style:normal;color:var(--gold)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:min(100%,560px);border:0;border-radius:16px;padding:20px 22px;font-family:inherit;font-size:clamp(18px,4.6vw,22px);font-weight:900;color:#1a1205;text-decoration:none;cursor:pointer;background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shadow:0 16px 36px -12px rgba(242,183,5,.7);animation:glow 2.6s ease-in-out infinite}
 @keyframes glow{50%{box-shadow:0 16px 44px -6px rgba(242,183,5,.9)}}
 .cta p{margin:10px 0 0;color:var(--mute);font-size:14.5px}
+.btn.wa{margin-top:16px;background:linear-gradient(180deg,#3BDC7A,#1FA855);color:#fff;box-shadow:0 14px 30px -12px rgba(31,168,85,.6);animation:none;font-size:clamp(16px,4.2vw,19px);padding:16px 20px}
 .sec{padding:64px 0 0;text-align:center}
 .eye{display:block;color:var(--cy);font-weight:900;font-size:13px;letter-spacing:.16em;margin:0 0 8px}
 h2{font-size:clamp(26px,6vw,40px);font-weight:900;margin:0 0 12px;line-height:1.12;letter-spacing:-.02em;text-wrap:balance}
@@ -75,7 +76,7 @@ h2{font-size:clamp(26px,6vw,40px);font-weight:900;margin:0 0 12px;line-height:1.
     </div>
   </header>
 
-  <div class="cta"><a class="btn" href="https://apps.shopify.com/ping-ai" target="_blank" rel="noopener" data-cta>👈 להתחיל עם Ping בחינם</a><p>ההתקנה לוקחת כמה דקות, וההדרכה מראה כל לחיצה</p></div>
+  <div class="cta"><a class="btn" href="https://apps.shopify.com/ping-ai" target="_blank" rel="noopener" data-cta>👈 להתחיל עם Ping בחינם</a><p>ההתקנה לוקחת כמה דקות, וההדרכה מראה כל לחיצה</p><a class="btn wa" href="https://chat.whatsapp.com/IAWbjDSKnte0OmP685fJFR" target="_blank" rel="noopener" data-wa>💬 להצטרפות לקבוצה השקטה של Ping</a><p>עדכונים וטיפים בלבד, בלי הודעות מהחברים</p></div>
 
   <section class="sec">
     <span class="eye">תוצאות אמיתיות</span>
@@ -118,6 +119,7 @@ h2{font-size:clamp(26px,6vw,40px);font-weight:900;margin:0 0 12px;line-height:1.
     v.src = VIDEO; this.hidden = true; v.play();
     try { window.fbq && fbq('trackCustom', 'PingTutorialPlay'); } catch(e){}
   };
+  [].forEach.call(document.querySelectorAll('[data-wa]'), function(a){ a.addEventListener('click', function(){ try { window.fbq && fbq('trackCustom', 'PingWhatsAppGroup'); } catch(e){} }); });
   [].forEach.call(document.querySelectorAll('[data-cta]'), function(a){ a.addEventListener('click', function(){ try { window.fbq && fbq('track', 'Lead', {content_name: 'ping-tutorial'}); } catch(e){} }); });
   var lb = $('lb');
   document.addEventListener('click', function(e){ var im = e.target.closest && e.target.closest('[data-lb]'); if (im) { lb.innerHTML = '<img src="' + im.src + '" alt="">'; lb.classList.add('on'); } });
