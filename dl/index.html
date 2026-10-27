@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <!-- Meta Pixel -->
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2731672797072992');fbq('track','PageView');</script>
 <style>
 :root{--n0:#0B1426;--n1:#101C33;--n2:#15233F;--n3:#1F3156;--line:rgba(255,255,255,.1);--ink:#F5F7FB;--mute:#A7B2C6;--or:#F28C28;--or2:#FFB547;--paper:#F6F1E8;--paper2:#EDE5D6;--pink:#2A2118;--dark:#0B1426;--dmute:#5B6375;--ok:#2BB673;--no:#E5484D}
 *{box-sizing:border-box}
@@ -547,7 +546,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
 <div class="qm" id="qm" aria-hidden="true"><div class="qmi" role="dialog" aria-modal="true" aria-labelledby="qmT">
   <button class="qx" id="qmX" aria-label="סגירה">×</button>
   <p class="qlab">הצעד הבא</p>
-  <p class="qmt" id="qmT">בוא נבין איפה אתה עומד</p>
+  <p class="qmt" id="qmT">תוכנית אישית לשלב הבא שלך</p>
   <div class="qz" id="dlQuiz" tabindex="-1">
     <div class="qh"><span class="qc" id="qzCount">1/4</span><div class="qp"><i id="qzFill" style="width:25%"></i></div></div>
     <div id="qzStage"></div>
@@ -560,6 +559,22 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
 (function(){
   var VSL_VID = 'v5yw1KEGn35bVfEy'; /* Vidalytics embed id of the main video */
   var HOOK = 'https://hook.eu2.make.com/vyco5ocnauh8o7ue72gj2lldn1wfv0xt';
+  /* this page's own Meta pixel (27.10, Aviv). Kajabi's site pixel still loads site-wide; our events go only to this one */
+  var PX = '513196422495237';
+  (function(){
+    if (!window.fbq){ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); }
+    try { fbq('init', PX); fbq('trackSingle', PX, 'PageView'); } catch(e){}
+  })();
+  function px(ev, params, custom){ try { fbq(custom ? 'trackSingleCustom' : 'trackSingle', PX, ev, params || {}); } catch(e){} }
+  /* lead first, then the 4 questions. Details are held 5 min on the lead-hold worker:
+     finished in time = one full message; otherwise name, phone + answers so far go to the leads group */
+  var HOLD = 'https://lead-hold.aviv1988.workers.dev/hold', LID = '', direct = false, who = {};
+  function lines(){ return ans.map(function(a, i){ return a ? Q[i].k + ': ' + a : ''; }).filter(Boolean); }
+  function hold(op, extra){
+    var b = {op: op, id: LID, dest: 'dl', name: who.name, phone: who.phone, total: Q.length, lines: lines()};
+    for (var k in extra) b[k] = extra[k];
+    return fetch(HOLD, {method: 'POST', headers: {'Content-Type': 'text/plain'}, keepalive: true, body: JSON.stringify(b)}).then(function(r){ if (!r.ok) throw 0; return r; });
+  }
   var Q = [
     {k:'מה קרה עד היום', q:'מה הכי קרוב למה שקרה לך עד היום?', o:['עשיתי קורס, אבל לא הגעתי לשלב של מכירות', 'פתחתי חנות, היו כמה מכירות ונתקעתי', 'אני מסתובב סביב זה הרבה זמן ועוד לא באמת התחלתי']},
     {k:'מה עצר', q:'בהסתכלות אחורה, מה באמת עצר אותך עד עכשיו להצליח בתחום האיקומרס?', o:['לא ידעתי איזה מוצר באמת יימכר', 'שמתי כסף על פרסום ולא חזר כלום', 'לא היה לי עם מי להתייעץ כשנתקעתי']},
@@ -574,62 +589,69 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
     catch(e){ return new Date().toISOString(); }
   }
 
-  /* quiz: one question per step, then the form, then thank-you */
+  /* lead capture first, then one question per step, then thank-you */
+  step = -1;
   function render(){
     var n = Q.length;
-    $('qzCount').textContent = step >= n ? '✓' : (step + 1) + '/' + n;
-    $('qzFill').style.width = Math.round(100 * Math.min(step + 1, n) / n) + '%';
-    if (step > n){
+    $('qzCount').textContent = step < 0 ? '🎯' : step >= n ? '✓' : (step + 1) + '/' + n;
+    $('qzFill').style.width = step < 0 ? '6%' : Math.round(100 * Math.min(step + 1, n) / n) + '%';
+    if (step >= n){
       $('qzStage').innerHTML = '<div class="done"><p class="big">קיבלנו ✅ נחזור אליך בהקדם לשיחה קצרה</p><p>מישהו מהצוות שלי יתקשר אליך למספר שהשארת. בשיחה נבין איפה אתה עומד, נאתר מה עצר אותך, ונבנה לך תוכנית לשלב הבא.</p></div>';
       return;
     }
-    if (step === n){
+    if (step < 0){
       var L = lead();
-      $('qzStage').innerHTML = '<p class="qpre">לפי מה שענית, אתה כבר יודע מה אתה רוצה. מה שחסר זה הדרך הנכונה.</p>' +
-        '<p class="qsub">השאר פרטים, ונחזור אליך לשיחה קצרה שבה נבנה לך תוכנית לשלב הבא.</p>' +
+      $('qzStage').innerHTML = '<p class="qsub">4 שאלות קצרות, ונחזור אליך עם תוכנית שמתאימה בדיוק למקום שבו אתה עומד. קודם, איך קוראים לך ולאן לחזור?</p>' +
         '<form id="dlForm" novalidate>' +
         '<label class="fl"><span>שם</span><input id="dlName" name="name" type="text" autocomplete="name" value="' + esc(L.name || '') + '"></label>' +
         '<label class="fl"><span>טלפון נייד</span><input id="dlPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" style="text-align:right" placeholder="050-0000000" value="' + esc(L.phone || '') + '"></label>' +
         '<p class="err" id="dlErr"></p>' +
-        '<button class="btn" type="submit" id="dlSend">שלחו לי תוכנית לשלב הבא ←</button>' +
-        '<p class="under">🔒 הפרטים נשארים אצלנו. בלי ספאם.</p></form>' +
-        '<button class="qb" type="button" id="qzBack">חזרה</button>';
-      $('dlForm').onsubmit = submit;
-      $('qzBack').onclick = function(){ step--; render(); };
+        '<button class="btn" type="submit" id="dlSend">להתחיל את הבדיקה ←</button>' +
+        '<p class="under">🔒 הפרטים נשארים אצלנו. בלי ספאם.</p></form>';
+      $('dlForm').onsubmit = capture;
       return;
     }
-    var q = Q[step], h = '<p class="qt">' + q.q + '</p>';
+    var q = Q[step], h = (step === 0 ? '<p class="qpre">✅ מעולה, ' + esc((who.name || '').split(' ')[0]) + '. עכשיו 4 שאלות, ובונים לך תוכנית.</p>' : '') + '<p class="qt">' + q.q + '</p>';
     q.o.forEach(function(o, i){ h += '<button type="button" class="qo' + (ans[step] === o ? ' sel' : '') + '" data-i="' + i + '">' + o + '</button>'; });
     if (step) h += '<button class="qb" type="button" id="qzBack">חזרה</button>';
     $('qzStage').innerHTML = h;
     [].forEach.call($('qzStage').querySelectorAll('.qo'), function(b){
-      b.onclick = function(){ b.classList.add('sel'); ans[step] = q.o[+b.getAttribute('data-i')]; setTimeout(function(){ step++; render(); }, 220); };
+      b.onclick = function(){
+        b.classList.add('sel'); ans[step] = q.o[+b.getAttribute('data-i')];
+        var last = step === n - 1;
+        if (!last && !direct) hold('update').catch(function(){});
+        setTimeout(function(){ step++; render(); if (last) finish(); }, 220);
+      };
     });
     if (step) $('qzBack').onclick = function(){ step--; render(); };
   }
 
-  function submit(e){
+  function capture(e){
     e.preventDefault();
-    if (sent) return;
     var nameEl = $('dlName'), phoneEl = $('dlPhone'), err = $('dlErr');
     var name = nameEl.value.trim(), phone = phoneEl.value.replace(/[^\d+]/g, '');
     nameEl.classList.remove('bad'); phoneEl.classList.remove('bad'); err.textContent = '';
     if (name.length < 2){ nameEl.classList.add('bad'); err.textContent = 'רק השם שלך, כדי שנדע איך לפנות אליך'; nameEl.focus(); return; }
     if (!/^(\+?972|0)5\d{8}$/.test(phone)){ phoneEl.classList.add('bad'); err.textContent = 'נראה שמספר הנייד לא תקין. לדוגמה: 050-1234567'; phoneEl.focus(); return; }
-    sent = true; $('dlSend').disabled = true;
-    var answers = Q.map(function(q, i){ return {q: q.k, a: ans[i] || ''}; });
-    var payload = {
-      source: 'direct-lead-page',
-      submitted_at: ilTime(),
-      name: name,
-      phone: phone,
-      answers: answers,
-      summary: '🔥 ליד ישיר מהדף (שאלון)\n' + name + ' · ' + phone + '\n\n' + answers.map(function(x){ return x.q + ': ' + x.a; }).join('\n')
-    };
-    try { fetch(HOOK, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload), keepalive: true}).catch(function(){}); } catch(x){}
+    who = {name: name, phone: phone};
     try { var L = lead(); L.name = name; L.phone = phone; localStorage.setItem('alm_lead', JSON.stringify(L)); } catch(x){}
-    try { window.fbq && fbq('track', 'Lead', {content_name: 'direct-lead-page'}); } catch(x){}
-    step = Q.length + 1; render();
+    px('Lead', {content_name: 'direct-lead-page'});
+    if (!LID) {
+      LID = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      /* if the hold server is down, the lead still reaches the group right away */
+      hold('start').catch(function(){ direct = true; try { fetch(HOOK, {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify({source: 'direct-lead-page', stage: 'lead', submitted_at: ilTime(), name: name, phone: phone, answers: [], summary: '📝 ליד ישיר מהדף: השאיר פרטים לפני השאלון\n' + name + ' · ' + phone})}).catch(function(){}); } catch(x){} });
+    }
+    step = 0; render();
+  }
+
+  function finish(){
+    if (sent) return; sent = true;
+    var answers = Q.map(function(q, i){ return {q: q.k, a: ans[i] || ''}; });
+    var summary = '🔥 ליד ישיר מהדף (שאלון)\n' + who.name + ' · ' + who.phone + '\n\n' + answers.map(function(x){ return x.q + ': ' + x.a; }).join('\n');
+    var full = {source: 'direct-lead-page', submitted_at: ilTime(), name: who.name, phone: who.phone, answers: answers, summary: summary};
+    var toMake = function(){ try { fetch(HOOK, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(full), keepalive: true}).catch(function(){}); } catch(x){} };
+    if (direct || !LID) toMake(); else hold('finish', {full: {summary: summary}}).catch(toMake);
+    px('CompleteRegistration', {content_name: 'direct-lead-quiz'});
   }
   render();
 
@@ -640,7 +662,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
     qm.classList.add('on'); qm.setAttribute('aria-hidden', 'false');
     document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
     st.classList.remove('on');
-    try { window.fbq && fbq('trackCustom', 'QuizOpen'); } catch(e){}
+    px('QuizOpen', {}, 1);
     setTimeout(function(){ var f = quiz.querySelector('.qo, input, .btn'); try { (f || quiz).focus({preventScroll: true}); } catch(e){} }, 300);
   }
   function closeQuiz(){ qm.classList.remove('on'); qm.setAttribute('aria-hidden', 'true'); document.documentElement.style.overflow = ''; document.body.style.overflow = ''; onScroll(); }
@@ -664,7 +686,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px}
       var v = r.querySelector('video'), bar = r.querySelector('.rbar i');
       r.querySelector('.rplay').addEventListener('click', function(){
         load(r, true);
-        if (v.paused){ stopOthers(r); v.muted = false; var p = v.play(); r.classList.add('on'); r.classList.remove('paused'); if (p && p.catch) p.catch(function(){}); try { window.fbq && fbq('trackCustom', 'ReelPlay', {content_name: r.querySelector('.rcap b').textContent}); } catch(e){} }
+        if (v.paused){ stopOthers(r); v.muted = false; var p = v.play(); r.classList.add('on'); r.classList.remove('paused'); if (p && p.catch) p.catch(function(){}); px('ReelPlay', {content_name: r.querySelector('.rcap b').textContent}, 1); }
         else { v.pause(); }
       });
       v.addEventListener('pause', function(){ r.classList.add('paused'); });
