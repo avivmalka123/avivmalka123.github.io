@@ -8,7 +8,7 @@
 (function(){
   /* ====== settings ====== */
   var MAKE_WEBHOOK = 'https://hook.eu2.make.com/nltpw48e2sf4of2g8ijohahvrat6angt';
-  var WA_GROUP = 'https://chat.whatsapp.com/CJk2l8K2pv8HNlbAKWNu0H';
+  var WA_GROUP = 'https://chat.whatsapp.com/EJS0pZGeJKd8N8TUDolxTj';
   var WEBINAR_DAY = 2, WEBINAR_HOUR = 18; // Tuesday 18:00 Israel time
 
   /* ====== video (Vidalytics, same as before) ====== */
