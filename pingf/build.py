@@ -51,7 +51,7 @@ for name, bg in (('lp', '#ffffff'), ('tr', '#f6f8fd')):
     pre = ("/* Ping AI training funnel · " + name + " (source pingf/src/" + name + ".html, built by pingf/build.py) */\n(function(){\n"
            " var root=document.getElementById('pf-root'); if(!root){root=document.createElement('div');root.id='pf-root';document.body.appendChild(root);}\n"
            " try{ document.body.style.background='" + bg + "'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='" + bg + "'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; } p=p.parentElement; }"
-           " document.querySelectorAll('header.header, footer.footer, .announcement').forEach(function(el){ el.style.display='none'; }); }catch(e){}\n"
+           " document.querySelectorAll('header.header, footer.footer, .announcement').forEach(function(el){ el.style.display='none'; }); var hs=document.createElement('style'); hs.textContent='.block-type--video{display:none !important}'; document.head.appendChild(hs); }catch(e){}\n"
            " root.innerHTML=" + json.dumps(html, ensure_ascii=False) + ";\n})();\n")
     out = pre + common + '\n' + logic
     open(D + name + '.js', 'w', encoding='utf-8').write(out)
