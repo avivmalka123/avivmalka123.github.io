@@ -48,7 +48,7 @@ for name, bg in (('lp', '#FAF8F3'), ('tr', '#FAF8F3')):
              '{font-family:Heebo,Arial,sans-serif;letter-spacing:normal;text-transform:none}#pf-root .pf p{margin-bottom:0}#pf-root .pf ul{margin-bottom:0}')
     html = ('<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">'
             '<style>' + scope(css) + reset + '</style>' + markup)
-    pre = ("/* Ping AI training funnel · " + name + " (source pingf/src/" + name + ".html, built by pingf/build.py) */\n(function(){\n"
+    pre = ("/* training funnel · " + name + " (source pingf/src/" + name + ".html, built by pingf/build.py) */\n(function(){\n"
            " var root=document.getElementById('pf-root'); if(!root){root=document.createElement('div');root.id='pf-root';document.body.appendChild(root);}\n"
            " try{ document.body.style.background='" + bg + "'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='" + bg + "'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; } p=p.parentElement; }"
            " document.querySelectorAll('header.header, footer.footer, .announcement').forEach(function(el){ el.style.display='none'; }); var hs=document.createElement('style'); hs.textContent='.block-type--video{display:none !important}'; document.head.appendChild(hs); }catch(e){}\n"

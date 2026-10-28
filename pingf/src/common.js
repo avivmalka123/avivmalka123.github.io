@@ -1,4 +1,4 @@
-/* Ping AI training funnel — shared client code (lp + training). No personal data ever goes into URLs. */
+/* Training funnel — shared client code (lp + training). No personal data ever goes into URLs. */
 var PF = (function () {
   var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var API = LOCAL && /[?&]api=([^&]+)/.test(location.search) ? decodeURIComponent(RegExp.$1) : 'https://ping-funnel.aviv1988.workers.dev';
