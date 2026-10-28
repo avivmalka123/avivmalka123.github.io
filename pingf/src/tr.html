@@ -16,7 +16,7 @@
 .pf .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--navy)}
 .pf .brand svg{width:34px;height:34px;border-radius:9px}
 .pf .top small{color:var(--mut);font-size:14px}
-.pf .head{text-align:center;padding-block:4px 14px}
+.pf .head{text-align:center;padding-block:10px 22px}
 .pf .hi{display:inline-block;background:#e9f8f1;color:var(--ok);font-weight:700;font-size:14px;padding:6px 14px;border-radius:99px;margin-bottom:14px}
 .pf h1{font-size:clamp(28px,4vw,44px);line-height:1.15;font-weight:900;color:var(--navy);text-wrap:balance;letter-spacing:-.4px}
 .pf h1 em{font-style:normal;background:linear-gradient(90deg,var(--blue),var(--vio));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -32,8 +32,7 @@
 .pf .act.i{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
 .pf .act:focus-visible{outline:3px solid rgba(47,107,255,.45);outline-offset:2px}
 /* quiz */
-.pf .qz{margin:0 auto 56px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 24px;box-shadow:0 24px 50px -30px rgba(11,22,64,.3);max-width:760px}
-.pf .qz h1{font-size:clamp(25px,3.4vw,34px)!important}
+.pf .qz{margin:40px auto 56px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 24px;box-shadow:0 24px 50px -30px rgba(11,22,64,.3);max-width:760px}
 .pf .qz h2{font-size:clamp(23px,3vw,30px);font-weight:900;color:var(--navy);text-align:center;text-wrap:balance}
 .pf .qz .qs{text-align:center;color:var(--mut);margin-top:6px}
 .pf .prog{display:flex;align-items:center;gap:12px;margin:22px 0 18px}
@@ -90,10 +89,20 @@
   </div>
   <div class="wrap">
     <div class="head">
-      <span class="hi" id="pfHi">אבחון חינמי לחנות</span>
+      <span class="hi" id="pfHi">✓ ההדרכה שלכם</span>
+      <h1>ההדרכה שלכם מוכנה. <em>עכשיו בואו נהפוך את הידע לתוצאות.</em></h1>
     </div>
+    <div class="vid" id="pfVid"><div id="vidalytics_embed_jEvI9jjReBUkk7Bb" style="width:100%;position:relative;padding-top:52.98%"></div></div>
+    <p class="vhint">מומלץ לצפות עם סאונד ולהשאיר את Shopify פתוח בלשונית ליד.</p>
+
+    <div class="acts">
+      <a class="act p" data-ev="PingInstallClick" href="https://apps.shopify.com/ping-ai" target="_blank" rel="noopener">להתקנת Ping AI ולעבודה לצד ההדרכה <small>נפתח בלשונית חדשה, בחנות האפליקציות של Shopify</small></a>
+      <a class="act w" data-ev="WhatsAppClick" href="https://wa.me/972525535537?text=%D7%90%D7%91%D7%99%D7%91%20%D7%90%D7%94%D7%91%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%94%D7%93%D7%A8%D7%9B%D7%94%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%90%D7%99%D7%AA%D7%9A%20%D7%A2%D7%9C%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%D7%99" target="_blank" rel="noopener"><span>רוצים עזרה עם החנות? <b>דברו איתי בוואטסאפ</b></span><small>נפתחת הודעה מוכנה, אתם לוחצים שליחה</small></a>
+      <a class="act i" data-ev="InstagramClick" href="https://www.instagram.com/aviv_malka7/" target="_blank" rel="noopener">שתפו אותי בתוצאות שלכם באינסטגרם <small>ניסיתם משהו מההדרכה? אשמח לשמוע מה השתנה אצלכם.</small></a>
+    </div>
+
     <section class="qz" id="pfQuiz" aria-labelledby="pfQT">
-      <h1 id="pfQT">כמה הזדמנויות להכנסה <em>החנות שלכם מפספסת?</em></h1>
+      <h2 id="pfQT">כמה הזדמנויות להכנסה החנות שלכם מפספסת?</h2>
       <p class="qs">ענו על כמה שאלות קצרות ונבין יחד איפה כדאי להתחיל לשפר.</p>
       <div id="pfQBody"></div>
     </section>
@@ -106,13 +115,38 @@
 (function () {
   var root = document.getElementById('pfTr'); if (!root) return;
   PF.captureUtm();
-  /* the page is only the quiz and it starts at once, no details asked (they came from the lead page form).
-     With the saved token every answer goes to the lead; without one the quiz still works and ends in the summary + WhatsApp */
+  /* hook + video + buttons, then the quiz, which starts at once with no details step (they came from the lead page form).
+     With the saved token every answer goes to the lead; without one (another device) the quiz still works and ends in the summary + WhatsApp */
   var TOK = PF.token();
   var first = TOK ? PF.ls('pf_first') || '' : '';
   var hi = root.querySelector('#pfHi');
-  if (first) hi.textContent = first + ', האבחון החינמי שלכם';
+  if (first) hi.textContent = '✓ ' + first + ', ההרשמה הושלמה';
   PF.track('TrainingPageView');
+
+  /* Vidalytics player (embed code from Aviv, 28.10.2026); no autoplay with sound is set in the player */
+  (function (v, i, d, a, l, y, t, c, s) {
+    y = '_' + d.toLowerCase(); c = d + 'L'; if (!v[d]) { v[d] = {}; } if (!v[c]) { v[c] = {}; } if (!v[y]) { v[y] = {}; } var vl = 'Loader', vli = v[y][vl], vsl = v[c][vl + 'Script'], vlf = v[c][vl + 'Loaded'], ve = 'Embed';
+    if (!vsl) { vsl = function (u, cb) { if (t) { cb(); return; } s = i.createElement('script'); s.type = 'text/javascript'; s.async = 1; s.src = u; if (s.readyState) { s.onreadystatechange = function () { if (s.readyState === 'loaded' || s.readyState == 'complete') { s.onreadystatechange = null; vlf = 1; cb(); } }; } else { s.onload = function () { vlf = 1; cb(); }; } i.getElementsByTagName('head')[0].appendChild(s); }; }
+    vsl(l + 'loader.min.js', function () { if (!vli) { var vlc = v[c][vl]; vli = new vlc(); } vli.loadScript(l + 'player.min.js', function () { var vec = v[d][ve]; t = new vec(); t.run(a); }); });
+  })(window, document, 'Vidalytics', 'vidalytics_embed_jEvI9jjReBUkk7Bb', 'https://fast.vidalytics.com/embeds/YxS8sQvf/jEvI9jjReBUkk7Bb/');
+
+  /* buttons: new tab + event */
+  root.querySelectorAll('[data-ev]').forEach(function (a) { a.addEventListener('click', function () { PF.track(a.getAttribute('data-ev'), {repeat: true}); }); });
+
+  /* video progress 25/50/75/90 from the player's <video> element (Vidalytics renders an HTML5 video) */
+  (function watch() {
+    var marks = [25, 50, 75, 90], fired = {}, tries = 0;
+    try { fired = JSON.parse(PF.ls('pf_vmarks') || '{}'); } catch (e) {}
+    var iv = setInterval(function () {
+      var v = root.querySelector('#pfVid video'); if (!v && ++tries > 120) return clearInterval(iv);
+      if (!v) return; clearInterval(iv);
+      v.addEventListener('timeupdate', function () {
+        if (!v.duration || !isFinite(v.duration) || v.duration < 60) return;   // ignore short preview loops
+        var p = v.currentTime / v.duration * 100;
+        marks.forEach(function (m) { if (p >= m && !fired[m]) { fired[m] = 1; PF.ls('pf_vmarks', JSON.stringify(fired)); PF.track('Video' + m); } });
+      });
+    }, 1000);
+  })();
 
   /* ---------- quiz ---------- */
   var QS = [
@@ -240,7 +274,7 @@
   PF.api('/api/me', null, TOK).then(function (r) {
     if (r._status === 401 || r._status === 404) { PF.ls('pf_tok', null); TOK = null; step = firstOpen(); render(); return; }
     if (r.ok) {
-      if (r.first) { first = r.first; PF.ls('pf_first', first); hi.textContent = first + ', האבחון החינמי שלכם'; }
+      if (r.first) { first = r.first; PF.ls('pf_first', first); hi.textContent = '✓ ' + first + ', ההרשמה הושלמה'; }
       if (r.answers && Object.keys(r.answers).length) A = r.answers;
       if (r.website) website = r.website.replace(/^https?:\/\//, '');
       done = r.quiz_status === 'completed';
