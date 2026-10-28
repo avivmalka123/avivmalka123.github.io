@@ -16,7 +16,7 @@
 .pf .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--navy)}
 .pf .brand svg{width:34px;height:34px;border-radius:9px}
 .pf .top small{color:var(--mut);font-size:14px}
-.pf .head{text-align:center;padding-block:10px 22px}
+.pf .head{text-align:center;padding-block:4px 14px}
 .pf .hi{display:inline-block;background:#e9f8f1;color:var(--ok);font-weight:700;font-size:14px;padding:6px 14px;border-radius:99px;margin-bottom:14px}
 .pf h1{font-size:clamp(28px,4vw,44px);line-height:1.15;font-weight:900;color:var(--navy);text-wrap:balance;letter-spacing:-.4px}
 .pf h1 em{font-style:normal;background:linear-gradient(90deg,var(--blue),var(--vio));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -32,7 +32,8 @@
 .pf .act.i{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
 .pf .act:focus-visible{outline:3px solid rgba(47,107,255,.45);outline-offset:2px}
 /* quiz */
-.pf .qz{margin:40px auto 56px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 24px;box-shadow:0 24px 50px -30px rgba(11,22,64,.3);max-width:760px}
+.pf .qz{margin:0 auto 56px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 24px;box-shadow:0 24px 50px -30px rgba(11,22,64,.3);max-width:760px}
+.pf .qz h1{font-size:clamp(25px,3.4vw,34px)!important}
 .pf .qz h2{font-size:clamp(23px,3vw,30px);font-weight:900;color:var(--navy);text-align:center;text-wrap:balance}
 .pf .qz .qs{text-align:center;color:var(--mut);margin-top:6px}
 .pf .prog{display:flex;align-items:center;gap:12px;margin:22px 0 18px}
@@ -74,27 +75,6 @@
 .pf .wa svg{width:22px;height:22px}
 .pf .small{font-size:13px;color:var(--mut);text-align:center;margin-top:8px}
 .pf .redo{all:unset;cursor:pointer;color:var(--blue);font-size:14px;display:block;margin:12px auto 0;text-decoration:underline}
-/* details step for visitors who reach the page without a saved registration (other device / browser) */
-.pf .gate{display:grid;gap:12px;max-width:520px;margin:20px auto 0}
-.pf .gate label.l{display:grid;gap:6px;font-weight:600;font-size:15px}
-.pf .gate input[type=text],.pf .gate input[type=tel],.pf .gate input[type=email]{width:100%;font:inherit;font-size:17px;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fbfcff;color:var(--ink);text-align:right}
-.pf .gate input[type=tel],.pf .gate input[type=email]{direction:ltr}
-.pf .gate input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(47,107,255,.14)}
-.pf .gate .bad input{border-color:var(--err)}
-.pf .gate .em{color:var(--err);font-size:13.5px;font-weight:400;min-height:0}
-.pf .gate fieldset{border:0;padding:0;margin:0;display:grid;gap:6px}
-.pf .gate legend{font-weight:600;font-size:15px;margin-bottom:6px}
-.pf .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pf .seg label{position:relative}
-.pf .seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
-.pf .seg span{display:block;text-align:center;padding:11px 6px;border:1.5px solid var(--line);border-radius:12px;font-weight:600;font-size:15px;background:#fbfcff;cursor:pointer}
-.pf .seg input:checked+span{border-color:var(--blue);background:#eef3ff;color:var(--blue2)}
-.pf .seg input:focus-visible+span{box-shadow:0 0 0 4px rgba(47,107,255,.25)}
-.pf .chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--mut);line-height:1.45}
-.pf .chk input{margin-top:3px;width:18px;height:18px;accent-color:var(--blue);flex:0 0 18px}
-.pf .gate .next{text-align:center;width:100%;padding:15px;font-size:17px}
-.pf .gate .legal{font-size:12.5px;color:var(--mut);text-align:center}
-.pf .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
 .pf .foot{padding-block:22px 40px;text-align:center;font-size:12.5px;color:var(--mut)}
 .pf .fade{animation:pfIn .3s ease}
 @keyframes pfIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -110,20 +90,10 @@
   </div>
   <div class="wrap">
     <div class="head">
-      <span class="hi" id="pfHi">✓ ההרשמה הושלמה</span>
-      <h1>ההדרכה שלכם מוכנה. <em>עכשיו בואו נהפוך את הידע לתוצאות.</em></h1>
+      <span class="hi" id="pfHi">אבחון חינמי לחנות</span>
     </div>
-    <div class="vid" id="pfVid"><div id="vidalytics_embed_jEvI9jjReBUkk7Bb" style="width:100%;position:relative;padding-top:52.98%"></div></div>
-    <p class="vhint">מומלץ לצפות עם סאונד ולהשאיר את Shopify פתוח בלשונית ליד.</p>
-
-    <div class="acts">
-      <a class="act p" data-ev="PingInstallClick" href="https://apps.shopify.com/ping-ai" target="_blank" rel="noopener">להתקנת Ping AI ולעבודה לצד ההדרכה <small>נפתח בלשונית חדשה, בחנות האפליקציות של Shopify</small></a>
-      <a class="act w" data-ev="WhatsAppClick" href="https://wa.me/972525535537?text=%D7%90%D7%91%D7%99%D7%91%20%D7%90%D7%94%D7%91%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%94%D7%93%D7%A8%D7%9B%D7%94%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%93%D7%91%D7%A8%20%D7%90%D7%99%D7%AA%D7%9A%20%D7%A2%D7%9C%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%D7%99" target="_blank" rel="noopener"><span>רוצים עזרה עם החנות? <b>דברו איתי בוואטסאפ</b></span><small>נפתחת הודעה מוכנה, אתם לוחצים שליחה</small></a>
-      <a class="act i" data-ev="InstagramClick" href="https://www.instagram.com/aviv_malka7/" target="_blank" rel="noopener">שתפו אותי בתוצאות שלכם באינסטגרם <small>ניסיתם משהו מההדרכה? אשמח לשמוע מה השתנה אצלכם.</small></a>
-    </div>
-
     <section class="qz" id="pfQuiz" aria-labelledby="pfQT">
-      <h2 id="pfQT">כמה הזדמנויות להכנסה החנות שלכם מפספסת?</h2>
+      <h1 id="pfQT">כמה הזדמנויות להכנסה <em>החנות שלכם מפספסת?</em></h1>
       <p class="qs">ענו על כמה שאלות קצרות ונבין יחד איפה כדאי להתחיל לשפר.</p>
       <div id="pfQBody"></div>
     </section>
@@ -135,41 +105,14 @@
 <script>
 (function () {
   var root = document.getElementById('pfTr'); if (!root) return;
-  var t0 = Date.now();
   PF.captureUtm();
-  /* the video is open to everyone (people often open this page on another device than the one they registered on);
-     only the quiz needs a lead, so without a saved token the quiz starts with a short details step */
+  /* the page is only the quiz and it starts at once, no details asked (they came from the lead page form).
+     With the saved token every answer goes to the lead; without one the quiz still works and ends in the summary + WhatsApp */
   var TOK = PF.token();
   var first = TOK ? PF.ls('pf_first') || '' : '';
   var hi = root.querySelector('#pfHi');
-  if (!TOK) hi.textContent = '▶ ההדרכה החינמית המלאה';
-  else if (first) hi.textContent = '✓ ' + first + ', ההרשמה הושלמה';
+  if (first) hi.textContent = first + ', האבחון החינמי שלכם';
   PF.track('TrainingPageView');
-
-  /* Vidalytics player (embed code from Aviv, 28.10.2026); no autoplay with sound is set in the player */
-  (function (v, i, d, a, l, y, t, c, s) {
-    y = '_' + d.toLowerCase(); c = d + 'L'; if (!v[d]) { v[d] = {}; } if (!v[c]) { v[c] = {}; } if (!v[y]) { v[y] = {}; } var vl = 'Loader', vli = v[y][vl], vsl = v[c][vl + 'Script'], vlf = v[c][vl + 'Loaded'], ve = 'Embed';
-    if (!vsl) { vsl = function (u, cb) { if (t) { cb(); return; } s = i.createElement('script'); s.type = 'text/javascript'; s.async = 1; s.src = u; if (s.readyState) { s.onreadystatechange = function () { if (s.readyState === 'loaded' || s.readyState == 'complete') { s.onreadystatechange = null; vlf = 1; cb(); } }; } else { s.onload = function () { vlf = 1; cb(); }; } i.getElementsByTagName('head')[0].appendChild(s); }; }
-    vsl(l + 'loader.min.js', function () { if (!vli) { var vlc = v[c][vl]; vli = new vlc(); } vli.loadScript(l + 'player.min.js', function () { var vec = v[d][ve]; t = new vec(); t.run(a); }); });
-  })(window, document, 'Vidalytics', 'vidalytics_embed_jEvI9jjReBUkk7Bb', 'https://fast.vidalytics.com/embeds/YxS8sQvf/jEvI9jjReBUkk7Bb/');
-
-  /* buttons: new tab + event */
-  root.querySelectorAll('[data-ev]').forEach(function (a) { a.addEventListener('click', function () { PF.track(a.getAttribute('data-ev'), {repeat: true}); }); });
-
-  /* video progress 25/50/75/90 from the player's <video> element (Vidalytics renders an HTML5 video) */
-  (function watch() {
-    var marks = [25, 50, 75, 90], fired = {}, tries = 0;
-    try { fired = JSON.parse(PF.ls('pf_vmarks') || '{}'); } catch (e) {}
-    var iv = setInterval(function () {
-      var v = root.querySelector('#pfVid video'); if (!v && ++tries > 120) return clearInterval(iv);
-      if (!v) return; clearInterval(iv);
-      v.addEventListener('timeupdate', function () {
-        if (!v.duration || !isFinite(v.duration) || v.duration < 60) return;   // ignore short preview loops
-        var p = v.currentTime / v.duration * 100;
-        marks.forEach(function (m) { if (p >= m && !fired[m]) { fired[m] = 1; PF.ls('pf_vmarks', JSON.stringify(fired)); PF.track('Video' + m); } });
-      });
-    }, 1000);
-  })();
 
   /* ---------- quiz ---------- */
   var QS = [
@@ -190,12 +133,13 @@
   var started = false;
   function save(isDone) {
     PF.ls('pf_quiz', JSON.stringify({a: A, w: website}));
+    if (!TOK) return Promise.resolve({ok: false, local: true});
     var msg = root.querySelector('.saved'); if (msg) msg.textContent = 'שומר…';
     saving++;
     var evId = isDone ? 'quizcomp_' + PF.rid(14) : undefined;
     return PF.api('/api/quiz', {answers: A, website: website, done: !!isDone, event_id: evId, url: location.origin + location.pathname}, TOK).then(function (r) {
       saving--;
-      if (r._status === 401) { lost(); return r; }
+      if (r._status === 401) { PF.ls('pf_tok', null); TOK = null; return r; }
       var m = root.querySelector('.saved'); if (m) m.textContent = r.ok ? 'התשובות נשמרו ✓' : '';
       if (r.ok && !started && Object.keys(A).length) { started = true; PF.fb('QuizStarted', 'quizstart_' + PF.rid(10)); }
       if (r.ok && r.event_id) PF.fb('QuizCompleted', r.event_id);   // same id the server sent to CAPI
@@ -242,8 +186,9 @@
       inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') nx.click(); });
       nx.addEventListener('click', function () {
         if (website && !/^(https?:\/\/)?[^\s.\/]+(\.[^\s.\/]+)+(\/\S*)?$/i.test(website)) { body.querySelector('#pfWebErr').hidden = false; return; }
+        if (!TOK) { PF.track('QuizCompleted', {noPixel: true}); done = true; render(); return; }   // no saved registration on this device: summary + WhatsApp only
         nx.setAttribute('disabled', ''); nx.textContent = 'מכין את הסיכום…';
-        save(true).then(function (r) { if (r && r.ok) { done = true; render(); } else { nx.removeAttribute('disabled'); nx.textContent = 'לסיכום שלי ←'; var m = root.querySelector('.saved'); if (m && r && r.fields) { body.querySelector('#pfWebErr').hidden = false; } } });
+        save(true).then(function (r) { if (r && !r.ok && !TOK) { done = true; render(); return {ok: true, skip: true}; } return r; }).then(function (r) { if (r && r.skip) return; if (r && r.ok) { done = true; render(); } else { nx.removeAttribute('disabled'); nx.textContent = 'לסיכום שלי ←'; var m = root.querySelector('.saved'); if (m && r && r.fields) { body.querySelector('#pfWebErr').hidden = false; } } });
       });
     }
   }
@@ -289,58 +234,13 @@
     body.querySelector('.redo').addEventListener('click', function () { done = false; step = 0; render(); });
   }
 
-  /* token expired or unknown: forget it and ask for details again */
-  function lost() { PF.ls('pf_tok', null); TOK = null; gate(); }
-
-  /* details step: same fields and rules as the lead page; an existing phone or email reconnects to the same lead */
-  function gate() {
-    body.innerHTML = '<form class="gate fade" novalidate><p class="qs" style="margin:0">כדי לקבל אבחון אישי, השאירו פרטים ונתחיל.</p>' +
-      '<label class="l" data-f="name">שם מלא<input type="text" name="name" autocomplete="name" required maxlength="80"><span class="em" aria-live="polite"></span></label>' +
-      '<label class="l" data-f="phone">טלפון נייד<input type="tel" name="phone" autocomplete="tel" inputmode="tel" required maxlength="20" placeholder="050-0000000"><span class="em" aria-live="polite"></span></label>' +
-      '<label class="l" data-f="email">אימייל<input type="email" name="email" autocomplete="email" inputmode="email" required maxlength="120" placeholder="name@example.com"><span class="em" aria-live="polite"></span></label>' +
-      '<fieldset data-f="store_status"><legend>יש לך חנות איקומרס פעילה?</legend><div class="seg"><label><input type="radio" name="store" value="yes"><span>כן</span></label><label><input type="radio" name="store" value="building"><span>בהקמה</span></label><label><input type="radio" name="store" value="no"><span>לא</span></label></div><span class="em" aria-live="polite"></span></fieldset>' +
-      '<div class="hp" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>' +
-      '<label class="chk"><input type="checkbox" name="consent"><span>אשמח לקבל מאביב מלכה ומ-Ping AI תכנים, עדכונים והצעות באימייל, ב-SMS ובוואטסאפ. לא חובה, ואפשר להסיר בכל עת.</span></label>' +
-      '<p class="err" role="alert" hidden></p><button type="submit" class="next">להתחלת האבחון ←</button>' +
-      '<p class="legal">הפרטים משמשים כדי לשלוח לכם את האבחון ולחזור אליכם אם תבקשו. לשאלות על פרטיות: privacy@pingai.org</p></form>';
-    var f = body.querySelector('form'), err = f.querySelector('.err'), btn = f.querySelector('button[type=submit]');
-    var MSG = {name: 'נא למלא שם מלא', phone: 'נא למלא מספר נייד תקין (לדוגמה 050-1234567, או מספר בינלאומי עם +)', email: 'נא למלא כתובת אימייל תקינה', store_status: 'נא לבחור תשובה'};
-    function setErr(k, msg) { var el = f.querySelector('[data-f="' + k + '"]'); el.classList.toggle('bad', !!msg); el.querySelector('.em').textContent = msg || ''; }
-    function okPhone(s) { s = String(s || '').replace(/[\s\-().]/g, ''); if (s.indexOf('00') === 0) s = '+' + s.slice(2); return /^05\d{8}$/.test(s) || /^\+?9720?5\d{8}$/.test(s) || (/^\+[1-9]\d{7,14}$/.test(s) && s.indexOf('+972') !== 0); }
-    f.addEventListener('submit', function (e) {
-      e.preventDefault(); err.hidden = true;
-      var d = {name: f.name.value.trim().replace(/\s+/g, ' '), phone: f.phone.value, email: f.email.value.trim(), store: (f.querySelector('input[name=store]:checked') || {}).value}, bad = {};
-      if (d.name.length < 2) bad.name = 1;
-      if (!okPhone(d.phone)) bad.phone = 1;
-      if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(d.email)) bad.email = 1;
-      if (!d.store) bad.store_status = 1;
-      ['name', 'phone', 'email', 'store_status'].forEach(function (k) { setErr(k, bad[k] ? MSG[k] : ''); });
-      var b1 = Object.keys(bad)[0]; if (b1) { var el = f.querySelector('[data-f="' + b1 + '"] input'); if (el) el.focus(); return; }
-      btn.disabled = true; btn.textContent = 'שומרים…';
-      var u = PF.utm();
-      PF.api('/api/lead', {name: d.name, phone: d.phone, email: d.email, store_status: d.store, consent_marketing: f.consent.checked, privacy_ack: true,
-        hp: f.company.value, elapsed: Date.now() - t0, event_id: 'lead_' + PF.rid(16), vid: PF.vid, variant: PF.ls('pf_var') || '', utm: u, fbclid: u.fbclid || '', fbc: PF.fbc(), fbp: PF.cookie('_fbp'),
-        referrer: document.referrer.slice(0, 300), landing_url: location.origin + location.pathname}).then(function (r) {
-        if (r.ok && r.token) {
-          TOK = r.token; PF.ls('pf_tok', r.token); first = r.first || ''; PF.ls('pf_first', first);
-          if (r.new && r.event_id) PF.fb('Lead', r.event_id, {content_name: 'ping-training'});
-          if (first) hi.textContent = '✓ ' + first + ', ההרשמה הושלמה';
-          boot(); return;
-        }
-        if (r.fields) Object.keys(r.fields).forEach(function (k) { if (MSG[k]) setErr(k, MSG[k]); });
-        err.textContent = r._status === 429 ? 'יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.' : 'משהו לא עבר. בדקו את הפרטים ונסו שוב.'; err.hidden = r._status === 422;
-        btn.disabled = false; btn.textContent = 'להתחלת האבחון ←';
-      }).catch(function () { err.textContent = 'בעיית חיבור. בדקו את האינטרנט ונסו שוב.'; err.hidden = false; btn.disabled = false; btn.textContent = 'להתחלת האבחון ←'; });
-    });
-  }
-
   /* resume from the server (source of truth), local copy as fallback */
   function boot() {
-  if (!TOK) return gate();
+  if (!TOK) { step = firstOpen(); render(); return; }
   PF.api('/api/me', null, TOK).then(function (r) {
-    if (r._status === 401 || r._status === 404) return lost();
+    if (r._status === 401 || r._status === 404) { PF.ls('pf_tok', null); TOK = null; step = firstOpen(); render(); return; }
     if (r.ok) {
-      if (r.first) { first = r.first; PF.ls('pf_first', first); root.querySelector('#pfHi').textContent = '✓ ' + first + ', ההרשמה הושלמה'; }
+      if (r.first) { first = r.first; PF.ls('pf_first', first); hi.textContent = first + ', האבחון החינמי שלכם'; }
       if (r.answers && Object.keys(r.answers).length) A = r.answers;
       if (r.website) website = r.website.replace(/^https?:\/\//, '');
       done = r.quiz_status === 'completed';
