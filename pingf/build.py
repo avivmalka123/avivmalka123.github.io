@@ -38,7 +38,7 @@ def scope(css):
     return ''.join(out)
 
 
-for name, bg in (('lp', '#ffffff'), ('tr', '#f6f8fd')):
+for name, bg in (('lp', '#FAF8F3'), ('tr', '#FAF8F3')):
     s = open(D + 'src/' + name + '.html', encoding='utf-8').read()
     css = re.search(r'<style>(.*?)</style>', s, re.S).group(1)
     markup = re.search(r'<div id="pf-root">(.*)</div>\s*<script src="common.js">', s, re.S).group(1)
