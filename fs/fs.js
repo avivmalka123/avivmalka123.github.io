@@ -142,14 +142,14 @@
     '#fs-root .row{display:grid;gap:10px;margin:0 0 10px}',
     '#fs-root .kbd{display:inline-block;background:#141414;color:#fff;border-radius:6px;padding:1px 7px;font-size:14px;font-weight:700}',
     '#fs-root .ltr{direction:ltr;unicode-bidi:isolate}',
-    '#fs-root .modal{position:fixed;inset:0;background:rgba(20,20,20,.55);display:flex;align-items:flex-end;justify-content:center;z-index:99999;padding:0}',
-    '#fs-root .modal .card{width:100%;max-width:520px;border-radius:22px 22px 0 0;max-height:92vh;overflow:auto;padding:22px 18px 26px}',
+    '#fs-root .fs-modal{position:fixed;inset:0;background:rgba(20,20,20,.55);display:flex !important;opacity:1 !important;visibility:visible !important;align-items:flex-end;justify-content:center;z-index:99999;padding:0}',
+    '#fs-root .fs-modal .card{width:100%;max-width:520px;border-radius:22px 22px 0 0;max-height:92vh;overflow:auto;padding:22px 18px 26px}',
     '#fs-root .x{float:left;background:none;border:0;font-size:26px;line-height:1;cursor:pointer;color:#5c5c5c;padding:0 4px}',
     '#fs-root .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
     '#fs-root .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}',
     '#fs-root .spin{display:inline-block;width:18px;height:18px;border:3px solid rgba(0,0,0,.15);border-top-color:#141414;border-radius:50%;animation:fsspin 1s linear infinite;vertical-align:middle;margin-left:8px}',
     '@keyframes fsspin{to{transform:rotate(360deg)}}',
-    '@media (min-width:720px){#fs-root h1{font-size:42px}#fs-root .wrap{padding-top:44px}#fs-root .gets{grid-template-columns:1fr 1fr}#fs-root .nichegrid{grid-template-columns:repeat(3,1fr)}#fs-root .modal{align-items:center}#fs-root .modal .card{border-radius:22px}}',
+    '@media (min-width:720px){#fs-root h1{font-size:42px}#fs-root .wrap{padding-top:44px}#fs-root .gets{grid-template-columns:1fr 1fr}#fs-root .nichegrid{grid-template-columns:repeat(3,1fr)}#fs-root .fs-modal{align-items:center}#fs-root .fs-modal .card{border-radius:22px}}',
     '@media (prefers-reduced-motion:reduce){#fs-root .fill,#fs-root .opt{transition:none}#fs-root .spin{animation:none}}'
   ].join('');
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
@@ -244,7 +244,7 @@
 
   /* ---------- sign-up modal ---------- */
   function signup() {
-    var m = document.createElement('div'); m.className = 'modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'fsSuT');
+    var m = document.createElement('div'); m.className = 'fs-modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'fsSuT');
     m.innerHTML = '<form class="card" novalidate><button type="button" class="x" aria-label="סגירה">×</button>' +
       '<h2 id="fsSuT" tabindex="-1">לאן לשלוח לכם את <em>פרטי החנות</em>?</h2><p class="muted">ככה נשמור את ההתקדמות שלכם, ותוכלו לחזור לאשף בכל רגע.</p>' +
       '<label class="f">שם מלא<input type="text" name="name" autocomplete="name" required></label>' +
@@ -298,7 +298,7 @@
   }
 
   function privacy() {
-    var m = document.createElement('div'); m.className = 'modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'fsPrT');
+    var m = document.createElement('div'); m.className = 'fs-modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'fsPrT');
     m.innerHTML = '<div class="card"><button type="button" class="x" aria-label="סגירה">×</button><h2 id="fsPrT" tabindex="-1">מדיניות פרטיות</h2>' +
       '<p>הפרטים שתשאירו (שם, טלפון, אימייל) והבחירות שלכם באשף (נישה, צבעים, שם החנות וכתובת החנות בשופיפיי) נשמרים כדי לשמור את ההתקדמות שלכם, לחזור אליכם ולעזור לכם להקים את החנות.</p>' +
       '<p>אנחנו משתמשים בפיקסל של מטא כדי למדוד את הפרסום. לא נמכור את הפרטים שלכם לאף אחד.</p>' +
