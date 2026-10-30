@@ -40,6 +40,18 @@
     try { fbq(custom ? 'trackSingleCustom' : 'trackSingle', PX, ev, params || {}, { eventID: ev + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) }); } catch (e) {}
   }
   try { fbq('init', PX); fbq('trackSingle', PX, 'PageView'); } catch (e) {}
+  // funnel beacon → ping-funnel /api/event (admin board: visitors / clicks per ad via utm_content)
+  var EV_API = 'https://ping-funnel.aviv1988.workers.dev/api/event';
+  var VID = (function () { try { var v = localStorage.getItem('pf_vid'); if (!v) { v = (Date.now().toString(36) + Math.random().toString(36).slice(2)).slice(0, 24); localStorage.setItem('pf_vid', v); } return v; } catch (e) { return ''; } })();
+  var sent = {};
+  function track(name) {
+    if (sent[name]) return; sent[name] = 1;
+    var q = new URLSearchParams(location.search), utm = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) { if (q.get(k)) utm[k] = q.get(k); });
+    var body = { name: name, event_id: name + '_' + (Date.now().toString(36) + Math.random().toString(36).slice(2)).slice(0, 20), vid: VID, utm: utm, url: location.origin + location.pathname };
+    try { fetch(EV_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true, mode: 'cors' }).catch(function () {}); } catch (e) {}
+  }
+  track('WGPageView');
 
   var css = [
     '#wg-root{direction:rtl;text-align:right;background:' + BG + ';color:#141414;font-family:Heebo,Arial,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}',
@@ -150,6 +162,7 @@
         b.addEventListener('click', function () {
           var o = q.o[+b.getAttribute('data-n')];
           A[q.k] = o;
+          track('WGStart');
           body.querySelectorAll('.opt').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
           setTimeout(function () {
             if (q.k === 'site' && o === 'לא') return noSite();

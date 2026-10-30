@@ -32,6 +32,18 @@
     try { fbq(custom ? 'trackSingleCustom' : 'trackSingle', PX, ev, params || {}, { eventID: ev + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) }); } catch (e) {}
   }
   try { fbq('init', PX); fbq('trackSingle', PX, 'PageView'); } catch (e) {}
+  // funnel beacon → ping-funnel /api/event (admin board: visitors / clicks per ad via utm_content)
+  var EV_API = 'https://ping-funnel.aviv1988.workers.dev/api/event';
+  var VID = (function () { try { var v = localStorage.getItem('pf_vid'); if (!v) { v = (Date.now().toString(36) + Math.random().toString(36).slice(2)).slice(0, 24); localStorage.setItem('pf_vid', v); } return v; } catch (e) { return ''; } })();
+  var sent = {};
+  function track(name) {
+    if (sent[name]) return; sent[name] = 1;
+    var q = new URLSearchParams(location.search), utm = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) { if (q.get(k)) utm[k] = q.get(k); });
+    var body = { name: name, event_id: name + '_' + (Date.now().toString(36) + Math.random().toString(36).slice(2)).slice(0, 20), vid: VID, utm: utm, url: location.origin + location.pathname };
+    try { fetch(EV_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true, mode: 'cors' }).catch(function () {}); } catch (e) {}
+  }
+  track('STPageView');
 
   var css = [
     '#st-root{direction:rtl;text-align:right;background:' + BG + ';color:#141414;font-family:Heebo,Arial,sans-serif;-webkit-font-smoothing:antialiased}',
@@ -93,6 +105,7 @@
       var ev = a.getAttribute('data-ev');
       if ((ev === 'setup' || ev === 'ping') && !leadSent) { leadSent = true; px('Lead', { content_name: 'copy-setup-' + ev }); }
       px({ setup: 'SetupCopyClick', ping: 'PingInstallClick', group: 'GroupClick', ig: 'InstagramClick' }[ev], {}, true);
+      track({ setup: 'STSetupClick', ping: 'STPingClick', group: 'STGroupClick', ig: 'STInstagramClick' }[ev]);
     });
   });
 
@@ -113,8 +126,8 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix); else fix();
     window._wq.push({ id: WISTIA, onReady: function (v) {
       var played = false, half = false;
-      v.bind('play', function () { if (!played) { played = true; px('ViewContent', { content_name: 'copy-setup-video' }); } });
-      v.bind('percentwatchedchanged', function (pct) { if (!half && pct >= 0.5) { half = true; px('VideoHalf', {}, true); } });
+      v.bind('play', function () { if (!played) { played = true; px('ViewContent', { content_name: 'copy-setup-video' }); track('STPlay'); } });
+      v.bind('percentwatchedchanged', function (pct) { if (!half && pct >= 0.5) { half = true; px('VideoHalf', {}, true); track('STVideo50'); } });
     } });
   }
 })();
