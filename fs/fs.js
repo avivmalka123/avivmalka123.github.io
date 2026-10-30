@@ -140,6 +140,9 @@
     '#fs-root .note{background:#FFF8E6;border:1px solid #F1D48A;border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.5;margin:14px 0}',
     '#fs-root .ok{background:#E9F6EE;border:1px solid #9DD3B0;border-radius:12px;padding:12px 14px;font-size:15px;margin:14px 0;color:#14532D;font-weight:600}',
     '#fs-root .row{display:grid;gap:10px;margin:0 0 10px}',
+    '#fs-root .copy{display:flex;gap:8px;align-items:center;justify-content:space-between;background:#fff;border:2px dashed #C98A12;border-radius:12px;padding:10px 12px;margin:0 0 14px;font-size:17px;font-weight:700}',
+    '#fs-root .copy span{overflow-wrap:anywhere}',
+    '#fs-root .copy button{flex:none;background:#141414;color:#fff;border:0;border-radius:10px;padding:9px 14px;font-size:15px;font-weight:800;cursor:pointer}',
     '#fs-root .kbd{display:inline-block;background:#141414;color:#fff;border-radius:6px;padding:1px 7px;font-size:14px;font-weight:700}',
     '#fs-root .ltr{direction:ltr;unicode-bidi:isolate}',
     '#fs-root .fs-modal{position:fixed;inset:0;background:rgba(20,20,20,.55);display:flex !important;opacity:1 !important;visibility:visible !important;align-items:flex-end;justify-content:center;z-index:99999;padding:0}',
@@ -205,7 +208,6 @@
   function landing() {
     var cta = function (id) { return '<button class="btn" data-go="start" id="' + id + '">לבנות את החנות שלי בחינם<small>תבנית בעברית + 3 מוצרים מוכנים למכירה</small></button>'; };
     root.innerHTML = '<div class="bar">פתיחת חנות בעברית · בחינם · בלי ידע טכני</div><div class="wrap">' +
-      '<span class="pill">אביב מלכה · מועדון האיקומרס</span>' +
       '<h1>חנות שופיפיי בעברית, <em>מוכנה למכירה</em> תוך דקות</h1>' +
       '<p class="lead">בוחרים נישה וצבעים, ומקבלים חנות עם תבנית מעוצבת בעברית ו־3 מוצרים מוכנים: תמונות, תיאורים ומחירים. אנחנו מלווים אתכם צעד אחרי צעד עד שהחנות באוויר.</p>' +
       cta('cta1') + '<p class="under">ההקמה בחינם. שופיפיי: ימי ניסיון בחינם, ואז דולר אחד לחודש בתקופת המבצע</p>' +
@@ -383,7 +385,8 @@
     },
     ping: function () {
       frame('ping', '<h2>מוסיפים <em>עוזר AI ופופאפ</em> לחנות</h2><p>חנות חדשה צריכה שני דברים מהיום הראשון: מישהו שעונה ללקוחות, ודרך לאסוף פרטים של מי שנכנס ולא קנה. בשביל זה מתקינים את Ping AI.</p>' +
-        '<ol class="how"><li>לוחצים על הכפתור הראשון ומתקינים את האפליקציה בחנות (<b>התקנה</b> / Install).</li><li>חוזרים לכאן ולוחצים על הכפתור השני. הוא מעתיק לחנות סטאפ מוכן: צ׳אט AI ופופאפ לאיסוף לידים.</li></ol>' +
+        '<ol class="how"><li>לוחצים על הכפתור הראשון. כתובת החנות שלכם מועתקת אוטומטית.</li><li>בשופיפיי לוחצים <b>התקנה</b> (Install). אם נפתח חלון שמבקש כתובת חנות (Store URL), <b>מדביקים</b> את הכתובת ולוחצים <b>כניסה</b> (Log in), ואז שוב התקנה.</li><li>חוזרים לכאן ולוחצים על הכפתור השני. הוא מעתיק לחנות סטאפ מוכן: צ׳אט AI ופופאפ לאיסוף לידים.</li></ol>' +
+        '<div class="copy"><span class="ltr" id="shopAddr">' + esc(S.shop || '') + '</span><button type="button" id="copyShop">העתקה</button></div>' +
         '<a class="btn" id="pingGo" href="' + PING_APP + '" target="_blank" rel="noopener">1. התקנת Ping AI בשופיפיי<small>נפתח בחלון חדש</small></a>' +
         '<a class="btn dark" id="setupGo" href="' + PING_SETUP + '" target="_blank" rel="noopener" style="margin-top:12px">2. העתקת הסטאפ המוכן + הפופאפ</a>' +
         '<button class="btn white" type="button" id="pingNext" style="margin-top:14px">הותקן, ממשיכים</button>');
@@ -460,6 +463,14 @@
     return new Blob(['\ufeff' + rows.map(function (r) { return r.map(csvCell).join(','); }).join('\r\n')], {type: 'text/csv;charset=utf-8'});
   }
 
+  // copies the store's myshopify address: the App Store asks for it when the browser isn't logged in to Shopify
+  function copyShop(btn) {
+    var v = S.shop || '';
+    function ok() { if (btn) { btn.textContent = '✓ הועתק'; setTimeout(function () { btn.textContent = 'העתקה'; }, 2500); } }
+    try { navigator.clipboard.writeText(v).then(ok, fallback); } catch (e) { fallback(); }
+    function fallback() { var ta = document.createElement('textarea'); ta.value = v; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); ok(); } catch (e) {} ta.remove(); }
+  }
+
   /* ---------- events ---------- */
   root.addEventListener('click', function (e) {
     var t = e.target.closest('button, a'); if (!t || !root.contains(t)) return;
@@ -503,7 +514,8 @@
       case 'themeNext': step('theme'); wizard('products'); return;
       case 'prodDl': download(buildCsv(), slug() + '-products.csv'); t.textContent = '✓ הקובץ ירד · להורדה חוזרת'; px('FSProductsDownload', {}, true); return;
       case 'prodNext': step('products'); wizard('ping'); return;
-      case 'pingGo': step('ping'); px('PingInstallClick', {source: 'free-store'}, true); return;
+      case 'copyShop': copyShop(t); return;
+      case 'pingGo': copyShop($('#copyShop')); step('ping'); px('PingInstallClick', {source: 'free-store'}, true); return;
       case 'setupGo': step('setup'); px('FSSetupClick', {}, true); return;
       case 'pingNext': step('ping'); step('done'); px('FSDone', {}, true); wizard('done'); return;
     }
