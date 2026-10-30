@@ -1,0 +1,324 @@
+/*
+  he-design.css - visual layer for "חנות בעברית" on top of Dawn.
+  Colours always come from the colour schemes (Theme settings -> Colors),
+  so everything here follows whatever the merchant picks in the editor.
+*/
+
+/* ---------- Typography: Hebrew reads better without letter-spacing ---------- */
+body,
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5,
+.button,
+.caption,
+.caption-large,
+.caption-with-letter-spacing,
+.subtitle,
+.price,
+.badge,
+.field__input,
+.select__select,
+.header__menu-item,
+.menu-drawer__menu-item,
+.announcement-bar__message {
+  letter-spacing: 0;
+}
+
+body {
+  line-height: 1.65;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5 {
+  line-height: 1.25;
+}
+
+.caption-with-letter-spacing {
+  text-transform: none;
+  font-weight: 600;
+}
+
+/* ---------- Buttons: rounded, bold, easy to tap ---------- */
+.button,
+.shopify-challenge__button,
+.customer button {
+  font-weight: 700;
+}
+
+/* Bigger call-to-action buttons only where they sell (hero, rich text, newsletter) */
+.banner__buttons .button,
+.rich-text__buttons .button {
+  font-size: 1.7rem;
+  min-height: calc(5.2rem + var(--buttons-border-width) * 2);
+  padding: 0 3.6rem;
+}
+
+@media screen and (max-width: 749px) {
+  .banner__buttons .button {
+    width: 100%;
+  }
+}
+
+/* ---------- Announcement bar ---------- */
+.announcement-bar__message {
+  font-weight: 600;
+  font-size: 1.4rem;
+  padding: 0.9rem 0;
+  min-height: auto;
+}
+
+/* ---------- Header ---------- */
+.header__heading-link .h2 {
+  font-weight: 700;
+}
+
+.header__menu-item {
+  font-weight: 600;
+}
+
+/* ---------- Hero (image banner without an image = solid colour band) ---------- */
+.banner--no-media::after {
+  display: none;
+}
+
+.banner--no-media .banner__box {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.banner--no-media .banner__heading {
+  font-weight: 800;
+}
+
+.banner__heading {
+  line-height: 1.15;
+}
+
+.banner__text {
+  font-size: 1.8rem;
+}
+
+@media screen and (max-width: 749px) {
+  .banner--no-media .banner__content {
+    min-height: 34rem;
+  }
+
+  .banner--no-media .banner__box {
+    padding: 4.8rem 2rem;
+  }
+
+  .banner__text {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .banner--no-media.banner--medium:not(.banner--adapt) {
+    min-height: 48rem;
+  }
+}
+
+/* ---------- Section titles ---------- */
+.title,
+.collapsible-content__heading,
+.rich-text__heading,
+.newsletter__wrapper h2 {
+  font-weight: 800;
+}
+
+.title-wrapper-with-link {
+  margin-bottom: 2.4rem;
+}
+
+/* ---------- Product cards ---------- */
+.card__heading {
+  font-weight: 600;
+  font-size: 1.6rem;
+  line-height: 1.35;
+}
+
+@media screen and (min-width: 750px) {
+  .card__heading {
+    font-size: 1.8rem;
+  }
+}
+
+.card-information .price {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.card-information .price__sale .price-item--regular {
+  font-weight: 400;
+}
+
+.card .badge {
+  font-weight: 700;
+  padding: 0.4rem 1.2rem;
+}
+
+.card-wrapper .card__inner {
+  overflow: hidden;
+}
+
+/* ---------- Product page ---------- */
+.product__title h1,
+.product__title .h1 {
+  font-size: calc(var(--font-heading-scale) * 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+@media screen and (min-width: 750px) {
+  .product__title h1,
+  .product__title .h1 {
+    font-size: calc(var(--font-heading-scale) * 4.2rem);
+  }
+}
+
+.product .price--large {
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 750px) {
+  .product .price--large {
+    font-size: 2.6rem;
+  }
+}
+
+.product .price--large .price__sale .price-item--regular {
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.product-form__submit {
+  min-height: 5.6rem;
+  font-size: 1.8rem;
+}
+
+.product-form__input .form__label {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+/* Trust line under the buy button (the "subtitle" text block) */
+.product__info-container .product__text.subtitle {
+  margin: 0.4rem 0 1.6rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--inputs-radius);
+  background: rgba(var(--color-foreground), 0.04);
+  color: rgba(var(--color-foreground), 0.85);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.product__accordion .summary__title .accordion__title {
+  font-weight: 700;
+}
+
+/* ---------- Trust badges / USP row (sections/trust-badges.liquid) ---------- */
+.trust-badges__heading {
+  text-align: center;
+  margin: 0 0 3rem;
+}
+
+.trust-badges {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .trust-badges {
+    grid-template-columns: repeat(min(var(--trust-badges-count), 3), minmax(0, 1fr));
+    gap: 2.4rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .trust-badges {
+    grid-template-columns: repeat(min(var(--trust-badges-count), 6), minmax(0, 1fr));
+  }
+}
+
+.trust-badges__item {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 2rem;
+  border-radius: var(--text-boxes-radius);
+  background: rgb(var(--color-background));
+  box-shadow: 0 0 0 0.1rem rgba(var(--color-foreground), 0.08);
+}
+
+.trust-badges--vertical .trust-badges__item {
+  flex-direction: column;
+  text-align: center;
+  padding: 2.8rem 2rem;
+}
+
+.trust-badges__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+  background: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+}
+
+.trust-badges__icon .svg-wrapper {
+  width: 2.6rem;
+  height: 2.6rem;
+}
+
+.trust-badges__icon svg path {
+  fill: currentColor;
+}
+
+.trust-badges__title {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1.35;
+  color: rgb(var(--color-foreground));
+}
+
+.trust-badges__text {
+  margin-top: 0.4rem;
+  font-size: 1.4rem;
+}
+
+.trust-badges__text > *:first-child {
+  margin-top: 0;
+}
+
+.trust-badges__text > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- FAQ (collapsible content) ---------- */
+.collapsible-content .accordion {
+  border-radius: var(--text-boxes-radius);
+}
+
+.collapsible-content .accordion__title {
+  font-weight: 700;
+}
+
+/* ---------- Footer ---------- */
+.footer-block__heading {
+  font-weight: 700;
+}
+
+.footer .list-payment {
+  gap: 0.6rem;
+}

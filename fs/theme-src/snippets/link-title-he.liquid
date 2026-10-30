@@ -1,0 +1,44 @@
+{%- comment -%}
+  Renders a menu link title. Shopify creates new stores with English menu
+  titles (Home, Catalog, Contact, Search...). Known default titles are shown
+  in Hebrew; any other title is shown exactly as the merchant typed it.
+
+  Accepts:
+  - title: {String} The link title
+
+  Usage:
+  {% render 'link-title-he', title: link.title %}
+{%- endcomment -%}
+{%- liquid
+  assign t = title | strip
+  assign k = t | downcase
+  case k
+    when 'home', 'home page', 'homepage'
+      assign t = 'דף הבית'
+    when 'catalog', 'shop', 'shop all', 'all products', 'products', 'store'
+      assign t = 'כל המוצרים'
+    when 'collections', 'categories'
+      assign t = 'קטגוריות'
+    when 'contact', 'contact us', 'contact information'
+      assign t = 'צור קשר'
+    when 'search'
+      assign t = 'חיפוש'
+    when 'about', 'about us'
+      assign t = 'אודות'
+    when 'faq', 'faqs'
+      assign t = 'שאלות נפוצות'
+    when 'blog', 'news'
+      assign t = 'בלוג'
+    when 'privacy policy'
+      assign t = 'מדיניות פרטיות'
+    when 'refund policy', 'return policy', 'returns'
+      assign t = 'מדיניות החזרות'
+    when 'shipping policy', 'shipping'
+      assign t = 'מדיניות משלוחים'
+    when 'terms of service', 'terms and conditions', 'terms'
+      assign t = 'תקנון האתר'
+    when 'accessibility', 'accessibility statement'
+      assign t = 'הצהרת נגישות'
+  endcase
+  echo t | escape
+-%}
