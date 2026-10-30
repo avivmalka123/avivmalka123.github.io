@@ -102,6 +102,13 @@
       var s = document.createElement('script'); s.src = src; s.async = true; document.head.appendChild(s);
     });
     window._wq = window._wq || [];
+    // the cloned Kajabi video block embeds the same media with a stripped-down player: drop it, then set full controls (pushed after Kajabi's own options)
+    var fix = function () {
+      document.querySelectorAll('.block-type--video').forEach(function (el) { el.parentNode && el.parentNode.removeChild(el); });
+      window._wq.push({ id: WISTIA, options: { playbar: true, fullscreenButton: true, playbackRateControl: true, qualityControl: true, settingsControl: true,
+        smallPlayButton: true, playButton: true, controlsVisibleOnLoad: false, stillUrl: 'https://avivmalka123.github.io/st/poster.jpg', playerColor: '#E0A21E' } });
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix); else fix();
     window._wq.push({ id: WISTIA, onReady: function (v) {
       var played = false, half = false;
       v.bind('play', function () { if (!played) { played = true; px('ViewContent', { content_name: 'copy-setup-video' }); } });
