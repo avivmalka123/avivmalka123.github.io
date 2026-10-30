@@ -70,7 +70,7 @@
       '<span class="pill">🎄 לבעלי אתר איקומרס, לפני בלאק פריידיי</span>' +
       '<h1>בחגים האלה אנחנו הולכים להוסיף עוד <em><bdi dir="ltr">30%–50%</bdi></em> למכירות באתר. ככה תעתיקו את זה אצלכם.</h1>' +
       '<p class="sub">זה הסטאפ שאני מפעיל בחנויות שלי לתקופת החגים. <b>בלי להגדיל תקציב פרסום ובלי לרדוף אחרי לקוחות חדשים</b>: הוא עובד על מי שכבר נכנס לחנות שלכם. בהדרכה אני מראה אותו מבפנים, ובסוף אתם מעתיקים אותו לחנות שלכם.</p>' +
-      '<div class="vid"><div class="wistia_embed wistia_async_' + WISTIA + ' videoFoam=false" style="height:100%;width:100%">&nbsp;</div></div>' +
+      '<div class="vid"><div class="wistia_embed wistia_async_' + WISTIA + ' videoFoam=false playbar=true fullscreenButton=true smallPlayButton=true settingsControl=true playbackRateControl=true qualityControl=true playerColor=E0A21E stillUrl=https://avivmalka123.github.io/st/poster.jpg" style="height:100%;width:100%">&nbsp;</div></div>' +
       '<div class="cap"><span>▶ הגדלת המכירות באתר בעוד 30%</span><span>15 דקות</span></div>' +
       '<h2>3 צעדים, לפני שהעונה מתחילה</h2>' +
       '<ol class="steps">' +
@@ -102,6 +102,8 @@
       var s = document.createElement('script'); s.src = src; s.async = true; document.head.appendChild(s);
     });
     window._wq = window._wq || [];
+    // Kajabi's block pushes {"<id>": {playbar:false, stillUrl: video.png, …}} during parse, before E-v1 loads: drop that push
+    (function (q) { var push = q.push; q.push = function (x) { if (x && typeof x === 'object' && Object.prototype.hasOwnProperty.call(x, WISTIA)) return q.length; return push.apply(q, arguments); }; })(window._wq);
     // the cloned Kajabi video block embeds the same media with a stripped-down player: drop it, then set full controls (pushed after Kajabi's own options)
     var fix = function () {
       document.querySelectorAll('.block-type--video').forEach(function (el) { el.parentNode && el.parentNode.removeChild(el); });
