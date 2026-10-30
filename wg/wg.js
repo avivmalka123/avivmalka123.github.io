@@ -144,7 +144,7 @@
       body.innerHTML =
         '<h2 id="wgQ" tabindex="-1">' + esc(q.t) + '</h2>' +
         '<div class="opts" role="group" aria-labelledby="wgQ">' +
-          q.o.map(function (o, n) { return '<button type="button" class="opt" data-n="' + n + '" aria-pressed="' + (A[q.k] === o) + '">' + esc(o) + '</button>'; }).join('') +
+          q.o.map(function (o, n) { return '<button type="button" class="opt" data-n="' + n + '" aria-pressed="' + (A[q.k] === o) + '">' + esc(o).replace(/(\d[\d,]*–\d[\d,]*)/, '<bdi dir="ltr">$1</bdi>') + '</button>'; }).join('') +
         '</div>' + backBtn();
       body.querySelectorAll('.opt').forEach(function (b) {
         b.addEventListener('click', function () {
