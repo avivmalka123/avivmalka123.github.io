@@ -1,10 +1,14 @@
 /* Closed WhatsApp group quiz (www.avivmalka.com/ecom-group) · Kajabi Custom Code block: <div id="wg-root"></div> + this file.
-   4 questions → Meta Lead on pixel 2210072352882860 → redirect to the WhatsApp group. No lead data is stored or sent anywhere. */
+   4 questions → Meta Lead on pixel 2210072352882860 → redirect to the WhatsApp group.
+   Anonymous answers (no name/phone) go to the ping-funnel worker /api/group → admin tab "קבוצה סגורה". */
 (function () {
   var GROUP = 'https://chat.whatsapp.com/JhREMAygSXrAVSPKXcHkmr';
   var COURSE = 'https://www.avivmalka.com/course-hadira';
   var PX = '2210072352882860';
   var BG = '#FAF8F3';
+  var API = 'https://ping-funnel.aviv1988.workers.dev/api/group';
+  var SID = (Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)).replace(/[^a-z0-9]/g, '').slice(0, 24);
+  var QS = new URLSearchParams(location.search);
 
   var root = document.getElementById('wg-root');
   if (!root) { root = document.createElement('div'); root.id = 'wg-root'; document.body.appendChild(root); }
@@ -25,6 +29,12 @@
   // Meta pixel (only to PX; Kajabi's site pixel keeps its own PageView)
   if (!window.fbq) {
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  }
+  function save(status) {
+    var utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) { if (QS.get(k)) utm[k] = QS.get(k); });
+    var body = { sid: SID, status: status, site: A.site, years: A.years, revenue: A.revenue, need: A.need, utm: utm, fbclid: QS.get('fbclid') || '',
+      referrer: document.referrer, landing_url: location.origin + location.pathname, hp: (document.getElementById('wgHp') || {}).value || '' };
+    try { fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true, mode: 'cors' }).catch(function () {}); } catch (e) {}
   }
   function px(ev, params, custom) {
     try { fbq(custom ? 'trackSingleCustom' : 'trackSingle', PX, ev, params || {}, { eventID: ev + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) }); } catch (e) {}
@@ -91,7 +101,8 @@
         '<div class="track" aria-hidden="true"><div class="fill" id="wgFill"></div></div>' +
         '<div id="wgBody"></div>' +
       '</section>' +
-      '<p class="foot">אנחנו לא שומרים את התשובות ולא מבקשים פרטים אישיים.</p>' +
+      '<p class="foot">לא מבקשים שם או טלפון. התשובות נשמרות אצלנו בלי פרטים מזהים, רק כדי להכיר את מי שמצטרף לקבוצה.</p>' +
+      '<input id="wgHp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
     '</main>';
 
   var Q = [
@@ -152,6 +163,7 @@
   }
 
   function noSite() {
+    save('no_site');
     stepEl.textContent = 'הקבוצה מיועדת לבעלי אתר פעיל';
     body.innerHTML =
       '<h2 tabindex="-1">הקבוצה מיועדת רק לבעלי אתר פעיל</h2>' +
@@ -165,6 +177,7 @@
   function finish() {
     if (done) return; done = true;
     px('Lead', { content_name: 'whatsapp-group-quiz', content_category: A.revenue || '', years_in_field: A.years || '' });
+    save('completed');
     stepEl.textContent = 'סיימתם!';
     fill.style.width = '100%';
     body.innerHTML =
