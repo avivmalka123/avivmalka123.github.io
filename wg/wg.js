@@ -19,6 +19,7 @@
       p = p.parentElement;
     }
     document.querySelectorAll('header.header, footer.footer, .announcement').forEach(function (el) { el.style.display = 'none'; });
+    var hs = document.createElement('style'); hs.textContent = '.block-type--video{display:none !important}'; document.head.appendChild(hs);
   } catch (e) {}
 
   // Meta pixel (only to PX; Kajabi's site pixel keeps its own PageView)
