@@ -1,7 +1,7 @@
 /* "Copy my setup" training page (www.avivmalka.com/copy-setup) · Kajabi Custom Code block: <div id="st-root"></div> + this file.
    No sign-up: hook + Wistia video + 4 links. Meta pixel 2210072352882860: Lead on the first setup-copy / Ping-install click. */
 (function () {
-  var WISTIA = '__WISTIA_ID__';
+  var WISTIA = 'bk5fkohucp';
   var SETUP = 'https://pingai.org/setup/vn4QJ9uS';
   var PING = 'https://apps.shopify.com/ping-ai';
   var GROUP = 'https://chat.whatsapp.com/JhREMAygSXrAVSPKXcHkmr';
