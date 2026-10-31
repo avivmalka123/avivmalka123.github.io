@@ -2,6 +2,8 @@
    No sign-up: hook + Wistia video + 4 links. Meta pixel 2210072352882860: Lead on the first setup-copy / Ping-install click. */
 (function () {
   var WISTIA = 'bk5fkohucp';
+  // 31.10.2026: brand-blurred re-edit served from GitHub Pages (native player) until it replaces the Kajabi/Wistia upload
+  var MP4 = 'https://avivmalka123.github.io/st/setup30.mp4';
   var SETUP = 'https://pingai.org/setup/vn4QJ9uS';
   var PING = 'https://apps.shopify.com/ping-ai';
   var GROUP = 'https://chat.whatsapp.com/JhREMAygSXrAVSPKXcHkmr';
@@ -56,7 +58,8 @@
     '#st-root .sub{font-size:18px;line-height:1.6;margin:0 0 18px;color:#2b2b2b}',
     '#st-root .sub b{color:#141414}',
     '#st-root .vid{position:relative;border-radius:16px;overflow:hidden;background:#141414;box-shadow:0 10px 30px rgba(20,20,20,.18);aspect-ratio:16/9}',
-    '#st-root .vid .wistia_embed{position:absolute;inset:0;width:100%;height:100%}',
+    '#st-root .vid .wistia_embed,#st-root .vid video{position:absolute;inset:0;width:100%;height:100%}',
+    '#st-root .vid video{background:#141414;object-fit:contain}',
     '#st-root .cap{display:flex;justify-content:space-between;gap:10px;font-size:14px;font-weight:600;color:#5c5c5c;margin:10px 2px 22px}',
     '#st-root h2{font-size:22px;font-weight:900;margin:0 0 12px;color:#141414}',
     '#st-root .steps{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:8px;counter-reset:s}',
@@ -82,7 +85,8 @@
       '<span class="pill">🎄 לבעלי אתר איקומרס, לפני בלאק פריידיי</span>' +
       '<h1>בחגים האלה אנחנו הולכים להוסיף עוד <em><bdi dir="ltr">30%–50%</bdi></em> למכירות באתר. ככה תעתיקו את זה אצלכם.</h1>' +
       '<p class="sub">זה הסטאפ שאני מפעיל בחנויות שלי לתקופת החגים. <b>בלי להגדיל תקציב פרסום ובלי לרדוף אחרי לקוחות חדשים</b>: הוא עובד על מי שכבר נכנס לחנות שלכם. בהדרכה אני מראה אותו מבפנים, ובסוף אתם מעתיקים אותו לחנות שלכם.</p>' +
-      '<div class="vid"><div class="wistia_embed wistia_async_' + WISTIA + ' videoFoam=false playbar=true fullscreenButton=true smallPlayButton=true settingsControl=true playbackRateControl=true qualityControl=true playerColor=E0A21E stillUrl=https://avivmalka123.github.io/st/poster.jpg" style="height:100%;width:100%">&nbsp;</div></div>' +
+      '<div class="vid">' + (MP4 ? '<video controls playsinline preload="metadata" poster="https://avivmalka123.github.io/st/poster.jpg?v=2" src="' + MP4 + '"></video>'
+        : '<div class="wistia_embed wistia_async_' + WISTIA + ' videoFoam=false playbar=true fullscreenButton=true smallPlayButton=true settingsControl=true playbackRateControl=true qualityControl=true playerColor=E0A21E stillUrl=https://avivmalka123.github.io/st/poster.jpg" style="height:100%;width:100%">&nbsp;</div>') + '</div>' +
       '<div class="cap"><span>▶ הגדלת המכירות באתר בעוד 30%</span><span>15 דקות</span></div>' +
       '<h2>3 צעדים, לפני שהעונה מתחילה</h2>' +
       '<ol class="steps">' +
@@ -109,8 +113,17 @@
     });
   });
 
+  // native player (MP4): drop Kajabi's hidden video block, same play / 50% events
+  if (MP4) {
+    var rmBlock = function () { document.querySelectorAll('.block-type--video').forEach(function (el) { el.parentNode && el.parentNode.removeChild(el); }); };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', rmBlock); else rmBlock();
+    var vEl = root.querySelector('.vid video'), vPlayed = false, vHalf = false;
+    vEl.addEventListener('play', function () { if (!vPlayed) { vPlayed = true; px('ViewContent', { content_name: 'copy-setup-video' }); track('STPlay'); } });
+    vEl.addEventListener('timeupdate', function () { if (!vHalf && vEl.duration && vEl.currentTime / vEl.duration >= 0.5) { vHalf = true; px('VideoHalf', {}, true); track('STVideo50'); } });
+  }
+
   // Wistia player + play / 50% events
-  if (WISTIA.indexOf('__') !== 0) {
+  if (!MP4 && WISTIA.indexOf('__') !== 0) {
     ['https://fast.wistia.com/embed/medias/' + WISTIA + '.jsonp', 'https://fast.wistia.com/assets/external/E-v1.js'].forEach(function (src) {
       var s = document.createElement('script'); s.src = src; s.async = true; document.head.appendChild(s);
     });
