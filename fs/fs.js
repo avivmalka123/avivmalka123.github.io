@@ -146,7 +146,7 @@
     '#fs-root .copy{display:flex;gap:8px;align-items:center;justify-content:space-between;background:#fff;border:2px dashed #C98A12;border-radius:12px;padding:10px 12px;margin:0 0 14px;font-size:17px;font-weight:700}',
     '#fs-root .copy span{overflow-wrap:anywhere}',
     '#fs-root .copy button{flex:none;background:#141414;color:#fff;border:0;border-radius:10px;padding:9px 14px;font-size:15px;font-weight:800;cursor:pointer}',
-    '#fs-root .vid{display:block;width:100%;aspect-ratio:1440/748;background:#141414;border-radius:14px;margin:0 0 16px;box-shadow:0 6px 18px rgba(20,20,20,.15)}',
+    '#fs-root .vid{display:block;width:100%;height:auto;background:#141414;border-radius:14px;margin:0 0 16px;box-shadow:0 6px 18px rgba(20,20,20,.15)}',
     '#fs-root .kbd{display:inline-block;background:#141414;color:#fff;border-radius:6px;padding:1px 7px;font-size:14px;font-weight:700}',
     '#fs-root .ltr{direction:ltr;unicode-bidi:isolate}',
     '#fs-root .fs-modal{position:fixed;inset:0;background:rgba(20,20,20,.55);display:flex !important;opacity:1 !important;visibility:visible !important;align-items:flex-end;justify-content:center;z-index:99999;padding:0}',
@@ -372,7 +372,7 @@
     },
     theme: function () {
       frame('theme', '<h2>מתקינים את <em>התבנית בעברית</em></h2><p>הכנו לכם קובץ תבנית עם השם, הצבעים והטקסטים של ' + esc(S.store_name || 'החנות') + '. בסרטון הקצר רואים בדיוק איפה לוחצים.</p>' +
-        '<video class="vid" src="' + BASE + 'vid/theme-install.mp4" poster="' + BASE + 'vid/theme-install.jpg" controls playsinline preload="metadata"></video>' +
+        '<video class="vid" style="aspect-ratio:1440/748" src="' + BASE + 'vid/theme-install.mp4" poster="' + BASE + 'vid/theme-install.jpg" controls playsinline preload="metadata"></video>' +
         '<button class="btn" type="button" id="themeDl">1. הורדת קובץ התבנית</button><span class="err" id="thErr" role="alert"></span>' +
         '<ol class="how" style="margin-top:18px"><li>לוחצים על הכפתור למטה. נפתח מסך התבניות בחנות.</li><li>מתחת לתבנית הנוכחית, ליד "גלו תבניות", לוחצים <b>ייבוא</b> (Import) ואז <b>העלאת קובץ ZIP</b> (Upload zip file).</li><li>בוחרים את הקובץ שהורדתם (בתיקיית ההורדות) ומחכים שיעלה.</li><li>ליד התבנית החדשה לוחצים <b>פרסום</b> (Publish).</li></ol>' +
         '<a class="btn dark" id="themeGo" href="' + admin('/themes') + '" target="_blank" rel="noopener">2. פתיחת מסך התבניות</a>' +
@@ -381,10 +381,11 @@
     },
     products: function () {
       var n = N(S.niche);
-      frame('products', '<h2>מעלים <em>3 מוצרים</em> לחנות</h2>' +
+      frame('products', '<h2>מעלים <em>3 מוצרים</em> לחנות</h2><p>בסרטון הקצר רואים בדיוק איפה לוחצים.</p>' +
+        '<video class="vid" style="aspect-ratio:1440/738" src="' + BASE + 'vid/products-import.mp4" poster="' + BASE + 'vid/products-import.jpg" controls playsinline preload="metadata"></video>' +
         '<div class="mock" style="max-width:100%;border-width:0;box-shadow:none;--bg:#fff;--tx:#141414;--ac:#C98A12"><div class="prods">' + n.products.map(function (p) { return '<div><img src="' + esc(img(p.images[0])) + '" alt="">' + esc(p.title) + '<i>₪' + p.price + '</i></div>'; }).join('') + '</div></div>' +
         '<button class="btn" type="button" id="prodDl">1. הורדת קובץ המוצרים</button>' +
-        '<ol class="how" style="margin-top:18px"><li>לוחצים על הכפתור למטה. נפתח מסך המוצרים.</li><li>לוחצים <b>ייבוא</b> (Import) למעלה.</li><li>בוחרים את קובץ המוצרים שהורדתם, לוחצים <b>העלאה ותצוגה מקדימה</b> ואז <b>ייבוא מוצרים</b>.</li><li>אחרי דקה המוצרים יופיעו בחנות, עם התמונות.</li></ol>' +
+        '<ol class="how" style="margin-top:18px"><li>לוחצים על הכפתור למטה. נפתח מסך המוצרים.</li><li>לוחצים <b>ייבוא</b> (Import), ליד "הוספת מוצר".</li><li>בחלון שנפתח לוחצים <b>העלאת קובץ</b> (Upload file), בוחרים את קובץ המוצרים שהורדתם, ואז <b>ייבוא מוצרים</b> (Import products).</li><li>אחרי דקה המוצרים יופיעו בחנות, עם התמונות.</li></ol>' +
         '<a class="btn dark" id="prodGo" href="' + admin('/products') + '" target="_blank" rel="noopener">2. פתיחת מסך המוצרים</a>' +
         '<button class="btn white" type="button" id="prodNext" style="margin-top:14px">המוצרים עלו, ממשיכים</button>');
     },
@@ -533,7 +534,7 @@
     }
   });
 
-  root.addEventListener('play', function (e) { if (e.target.classList && e.target.classList.contains('vid')) px('FSThemeVideoPlay', {}, true); }, true);
+  root.addEventListener('play', function (e) { if (e.target.classList && e.target.classList.contains('vid')) px(/products/.test(e.target.currentSrc) ? 'FSProductsVideoPlay' : 'FSThemeVideoPlay', {}, true); }, true);
 
   /* ---------- start ---------- */
   track('FSPageView');
