@@ -404,7 +404,7 @@
         '<h3 style="margin-top:6px">פותחים את החנות לכולם</h3>' +
         '<video class="vid" style="aspect-ratio:1440/776" src="' + BASE + 'vid/store-launch.mp4" poster="' + BASE + 'vid/store-launch.jpg" controls playsinline preload="metadata"></video>' +
         '<ol class="how"><li>לוחצים על הכפתור. נפתח מסך החנות המקוונת.</li><li>למעלה לוחצים <b>פרטית</b> (Private) ובוחרים <b>ציבורית</b> (Public).</li><li>לוחצים <b>השקת החנות</b> (Launch store).</li></ol>' +
-        '<div class="note">הכפתור "השקת החנות" נפתח רק אחרי שבחרתם מסלול (שלב הדולר). אם כתוב "Select a plan to launch store", <a href="' + admin('/settings/plan') + '" target="_blank" rel="noopener">בוחרים מסלול כאן</a> וחוזרים.</div>' +
+        '<div class="note">הכפתור "השקת החנות" נפתח רק אחרי שבחרתם מסלול (שלב הדולר). אם מופיעה ההודעה <bdi dir="ltr">Select a plan to launch store</bdi>, <a href="' + admin('/settings/plan') + '" target="_blank" rel="noopener">בוחרים מסלול כאן</a> וחוזרים.</div>' +
         '<a class="btn dark" id="launchGo" href="' + admin('/themes') + '" target="_blank" rel="noopener">פתיחת החנות לכולם</a>' +
         (url ? '<a class="btn" href="' + esc(url) + '" target="_blank" rel="noopener" style="margin-top:12px">לצפייה בחנות שלי</a>' : '') +
         '<h3 style="margin-top:22px">עוד שתי הגדרות קטנות</h3><ol class="how"><li><b>שפת החנות:</b> <a href="' + admin('/settings/languages') + '" target="_blank" rel="noopener">הגדרות ← שפות</a>, מוסיפים עברית וקובעים אותה כשפת ברירת המחדל (גם הקופה תהיה בעברית).</li>' +
