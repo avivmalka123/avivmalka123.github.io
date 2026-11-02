@@ -325,7 +325,7 @@
       '<div class="prog"><span>' + esc(TITLES[code]) + '</span><span>' + Math.round(i / (STEPS.length - 1) * 100) + '%</span></div>' +
       '<div class="track" aria-hidden="true"><div class="fill" style="width:' + Math.max(4, i / (STEPS.length - 1) * 100) + '%"></div></div>' +
       '<div class="card">' + body + '</div>' + (i > 0 && code !== 'done' ? '<button class="back" type="button" data-back="' + STEPS[i - 1] + '">→ חזרה לשלב הקודם</button>' : '') +
-      '<div class="help"><span>צריכים עזרה?</span><a href="' + WA_HELP + '" target="_blank" rel="noopener">💬 שלחו לנו וואטסאפ</a></div></div>';
+      '<div class="help"><span>צריכים עזרה?</span><a href="' + WA_HELP + '" target="_blank" rel="noopener">💬 שלחו לנו וואטסאפ</a></div><div class="foot"><button type="button" data-go="reset">↺ התחלה מחדש</button></div></div>';
     var h = root.querySelector('h2'); if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({preventScroll: true}); } catch (e) {} }
     try { root.scrollIntoView({block: 'start'}); window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (e) {}
   }
@@ -482,6 +482,13 @@
     var d = t.dataset;
     if (d.go === 'start') { px('FSStart', {}, true); track('FSStart'); if (S.tok) wizard(nextOpen()); else signup(); return; }
     if (d.go === 'privacy') { e.preventDefault(); privacy(); return; }
+    if (d.go === 'reset') {
+      // first click asks, second click forgets this device's progress (the lead stays in the board) and shows the landing page
+      if (t.dataset.sure !== '1') { t.dataset.sure = '1'; t.textContent = 'ללחוץ שוב כדי להתחיל מחדש'; return; }
+      ls('fs_tok', null); ls('fs_state', null);
+      S = {tok: null, first: '', niche: null, palette: null, store_name: '', shop: null, steps: {}, cur: 'niche'};
+      landing(); try { window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (x) {} return;
+    }
     if (d.back) { wizard(d.back); return; }
     if (d.niche) {
       S.niche = d.niche; step('niche', {niche: d.niche}); px('FSNiche', {niche: d.niche}, true);
