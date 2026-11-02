@@ -146,6 +146,7 @@
     '#fs-root .copy{display:flex;gap:8px;align-items:center;justify-content:space-between;background:#fff;border:2px dashed #C98A12;border-radius:12px;padding:10px 12px;margin:0 0 14px;font-size:17px;font-weight:700}',
     '#fs-root .copy span{overflow-wrap:anywhere}',
     '#fs-root .copy button{flex:none;background:#141414;color:#fff;border:0;border-radius:10px;padding:9px 14px;font-size:15px;font-weight:800;cursor:pointer}',
+    '#fs-root .vid{display:block;width:100%;aspect-ratio:1440/748;background:#141414;border-radius:14px;margin:0 0 16px;box-shadow:0 6px 18px rgba(20,20,20,.15)}',
     '#fs-root .kbd{display:inline-block;background:#141414;color:#fff;border-radius:6px;padding:1px 7px;font-size:14px;font-weight:700}',
     '#fs-root .ltr{direction:ltr;unicode-bidi:isolate}',
     '#fs-root .fs-modal{position:fixed;inset:0;background:rgba(20,20,20,.55);display:flex !important;opacity:1 !important;visibility:visible !important;align-items:flex-end;justify-content:center;z-index:99999;padding:0}',
@@ -370,9 +371,10 @@
         '<button class="btn white" type="button" id="planNext" style="margin-top:14px">סיימתי, ממשיכים</button>');
     },
     theme: function () {
-      frame('theme', '<h2>מתקינים את <em>התבנית בעברית</em></h2><p>הכנו לכם קובץ תבנית עם השם, הצבעים והטקסטים של ' + esc(S.store_name || 'החנות') + '.</p>' +
+      frame('theme', '<h2>מתקינים את <em>התבנית בעברית</em></h2><p>הכנו לכם קובץ תבנית עם השם, הצבעים והטקסטים של ' + esc(S.store_name || 'החנות') + '. בסרטון הקצר רואים בדיוק איפה לוחצים.</p>' +
+        '<video class="vid" src="' + BASE + 'vid/theme-install.mp4" poster="' + BASE + 'vid/theme-install.jpg" controls playsinline preload="metadata"></video>' +
         '<button class="btn" type="button" id="themeDl">1. הורדת קובץ התבנית</button><span class="err" id="thErr" role="alert"></span>' +
-        '<ol class="how" style="margin-top:18px"><li>לוחצים על הכפתור למטה. נפתח מסך התבניות בחנות.</li><li>לוחצים על <b>הוספת תבנית</b> (Add theme) ואז <b>העלאת קובץ ZIP</b> (Upload zip file).</li><li>בוחרים את הקובץ שהורדתם (בתיקיית ההורדות) ומחכים שיעלה.</li><li>ליד התבנית החדשה לוחצים <b>פרסום</b> (Publish).</li></ol>' +
+        '<ol class="how" style="margin-top:18px"><li>לוחצים על הכפתור למטה. נפתח מסך התבניות בחנות.</li><li>מתחת לתבנית הנוכחית, ליד "גלו תבניות", לוחצים <b>ייבוא</b> (Import) ואז <b>העלאת קובץ ZIP</b> (Upload zip file).</li><li>בוחרים את הקובץ שהורדתם (בתיקיית ההורדות) ומחכים שיעלה.</li><li>ליד התבנית החדשה לוחצים <b>פרסום</b> (Publish).</li></ol>' +
         '<a class="btn dark" id="themeGo" href="' + admin('/themes') + '" target="_blank" rel="noopener">2. פתיחת מסך התבניות</a>' +
         '<div class="note">מעלים מהטלפון? אפשר, אבל מהמחשב זה הכי נוח. הקובץ נשמר בתיקיית ההורדות.</div>' +
         '<button class="btn white" type="button" id="themeNext">התבנית עלתה, ממשיכים</button>');
@@ -523,6 +525,8 @@
       case 'pingNext': step('ping'); step('done'); px('FSDone', {}, true); wizard('done'); return;
     }
   });
+
+  root.addEventListener('play', function (e) { if (e.target.classList && e.target.classList.contains('vid')) px('FSThemeVideoPlay', {}, true); }, true);
 
   /* ---------- start ---------- */
   track('FSPageView');
