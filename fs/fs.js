@@ -400,11 +400,15 @@
     },
     done: function () {
       var url = S.shop ? 'https://' + S.shop : '';
-      frame('done', '<h2>🎉 ' + esc(S.store_name || 'החנות שלך') + ' <em>מוכנה</em></h2><p>יש לכם חנות בעברית, תבנית מעוצבת, 3 מוצרים ועוזר AI. עכשיו מתחילים למכור.</p>' +
-        (url ? '<a class="btn" href="' + esc(url) + '" target="_blank" rel="noopener">לצפייה בחנות שלי</a>' : '') +
-        '<h3 style="margin-top:22px">עוד שלוש הגדרות קטנות</h3><ol class="how"><li><b>שפת החנות:</b> <a href="' + admin('/settings/languages') + '" target="_blank" rel="noopener">הגדרות ← שפות</a>, מוסיפים עברית וקובעים אותה כשפת ברירת המחדל (גם הקופה תהיה בעברית).</li>' +
-        '<li><b>סליקה:</b> <a href="' + admin('/settings/payments') + '" target="_blank" rel="noopener">הגדרות ← תשלומים</a>, מחברים חברת סליקה שעובדת בישראל או PayPal.</li>' +
-        '<li><b>הסרת הסיסמה:</b> כשהכול מוכן, <a href="' + admin('/online_store/preferences') + '" target="_blank" rel="noopener">חנות מקוונת ← העדפות</a>, מבטלים את הגנת הסיסמה והחנות פתוחה לכולם.</li></ol>' +
+      frame('done', '<h2>🎉 ' + esc(S.store_name || 'החנות שלך') + ' <em>כמעט באוויר</em></h2><p>יש לכם חנות בעברית, תבנית מעוצבת, 3 מוצרים ועוזר AI. נשאר רק לפתוח אותה לכולם: חנות חדשה בשופיפיי נעולה בסיסמה עד שמשחררים אותה.</p>' +
+        '<h3 style="margin-top:6px">פותחים את החנות לכולם</h3>' +
+        '<video class="vid" style="aspect-ratio:1440/776" src="' + BASE + 'vid/store-launch.mp4" poster="' + BASE + 'vid/store-launch.jpg" controls playsinline preload="metadata"></video>' +
+        '<ol class="how"><li>לוחצים על הכפתור. נפתח מסך החנות המקוונת.</li><li>למעלה לוחצים <b>פרטית</b> (Private) ובוחרים <b>ציבורית</b> (Public).</li><li>לוחצים <b>השקת החנות</b> (Launch store).</li></ol>' +
+        '<div class="note">הכפתור "השקת החנות" נפתח רק אחרי שבחרתם מסלול (שלב הדולר). אם כתוב "Select a plan to launch store", <a href="' + admin('/settings/plan') + '" target="_blank" rel="noopener">בוחרים מסלול כאן</a> וחוזרים.</div>' +
+        '<a class="btn dark" id="launchGo" href="' + admin('/themes') + '" target="_blank" rel="noopener">פתיחת החנות לכולם</a>' +
+        (url ? '<a class="btn" href="' + esc(url) + '" target="_blank" rel="noopener" style="margin-top:12px">לצפייה בחנות שלי</a>' : '') +
+        '<h3 style="margin-top:22px">עוד שתי הגדרות קטנות</h3><ol class="how"><li><b>שפת החנות:</b> <a href="' + admin('/settings/languages') + '" target="_blank" rel="noopener">הגדרות ← שפות</a>, מוסיפים עברית וקובעים אותה כשפת ברירת המחדל (גם הקופה תהיה בעברית).</li>' +
+        '<li><b>סליקה:</b> <a href="' + admin('/settings/payments') + '" target="_blank" rel="noopener">הגדרות ← תשלומים</a>, מחברים חברת סליקה שעובדת בישראל או PayPal.</li></ol>' +
         '<a class="btn dark" href="' + COURSE + '" target="_blank" rel="noopener" style="margin-top:18px">לקורס החינמי: איך מביאים את המכירות הראשונות</a>' +
         '<a class="btn wa" href="' + WA_HELP + '" target="_blank" rel="noopener" style="margin-top:12px">נתקעתם? שלחו לנו וואטסאפ</a>');
     }
@@ -530,12 +534,13 @@
       case 'prodNext': step('products'); wizard('ping'); return;
       case 'copyShop': copyShop(t); return;
       case 'pingGo': copyShop($('#copyShop')); step('ping'); px('PingInstallClick', {source: 'free-store'}, true); return;
+      case 'launchGo': px('FSLaunchClick', {}, true); return;
       case 'setupGo': step('setup'); px('FSSetupClick', {}, true); return;
       case 'pingNext': step('ping'); step('done'); px('FSDone', {}, true); wizard('done'); return;
     }
   });
 
-  root.addEventListener('play', function (e) { if (e.target.classList && e.target.classList.contains('vid')) px(/products/.test(e.target.currentSrc) ? 'FSProductsVideoPlay' : /ping/.test(e.target.currentSrc) ? 'FSPingVideoPlay' : 'FSThemeVideoPlay', {}, true); }, true);
+  root.addEventListener('play', function (e) { if (e.target.classList && e.target.classList.contains('vid')) px(/products/.test(e.target.currentSrc) ? 'FSProductsVideoPlay' : /ping/.test(e.target.currentSrc) ? 'FSPingVideoPlay' : /launch/.test(e.target.currentSrc) ? 'FSLaunchVideoPlay' : 'FSThemeVideoPlay', {}, true); }, true);
 
   /* ---------- start ---------- */
   track('FSPageView');
