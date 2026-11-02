@@ -390,7 +390,8 @@
         '<button class="btn white" type="button" id="prodNext" style="margin-top:14px">המוצרים עלו, ממשיכים</button>');
     },
     ping: function () {
-      frame('ping', '<h2>מוסיפים <em>עוזר AI ופופאפ</em> לחנות</h2><p>חנות חדשה צריכה שני דברים מהיום הראשון: מישהו שעונה ללקוחות, ודרך לאסוף פרטים של מי שנכנס ולא קנה. בשביל זה מתקינים את Ping AI.</p>' +
+      frame('ping', '<h2>מוסיפים <em>עוזר AI ופופאפ</em> לחנות</h2><p>חנות חדשה צריכה שני דברים מהיום הראשון: מישהו שעונה ללקוחות, ודרך לאסוף פרטים של מי שנכנס ולא קנה. בשביל זה מתקינים את Ping AI. בסרטון הקצר רואים את כל התהליך.</p>' +
+        '<video class="vid" style="aspect-ratio:1440/776" src="' + BASE + 'vid/ping-install.mp4" poster="' + BASE + 'vid/ping-install.jpg" controls playsinline preload="metadata"></video>' +
         '<ol class="how"><li>לוחצים על הכפתור הראשון. כתובת החנות שלכם מועתקת אוטומטית.</li><li>בשופיפיי לוחצים <b>התקנה</b> (Install). אם נפתח חלון שמבקש כתובת חנות (Store URL), <b>מדביקים</b> את הכתובת ולוחצים <b>כניסה</b> (Log in), ואז שוב התקנה.</li><li>חוזרים לכאן ולוחצים על הכפתור השני. הוא מעתיק לחנות סטאפ מוכן: צ׳אט AI ופופאפ לאיסוף לידים.</li></ol>' +
         '<div class="copy"><span class="ltr" id="shopAddr">' + esc(S.shop || '') + '</span><button type="button" id="copyShop">העתקה</button></div>' +
         '<a class="btn" id="pingGo" href="' + PING_APP + '" target="_blank" rel="noopener">1. התקנת Ping AI בשופיפיי<small>נפתח בחלון חדש</small></a>' +
@@ -534,7 +535,7 @@
     }
   });
 
-  root.addEventListener('play', function (e) { if (e.target.classList && e.target.classList.contains('vid')) px(/products/.test(e.target.currentSrc) ? 'FSProductsVideoPlay' : 'FSThemeVideoPlay', {}, true); }, true);
+  root.addEventListener('play', function (e) { if (e.target.classList && e.target.classList.contains('vid')) px(/products/.test(e.target.currentSrc) ? 'FSProductsVideoPlay' : /ping/.test(e.target.currentSrc) ? 'FSPingVideoPlay' : 'FSThemeVideoPlay', {}, true); }, true);
 
   /* ---------- start ---------- */
   track('FSPageView');
