@@ -6,7 +6,7 @@
   var SHOPIFY_AFF = 'https://shopify.pxf.io/ZdgJ40';
   var PING_APP = 'https://apps.shopify.com/ping-ai';
   var PING_SETUP = 'https://pingai.org/setup/vn4QJ9uS';
-  var WA_HELP = 'https://wa.me/972525535537?text=' + encodeURIComponent('היי, פתחתי חנות דרך "פתחו חנות חינמית" ואשמח לעזרה');
+  var WA_HELP = 'https://wa.me/972539415600?text=' + encodeURIComponent('היי, פתחתי חנות דרך "פתחו חנות חינמית" ואשמח לעזרה');
   var COURSE = 'https://www.avivmalka.com/course-hadira';
   var PX = '2210072352882860';
   var BG = '#FAF8F3';
@@ -99,6 +99,9 @@
     '#fs-root summary{font-weight:800;font-size:17px;cursor:pointer}',
     '#fs-root details p{margin:10px 0 0;color:#2b2b2b}',
     '#fs-root .foot{text-align:center;font-size:13px;color:#7a7a7a;margin-top:30px}',
+    '#fs-root .help{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:24px 0 0;font-size:16px;font-weight:700;color:#2b2b2b}',
+    '#fs-root .help a{display:inline-block;background:#E9F8EF;color:#167A3E;border:2px solid #1FA855;border-radius:999px;padding:9px 18px;font-size:16px;font-weight:800;text-decoration:none}',
+    '#fs-root .help a:hover{background:#1FA855;color:#fff}',
     '#fs-root .foot button{background:none;border:0;color:#7a7a7a;text-decoration:underline;cursor:pointer;font-size:13px}',
     // mock store
     '#fs-root .mock{border-radius:22px;border:8px solid #141414;background:var(--bg);overflow:hidden;max-width:300px;margin:22px auto 0;box-shadow:0 18px 40px rgba(20,20,20,.18);color:var(--tx);text-align:right}',
@@ -321,7 +324,7 @@
       '<div class="prog"><span>' + esc(TITLES[code]) + '</span><span>' + Math.round(i / (STEPS.length - 1) * 100) + '%</span></div>' +
       '<div class="track" aria-hidden="true"><div class="fill" style="width:' + Math.max(4, i / (STEPS.length - 1) * 100) + '%"></div></div>' +
       '<div class="card">' + body + '</div>' + (i > 0 && code !== 'done' ? '<button class="back" type="button" data-back="' + STEPS[i - 1] + '">→ חזרה לשלב הקודם</button>' : '') +
-      '<div class="foot">צריכים עזרה? <a href="' + WA_HELP + '" target="_blank" rel="noopener">שלחו לנו וואטסאפ</a></div></div>';
+      '<div class="help"><span>צריכים עזרה?</span><a href="' + WA_HELP + '" target="_blank" rel="noopener">💬 שלחו לנו וואטסאפ</a></div></div>';
     var h = root.querySelector('h2'); if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({preventScroll: true}); } catch (e) {} }
     try { root.scrollIntoView({block: 'start'}); window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (e) {}
   }
