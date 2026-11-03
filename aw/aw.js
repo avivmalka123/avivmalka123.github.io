@@ -15,7 +15,7 @@
     {k:'אם כלום לא ישתנה', q:'מה יקרה אם כלום לא ישתנה בזמן הקרוב?', o:['אכנס לבעיה כלכלית חמורה שתשפיע עליי ועל המשפחה שלי', 'אאלץ להתחיל עבודה (פיזית) נוספת כדי לסגור את החודש', 'ארגיש שלא עשיתי מספיק כדי לקחת אחריות על החיים שלי', 'לא אוכל לאפשר לעצמי את החיים שאני רוצה', 'לא יקרה שום דבר. די סבבה לי גם עכשיו.']},
     {k:'מי מחליט', q:'מי מקבל את ההחלטה על כניסה לתהליך כזה?', o:['רק אני. החיים שלי, האחריות שלי.', 'זו החלטה שלי, ויש לי גם גיבוי מלא מהסביבה שלי', 'בעיקר אני, אבל זה תלוי גם בגורם נוסף (בוס, בן או בת זוג וכו׳)', 'גם אני וגם גורם נוסף, באופן שווה', 'ההחלטה אינה תלויה בי בכלל']}
   ];
-  var ans = [], step = 0, $q = function(id){ return document.getElementById(id); };
+  var ans = [], step = 0, $q = function(id){ return document.getElementById(id); }; /* every answer also goes to the lead-hold worker: one full minute after the last answer it is added as a comment on the lead in ToChat (by phone) */  var AWH = 'https://lead-hold.aviv1988.workers.dev/aw';  var TOK = (new URLSearchParams(location.search).get('t') || '').replace(/[^a-z0-9]/gi, '').slice(0, 40), SID = TOK, LEAD = {};  if (!SID) { try { SID = localStorage.getItem('aw_sid') || ''; } catch(e){} if (!SID) { SID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).replace(/[^a-z0-9]/g, ''); try { localStorage.setItem('aw_sid', SID); } catch(e){} } }  try { LEAD = JSON.parse(localStorage.getItem('alm_lead') || '{}') || {}; } catch(e){}  function sync(){   var lines = []; Q.forEach(function(q, i){ if (ans[i]) lines.push(q.k + ': ' + ans[i]); });   try { fetch(AWH, {method: 'POST', headers: {'Content-Type': 'text/plain'}, keepalive: true,    body: JSON.stringify({id: SID, token: TOK, phone: LEAD.phone || '', name: LEAD.name || '', total: Q.length, lines: lines})}).catch(function(){}); } catch(e){}  } 
   function waHref(){ return WA + encodeURIComponent(INTRO + '\n\nהתשובות שלי:\n' + Q.map(function(q, i){ return '• ' + q.k + ': ' + ans[i]; }).join('\n')); }
   function render(){
     $q('qzCount').textContent = step >= Q.length ? '✓' : (step + 1) + '/' + Q.length;
@@ -31,7 +31,7 @@
     q.o.forEach(function(o, i){ h += '<button class="qo' + (ans[step] === o ? ' sel' : '') + '" data-i="' + i + '">' + o + '</button>'; });
     if (step) h += '<button class="qb" id="qzBack">חזרה</button>';
     $q('qzStage').innerHTML = h;
-    [].forEach.call($q('qzStage').querySelectorAll('.qo'), function(b){ b.onclick = function(){ b.classList.add('sel'); ans[step] = q.o[+b.getAttribute('data-i')]; setTimeout(function(){ step++; render(); }, 220); }; });
+    [].forEach.call($q('qzStage').querySelectorAll('.qo'), function(b){ b.onclick = function(){ b.classList.add('sel'); ans[step] = q.o[+b.getAttribute('data-i')]; sync(); setTimeout(function(){ step++; render(); }, 220); }; });
     if (step) $q('qzBack').onclick = function(){ step--; render(); };
   }
   render();

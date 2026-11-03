@@ -56,6 +56,11 @@
       if (!real){ err.textContent = 'תצוגה מקדימה בלבד: אין כאן טופס קג׳בי, ולכן הפרטים לא נשלחים.'; err.style.display = 'block'; b.disabled = false; b.textContent = 'אני רוצה את ההטבה ←'; return; }
       var set = function(n, v){ var el = real.querySelector('[name="' + n + '"]'); if (el){ el.value = v; el.dispatchEvent(new Event('input', {bubbles: true})); el.dispatchEvent(new Event('change', {bubbles: true})); } };
       set('form_submission[name]', name); set('form_submission[email]', email); set('form_submission[custom_3]', phone);
+      /* token for the after-webinar page: its quiz answers reach ToChat as a comment under this phone (lead-hold worker) */
+      var tok = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).replace(/[^a-z0-9]/g, '');
+      try { fetch('https://lead-hold.aviv1988.workers.dev/reg', {method: 'POST', headers: {'Content-Type': 'text/plain'}, keepalive: true, body: JSON.stringify({id: tok, phone: phone, name: name})}).catch(function(){}); } catch(x){}
+      var ty = real.querySelector('input[name="thank_you_url"]');
+      if (ty && /^https:\/\/www\.avivmalka\.com\/after-webinar/.test(ty.value)) ty.value = ty.value + (ty.value.indexOf('?') < 0 ? '?' : '&') + 't=' + tok;
       var btn = real.querySelector('[type="submit"], button');
       setTimeout(function(){ if (btn) btn.click(); else real.submit(); }, 250);
     });
