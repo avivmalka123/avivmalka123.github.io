@@ -1,0 +1,156 @@
+{%- comment -%}
+  Free-store home page: hero built from the store's own products, a product grid and a spotlight on one product.
+  Reads collections.all directly, so the imported products show up with no collection to pick
+  (a "collection" setting can't point at "all" in an uploaded theme and falls back to placeholder cards).
+  Hero title/text come from the wizard tokens and are already HTML-escaped there.
+{%- endcomment -%}
+{{ 'fs-home.css' | asset_url | stylesheet_tag }}
+
+{%- assign ps = collections.all.products -%}
+{%- assign count = collections.all.products_count -%}
+{%- assign hero_p = ps[0] -%}
+{%- if count > 2 -%}{%- assign mini_p = ps[2] -%}{%- elsif count > 1 -%}{%- assign mini_p = ps[1] -%}{%- endif -%}
+{%- if count > 1 -%}{%- assign spot_p = ps[1] -%}{%- else -%}{%- assign spot_p = ps[0] -%}{%- endif -%}
+
+<div class="fsh">
+  <section class="fsh-hero color-{{ section.settings.hero_scheme }} gradient">
+    <div class="fsh-wrap fsh-hero__grid">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<span class="fsh-pill"><i></i>{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+        <h1>{{ section.settings.hero_title }}</h1>
+        {%- if section.settings.hero_text != blank -%}<p class="fsh-hero__text">{{ section.settings.hero_text }}</p>{%- endif -%}
+        <div class="fsh-hero__cta">
+          <a class="fsh-btn" href="{% if hero_p %}{{ hero_p.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ section.settings.hero_button | escape }} ←</a>
+          <a class="fsh-btn fsh-btn--ghost" href="{{ routes.all_products_collection_url }}">לכל המוצרים</a>
+        </div>
+        <ul class="fsh-checks">
+          {%- for i in (1..3) -%}
+            {%- capture k %}check_{{ i }}{% endcapture -%}
+            {%- if section.settings[k] != blank -%}<li>{{ section.settings[k] | escape }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+      {%- if hero_p and hero_p.featured_image -%}
+        <div class="fsh-stage">
+          <a class="fsh-stage__main" href="{{ hero_p.url }}">
+            {%- if hero_p.compare_at_price > hero_p.price -%}
+              <span class="fsh-sale">{{ hero_p.compare_at_price | minus: hero_p.price | times: 100 | divided_by: hero_p.compare_at_price }}% הנחה</span>
+            {%- endif -%}
+            {{ hero_p.featured_image | image_url: width: 1100 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '550, 800, 1100', sizes: '(min-width: 750px) 45vw, 100vw', alt: hero_p.title }}
+            <span class="fsh-tag"><b>{{ hero_p.title }}</b><span>{{ hero_p.price | money }}</span></span>
+          </a>
+          {%- if mini_p and mini_p.featured_image -%}
+            <a class="fsh-mini" href="{{ mini_p.url }}" aria-label="{{ mini_p.title | escape }}">{{ mini_p.featured_image | image_url: width: 400 | image_tag: loading: 'eager', alt: '' }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <section class="fsh-products color-{{ section.settings.products_scheme }} gradient" id="products">
+    <div class="fsh-wrap">
+      <div class="fsh-head">
+        {%- if section.settings.products_kicker != blank -%}<small>{{ section.settings.products_kicker | escape }}</small>{%- endif -%}
+        <h2>{{ section.settings.products_title | escape }}</h2>
+        {%- if section.settings.products_text != blank -%}<p>{{ section.settings.products_text | escape }}</p>{%- endif -%}
+      </div>
+      {%- if count > 0 -%}
+        <div class="fsh-grid" style="--fsh-cols: {{ count | at_most: 4 }};">
+          {%- for p in ps limit: section.settings.products_limit -%}
+            <article class="fsh-card">
+              <a class="fsh-card__img" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+                {%- if p.compare_at_price > p.price -%}
+                  <span class="fsh-sale">{{ p.compare_at_price | minus: p.price | times: 100 | divided_by: p.compare_at_price }}%-</span>
+                {%- endif -%}
+                {%- if p.featured_image -%}
+                  {{ p.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350, 500, 700', sizes: '(min-width: 750px) 33vw, 80vw', alt: p.title }}
+                  {%- if p.images.size > 1 -%}{{ p.images[1] | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350, 500, 700', sizes: '(min-width: 750px) 33vw, 80vw', alt: '' }}{%- endif -%}
+                {%- endif -%}
+              </a>
+              <div class="fsh-card__body">
+                <h3 class="fsh-card__title"><a href="{{ p.url }}">{{ p.title }}</a></h3>
+                <div class="fsh-price">
+                  <b>{{ p.price | money }}</b>
+                  {%- if p.compare_at_price > p.price -%}<s>{{ p.compare_at_price | money }}</s>{%- endif -%}
+                </div>
+                <a class="fsh-btn fsh-btn--block" href="{{ p.url }}">לפרטים והזמנה</a>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+        {%- if count > section.settings.products_limit -%}
+          <div class="fsh-all"><a class="fsh-btn fsh-btn--ghost" href="{{ routes.all_products_collection_url }}">לכל {{ count }} המוצרים</a></div>
+        {%- endif -%}
+      {%- else -%}
+        <div class="fsh-empty">
+          {%- if request.design_mode -%}המוצרים יופיעו כאן אוטומטית מיד אחרי ייבוא קובץ המוצרים (מוצרים ← ייבוא).{%- else -%}מוצרים חדשים בדרך. חזרו אלינו בקרוב!{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- if section.settings.show_spotlight and spot_p -%}
+    {%- assign v = spot_p.selected_or_first_available_variant -%}
+    <section class="fsh-spot color-{{ section.settings.products_scheme }} gradient">
+      <div class="fsh-wrap">
+        <div class="fsh-spot__box">
+          <a class="fsh-spot__img" href="{{ spot_p.url }}">
+            {%- if spot_p.compare_at_price > spot_p.price -%}
+              <span class="fsh-sale">{{ spot_p.compare_at_price | minus: spot_p.price | times: 100 | divided_by: spot_p.compare_at_price }}% הנחה</span>
+            {%- endif -%}
+            {%- assign spot_img = spot_p.images[1] | default: spot_p.featured_image -%}
+            {%- if spot_img -%}{{ spot_img | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500, 750, 1000', sizes: '(min-width: 750px) 45vw, 100vw', alt: spot_p.title }}{%- endif -%}
+          </a>
+          <div class="fsh-spot__body">
+            {%- if section.settings.spot_kicker != blank -%}<span class="fsh-pill"><i></i>{{ section.settings.spot_kicker | escape }}</span>{%- endif -%}
+            <h2>{{ spot_p.title }}</h2>
+            {%- assign desc = spot_p.description | strip_html | strip | truncatewords: 34 -%}
+            {%- if desc != blank -%}<p>{{ desc }}</p>{%- endif -%}
+            <div class="fsh-price">
+              <b>{{ spot_p.price | money }}</b>
+              {%- if spot_p.compare_at_price > spot_p.price -%}<s>{{ spot_p.compare_at_price | money }}</s>{%- endif -%}
+            </div>
+            <div class="fsh-spot__actions">
+              {%- if spot_p.has_only_default_variant and v.available -%}
+                {%- form 'product', spot_p -%}
+                  <input type="hidden" name="id" value="{{ v.id }}">
+                  <button type="submit" class="fsh-btn fsh-btn--block">הוספה לסל</button>
+                {%- endform -%}
+              {%- endif -%}
+              <a class="fsh-btn{% if spot_p.has_only_default_variant and v.available %} fsh-btn--ghost{% endif %} fsh-btn--block" href="{{ spot_p.url }}">לכל הפרטים על המוצר</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "דף בית: מוצרים",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "כותרת ראשית" },
+    { "type": "text", "id": "eyebrow", "label": "תגית מעל הכותרת", "default": "חדש בחנות" },
+    { "type": "text", "id": "hero_title", "label": "כותרת", "default": "המוצרים שחיפשתם, במקום אחד" },
+    { "type": "textarea", "id": "hero_text", "label": "טקסט", "default": "מוצרים שנבחרו בקפידה, משלוח עד הבית ותשלום מאובטח." },
+    { "type": "text", "id": "hero_button", "label": "טקסט הכפתור", "default": "לקנייה עכשיו" },
+    { "type": "text", "id": "check_1", "label": "יתרון 1", "default": "משלוח עד הבית" },
+    { "type": "text", "id": "check_2", "label": "יתרון 2", "default": "תשלום מאובטח" },
+    { "type": "text", "id": "check_3", "label": "יתרון 3", "default": "החזרה קלה" },
+    { "type": "color_scheme", "id": "hero_scheme", "label": "צבעי הכותרת הראשית", "default": "scheme-2" },
+    { "type": "header", "content": "המוצרים" },
+    { "type": "text", "id": "products_kicker", "label": "תגית קטנה", "default": "הנמכרים ביותר" },
+    { "type": "text", "id": "products_title", "label": "כותרת", "default": "המוצרים שכולם מדברים עליהם" },
+    { "type": "text", "id": "products_text", "label": "טקסט", "default": "" },
+    { "type": "range", "id": "products_limit", "label": "כמה מוצרים להציג", "min": 3, "max": 12, "step": 1, "default": 8 },
+    { "type": "color_scheme", "id": "products_scheme", "label": "צבעי אזור המוצרים", "default": "scheme-1" },
+    { "type": "header", "content": "מוצר בזרקור" },
+    { "type": "checkbox", "id": "show_spotlight", "label": "להציג מוצר בזרקור", "default": true },
+    { "type": "text", "id": "spot_kicker", "label": "תגית", "default": "המוצר המומלץ שלנו" }
+  ],
+  "presets": [{ "name": "דף בית: מוצרים" }]
+}
+{% endschema %}
