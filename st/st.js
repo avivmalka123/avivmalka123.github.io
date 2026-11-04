@@ -4,7 +4,7 @@
   var WISTIA = 'bk5fkohucp';
   // 31.10.2026: brand-blurred re-edit served from GitHub Pages (native player) until it replaces the Kajabi/Wistia upload
   var MP4 = 'https://avivmalka123.github.io/st/setup30.mp4';
-  var SETUP = 'https://pingai.org/setup/vn4QJ9uS';
+  var SETUP = 'https://pingai.org/setup/SkZcHbLL';
   var PING = 'https://apps.shopify.com/ping-ai';
   var GROUP = 'https://chat.whatsapp.com/JhREMAygSXrAVSPKXcHkmr';
   var IG = 'https://www.instagram.com/aviv_malka7/';
