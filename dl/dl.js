@@ -8,7 +8,7 @@
 (function(){
   var VSL_VID = 'v5yw1KEGn35bVfEy'; /* Vidalytics embed id of the main video */
   var HOOK = 'https://hook.eu2.make.com/vyco5ocnauh8o7ue72gj2lldn1wfv0xt'; /* Make 10015312 → "לידים חמים" WhatsApp group */
-  var GIFT_URL = ''; /* link to the "7 steps" training; when set, the thank-you screen shows a button to it */
+  var GIFT_URL = 'https://aviv-malka.com/guide/'; /* the "7 steps" gift training: right after name + phone the visitor is sent there automatically (Aviv, 5.11) */
   /* this page's own Meta pixel (27.10, Aviv). Kajabi's site pixel still loads site-wide; our events go only to this one */
   var PX = '513196422495237';
   (function(){
@@ -38,9 +38,9 @@
     $('qzFill').style.width = Math.round(100 * Math.min(step + 1, n + 1) / (n + 1)) + '%';
     if (step > n){
       $('qzStage').innerHTML = '<div class="done"><p class="big">קיבלנו, ' + esc((who.name || '').split(' ')[0]) + ' ✅</p>' +
-        '<p><b>ההדרכה במתנה בדרך אליך:</b> 7 השלבים להקמת חנות איקומרס מצליחה עם כלי AI.</p>' +
+        '<p><b>מעביר אותך עכשיו להדרכה במתנה:</b> 7 השלבים להקמת חנות איקומרס מצליחה עם כלי AI.</p>' +
         '<p>מישהו מהצוות שלי יחזור אליך לשיחת התאמה קצרה, למספר שהשארת.</p>' +
-        (GIFT_URL ? '<a class="btn" href="' + GIFT_URL + '" target="_blank" rel="noopener">לצפייה בהדרכה עכשיו</a>' : '') + '</div>';
+        '<a class="btn" href="' + GIFT_URL + '">לצפייה בהדרכה עכשיו</a></div>';
       return;
     }
     if (step === n){
@@ -82,6 +82,7 @@
     try { var L = lead(); L.name = name; L.phone = phone; localStorage.setItem('alm_lead', JSON.stringify(L)); } catch(x){}
     finish();
     step = Q.length + 1; render();
+    setTimeout(function(){ location.href = GIFT_URL; }, 1500);
   }
 
   function finish(){
