@@ -1,6 +1,6 @@
 /* Closed WhatsApp group quiz (www.avivmalka.com/ecom-group) · Kajabi Custom Code block: <div id="wg-root"></div> + this file.
-   4 questions → Meta Lead on pixel 2210072352882860 → redirect to the WhatsApp group.
-   Anonymous answers (no name/phone) go to the ping-funnel worker /api/group → admin tab "קבוצה סגורה". */
+   4 questions + full name → Meta Lead on pixel 2210072352882860 → redirect to the WhatsApp group.
+   Answers + full name (no phone) go to the ping-funnel worker /api/group → admin tab "קבוצה סגורה". */
 (function () {
   var GROUP = 'https://chat.whatsapp.com/JhREMAygSXrAVSPKXcHkmr';
   var COURSE = 'https://www.avivmalka.com/course-hadira';
@@ -32,7 +32,7 @@
   }
   function save(status) {
     var utm = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) { if (QS.get(k)) utm[k] = QS.get(k); });
-    var body = { sid: SID, status: status, site: A.site, years: A.years, revenue: A.revenue, need: A.need, utm: utm, fbclid: QS.get('fbclid') || '',
+    var body = { sid: SID, status: status, site: A.site, years: A.years, revenue: A.revenue, need: A.need, name: A.name || '', utm: utm, fbclid: QS.get('fbclid') || '',
       referrer: document.referrer, landing_url: location.origin + location.pathname, hp: (document.getElementById('wgHp') || {}).value || '' };
     try { fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true, mode: 'cors' }).catch(function () {}); } catch (e) {}
   }
@@ -75,7 +75,8 @@
     '#wg-root .opt{width:100%;text-align:right;background:#FAF8F3;border:2px solid #E6E1D6;border-radius:14px;padding:15px 16px;font-size:18px;font-weight:600;color:#141414;cursor:pointer;min-height:54px;transition:border-color .15s,background .15s}',
     '#wg-root .opt:hover{border-color:#C98A12;background:#FFF8E6}',
     '#wg-root .opt[aria-pressed="true"]{border-color:#C98A12;background:#FFF3D1}',
-    '#wg-root .opt:focus-visible,#wg-root .btn:focus-visible,#wg-root .back:focus-visible,#wg-root textarea:focus-visible,#wg-root a:focus-visible{outline:3px solid #1D4ED8;outline-offset:2px}',
+    '#wg-root .opt:focus-visible,#wg-root .btn:focus-visible,#wg-root .back:focus-visible,#wg-root textarea:focus-visible,#wg-root input:focus-visible,#wg-root a:focus-visible{outline:3px solid #1D4ED8;outline-offset:2px}',
+    '#wg-root input[type=text]{width:100%;border:2px solid #E6E1D6;border-radius:14px;padding:14px;font-size:18px;background:#FAF8F3;color:#141414;min-height:54px}',
     '#wg-root textarea{width:100%;min-height:120px;border:2px solid #E6E1D6;border-radius:14px;padding:14px;font-size:17px;line-height:1.5;resize:vertical;background:#FAF8F3;color:#141414}',
     '#wg-root .hint{font-size:14px;color:#5c5c5c;margin:6px 0 14px}',
     '#wg-root .hint.ok{color:#1F7A3A}',
@@ -109,11 +110,11 @@
         '<li><span aria-hidden="true">✔</span>צילום מסך של המחזור לאדמין בכניסה</li>' +
       '</ul>' +
       '<section class="card" aria-label="שאלון הצטרפות">' +
-        '<div class="prog"><span id="wgStep" aria-live="polite">שאלה 1 מתוך 4</span><span>פחות מדקה</span></div>' +
+        '<div class="prog"><span id="wgStep" aria-live="polite">שאלה 1 מתוך 5</span><span>פחות מדקה</span></div>' +
         '<div class="track" aria-hidden="true"><div class="fill" id="wgFill"></div></div>' +
         '<div id="wgBody"></div>' +
       '</section>' +
-      '<p class="foot">לא מבקשים שם או טלפון. התשובות נשמרות אצלנו בלי פרטים מזהים, רק כדי להכיר את מי שמצטרף לקבוצה.</p>' +
+      '<p class="foot">לא מבקשים טלפון. השם והתשובות נשמרים אצלנו רק כדי להכיר את מי שמצטרף לקבוצה.</p>' +
       '<input id="wgHp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">' +
     '</main>';
 
@@ -121,7 +122,8 @@
     { k: 'site', t: 'יש לכם אתר פעיל?', o: ['כן', 'לא'] },
     { k: 'years', t: 'כמה זמן אתם מתעסקים בתחום?', o: ['מתחת לשנה', 'שנה עד שלוש', 'שלוש שנים ומעלה'] },
     { k: 'revenue', t: 'מה מחזור המכירות הממוצע שלכם בחודש?', o: ['מתחת ל־5,000 ₪', '5,000–25,000 ₪', '25,000–100,000 ₪', '100,000 ₪ ומעלה'] },
-    { k: 'need', t: 'מה הכי עוצר אתכם מלהתקדם, ובמה הייתם הכי רוצים עזרה?', free: true }
+    { k: 'need', t: 'מה הכי עוצר אתכם מלהתקדם, ובמה הייתם הכי רוצים עזרה?', free: true, min: 10 },
+    { k: 'name', t: 'איך קוראים לכם? (שם מלא)', free: true, min: 2, short: true }
   ];
   var A = {}, i = 0, done = false;
   var body = document.getElementById('wgBody');
@@ -138,20 +140,26 @@
     fill.style.width = ((i + 1) / Q.length * 100) + '%';
     if (q.free) {
       var v = A[q.k] || '';
+      var last = i === Q.length - 1;
       body.innerHTML =
         '<h2 id="wgQ" tabindex="-1"><label for="wgTxt">' + esc(q.t) + '</label></h2>' +
-        '<textarea id="wgTxt" maxlength="1000" aria-describedby="wgHint" placeholder="כתבו בחופשיות, לפחות 10 תווים">' + esc(v) + '</textarea>' +
+        (q.short
+          ? '<input id="wgTxt" type="text" maxlength="80" autocomplete="name" aria-describedby="wgHint" placeholder="שם פרטי ושם משפחה" value="' + esc(v) + '">'
+          : '<textarea id="wgTxt" maxlength="1000" aria-describedby="wgHint" placeholder="כתבו בחופשיות, לפחות ' + q.min + ' תווים">' + esc(v) + '</textarea>') +
         '<p class="hint" id="wgHint" aria-live="polite"></p>' +
-        '<button type="button" class="btn" id="wgDone" disabled>סיום ומעבר לקבוצה ←</button>' + backBtn();
+        '<button type="button" class="btn" id="wgDone" disabled>' + (last ? 'סיום ומעבר לקבוצה ←' : 'המשך ←') + '</button>' + backBtn();
       var ta = document.getElementById('wgTxt'), hint = document.getElementById('wgHint'), btn = document.getElementById('wgDone');
+      var ok = function () { var t = ta.value.trim(); return t.length >= q.min && (!q.short || /[A-Za-z\u0590-\u05FF]/.test(t)); };
       var check = function () {
         var n = ta.value.trim().length;
-        btn.disabled = n < 10;
-        hint.className = 'hint' + (n >= 10 ? ' ok' : '');
-        hint.textContent = n >= 10 ? '✔ מעולה' : 'עוד ' + (10 - n) + ' תווים לפחות';
+        btn.disabled = !ok();
+        hint.className = 'hint' + (ok() ? ' ok' : '');
+        hint.textContent = ok() ? '✔ מעולה' : q.short ? 'כתבו את השם המלא שלכם' : 'עוד ' + (q.min - n) + ' תווים לפחות';
       };
+      var next = function () { if (!ok()) return; A[q.k] = ta.value.trim(); if (last) finish(); else { i++; render(); focusTitle(); } };
       ta.addEventListener('input', check); check();
-      btn.addEventListener('click', function () { if (ta.value.trim().length >= 10) { A[q.k] = ta.value.trim(); finish(); } });
+      if (q.short) ta.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); next(); } });
+      btn.addEventListener('click', next);
     } else {
       body.innerHTML =
         '<h2 id="wgQ" tabindex="-1">' + esc(q.t) + '</h2>' +
