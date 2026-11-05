@@ -196,7 +196,7 @@
   }
 
   function finish() {
-    if (done) return; done = true;
+    if (done || !A.name) return; done = true;   // Lead (pixel + admin) only once the full name is filled in
     px('Lead', { content_name: 'whatsapp-group-quiz', content_category: A.revenue || '', years_in_field: A.years || '' });
     save('completed');
     stepEl.textContent = 'סיימתם!';
