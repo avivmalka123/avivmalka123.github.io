@@ -13,7 +13,6 @@
         "hero_scheme": "scheme-2",
         "products_kicker": "הנמכרים ביותר",
         "products_title": "המוצרים שכולם מדברים עליהם",
-        "products_text": "",
         "products_limit": 8,
         "products_scheme": "scheme-1",
         "show_spotlight": true,
@@ -27,24 +26,21 @@
           "type": "badge",
           "settings": {
             "icon": "truck",
-            "title": "__USP1__",
-            "text": ""
+            "title": "__USP1__"
           }
         },
         "usp-2": {
           "type": "badge",
           "settings": {
             "icon": "lock",
-            "title": "__USP2__",
-            "text": ""
+            "title": "__USP2__"
           }
         },
         "usp-3": {
           "type": "badge",
           "settings": {
             "icon": "return",
-            "title": "__USP3__",
-            "text": ""
+            "title": "__USP3__"
           }
         }
       },
@@ -54,7 +50,6 @@
         "usp-3"
       ],
       "settings": {
-        "heading": "",
         "heading_size": "h2",
         "layout": "vertical",
         "color_scheme": "scheme-2",
