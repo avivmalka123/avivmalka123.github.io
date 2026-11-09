@@ -677,13 +677,6 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px;line-height:1.6}
   var VSL_VID = 'v5yw1KEGn35bVfEy'; /* Vidalytics embed id of the main video */
   var HOOK = 'https://hook.eu2.make.com/vyco5ocnauh8o7ue72gj2lldn1wfv0xt'; /* Make 10015312 → "לידים חמים" WhatsApp group */
   var GIFT_URL = 'https://aviv-malka.com/guide/'; /* the "7 steps" gift training: right after name + phone the visitor is sent there automatically (Aviv, 5.11) */
-  /* this page's own Meta pixel (27.10, Aviv). Kajabi's site pixel still loads site-wide; our events go only to this one */
-  var PX = '513196422495237';
-  (function(){
-    if (!window.fbq){ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); }
-    try { fbq('init', PX); fbq('trackSingle', PX, 'PageView'); } catch(e){}
-  })();
-  function px(ev, params, custom){ try { fbq(custom ? 'trackSingleCustom' : 'trackSingle', PX, ev, params || {}); } catch(e){} }
   /* 5.11 (Aviv's doc): the 4 questions first, name + phone last ("where to send the gift training") */
   var Q = [
     {k:'איפה אני היום', q:'איפה אתה היום?', o:['שכיר שרוצה הכנסה נוספת', 'ניסיתי איקומרס ונתקעתי', 'יש לי חנות עם מכירות, ואני רוצה לגדול', 'עוד לא התחלתי']},
@@ -760,8 +753,6 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px;line-height:1.6}
       '\n\n🎁 לשלוח לו את ההדרכה במתנה (7 השלבים)';
     var full = {source: 'direct-lead-page', stage: 'full', submitted_at: ilTime(), name: who.name, phone: who.phone, answers: answers, summary: summary};
     try { fetch(HOOK, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(full), keepalive: true}).catch(function(){}); } catch(x){}
-    px('Lead', {content_name: 'direct-lead-page'});
-    px('CompleteRegistration', {content_name: 'direct-lead-quiz'});
   }
   render();
 
@@ -772,7 +763,6 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px;line-height:1.6}
     qm.classList.add('on'); qm.setAttribute('aria-hidden', 'false');
     document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
     st.classList.remove('on');
-    px('QuizOpen', {}, 1);
     setTimeout(function(){ var f = quiz.querySelector('.qo, input, .btn'); try { (f || quiz).focus({preventScroll: true}); } catch(e){} }, 300);
   }
   function closeQuiz(){ qm.classList.remove('on'); qm.setAttribute('aria-hidden', 'true'); document.documentElement.style.overflow = ''; document.body.style.overflow = ''; onScroll(); }
@@ -809,7 +799,7 @@ details p{margin:0 0 16px;color:var(--mute);font-size:16px;line-height:1.6}
       var v = r.querySelector('video'), bar = r.querySelector('.rbar i');
       r.querySelector('.rplay').addEventListener('click', function(){
         load(r, true);
-        if (v.paused){ stopOthers(r); v.muted = false; var p = v.play(); r.classList.add('on'); r.classList.remove('paused'); if (p && p.catch) p.catch(function(){}); px('ReelPlay', {content_name: r.querySelector('.rcap b').textContent}, 1); }
+        if (v.paused){ stopOthers(r); v.muted = false; var p = v.play(); r.classList.add('on'); r.classList.remove('paused'); if (p && p.catch) p.catch(function(){}); }
         else { v.pause(); }
       });
       v.addEventListener('pause', function(){ r.classList.add('paused'); });
