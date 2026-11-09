@@ -1,3 +1,5 @@
+/* ecom-start-thanks (Kajabi copy of this page) runs the thank-you script instead */
+if (/\/ecom-start-thanks/.test(location.pathname)) { (function(){ var s = document.createElement('script'); s.src = 'https://avivmalka123.github.io/dl/thanks.js?v=1'; document.body.appendChild(s); })(); } else {
 /* Aviv Malka direct lead page (loaded from Kajabi; source dl/index.html, built by dl/build.py) */
 (function(){
  var root=document.getElementById('dl-root'); if(!root){root=document.createElement('div');root.id='dl-root';document.body.appendChild(root);}
@@ -8,6 +10,7 @@
 (function(){
   var VSL_VID = 'v5yw1KEGn35bVfEy'; /* Vidalytics embed id of the main video */
   var HOOK = 'https://hook.eu2.make.com/vyco5ocnauh8o7ue72gj2lldn1wfv0xt'; /* Make 10015312 → "לידים חמים" WhatsApp group */
+  var THANK_URL = 'https://www.avivmalka.com/ecom-start-thanks'; /* thank-you page (Aviv 9.11): the campaigner defines the Lead by this URL; it forwards on to the gift training */
   var GIFT_URL = 'https://aviv-malka.com/guide/'; /* the "7 steps" gift training: right after name + phone the visitor is sent there automatically (Aviv, 5.11) */
   /* 5.11 (Aviv's doc): the 4 questions first, name + phone last ("where to send the gift training") */
   var Q = [
@@ -75,7 +78,7 @@
     try { var L = lead(); L.name = name; L.phone = phone; localStorage.setItem('alm_lead', JSON.stringify(L)); } catch(x){}
     finish();
     step = Q.length + 1; render();
-    setTimeout(function(){ location.href = GIFT_URL; }, 1500);
+    setTimeout(function(){ location.href = THANK_URL; }, 700);
   }
 
   function finish(){
@@ -187,3 +190,5 @@
     if (im){ lbIn.innerHTML = '<img src="' + im.src + '" alt="">'; lb.classList.add('on'); }
   });
 })();
+
+}

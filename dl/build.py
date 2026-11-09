@@ -70,5 +70,7 @@ pre = ("/* Aviv Malka direct lead page (loaded from Kajabi; source dl/index.html
        " try{ document.body.style.background='" + BG + "'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='" + BG + "'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; } p=p.parentElement; } document.querySelectorAll('header.header, footer.footer').forEach(function(el){ el.style.display='none'; }); var hs=document.createElement('style'); hs.textContent='.block-type--video{display:none !important}'; document.head.appendChild(hs); }catch(e){}\n"
        " root.innerHTML=" + json.dumps(markup, ensure_ascii=False) + ";\n})();\n")
 
-open(D + 'dl.js', 'w', encoding='utf-8').write(pre + logic)
+thanks_gate = ("/* ecom-start-thanks (Kajabi copy of this page) runs the thank-you script instead */\n"
+               "if (/\\/ecom-start-thanks/.test(location.pathname)) { (function(){ var s = document.createElement('script'); s.src = '" + BASE + "thanks.js?v=1'; document.body.appendChild(s); })(); } else {\n")
+open(D + 'dl.js', 'w', encoding='utf-8').write(thanks_gate + pre + logic + '\n}\n')
 print('dl.js', len(pre + logic), 'chars')
