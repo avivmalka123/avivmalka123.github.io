@@ -1,3 +1,5 @@
+/* Entreprenure's Pixel 513196422495237 (Aviv 10.11): base code only, init + PageView on ecom-start and ecom-start-thanks. No custom events; the campaigner sets them in Events Manager */
+(function(){ var PX = '513196422495237'; if (!window.fbq){ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js'); } if (window.__almPx) return; window.__almPx = 1; try { fbq('init', PX); fbq('trackSingle', PX, 'PageView'); } catch(e){} })();
 /* ecom-start-thanks (Kajabi copy of this page) runs the thank-you script instead */
 if (/\/ecom-start-thanks/.test(location.pathname)) { (function(){ var s = document.createElement('script'); s.src = 'https://avivmalka123.github.io/dl/thanks.js?v=1'; document.body.appendChild(s); })(); } else {
 /* Aviv Malka direct lead page (loaded from Kajabi; source dl/index.html, built by dl/build.py) */
