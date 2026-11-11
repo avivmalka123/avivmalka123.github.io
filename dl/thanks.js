@@ -2,7 +2,7 @@
    No pixel events here on purpose: Kajabi's site pixel fires its own PageView, and the campaigner defines the Lead by this URL (Aviv, 9.11). */
 (function(){
   var GIFT_URL = 'https://aviv-malka.com/guide/'; /* the gift training; the visitor is forwarded there after a few seconds */
-  var WAIT = 6;
+  var WAIT = 30; /* Aviv 11.11: at least 30 s on the thank-you page before the forward (pixel) */
   var BG = '#0B1426';
   var root = document.getElementById('dl-root');
   if (!root){ root = document.createElement('div'); root.id = 'dl-root'; document.body.appendChild(root); }
