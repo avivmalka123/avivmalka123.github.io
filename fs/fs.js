@@ -73,6 +73,16 @@
     '#fs-root p{margin:0 0 10px}',
     '#fs-root .lead{font-size:18px;color:#2b2b2b;margin:0 0 18px}',
     '#fs-root .muted{color:#5c5c5c;font-size:15px}',
+    // "what's ahead" box above the niche step
+    '#fs-root .road{background:#141414;color:#fff;border-radius:18px;padding:20px 18px;margin:0 0 16px}',
+    '#fs-root .road h3{color:#fff;font-size:20px;margin:0 0 4px}',
+    '#fs-root .road>p{color:#d9d9d9;font-size:15px;margin:0 0 14px}',
+    '#fs-root .road ol{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:1fr 1fr;counter-reset:r}',
+    '#fs-root .road li{counter-increment:r;display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);border-radius:12px;padding:9px 10px;font-size:14px;font-weight:700;line-height:1.3}',
+    '#fs-root .road li::before{content:counter(r);flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#FFD84D;color:#141414;font-size:13px;font-weight:900}',
+    '#fs-root .road .tips{display:grid;gap:8px;margin:14px 0 0}',
+    '#fs-root .road .tips div{display:flex;gap:9px;align-items:flex-start;font-size:15px;line-height:1.45}',
+    '#fs-root .road .tips b{color:#FFD84D}',
     '#fs-root section{margin:40px 0 0}',
     '#fs-root .btn{display:block;width:100%;border:0;border-radius:14px;padding:16px;font-size:19px;font-weight:800;color:#141414;background:linear-gradient(180deg,#F5C451,#E0A21E);cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 6px 18px rgba(201,138,18,.25)}',
     '#fs-root .btn:hover{filter:brightness(1.03)}',
@@ -319,12 +329,12 @@
 
   /* ---------- wizard ---------- */
   function nextOpen() { for (var i = 0; i < STEPS.length; i++) if (!S.steps[STEPS[i]]) return STEPS[i]; return 'done'; }
-  function frame(code, body) {
+  function frame(code, body, pre) {
     var i = STEPS.indexOf(code);
     root.innerHTML = '<div class="bar">' + (S.first ? esc(S.first) + ', ' : '') + 'החנות שלך בבנייה · שלב ' + (i + 1) + ' מתוך ' + STEPS.length + '</div><div class="wrap">' +
       '<div class="prog"><span>' + esc(TITLES[code]) + '</span><span>' + Math.round(i / (STEPS.length - 1) * 100) + '%</span></div>' +
       '<div class="track" aria-hidden="true"><div class="fill" style="width:' + Math.max(4, i / (STEPS.length - 1) * 100) + '%"></div></div>' +
-      '<div class="card">' + body + '</div>' + (i > 0 && code !== 'done' ? '<button class="back" type="button" data-back="' + STEPS[i - 1] + '">→ חזרה לשלב הקודם</button>' : '') +
+      (pre || '') + '<div class="card">' + body + '</div>' + (i > 0 && code !== 'done' ? '<button class="back" type="button" data-back="' + STEPS[i - 1] + '">→ חזרה לשלב הקודם</button>' : '') +
       '<div class="help"><span>צריכים עזרה?</span><a href="' + WA_HELP + '" target="_blank" rel="noopener">💬 שלחו לנו וואטסאפ</a></div><div class="foot"><button type="button" data-go="reset">↺ התחלה מחדש</button></div></div>';
     var h = root.querySelector('h2'); if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({preventScroll: true}); } catch (e) {} }
     try { root.scrollIntoView({block: 'start'}); window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (e) {}
@@ -337,9 +347,15 @@
 
   var VIEWS = {
     niche: function () {
+      // a short map of the whole journey before the first choice
+      var road = '<div class="road"><h3>' + (S.first ? esc(S.first) + ', ' : '') + 'ככה נבנה יחד את החנות שלך מאפס</h3><p>9 שלבים קצרים, ואנחנו מובילים אתכם בכל אחד מהם צעד אחרי צעד:</p><ol>' +
+        ['בוחרים נישה', 'בוחרים צבעים', 'נותנים שם לחנות', 'פותחים חנות בשופיפיי', 'מפעילים את מבצע הדולר', 'מתקינים תבנית מעוצבת בעברית', 'מעלים 3 מוצרים מוכנים', 'מחברים עוזר AI לחנות', 'פותחים את החנות לכולם']
+          .map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ol><div class="tips">' +
+        '<div><span aria-hidden="true">💻</span><span><b>עובדים מהמחשב.</b> חלק מהשלבים (העלאת קבצים לשופיפיי) עובדים רק ממחשב, לא מהטלפון.</span></div>' +
+        '<div><span aria-hidden="true">💬</span><span><b>נתקעתם? אנחנו איתכם.</b> בכל שלב יש למטה כפתור וואטסאפ לליווי ועזרה.</span></div></div></div>';
       frame('niche', '<h2>באיזו <em>נישה</em> תהיה החנות?</h2><p class="muted">בכל נישה מחכים לכם 3 מוצרים מוכנים. אפשר להחליף אותם אחר כך.</p><div class="opts" role="group" aria-label="נישות">' +
         NICHES.map(function (n) { var x = N(n.id); return '<button type="button" class="opt" data-niche="' + n.id + '" aria-pressed="' + (S.niche === n.id) + '"><img src="' + esc(img(x.products[0].images[0])) + '" alt="">' + esc(x.name) + '</button>'; }).join('') +
-        '<button type="button" class="opt full" data-niche="unsure" aria-pressed="' + (S.niche === 'unsure') + '">עוד לא בטוח/ה, תבחרו בשבילי</button></div>');
+        '<button type="button" class="opt full" data-niche="unsure" aria-pressed="' + (S.niche === 'unsure') + '">עוד לא בטוח/ה, תבחרו בשבילי</button></div>', road);
     },
     palette: function () {
       frame('palette', '<h2>בוחרים <em>צבעים</em> לחנות</h2><p class="muted">לחיצה על פלטה מראה מיד איך החנות תיראה.</p><div class="opts" role="group" aria-label="פלטות צבע">' +
