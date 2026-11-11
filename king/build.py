@@ -87,7 +87,7 @@ scoped = '\n'.join(res) + reset
 markup = links + '<style>' + scoped + '</style><div id="kb" dir="rtl">' + body + '</div>'
 
 BG = os.environ.get('KB_BG', '#06143D')
-pre = ("/* המלך של הבקנד landing page (Kajabi www.avivmalka.com/backend-king; source king/page/index.html, built by king/build.py) */\n(function(){\n"
+pre = ("/* Aviv Malka backend landing page (Kajabi www.avivmalka.com/backend; source king/page/index.html, built by king/build.py) */\n(function(){\n"
        " var root=document.getElementById('kb-root'); if(!root){root=document.createElement('div');root.id='kb-root';document.body.appendChild(root);}\n"
        " try{ document.body.style.background='" + BG + "'; document.body.style.margin='0'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='transparent'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; p.style.width='100%'; } p=p.parentElement; } document.querySelectorAll('header.header, footer.footer, .header, .footer').forEach(function(el){ if(!root.contains(el)) el.style.display='none'; }); var hs=document.createElement('style'); hs.textContent='.block-type--video{display:none !important} html,body{overflow-x:hidden} @media (max-width:899px){#enable-toolbar-trigger{transform:translateY(-150px) !important}}'; document.head.appendChild(hs); }catch(e){}\n"
        " root.innerHTML=" + json.dumps(markup, ensure_ascii=False) + ";\n})();\n")

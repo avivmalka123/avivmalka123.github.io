@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>המלך של הבקנד · אביב מלכה</title>
+<title>אביב מלכה · בקנד לחנויות אונליין</title>
 <meta name="description" content="החודש הראשון עליי. אני בונה לחנות שלכם את כל הבקנד: מייל, סמס, וואטסאפ ושירות לקוחות בבינה מלאכותית, ואתם רואים את הכסף לפני שאתם משלמים.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -159,6 +159,11 @@ body{margin:0;background:#070B18}
 .kb-chip2{bottom:24%;left:-4%;width:min(56%,232px);animation-delay:-3s}
 .kb-crop{width:100%;overflow:hidden;direction:ltr;border-radius:8px}
 .kb-crop img{width:262%;max-width:none;margin-top:-1%}
+.kb-crown.kb-ava{padding:0;overflow:hidden;border-radius:50%;background:none}
+.kb-crown.kb-ava img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.kb-arch img#kbKing{object-position:50% 18%}
+.kb-arch-tag{position:absolute;z-index:4;left:50%;bottom:3%;transform:translateX(-50%)}
+.kb-fgrid2 .kb-fking img{object-position:50% 20%}
 .kb-me{position:absolute;z-index:4;right:2%;bottom:6%;display:flex;flex-direction:column;align-items:center;gap:8px}
 .kb-me-ph{width:100px;height:100px;border-radius:50%;padding:3px;background:var(--gold);box-shadow:0 18px 40px -12px rgba(0,0,0,.8)}
 .kb-me-ph img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--navy)}
@@ -586,7 +591,7 @@ body{margin:0;background:#070B18}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="kbGoldGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6DE9C"/><stop offset=".55" stop-color="#E2BC72"/><stop offset="1" stop-color="#B8863B"/></linearGradient>
-    <symbol id="kbCrownS" viewBox="0 0 24 24"><path d="M2.6 7.6a1.4 1.4 0 1 1 1.6 1.4l1.9 4.6 3.6-4.5a1.5 1.5 0 1 1 1.6-.2L12 9l.7-.1a1.5 1.5 0 1 1 1.6.2l3.6 4.5 1.9-4.6a1.4 1.4 0 1 1 1.6-1.4 1.4 1.4 0 0 1-1.3 1.4l-1.4 8.6H5.3L3.9 9a1.4 1.4 0 0 1-1.3-1.4zM5.6 18.6h12.8v2.1H5.6z"/></symbol>
+    <symbol id="kbCrownS" viewBox="0 0 24 24"><path d="M3.5 14.5a1.5 1.5 0 0 1 1.5-1.5h1.6a1.5 1.5 0 0 1 1.5 1.5V20H3.5zM9.7 9.5A1.5 1.5 0 0 1 11.2 8h1.6a1.5 1.5 0 0 1 1.5 1.5V20H9.7zM15.9 4.5A1.5 1.5 0 0 1 17.4 3H19a1.5 1.5 0 0 1 1.5 1.5V20h-4.6z"/></symbol>
     <symbol id="kbWaS" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.22-8.24 8.22zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></symbol>
   </defs>
 </svg>
@@ -594,9 +599,9 @@ body{margin:0;background:#070B18}
 <!-- ========== TOP BAR ========== -->
 <div class="kb-top" id="kbTop">
   <div class="kb-wrap kb-top-in">
-    <a class="kb-logo" href="#kbHero" aria-label="המלך של הבקנד">
-      <span class="kb-crown"><svg><use href="#kbCrownS"/></svg></span>
-      <span class="kb-logo-t"><b>המלך של הבקנד</b><small>אביב מלכה</small></span>
+    <a class="kb-logo" href="#kbHero" aria-label="אביב מלכה">
+      <span class="kb-crown kb-ava"><img src="../img/aviv_round.jpg" alt="" width="76" height="76"></span>
+      <span class="kb-logo-t"><b>אביב מלכה</b><small>בקנד לחנויות אונליין</small></span>
     </a>
     <button class="kb-topcta" type="button" data-kb-open>בדיקת התאמה</button>
   </div>
@@ -628,7 +633,8 @@ body{margin:0;background:#070B18}
       <div class="kb-hvis kb-rv kb-d2" aria-hidden="false">
         <div class="kb-beam"></div>
         <div class="kb-spot"></div>
-        <div class="kb-arch"><img id="kbKing" src="../img/king.jpg" alt="כלי מלך זהוב על רקע כחול כהה" width="900" height="1205" fetchpriority="high"></div>
+        <div class="kb-arch"><img id="kbKing" src="../img/aviv_studio.jpg" alt="אביב מלכה" width="680" height="907" fetchpriority="high"></div>
+        <span class="kb-me-t kb-arch-tag">אביב מלכה · 15 שנה באיקומרס</span>
         <div class="kb-chip kb-chip1">
           <div class="kb-chip-l"><i></i>סך המכירות בחנות, 10 שנים</div>
           <img src="../img/p_total_num.jpg" alt="Total sales over time US$20,645,265.27" width="300" height="80">
@@ -636,10 +642,6 @@ body{margin:0;background:#070B18}
         <div class="kb-chip kb-chip2">
           <div class="kb-chip-l"><i></i>מהודעות טקסט בלבד</div>
           <div class="kb-crop"><img src="../img/p_sms.jpg" alt="Total Earned $1,268,777.46" width="880" height="150"></div>
-        </div>
-        <div class="kb-me">
-          <div class="kb-me-ph"><img src="../img/aviv_round.jpg" alt="אביב מלכה" width="480" height="480"></div>
-          <span class="kb-me-t">אביב מלכה 👑</span>
         </div>
       </div>
 
@@ -681,7 +683,7 @@ body{margin:0;background:#070B18}
 <!-- ========== LEAK (light) ========== -->
 <div class="kb-sec kb-light kb-leak" id="kbLeak">
   <div class="kb-leakhd">
-    <div class="kb-leakimg"><img src="../img/fall.jpg" alt="כלי שחמט זהובים נופלים" loading="lazy" width="1400" height="1045"></div>
+    <div class="kb-leakimg"><img src="../img/fall2.jpg" alt="מטבעות והודעות זהובים באוויר" loading="lazy" width="1400" height="1045"></div>
     <div class="kb-wrap">
       <div class="kb-leaktx">
         <span class="kb-eyebrow kb-rv">איפה הכסף נוזל</span>
@@ -731,10 +733,10 @@ body{margin:0;background:#070B18}
           <div class="kb-range-m"><span>5,000 ₪</span><span>1,000,000 ₪</span></div>
         </div>
         <div class="kb-res">
-          <div class="kb-res-i kb-big"><span class="kb-res-l"><bdi dir="ltr">+15%</bdi> בחודש =</span><p class="kb-res-n kb-gt" id="kbCalcM">15,000 ₪</p></div>
-          <div class="kb-res-i"><span class="kb-res-l">בשנה (×12) =</span><p class="kb-res-n kb-gt" id="kbCalcY">180,000 ₪</p></div>
+          <div class="kb-res-i kb-big"><span class="kb-res-l"><bdi dir="ltr">+25%</bdi> בחודש =</span><p class="kb-res-n kb-gt" id="kbCalcM">25,000 ₪</p></div>
+          <div class="kb-res-i"><span class="kb-res-l">בשנה (×12) =</span><p class="kb-res-n kb-gt" id="kbCalcY">300,000 ₪</p></div>
         </div>
-        <p class="kb-note"><svg class="kb-i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg><span>להמחשה. המטרה היא לפחות <bdi dir="ltr">15%</bdi>, התוצאה תלויה בחנות.</span></p>
+        <p class="kb-note"><svg class="kb-i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></svg><span><b>ואם אתם לא שם, אתם בבעיה, ואני אעזור לכם להגיע לשם.</b> (להמחשה)</span></p>
         <button class="kb-cta" type="button" data-kb-open>בואו נבדוק כמה זה אצלכם <span class="kb-arr">←</span></button>
       </div>
     </div>
@@ -759,7 +761,7 @@ body{margin:0;background:#070B18}
           <ul class="kb-tags"><li>מבצעים מהירים</li><li>השקות</li><li>תזכורות דחופות</li><li>קודי הנחה</li></ul>
         </div>
       </div>
-      <div class="kb-engine kb-rv kb-d1"><img src="../img/engine.jpg" alt="כלי מלך זהוב שסביבו מסלולים של מייל, הודעות, עגלה ומטבע" loading="lazy" width="1000" height="1000"></div>
+      <div class="kb-engine kb-rv kb-d1"><img src="../img/engine2.jpg" alt="שקית קנייה זהובה שסביבה מסלולים של מייל, הודעות, מטבע וגרף" loading="lazy" width="1000" height="1000"></div>
       <div class="kb-side">
         <div class="kb-card kb-glass kb-rv kb-d2">
           <div class="kb-card-h"><span class="kb-card-ic"><svg class="kb-i" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.1A8 8 0 1 1 20 12z"/></svg></span><h3>וואטסאפ<small>אישי, חם וישיר</small></h3></div>
@@ -808,7 +810,7 @@ body{margin:0;background:#070B18}
         <div class="kb-cert-wm"></div>
         <span class="kb-orn kb-oa"></span><span class="kb-orn kb-ob"></span><span class="kb-orn kb-oc"></span><span class="kb-orn kb-od"></span>
         <div class="kb-seal"><svg><use href="#kbCrownS"/></svg></div>
-        <p class="kb-cert-k">שובר · המלך של הבקנד</p>
+        <p class="kb-cert-k">שובר · אביב מלכה</p>
         <h3 class="kb-cert-t kb-gt">החודש הראשון עליי.</h3>
         <p class="kb-cert-p">למה? כי אני מוכיח תוצאות לפני שאני גובה. ככה אני עובד היום עם אתרים ומותגים של מיליוני דולרים.</p>
         <div class="kb-terms">
@@ -835,14 +837,14 @@ body{margin:0;background:#070B18}
       <div class="kb-ph kb-rv">
         <span class="kb-ph-ring"></span>
         <div class="kb-ph-in"><img src="../img/aviv_round.jpg" alt="אביב מלכה" loading="lazy" width="480" height="480"></div>
-        <span class="kb-ph-badge"><svg><use href="#kbCrownS"/></svg>המלך של הבקנד</span>
+        <span class="kb-ph-badge"><svg><use href="#kbCrownS"/></svg>15 שנה באיקומרס</span>
       </div>
       <div class="kb-atx">
         <span class="kb-eyebrow kb-rv">מי אני</span>
         <h2 class="kb-h2 kb-rv kb-d1">נעים להכיר, <span class="kb-gdt">אני אביב מלכה</span></h2>
         <p class="kb-ap kb-rv kb-d2">15 שנה אני בונה ומנהל חנויות אונליין. בחנות שאני מנהל עברנו את ה־20 מיליון דולר במכירות, עם <strong>יותר מ־370 אלף הזמנות.</strong></p>
         <p class="kb-ap kb-rv kb-d2">את רוב הכסף הזה לא הביא הקמפיין הבא. הביאו אותו הלקוחות שחזרו: מיילים, סמסים ווואטסאפ שעבדו בשבילנו כל יום. <strong>מהודעות טקסט בלבד הכנסנו 1.27 מיליון דולר.</strong></p>
-        <p class="kb-ap kb-rv kb-d3">בגלל זה קוראים לי המלך של הבקנד. היום אני מנהל אתרים ומותגים של מיליוני דולרים, ובונה את אותו המנוע גם לחנויות שרוצות לגדול.</p>
+        <p class="kb-ap kb-rv kb-d3">בגלל זה אני מתמקד היום רק בבקנד. אני מנהל אתרים ומותגים של מיליוני דולרים, ובונה את אותו המנוע גם לחנויות שרוצות לגדול.</p>
         <div class="kb-abadges kb-rv kb-d4">
           <div class="kb-ab"><b data-kb-count="15">15</b><span>שנה באיקומרס</span></div>
           <div class="kb-ab"><b data-kb-count="370392" data-kb-sep="1">370,392</b><span>הזמנות</span></div>
@@ -937,11 +939,11 @@ body{margin:0;background:#070B18}
         </div>
         <p class="kb-limit kb-rv kb-d3"><i></i>מספר המקומות בחודש מוגבל, כי אני בונה כל מערכת בעצמי.</p>
       </div>
-      <div class="kb-fking kb-rv kb-d2"><img src="../img/king.jpg" alt="כלי מלך זהוב" loading="lazy" width="900" height="1205"></div>
+      <div class="kb-fking kb-rv kb-d2"><img src="../img/aviv_studio.jpg" alt="אביב מלכה" loading="lazy" width="680" height="907"></div>
     </div>
   </div>
 </div>
-<div class="kb-foot"><div class="kb-wrap"><b>👑 המלך של הבקנד</b> · אביב מלכה · כל המספרים בדף מצילומי מסך אמיתיים</div></div>
+<div class="kb-foot"><div class="kb-wrap"><b>אביב מלכה</b> · בקנד לחנויות אונליין · כל המספרים בדף מצילומי מסך אמיתיים</div></div>
 
 <!-- sticky (mobile) + float (desktop) -->
 <div class="kb-sticky" id="kbSticky" aria-hidden="true">
@@ -978,7 +980,7 @@ body{margin:0;background:#070B18}
   if(!page) return;
   var TEST=/[?&]test=1(&|$)/.test(location.search);
   var HOOK='https://hook.eu2.make.com/aos52nvubr4hbal7r1a9a9i7tvfjqcny';
-  var WA='https://wa.me/972525535537?text='+encodeURIComponent('היי אביב, הגעתי מהדף של המלך של הבקנד. יש לי חנות איקומרס ואני רוצה לשמוע על החודש הראשון בחינם');
+  var WA='https://wa.me/972525535537?text='+encodeURIComponent('היי אביב, הגעתי מהדף שלך על הבקנד לחנויות. יש לי חנות איקומרס ואני רוצה לשמוע על החודש הראשון בחינם');
   var RM=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $=function(s,c){return (c||page).querySelector(s)};
   var $$=function(s,c){return Array.prototype.slice.call((c||page).querySelectorAll(s))};
@@ -1049,14 +1051,14 @@ body{margin:0;background:#070B18}
   var rng=document.getElementById('kbRange'),cv=document.getElementById('kbCalcV'),cm=document.getElementById('kbCalcM'),cy=document.getElementById('kbCalcY');
   var MIN=5000,MAX=1000000,LR=Math.log(MAX/MIN);
   function valFromPos(p){var v=MIN*Math.exp(LR*p/1000);var s=v<20000?500:v<100000?1000:v<500000?5000:10000;v=Math.round(v/s)*s;return Math.max(MIN,Math.min(MAX,v))}
-  var shownM=15000,shownY=180000,anim=null;
+  var shownM=25000,shownY=300000,anim=null;
   function tweenTo(m,y){
     if(anim) cancelAnimationFrame(anim);
     var m0=shownM,y0=shownY,t0=null,d=RM?1:420;
     function st(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/d),e=1-Math.pow(1-p,3);shownM=m0+(m-m0)*e;shownY=y0+(y-y0)*e;cm.textContent=fmt(shownM)+' ₪';cy.textContent=fmt(shownY)+' ₪';if(p<1)anim=requestAnimationFrame(st)}
     anim=requestAnimationFrame(st);
   }
-  function calc(){var v=valFromPos(+rng.value);var pct=(rng.value/10).toFixed(2)+'%';rng.style.setProperty('--p',pct);cv.textContent=fmt(v)+' ₪';rng.setAttribute('aria-valuetext',fmt(v)+' ₪');tweenTo(v*.15,v*.15*12)}
+  function calc(){var v=valFromPos(+rng.value);var pct=(rng.value/10).toFixed(2)+'%';rng.style.setProperty('--p',pct);cv.textContent=fmt(v)+' ₪';rng.setAttribute('aria-valuetext',fmt(v)+' ₪');tweenTo(v*.25,v*.25*12)}
   if(rng){
     var p0=Math.round(1000*Math.log(100000/MIN)/LR);rng.value=p0;
     rng.addEventListener('input',calc);calc();
@@ -1122,7 +1124,7 @@ body{margin:0;background:#070B18}
     }
   }
   function thanksHTML(){
-    var h='<div class="kb-stp kb-ty"><div class="kb-ty-crown"><svg><use href="#kbCrownS"/></svg></div><h3>קיבלתי, '+esc(S.first)+'! 👑</h3><p>אני עובר אישית על כל פנייה, ואחזור אליכם בהקדם.</p>';
+    var h='<div class="kb-stp kb-ty"><div class="kb-ty-crown"><svg><use href="#kbCrownS"/></svg></div><h3>קיבלתי, '+esc(S.first)+'! 🙌</h3><p>אני עובר אישית על כל פנייה, ואחזור אליכם בהקדם.</p>';
     if(!S.fit) h+='<p class="kb-soft">ההצעה הזאת בנויה לחנויות שכבר מוכרות 5,000 ₪ בחודש, אבל שמרתי את הפרטים ואחזור אליכם.</p>';
     h+='<a class="kb-ghost" href="'+WA+'" target="_blank" rel="noopener"><svg class="kb-wai"><use href="#kbWaS"/></svg>רוצים לדבר כבר עכשיו? וואטסאפ ←</a></div>';
     return h;
@@ -1165,16 +1167,36 @@ body{margin:0;background:#070B18}
     var name=S.name.trim(),phone=cleanPhone(S.phone),site=S.site.trim();
     var A=QS.map(function(Q,i){var a=S.ans[i];return {q:Q.q,a:Q.m?a.join(', '):a}});
     var fit=S.ans[0]!==LOW;
-    var summary='👑 ליד חדש מהדף "המלך של הבקנד"\n'+name+' · '+phone+'\nאתר: '+(site||'לא צוין')+'\n\n'+
+    var summary='📈 ליד חדש מדף הבקנד (אביב מלכה)\n'+name+' · '+phone+'\nאתר: '+(site||'לא צוין')+'\n\n'+
       QS.map(function(Q,i){return Q.k+': '+A[i].a}).join('\n')+'\n\n'+(fit?'✅ מעל הרף (5,000 ₪+)':'⚠️ מתחת לרף של 5,000 ₪');
-    var payload={source:'backend-king',submitted_at:new Date().toISOString(),name:name,phone:phone,site:site,answers:A,fit:fit,summary:summary};
+    var payload={source:'backend',submitted_at:new Date().toISOString(),name:name,phone:phone,site:site,answers:A,fit:fit,summary:summary};
     S.fit=fit;S.first=name.split(/\s+/)[0];
     var btn=document.getElementById('kbSend');btn.setAttribute('disabled','');btn.innerHTML='שולח…';
     var fired=false;function done(){if(fired)return;fired=true;S.done=true;render();focusFirst()}
     if(TEST){try{console.log('[kb test] payload (not sent)',payload);console.log(summary)}catch(x){}setTimeout(done,500);return}
-    try{fetch(HOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true}).then(done,done)}catch(x){done()}
+    pxLead();
+    sendLead(payload,done);
     setTimeout(done,2500);
   }
+  /* lead delivery: fetch → one retry → sendBeacon; a copy waits in localStorage until Make answers OK, and is re-sent on the next visit */
+  var QK='kb_lead_q';
+  function qGet(){try{return JSON.parse(localStorage.getItem(QK)||'[]')}catch(x){return []}}
+  function qSet(a){try{localStorage.setItem(QK,JSON.stringify(a))}catch(x){}}
+  function qDrop(id){qSet(qGet().filter(function(l){return l.lid!==id}))}
+  function post(pl){return fetch(HOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pl),keepalive:true}).then(function(r){if(!r.ok)throw new Error('http '+r.status);return r})}
+  function sendLead(pl,cb){
+    pl.lid=pl.lid||(Date.now().toString(36)+Math.random().toString(36).slice(2,7));
+    var q=qGet();if(!q.some(function(l){return l.lid===pl.lid})){q.push(pl);qSet(q)}
+    function ok(){qDrop(pl.lid);cb&&cb()}
+    function beacon(){try{if(navigator.sendBeacon&&navigator.sendBeacon(HOOK,new Blob([JSON.stringify(pl)],{type:'text/plain'}))){qDrop(pl.lid)}}catch(x){}cb&&cb()}
+    try{post(pl).then(ok,function(){setTimeout(function(){post(pl).then(ok,beacon)},1500)})}catch(x){beacon()}
+  }
+  if(!TEST){try{qGet().forEach(function(l){if(Date.now()-new Date(l.submitted_at).getTime()<7*864e5){if(!l.resent){l.resent=true;l.summary='🔁 שליחה חוזרת (ייתכן שכבר קיבלת)\n'+l.summary}sendLead(l)}else qDrop(l.lid)})}catch(x){}}
+  /* campaign pixel (Ping AI ad account): PageView on load, Lead after name + phone */
+  var PX='2210072352882860';
+  function pxBoot(){if(TEST)return;try{if(!window.fbq){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js')}if(window.__kbPx)return;window.__kbPx=1;fbq('init',PX);fbq('trackSingle',PX,'PageView')}catch(x){}}
+  function pxLead(){if(TEST)return;try{window.fbq&&fbq('trackSingle',PX,'Lead',{content_name:'backend'})}catch(x){}}
+  pxBoot();
 
   function openQ(e){
     if(e)e.preventDefault();
