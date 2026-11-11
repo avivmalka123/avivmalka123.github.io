@@ -1,5 +1,5 @@
 /* "Copy my setup" training page (www.avivmalka.com/copy-setup) · Kajabi Custom Code block: <div id="st-root"></div> + this file.
-   No sign-up: hook + Wistia video + 4 links. Meta pixel 2210072352882860: Lead on the first setup-copy / Ping-install click. */
+   No sign-up: hook + video + 2 links (closed WhatsApp group = gets the setup, Ping install). Meta pixel 2210072352882860: Lead on the first group / Ping-install click. */
 (function () {
   var WISTIA = 'bk5fkohucp';
   // 31.10.2026: brand-blurred re-edit served from GitHub Pages (native player) until it replaces the Kajabi/Wistia upload
@@ -70,7 +70,7 @@
     '#st-root .btn small{display:block;font-size:14px;font-weight:600;opacity:.85;margin-top:3px}',
     '#st-root .b1{color:#141414;background:linear-gradient(180deg,#F5C451,#E0A21E);box-shadow:0 6px 18px rgba(224,162,30,.35)}',
     '#st-root .b2{color:#fff;background:#141414}',
-    '#st-root .b3{color:#fff;background:#1FA855}',
+    '#st-root .b3{color:#fff;background:#1FA855;box-shadow:0 6px 18px rgba(31,168,85,.35);min-height:68px;font-size:20px}',
     '#st-root .b4{color:#fff;background:linear-gradient(90deg,#F58529,#DD2A7B,#8134AF)}',
     '#st-root .btn:focus-visible{outline:3px solid #1D4ED8;outline-offset:3px}',
     '#st-root .foot{text-align:center;font-size:13px;line-height:1.5;color:#7a7a7a;margin-top:24px}',
@@ -84,21 +84,19 @@
     '<main class="wrap">' +
       '<span class="pill">🎄 לבעלי אתר איקומרס, לפני בלאק פריידיי</span>' +
       '<h1>בחגים האלה אנחנו הולכים להוסיף עוד <em><bdi dir="ltr">30%–50%</bdi></em> למכירות באתר. ככה תעתיקו את זה אצלכם.</h1>' +
-      '<p class="sub">זה הסטאפ שאני מפעיל בחנויות שלי לתקופת החגים. <b>בלי להגדיל תקציב פרסום ובלי לרדוף אחרי לקוחות חדשים</b>: הוא עובד על מי שכבר נכנס לחנות שלכם. בהדרכה אני מראה אותו מבפנים, ובסוף אתם מעתיקים אותו לחנות שלכם.</p>' +
+      '<p class="sub">זה הסטאפ שאני מפעיל בחנויות שלי לתקופת החגים. <b>בלי להגדיל תקציב פרסום ובלי לרדוף אחרי לקוחות חדשים</b>: הוא עובד על מי שכבר נכנס לחנות שלכם. בהדרכה אני מראה אותו מבפנים, ובקבוצת הוואטסאפ הסגורה אתם מקבלים אותו.</p>' +
       '<div class="vid">' + (MP4 ? '<video controls playsinline preload="metadata" poster="https://avivmalka123.github.io/st/poster.jpg?v=2" src="' + MP4 + '"></video>'
         : '<div class="wistia_embed wistia_async_' + WISTIA + ' videoFoam=false playbar=true fullscreenButton=true smallPlayButton=true settingsControl=true playbackRateControl=true qualityControl=true playerColor=E0A21E stillUrl=https://avivmalka123.github.io/st/poster.jpg" style="height:100%;width:100%">&nbsp;</div>') + '</div>' +
       '<div class="cap"><span>▶ הגדלת המכירות באתר בעוד 30%</span><span>15 דקות</span></div>' +
       '<h2>3 צעדים, לפני שהעונה מתחילה</h2>' +
       '<ol class="steps">' +
         '<li>צפו בהדרכה עד הסוף, כדי להבין מה הסטאפ עושה ולמה.</li>' +
-        '<li>העתיקו את הסטאפ שלי לחנות שלכם בלחיצה.</li>' +
+        '<li>הצטרפו לקבוצת הוואטסאפ הסגורה, ושם תקבלו את הסטאפ שלי.</li>' +
         '<li>הפעילו אותו עכשיו, כדי שיעבוד בשבילכם כבר בבלאק פריידיי.</li>' +
       '</ol>' +
       '<nav class="btns" aria-label="קישורים">' +
-        '<a class="btn b1" data-ev="setup" href="' + SETUP + '" target="_blank" rel="noopener">📋 להעתקת הסטאפ שלי<small>העתקה ישירה לחנות שלכם</small></a>' +
+        '<a class="btn b3" data-ev="group" href="' + GROUP + '" target="_blank" rel="noopener">💬 לקבוצת הוואטסאפ הסגורה ולקבלת הסטאפ<small>לבעלי חנויות פעילות בלבד</small></a>' +
         '<a class="btn b2" data-ev="ping" href="' + PING + '" target="_blank" rel="noopener">להתקנת פינג משופיפיי<small>למי שעוד לא מותקן אצלו</small></a>' +
-        '<a class="btn b3" data-ev="group" href="' + GROUP + '" target="_blank" rel="noopener">💬 לקבוצת הוואטסאפ הסגורה<small>לבעלי חנויות פעילות בלבד</small></a>' +
-        '<a class="btn b4" data-ev="ig" href="' + IG + '" target="_blank" rel="noopener">📸 לאינסטגרם שלי<small>עוד תוכן על איקומרס כל שבוע</small></a>' +
       '</nav>' +
       '<p class="foot">התוצאות משתנות מחנות לחנות ותלויות במוצר, בקהל ובביצוע.</p>' +
     '</main>';
@@ -107,7 +105,7 @@
   root.querySelectorAll('[data-ev]').forEach(function (a) {
     a.addEventListener('click', function () {
       var ev = a.getAttribute('data-ev');
-      if ((ev === 'setup' || ev === 'ping') && !leadSent) { leadSent = true; px('Lead', { content_name: 'copy-setup-' + ev }); }
+      if ((ev === 'group' || ev === 'ping') && !leadSent) { leadSent = true; px('Lead', { content_name: 'copy-setup-' + ev }); }
       px({ setup: 'SetupCopyClick', ping: 'PingInstallClick', group: 'GroupClick', ig: 'InstagramClick' }[ev], {}, true);
       track({ setup: 'STSetupClick', ping: 'STPingClick', group: 'STGroupClick', ig: 'STInstagramClick' }[ev]);
     });
