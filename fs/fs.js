@@ -1,5 +1,5 @@
 /* "פתחו חנות חינמית" (www.avivmalka.com/free-store) · Kajabi Custom Code block: <div id="fs-root"></div> + this file.
-   Landing page → sign-up (name/phone/email) → step-by-step wizard: niche → colors → store name → open Shopify (affiliate link) → $1 plan →
+   Landing page (never remembers anyone) → sign-up (name/phone/email) → thank-you page ?thanks=1 / /free-store-thanks (pixel Lead) → step-by-step wizard: niche → colors → store name → open Shopify (affiliate link) → $1 plan →
    Hebrew theme ZIP (built in the browser from theme/base.zip + the user's choices) → 3-product CSV → Ping AI install + ready setup → done.
    Leads and progress go to the ping-funnel worker /api/fs/* → admin tab "פתחו חנות חינמית". Products and texts come from products.json. */
 (function () {
@@ -17,6 +17,12 @@
   var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var API = (LOCAL && QS.get('api')) || 'https://ping-funnel.aviv1988.workers.dev';
   var T0 = Date.now();
+  // Landing page = sign-up only (never remembers anyone). After sign-up → thank-you page (= the Lead) → the wizard runs there.
+  // Separate Kajabi page /free-store-thanks when it exists; until then the same page with ?thanks=1.
+  var THANKS = /\/free-store-thanks\/?$/.test(location.pathname) || QS.get('thanks') === '1';
+  var LANDING_URL = LOCAL ? location.pathname : 'https://www.avivmalka.com/free-store';
+  function thanksUrl() { var q = new URLSearchParams(location.search); q.delete('thanks'); q.delete('step'); q.set('thanks', '1'); return location.pathname + '?' + q.toString(); }
+  function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) { return null; } }
   var VID = (function () { try { var v = localStorage.getItem('fs_vid'); if (!v) { v = Date.now().toString(36) + Math.random().toString(36).slice(2, 10); localStorage.setItem('fs_vid', v); } return v; } catch (e) { return ''; } })();
 
   var NICHES = [
@@ -109,6 +115,7 @@
     '#fs-root summary{font-weight:800;font-size:17px;cursor:pointer}',
     '#fs-root details p{margin:10px 0 0;color:#2b2b2b}',
     '#fs-root .foot{text-align:center;font-size:13px;color:#7a7a7a;margin-top:30px}',
+    '#fs-root .thx{display:grid;gap:4px;background:#E8F6EE;border:1px solid #BFE5CD;color:#14532D;border-radius:14px;padding:14px 16px;margin:0 0 14px;font-size:15px;line-height:1.45}#fs-root .thx b{font-size:18px}',
     '#fs-root .help{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:24px 0 0;font-size:16px;font-weight:700;color:#2b2b2b}',
     '#fs-root .help a{display:inline-block;background:#E9F8EF;color:#167A3E;border:2px solid #1FA855;border-radius:999px;padding:9px 18px;font-size:16px;font-weight:800;text-decoration:none}',
     '#fs-root .help a:hover{background:#1FA855;color:#fff}',
@@ -262,7 +269,7 @@
   function signup() {
     var m = document.createElement('div'); m.className = 'fs-modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); m.setAttribute('aria-labelledby', 'fsSuT');
     m.innerHTML = '<form class="card" novalidate><button type="button" class="x" aria-label="סגירה">×</button>' +
-      '<h2 id="fsSuT" tabindex="-1">לאן לשלוח לכם את <em>פרטי החנות</em>?</h2><p class="muted">ככה נשמור את ההתקדמות שלכם, ותוכלו לחזור לאשף בכל רגע.</p>' +
+      '<h2 id="fsSuT" tabindex="-1">לאן לשלוח לכם את <em>פרטי החנות</em>?</h2><p class="muted">ממלאים פרטים, ומיד אחרי זה מתחילים לבנות את החנות יחד, צעד אחרי צעד.</p>' +
       '<label class="f">שם מלא<input type="text" name="name" autocomplete="name" required></label>' +
       '<label class="f">טלפון נייד<input type="tel" name="phone" autocomplete="tel" inputmode="tel" dir="ltr" style="text-align:right" required></label>' +
       '<label class="f">אימייל<input type="email" name="email" autocomplete="email" dir="ltr" style="text-align:right" required></label>' +
@@ -307,8 +314,9 @@
           S.first = stt.first || f.name.value.trim().split(' ')[0];
           ['niche', 'palette', 'store_name', 'shop'].forEach(function (k) { if (stt[k]) S[k] = stt[k]; });
           if (stt.steps) for (var k in stt.steps) S.steps[k] = S.steps[k] || stt.steps[k];
-          if (r.new && r.event_id) px('Lead', {content_name: 'free-store'}, false, r.event_id);
-          persist(); m.remove(); wizard(nextOpen());
+          S.cur = 'niche'; persist();
+          ss('fs_lead', JSON.stringify({ev: r.event_id || evid, isNew: !!r.new}));
+          location.href = thanksUrl();
         }).catch(function () { btn.disabled = false; btn.textContent = 'ממשיכים לבניית החנות'; err.textContent = 'אין חיבור. בדקו את האינטרנט ונסו שוב'; });
     };
   }
@@ -353,6 +361,7 @@
           .map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ol><div class="tips">' +
         '<div><span aria-hidden="true">💻</span><span><b>עובדים מהמחשב.</b> חלק מהשלבים (העלאת קבצים לשופיפיי) עובדים רק ממחשב, לא מהטלפון.</span></div>' +
         '<div><span aria-hidden="true">💬</span><span><b>נתקעתם? אנחנו איתכם.</b> בכל שלב יש למטה כפתור וואטסאפ לליווי ועזרה.</span></div></div></div>';
+      if (THANKS && S.justIn) road = '<div class="thx" role="status"><b>✓ תודה' + (S.first ? ', ' + esc(S.first) : '') + '! הפרטים התקבלו.</b><span>עכשיו מתאימים את החנות בשבילכם: כמה שאלות קצרות, ומתחילים לבנות.</span></div>' + road;
       frame('niche', '<h2>באיזו <em>נישה</em> תהיה החנות?</h2><p class="muted">בכל נישה מחכים לכם 3 מוצרים מוכנים. אפשר להחליף אותם אחר כך.</p><div class="opts" role="group" aria-label="נישות">' +
         NICHES.map(function (n) { var x = N(n.id); return '<button type="button" class="opt" data-niche="' + n.id + '" aria-pressed="' + (S.niche === n.id) + '"><img src="' + esc(img(x.products[0].images[0])) + '" alt="">' + esc(x.name) + '</button>'; }).join('') +
         '<button type="button" class="opt full" data-niche="unsure" aria-pressed="' + (S.niche === 'unsure') + '">עוד לא בטוח/ה, תבחרו בשבילי</button></div>', road);
@@ -502,15 +511,13 @@
   root.addEventListener('click', function (e) {
     var t = e.target.closest('button, a'); if (!t || !root.contains(t)) return;
     var d = t.dataset;
-    if (d.go === 'start') { px('FSStart', {}, true); track('FSStart'); if (S.tok) wizard(STEPS.indexOf(S.cur) >= 0 ? S.cur : nextOpen()); else signup(); return; }
+    if (d.go === 'start') { px('FSStart', {}, true); track('FSStart'); signup(); return; }
     if (d.go === 'privacy') { e.preventDefault(); privacy(); return; }
-    if (d.go === 'home') { landing(); try { window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (x) {} return; }
+    if (d.go === 'home') { location.href = LANDING_URL; return; }
     if (d.go === 'reset') {
-      // first click asks, second click forgets this device's progress (the lead stays in the board) and shows the landing page
+      // first click asks, second click forgets this device's progress (the lead stays in the board) and goes back to the landing page
       if (t.dataset.sure !== '1') { t.dataset.sure = '1'; t.textContent = 'ללחוץ שוב כדי להתחיל מחדש'; return; }
-      ls('fs_tok', null); ls('fs_state', null);
-      S = {tok: null, first: '', niche: null, palette: null, store_name: '', shop: null, steps: {}, cur: 'niche'};
-      landing(); try { window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (x) {} return;
+      ls('fs_tok', null); ls('fs_state', null); location.href = LANDING_URL; return;
     }
     if (d.back) { wizard(d.back); return; }
     if (d.niche) {
@@ -562,16 +569,27 @@
   /* ---------- start ---------- */
   track('FSPageView');
   var deep = QS.get('step') && STEPS.indexOf(QS.get('step')) >= 0 ? QS.get('step') : null;
-  if (S.tok) {
-    // returning visitor: always land on the homepage (Aviv 12.11.2026); sync progress quietly so the CTA continues where they stopped without a new sign-up
-    if (!deep) landing();
+  if (!THANKS) {
+    // landing page: never remembers anyone (Aviv 12.11.2026) — every visit starts clean and the CTA always opens the form
+    ls('fs_tok', null); ls('fs_state', null);
+    S = {tok: null, first: '', niche: null, palette: null, store_name: '', shop: null, steps: {}, cur: 'niche'};
+    landing();
+  } else if (!S.tok) {
+    var q0 = new URLSearchParams(location.search); q0.delete('thanks'); q0.delete('step');
+    location.replace(LANDING_URL + (q0.toString() ? '?' + q0.toString() : ''));
+  } else {
+    // thank-you page = the Lead; the wizard (store matching questions) starts here
+    track('FSThanksView');
+    var lead = null; try { lead = JSON.parse(ss('fs_lead') || 'null'); } catch (e) {}
+    if (lead) { ss('fs_lead', null); S.justIn = true; px('Lead', {content_name: 'free-store'}, false, lead.ev); }
+    var go = function () { wizard(deep || (S.justIn ? 'niche' : (STEPS.indexOf(S.cur) >= 0 ? S.cur : nextOpen()))); };
     fetch(API + '/api/fs/me', {headers: {Authorization: 'Bearer ' + S.tok}, mode: 'cors'}).then(function (r) { return r.json(); }).then(function (r) {
-      if (!r.ok) { S.tok = null; ls('fs_tok', null); if (deep) landing(); return; }
+      if (!r.ok) { ls('fs_tok', null); ls('fs_state', null); location.replace(LANDING_URL); return; }
       var stt = r.state; S.first = stt.first;
       ['niche', 'palette', 'store_name', 'shop'].forEach(function (k) { if (stt[k]) S[k] = stt[k]; });
       if (S.niche === 'unsure') S.niche = 'home';
       for (var k in stt.steps) S.steps[k] = S.steps[k] || stt.steps[k];
-      persist(); if (deep) wizard(deep);
-    }).catch(function () { if (deep) landing(); });
-  } else landing();
+      persist(); go();
+    }).catch(go);
+  }
 })();
