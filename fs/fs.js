@@ -335,7 +335,7 @@
       '<div class="prog"><span>' + esc(TITLES[code]) + '</span><span>' + Math.round(i / (STEPS.length - 1) * 100) + '%</span></div>' +
       '<div class="track" aria-hidden="true"><div class="fill" style="width:' + Math.max(4, i / (STEPS.length - 1) * 100) + '%"></div></div>' +
       (pre || '') + '<div class="card">' + body + '</div>' + (i > 0 && code !== 'done' ? '<button class="back" type="button" data-back="' + STEPS[i - 1] + '">→ חזרה לשלב הקודם</button>' : '') +
-      '<div class="help"><span>צריכים עזרה?</span><a href="' + WA_HELP + '" target="_blank" rel="noopener">💬 שלחו לנו וואטסאפ</a></div><div class="foot"><button type="button" data-go="reset">↺ התחלה מחדש</button></div></div>';
+      '<div class="help"><span>צריכים עזרה?</span><a href="' + WA_HELP + '" target="_blank" rel="noopener">💬 שלחו לנו וואטסאפ</a></div><div class="foot"><button type="button" data-go="home">⌂ לדף הבית</button> · <button type="button" data-go="reset">↺ התחלה מחדש</button></div></div>';
     var h = root.querySelector('h2'); if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({preventScroll: true}); } catch (e) {} }
     try { root.scrollIntoView({block: 'start'}); window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (e) {}
   }
@@ -502,8 +502,9 @@
   root.addEventListener('click', function (e) {
     var t = e.target.closest('button, a'); if (!t || !root.contains(t)) return;
     var d = t.dataset;
-    if (d.go === 'start') { px('FSStart', {}, true); track('FSStart'); if (S.tok) wizard(nextOpen()); else signup(); return; }
+    if (d.go === 'start') { px('FSStart', {}, true); track('FSStart'); if (S.tok) wizard(STEPS.indexOf(S.cur) >= 0 ? S.cur : nextOpen()); else signup(); return; }
     if (d.go === 'privacy') { e.preventDefault(); privacy(); return; }
+    if (d.go === 'home') { landing(); try { window.scrollTo(0, root.getBoundingClientRect().top + window.pageYOffset); } catch (x) {} return; }
     if (d.go === 'reset') {
       // first click asks, second click forgets this device's progress (the lead stays in the board) and shows the landing page
       if (t.dataset.sure !== '1') { t.dataset.sure = '1'; t.textContent = 'ללחוץ שוב כדי להתחיל מחדש'; return; }
@@ -560,15 +561,17 @@
 
   /* ---------- start ---------- */
   track('FSPageView');
+  var deep = QS.get('step') && STEPS.indexOf(QS.get('step')) >= 0 ? QS.get('step') : null;
   if (S.tok) {
-    // returning visitor: resume the wizard where they stopped (server state wins over this device's copy)
+    // returning visitor: always land on the homepage (Aviv 12.11.2026); sync progress quietly so the CTA continues where they stopped without a new sign-up
+    if (!deep) landing();
     fetch(API + '/api/fs/me', {headers: {Authorization: 'Bearer ' + S.tok}, mode: 'cors'}).then(function (r) { return r.json(); }).then(function (r) {
-      if (!r.ok) { S.tok = null; ls('fs_tok', null); landing(); return; }
+      if (!r.ok) { S.tok = null; ls('fs_tok', null); if (deep) landing(); return; }
       var stt = r.state; S.first = stt.first;
       ['niche', 'palette', 'store_name', 'shop'].forEach(function (k) { if (stt[k]) S[k] = stt[k]; });
       if (S.niche === 'unsure') S.niche = 'home';
       for (var k in stt.steps) S.steps[k] = S.steps[k] || stt.steps[k];
-      persist(); wizard(QS.get('step') && STEPS.indexOf(QS.get('step')) >= 0 ? QS.get('step') : (STEPS.indexOf(S.cur) >= 0 ? S.cur : nextOpen()));
-    }).catch(function () { landing(); });
+      persist(); if (deep) wizard(deep);
+    }).catch(function () { if (deep) landing(); });
   } else landing();
 })();
