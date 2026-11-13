@@ -48,6 +48,17 @@
 #sk .sk-end p{color:rgba(255,255,255,.75)}
 #sk .sk-demo{font-size:12.5px;color:var(--mu)}
 #sk .sk-foot{text-align:center;color:var(--mu);font-size:13px;padding:10px 0 40px}
+#sk .sk-flow{display:flex;align-items:stretch;gap:8px;margin:26px 0 0;flex-wrap:wrap}
+#sk .sk-flow div{flex:1;min-width:150px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:12px 14px}
+#sk .sk-flow div.hot{background:rgba(255,66,6,.18);border-color:rgba(255,66,6,.7)}
+#sk .sk-flow b{display:inline-flex;width:26px;height:26px;border-radius:8px;background:#fff;color:#141418;align-items:center;justify-content:center;font-weight:900;font-size:14px;margin-inline-end:8px}
+#sk .sk-flow div.hot b{background:var(--b);color:#fff}
+#sk .sk-flow span{font-weight:800;font-size:16px;color:#fff}
+#sk .sk-flow small{display:block;margin-top:4px;font-size:13px;color:rgba(255,255,255,.62);direction:rtl}
+#sk .sk-flow i{font-style:normal;align-self:center;color:rgba(255,255,255,.45);font-size:18px}
+#sk .sk-claude{display:flex;gap:14px;align-items:flex-start;background:#fff;border:2px solid var(--b);border-radius:20px;padding:18px 20px;margin:34px 0 0;font-size:17.5px}
+#sk .sk-claude-ic{font-size:30px;line-height:1}
+@media (max-width:640px){#sk .sk-flow i{display:none}#sk .sk-flow div{min-width:100%}}
 @media (max-width:640px){#sk{font-size:17px}#sk h1{font-size:31px}#sk h2{font-size:25px}#sk .sk-grid{grid-template-columns:1fr}#sk .sk-dl{font-size:17px;padding:14px 22px}}
 `;
 
@@ -57,16 +68,27 @@
   var html = `
 <div id="sk">
   <div class="sk-hero"><div class="sk-wrap">
-    <span class="sk-tag">🎁 הורדה חינם · בלי הרשמה</span>
-    <h1>הסקיל שבונה לחנות שלכם את <em>כל השיווק האוטומטי</em> במשפט אחד</h1>
+    <span class="sk-tag">🤖 סקיל לקלוד · הורדה חינם · בלי הרשמה</span>
+    <h1>מעלים לקלוד סקיל אחד, והוא בונה לחנות שלכם את <em>כל השיווק האוטומטי</em></h1>
     <p class="sk-lead">כותבים לקלוד "תבנה לי את כל האוטומציות לחנות", עונים על שש שאלות, וקלוד בונה: 8 אוטומציות במייל, בוואטסאפ וב־SMS, בוט שעונה גם בלילה, גאנט ל־90 יום עם כל החגים בישראל, ודוח בוקר לוואטסאפ שלכם.</p>
     ${dl('להורדת הסקיל בחינם')}
     <span class="sk-note">קובץ zip אחד · 58KB · בלי טופס ובלי מייל</span>
+    <div class="sk-flow">
+      <div><b>1</b><span>מורידים את הסקיל</span><small>קובץ אחד, בלי הרשמה</small></div>
+      <i>⬅</i>
+      <div class="hot"><b>2</b><span>מעלים אותו לקלוד</span><small>Settings ⬅ Skills ⬅ Upload</small></div>
+      <i>⬅</i>
+      <div><b>3</b><span>כותבים לקלוד משפט אחד</span><small>"תבנה לי את כל האוטומציות לחנות"</small></div>
+    </div>
     <div class="sk-heroimg"><img src="${BASE}img/gantt-hero.jpg" alt="הגאנט ל־90 יום שהסקיל פותח"></div>
     <div class="sk-note">התמונות בכתבה מחנות לדוגמה</div>
   </div></div>
 
   <div class="sk-wrap">
+    <div class="sk-claude">
+      <div class="sk-claude-ic">🤖</div>
+      <div><b>זה סקיל לקלוד.</b> לא תוכנה שמתקינים, ולא עוד אפליקציה. מורידים קובץ, מעלים אותו לקלוד (claude.ai), ומאותו רגע קלוד יודע לבנות לחנות שלכם את כל השיווק האוטומטי בתוך פינג. כל העבודה קורית בשיחה איתו.</div>
+    </div>
     <h2>רגע, מה זה סקיל?</h2>
     <p>סקיל הוא חבילת הוראות שמלמדת את קלוד לעשות עבודה מסוימת כמו מומחה. הסקיל הזה מלמד אותו לבנות לחנות שופיפיי את כל ה"בקאנד": ההודעות שיוצאות לבד ללקוחות שכבר היו אצלכם, ומחזירות אותם לקנות.</p>
     <p>את העבודה עצמה הוא עושה בתוך <b>פינג</b>, תוכנת האוטומציות לשופיפיי שאני עובד איתה. פינג מחוברת לקלוד, אז כמעט הכול קורה מתוך השיחה, ואתם רק מאשרים.</p>
@@ -117,7 +139,7 @@
     <h2>איך מתקינים (5 דקות)</h2>
     <ol class="sk-steps">
       <li><b>מורידים את הסקיל.</b> הכפתור למטה, קובץ zip אחד.</li>
-      <li><b>מעלים אותו לקלוד.</b> ב־claude.ai: <code>Settings ⬅ Capabilities ⬅ Skills ⬅ Upload</code>, ובוחרים את הקובץ. צריך תוכנית בתשלום של קלוד.</li>
+      <li><b>מעלים אותו לקלוד 🤖</b> ב־claude.ai: <code>Settings ⬅ Capabilities ⬅ Skills ⬅ Upload</code>, ובוחרים את הקובץ. צריך תוכנית בתשלום של קלוד.</li>
       <li><b>מחברים את פינג לקלוד.</b> <code>Settings ⬅ Connectors ⬅ Add custom connector</code>. שם: <code>Ping</code>. כתובת: <code>https://pingai.org/api/mcp</code>. לוחצים Connect ומתחברים לחשבון של החנות. אין עדיין פינג? הסקיל ילווה אתכם בהתקנה מ־<a href="https://apps.shopify.com/ping-ai" target="_blank" rel="noopener">חנות האפליקציות של שופיפיי</a>.</li>
       <li><b>פותחים צ'אט חדש וכותבים:</b> "תבנה לי את כל האוטומציות לחנות". מכאן הסקיל מוביל אתכם.</li>
     </ol>
