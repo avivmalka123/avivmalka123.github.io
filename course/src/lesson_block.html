@@ -129,6 +129,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 #ls.full .ls-w{max-width:940px}
 #ls.full .ls-tools{max-width:760px;margin:20px auto 0}
 #ls.full .ls-cta{max-width:760px;margin:12px auto 0}
+#ls.full .ls-q{max-width:760px;margin:20px auto 0}
 @media (max-width:540px){.ls-vg{grid-template-columns:1fr}.ls-steps span{font-size:0}.ls-steps a{font-size:0}}
 </style>
 
@@ -205,7 +206,8 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
   };
 
   /* lesson 5: readiness test (5 questions → personal score → WhatsApp with the answers prefilled) */
-  function readiness(waHref){
+  function readiness(waHref, where){
+    where = where || 'שיעור 5 בקורס החינמי';
     var WA = 'https://wa.me/972525535537?text=';
     /* 7 questions (22.10, Aviv's pre-sales-call PDF merged in). Max weights add up to 100. */
     var Q = [
@@ -265,7 +267,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
         try { localStorage.setItem('alm_lead', JSON.stringify(lead)); } catch(x){}
         LID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
         /* if the hold server is down, Aviv still gets the lead right away */
-        hold('start').catch(function(){ direct = true; toMake({source: 'course-readiness', stage: 'lead', submitted_at: new Date().toLocaleString('he-IL', {timeZone: 'Asia/Jerusalem'}), name: name, phone: phone, summary: '📝 ליד משיעור 5 בקורס החינמי: השאיר פרטים לפני המבחן\n' + name + ' · ' + phone}); });
+        hold('start').catch(function(){ direct = true; toMake({source: 'course-readiness', stage: 'lead', submitted_at: new Date().toLocaleString('he-IL', {timeZone: 'Asia/Jerusalem'}), name: name, phone: phone, summary: '📝 ליד מ' + where + ': השאיר פרטים לפני המבחן\n' + name + ' · ' + phone}); });
         try { window.fbq && fbq('track', 'Lead'); } catch(x){}
         step(0, true);
       };
@@ -293,7 +295,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
       var pr = PROF[A[2].j] || PROF[0], g = Q[low].gap;
       var lines = Q.map(function(q, i){ return q.k + ': ' + A[i].t; }).join('\n');
       var msg = 'היי אביב סיימתי לצפות בקורס במועדון הסגור ואני רוצה לדבר איתך לגבי המשך תהליך אישי\n\nהפרופיל שלי: ' + pr[0] + ' ' + pr[1] + ' · מוכנות ' + score + '%\n' + lines;
-      var summary = 'מבחן מוכנות, שיעור 5 בקורס החינמי (' + score + '%, ' + pr[0] + ')\n' + name + ' · ' + phone + '\n\n🔥 למה עכשיו: ' + A[0].t + '\n💸 אם כלום לא ישתנה: ' + A[3].t + '\n\n' + lines + '\n\nהכי חסר: ' + g[0];
+      var summary = 'מבחן מוכנות, ' + where + ' (' + score + '%, ' + pr[0] + ')\n' + name + ' · ' + phone + '\n\n🔥 למה עכשיו: ' + A[0].t + '\n💸 אם כלום לא ישתנה: ' + A[3].t + '\n\n' + lines + '\n\nהכי חסר: ' + g[0];
       var full = {source: 'course-readiness', stage: 'full', submitted_at: new Date().toLocaleString('he-IL', {timeZone: 'Asia/Jerusalem'}), name: name, phone: phone, score: score, profile: pr[0], answers: Q.map(function(q, i){ return {q: q.k, a: A[i].t}; }), summary: summary};
       if (sentFull) {} else if (direct || !LID) toMake(full); else hold('finish', {full: {score: score, profile: pr[0], summary: summary}}).catch(function(){ toMake(full); });
       sentFull = true;
@@ -310,7 +312,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
       box.scrollIntoView({block: 'start', behavior: 'smooth'});
     }
     intro();
-    $('lsNext').insertAdjacentHTML('beforeend', '<p class="ls-alt">מעדיפים לדלג על המבחן? <a href="' + waHref + '" target="_blank" rel="noopener">לבדיקת התאמה לתהליך אישי</a></p>');
+    if (waHref) $('lsNext').insertAdjacentHTML('beforeend', '<p class="ls-alt">מעדיפים לדלג על המבחן? <a href="' + waHref + '" target="_blank" rel="noopener">לבדיקת התאמה לתהליך אישי</a></p>');
   }
 
   var c = LESSONS[L] || LESSONS[1], P = PROOF[L] || PROOF[1];
@@ -347,7 +349,9 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
     return '<a class="ls-tool" href="' + t[3] + '" target="_blank" rel="noopener"><span class="ic">' + t[0] + '</span><span><b>' + t[1] + '</b><small>' + t[2] + '</small></span><span class="go">' + t[4] + '</span></a>';
   }).join('');
   if (c.full){
-    $('lsNext').innerHTML = '<a class="ls-btn wa ls-cta" href="' + c.wa + '" target="_blank" rel="noopener">💬 להמשך ליווי עם אביב לחץ כאן</a>';
+    /* 16.11 (Aviv): the readiness quiz from hinam5 sits above the WhatsApp button */
+    $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div><a class="ls-btn wa ls-cta" href="' + c.wa + '" target="_blank" rel="noopener">💬 להמשך ליווי עם אביב לחץ כאן</a>';
+    readiness(null, 'הקורס המלא בחינם (hinam1)');
   } else if (c.final){
     $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div>';
     readiness(c.href);
