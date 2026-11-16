@@ -126,6 +126,9 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 .ls-q.mini .ls-tease span{flex-direction:column;gap:2px;padding:8px 4px;font-size:12.5px;justify-content:center;text-align:center}
 .ls-alt{display:block;text-align:center;color:var(--mute);font-size:14.5px;margin-top:12px}
 .ls-alt a{color:#1FA855;font-weight:800}
+#ls.full .ls-w{max-width:940px}
+#ls.full .ls-tools{max-width:760px;margin:20px auto 0}
+#ls.full .ls-cta{max-width:760px;margin:12px auto 0}
 @media (max-width:540px){.ls-vg{grid-template-columns:1fr}.ls-steps span{font-size:0}.ls-steps a{font-size:0}}
 </style>
 
@@ -162,8 +165,11 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
   var IMG = 'https://avivmalka123.github.io/club/img/';
   var BASE = 'https://aviv.mykajabi.com/hinam';
   var LESSONS = {
-    1: {pill: 'שיעור 1 · ברוכים הבאים', title: 'כיצד להתחיל עסק רווחי בעולם האיקומרס <em>והאונליין</em>', sub: 'כך תעשו זאת, צעד אחר צעד.',
-        video: {yt: 'ZdH7FTfDE5s'}, next: ['בשיעור הבא', 'למה 90% מהאנשים נופלים בקורסים דיגיטליים', 'ומה עליכם לעשות כדי לא להיות כמו אותם האנשים.'], href: BASE + '2'},
+    1: {full: true, pill: '🎬 הקורס המלא · חינם', title: 'כיצד להתחיל עסק רווחי בעולם האיקומרס <em>והאונליין</em>', sub: 'הקורס המלא, צעד אחר צעד, למתחילים מאפס.',
+        video: {vid: 'mar6sKuvtJMwsUSJ'},
+        tools: [['🛍️', 'בניית החנות שלכם בחינם', 'תבנית חנות מוכנה ומוצרים להעלאה לשופיפיי', 'https://www.avivmalka.com/free-store', 'לבנייה ←'],
+                ['🤖', 'הבוט למציאת מוצרים', 'סוכן GPT שעוזר לכם למצוא מוצר מנצח', 'https://chatgpt.com/g/g-6860eaaecc108191a6f5a1f5efe3a3b1-mmn-mvtsr-rshvn-bdrvpshypyng', 'לבוט ←']],
+        wa: 'https://wa.me/972539415600?text=' + encodeURIComponent('היי, צפיתי בקורס החינמי של אביב ואשמח לשמוע על המשך ליווי')},
     2: {pill: 'שיעור 2', title: 'למה 90% מהאנשים <em>נופלים</em> בקורסים דיגיטליים', sub: 'ומה עליכם לעשות כדי לא להיות כמו אותם האנשים.',
         video: {yt: 'cCz0oGBcDIY'}, next: ['בשיעור הבא', 'איך מקימים חנות דיגיטלית מאפס, בלי ידע קודם', 'בעזרת בינה מלאכותית שתקצר לכם את הדרך, ותייצר לכם מודל דומה לחנות שמייצרת 100,000 ש״ח בחודש.'], href: BASE + '3'},
     3: {pill: 'שיעור 3', title: 'איך להקים חנות דיגיטלית מאפס <em>עם בינה מלאכותית</em>', sub: 'בלי ידע קודם, עם מודל דומה לחנות שמייצרת 100,000 ש״ח בחודש.',
@@ -309,12 +315,13 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 
   var c = LESSONS[L] || LESSONS[1], P = PROOF[L] || PROOF[1];
 
-  $('lsSteps').innerHTML = [1, 2, 3, 4, 5].map(function(n){
+  if (c.full) { $('lsSteps').style.display = 'none'; $('ls').classList.add('full'); }
+  else $('lsSteps').innerHTML = [1, 2, 3, 4, 5].map(function(n){
     var cls = n < L ? 'done' : n === L ? 'now' : '';
     var lab = n < L ? '✓ שיעור ' + n : 'שיעור ' + n;
     return n < L ? '<a class="' + cls + '" href="' + BASE + n + '"><i></i>' + lab + '</a>' : '<span class="' + cls + '"><i></i>' + lab + '</span>';
   }).join('');
-  $('lsPill').textContent = 'שיעור ' + L + ' מתוך 5' + (L === 5 ? ' · האחרון' : ''); $('lsTitle').innerHTML = c.title; $('lsSub').textContent = c.sub;
+  $('lsPill').textContent = c.full ? c.pill : 'שיעור ' + L + ' מתוך 5' + (L === 5 ? ' · האחרון' : ''); $('lsTitle').innerHTML = c.title; $('lsSub').textContent = c.sub;
 
   var finished = function(){};   /* set below: unlocks the next lesson when the video ends */
   if (c.video.yt) {
@@ -339,7 +346,9 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
   $('lsTools').innerHTML = (c.tools || []).map(function(t){
     return '<a class="ls-tool" href="' + t[3] + '" target="_blank" rel="noopener"><span class="ic">' + t[0] + '</span><span><b>' + t[1] + '</b><small>' + t[2] + '</small></span><span class="go">' + t[4] + '</span></a>';
   }).join('');
-  if (c.final){
+  if (c.full){
+    $('lsNext').innerHTML = '<a class="ls-btn wa ls-cta" href="' + c.wa + '" target="_blank" rel="noopener">💬 להמשך ליווי עם אביב לחץ כאן</a>';
+  } else if (c.final){
     $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div>';
     readiness(c.href);
   } else {
