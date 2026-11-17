@@ -130,9 +130,10 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 #ls.full .ls-tools{max-width:760px;margin:20px auto 0}
 #ls.full .ls-cta{max-width:760px;margin:12px auto 0}
 #ls.full .ls-q{max-width:760px;margin:20px auto 0}
-.ls-fsteps{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 14px}
+.ls-fsteps{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:0 0 14px}
 .ls-fsteps span{display:flex;flex-direction:column;align-items:center;gap:4px;background:#FBFAF6;border:1px solid var(--line);border-radius:12px;padding:9px 4px;font-size:12.5px;font-weight:800;color:var(--ink2);text-align:center}
 .ls-fsteps i{font-style:normal;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1205;font-size:13px;font-weight:900}
+.ls-who{text-align:center;color:var(--mute);font-size:15px;margin:0 0 10px}.ls-who b{color:var(--ink)}.ls-who button{background:none;border:0;padding:0;font:inherit;color:var(--gold2);font-weight:800;text-decoration:underline;cursor:pointer}
 .ls-qn{margin:-6px 0 12px;color:var(--mute);font-size:14px}
 .ls-ta{resize:vertical;min-height:110px;line-height:1.5}
 .ls-fnext{list-style:none;counter-reset:f;padding:0;margin:0 auto 16px;max-width:460px;text-align:right;display:grid;gap:8px}
@@ -359,17 +360,21 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
     }
     function toMake(o){ try { fetch(HOOK, {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify(o)}); } catch(x){} }
     function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
-    function bar(i){ return '<div class="ls-qbar"><span>' + (i + 1) + '/' + N + '</span><i><b style="width:' + (i / N * 100) + '%"></b></i></div>'; }
+    function bar(i){ return '<div class="ls-qbar"><i><b style="width:' + (i / N * 100) + '%"></b></i></div>'; }   /* no question count (Aviv) */
     function intro(){
+      var known = (lead.name || '').trim().length >= 2 && /^(\+?972|0)5\d{8}$/.test(String(lead.phone || '').replace(/[^\d+]/g, ''));
       box.innerHTML = '<p class="lab">🎯 השלב הבא</p>' +
         '<h3>בדיקת התאמה למועדון האיקומרס</h3>' +
-        '<p class="intro">המועדון מתאים לאנשים שמוכנים לבנות עסק אמיתי, ולכן לפני שיחת הזום אנחנו רוצים להכיר אותך. ' + N + ' שאלות קצרות, כ־3 דקות.</p>' +
-        '<div class="ls-fsteps"><span><i>1</i>שאלון התאמה</span><span><i>2</i>שיחת זום אישית</span><span><i>3</i>תשובה אם זה מתאים</span></div>' +
-        '<input class="ls-in" id="lsQN" placeholder="שם מלא" autocomplete="name">' +
-        '<input class="ls-in" id="lsQP" type="tel" inputmode="tel" placeholder="מספר וואטסאפ" autocomplete="tel" dir="ltr" style="text-align:right">' +
+        '<p class="intro">המועדון מתאים לאנשים שמוכנים לבנות עסק אמיתי, ולכן לפני שמתקדמים אנחנו רוצים להכיר אותך.</p>' +
+        '<div class="ls-fsteps"><span><i>1</i>שאלון התאמה</span><span><i>2</i>תשובה אם זה מתאים</span></div>' +
+        /* 17.11 (Aviv): details come from the course sign-up form (alm_lead), so known visitors only see a "not you?" line */
+        '<div id="lsQF"' + (known ? ' hidden' : '') + '><input class="ls-in" id="lsQN" placeholder="שם מלא" autocomplete="name">' +
+        '<input class="ls-in" id="lsQP" type="tel" inputmode="tel" placeholder="מספר וואטסאפ" autocomplete="tel" dir="ltr" style="text-align:right"></div>' +
+        (known ? '<p class="ls-who" id="lsQW">ממלאים בתור <b>' + esc(lead.name) + '</b> · <button type="button" id="lsQX">לא אתה?</button></p>' : '') +
         '<p class="ls-err" id="lsQE"></p><button class="ls-btn" id="lsQGo">מלאו שאלון לבדיקת התאמה ←</button>' +
-        '<p class="ls-lock">🔒 הפרטים נשמרים רק אצלנו · השיחה בלי עלות ובלי התחייבות</p>';
+        '<p class="ls-lock">🔒 הפרטים נשמרים רק אצלנו</p>';
       $('lsQN').value = lead.name || ''; $('lsQP').value = lead.phone || '';
+      if (known) $('lsQX').onclick = function(){ $('lsQF').hidden = false; $('lsQW').hidden = true; $('lsQN').focus(); };
       $('lsQGo').onclick = function(){
         var name = $('lsQN').value.trim(), phone = $('lsQP').value.replace(/[^\d+]/g, ''), e = $('lsQE');
         var bad = name.length < 2 ? 'רק שם, כדי שנדע איך לפנות אליך' : !/^(\+?972|0)5\d{8}$/.test(phone) ? 'מספר הוואטסאפ לא נראה מלא' : '';
@@ -457,7 +462,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
   }).join('');
   if (c.full){
     /* 16.11 (Aviv): the readiness quiz from hinam5 sits above the WhatsApp button */
-    $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div><a class="ls-btn wa ls-cta" href="' + c.wa + '" target="_blank" rel="noopener">💬 להמשך ליווי עם אביב לחץ כאן</a>';
+    $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div>';   /* 17.11 (Aviv): no separate WhatsApp button, only the quiz */
     fit('הקורס המלא בחינם (hinam1)');   /* 17.11: fit check for the club instead of the readiness test */
   } else if (c.final){
     $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div>';
