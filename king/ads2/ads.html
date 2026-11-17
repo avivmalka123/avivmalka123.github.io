@@ -10,17 +10,17 @@ body{background:#333;font-family:Heebo,sans-serif}
 .ab{width:1080px;height:1350px;position:relative;overflow:hidden;display:none;flex-direction:column;
   background:radial-gradient(900px 700px at 0% 100%,rgba(120,84,10,.55),transparent 60%),linear-gradient(180deg,#0E1424,#18213A);color:#fff}
 .ab.on{display:flex}
-.top{flex:1;padding:96px 84px 40px;display:flex;flex-direction:column}
+.top{flex:1;min-height:0;padding:70px 84px 34px;display:flex;flex-direction:column}
 .kick{align-self:flex-start;font-weight:800;font-size:30px;color:var(--gold);border:2px solid rgba(242,183,5,.45);background:rgba(242,183,5,.08);padding:10px 26px;border-radius:999px}
-h1{margin-top:38px;font-weight:900;font-size:86px;line-height:1.08;letter-spacing:-.02em}
+h1{margin-top:30px;font-weight:900;font-size:80px;line-height:1.08;letter-spacing:-.02em}
 h1 em{font-style:normal;color:var(--gold)}
 .sub{margin-top:28px;font-size:40px;line-height:1.4;color:#D3D8E6;font-weight:500}
 .sub b{color:#fff;font-weight:800}
-.vis{margin-top:auto}
-.bot{background:#F3F4F7;color:var(--ink);padding:34px 84px 40px;display:flex;align-items:center;gap:26px}
-.bot img{width:118px;height:118px;border-radius:50%;object-fit:cover;border:4px solid var(--gold)}
+.vis{margin-top:30px}
+.bot{background:#F3F4F7;color:var(--ink);padding:26px 84px 34px;display:flex;flex-direction:column;gap:20px}.who{display:flex;align-items:center;gap:22px}.cta{background:linear-gradient(180deg,#FFD84D,var(--gold));color:#1B1405;font-weight:900;font-size:46px;text-align:center;padding:24px 20px;border-radius:24px;box-shadow:0 14px 30px -14px rgba(201,138,0,.9)}
+.bot img{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid var(--gold)}
 .bot .n{flex:1}
-.bot .n b{display:block;font-size:38px;font-weight:900}
+.bot .n b{display:block;font-size:34px;font-weight:900}
 .bot .n span{display:block;font-size:27px;color:var(--mute);margin-top:2px}
 .btn{background:linear-gradient(180deg,#FFD84D,var(--gold));color:#1B1405;font-weight:900;font-size:36px;padding:22px 34px;border-radius:20px;white-space:nowrap}
 /* visuals */
@@ -48,11 +48,11 @@ h1 em{font-style:normal;color:var(--gold)}
 .old{opacity:.7;text-decoration:line-through;text-decoration-thickness:4px}
 
 .sub2{margin-top:24px;font-size:38px;line-height:1.4;color:#D3D8E6;font-weight:500}.sub2 b{color:#fff;font-weight:800}
-.proof{margin-top:auto;background:#fff;border-radius:28px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
+.proof{margin-top:30px;background:#fff;border-radius:28px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.8)}
 .proof img{display:block;width:100%;border-radius:14px}
 .proof p{color:#6B7287;font-size:24px;margin-top:12px;font-weight:600}
 .face{position:absolute;left:0;bottom:0;width:470px;height:100%;object-fit:cover;object-position:50% 20%;-webkit-mask-image:linear-gradient(90deg,#000 55%,transparent);mask-image:linear-gradient(90deg,#000 55%,transparent)}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:auto}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
 .split .col{border-radius:28px;padding:30px 28px}
 .split .b4{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.14)}
 .split .af{background:#fff;color:#141A2B}
@@ -60,11 +60,12 @@ h1 em{font-style:normal;color:var(--gold)}
 .split .b4 h3{color:#AEB4C6}.split .af h3{color:#15803d}
 .split li{list-style:none;font-size:31px;line-height:1.3;padding:10px 0;font-weight:600}
 .split .b4 li{color:#C9CEDD}.split .af li+li,.split .b4 li+li{border-top:2px solid rgba(127,127,127,.2)}
-.ntf{margin-top:auto;display:flex;flex-direction:column;gap:16px}
+.ntf{margin-top:24px;display:flex;flex-direction:column;gap:16px}
 .ntf .lab{color:#AEB4C6}
 .nt{display:flex;gap:20px;align-items:center;background:rgba(255,255,255,.95);color:#141A2B;border-radius:26px;padding:22px 26px;box-shadow:0 20px 40px -24px rgba(0,0,0,.8)}
 .nt i{font-style:normal;width:64px;height:64px;border-radius:16px;background:#95BF47;color:#fff;display:flex;align-items:center;justify-content:center;font-size:36px;flex:none}
 .nt b{display:block;font-size:31px}.nt span{display:block;font-size:25px;color:#6B7287}
+.hole{margin-top:auto;border:2px solid rgba(242,183,5,.55);background:rgba(242,183,5,.1);border-radius:24px;padding:22px 28px;font-size:33px;line-height:1.4;color:#E8EBF3}.hole b{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -73,43 +74,49 @@ h1 em{font-style:normal;color:var(--gold)}
   <span class="kick">מעבר בלי כאב ראש</span>
   <h1>חושבים להחליף מערכת דיוור <em>ומפחדים מכאב הראש?</em></h1>
   <p class="sub">אתם מפספסים <b>עד 30% תוספת להכנסה</b> שאתם כבר עושים, מאוטומציות שאנחנו מנהלים בשבילכם.</p>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="vis clock"><span class="t" style="direction:rtl;font-size:120px">שיחה אחת</span><span class="note" style="white-space:nowrap">📝 את כל המעבר<br>אנחנו לוקחים מכם.</span></div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <div class="ab" id="B"><div class="top">
   <span class="kick">תוספת להכנסה</span>
   <h1>כמה כסף נשאר אצלכם <em>על הרצפה כל חודש?</em></h1>
   <p class="sub">אתם מפספסים <b>עד 30% תוספת להכנסה</b> שאתם כבר עושים, מאוטומציות שאנחנו מנהלים בשבילכם.</p>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="vis clock"><span class="t">+30%</span><span class="note">📝 מייל, SMS ווואטסאפ<br>שעובדים גם כשאתם ישנים.</span></div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <div class="ab" id="C"><div class="top">
   <span class="kick">שאלה לבעלי חנויות</span>
   <h1>כמה לקוחות קנו אצלכם פעם אחת, <em>ומאז שקט?</em></h1>
   <p class="sub">אתם מפספסים <b>עד 30% תוספת להכנסה</b> שאתם כבר עושים, מאוטומציות שאנחנו מנהלים בשבילכם.</p>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="vis clock"><span class="t">1×</span><span class="note">📝 קנו פעם אחת…<br>ומאז לא שמעו מכם.</span></div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <div class="ab" id="D"><div class="top">
   <span class="kick">יום רגיל בחנות</span>
   <h1>כל היום אורזים הזמנות, <em>ורק בלילה נזכרים בניוזלטר.</em></h1>
   <p class="sub">אתם מפספסים <b>עד 30% תוספת להכנסה</b> שאתם כבר עושים, מאוטומציות שאנחנו מנהלים בשבילכם.</p>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="vis clock"><span class="t">23:40</span><span class="note">📝 לשלוח מבצע ללקוחות…<br>מחר. בטוח מחר.</span></div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <div class="ab" id="E"><div class="top">
   <span class="kick">בוט שירות לקוחות</span>
   <h1>לקוחות שואלים בוואטסאפ <em>גם בעשר בלילה.</em></h1>
   <p class="sub">אתם מפספסים <b>עד 30% תוספת להכנסה</b> שאתם כבר עושים, מאוטומציות שאנחנו מנהלים בשבילכם.</p>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="vis clock"><span class="t">22:04</span><span class="note">💬 "איפה ההזמנה שלי?"<br>הבוט כבר ענה.</span></div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <div class="ab" id="F"><div class="top">
-  <span class="kick">בלאק פריידיי מתקרב</span>
+  <span class="kick">לפני המבצע הבא</span>
   <h1>מבצע בלי מייל, SMS ווואטסאפ מוכנים <em>זה תקציב שהולך לפח.</em></h1>
   <p class="sub">אתם מפספסים <b>עד 30% תוספת להכנסה</b> שאתם כבר עושים, מאוטומציות שאנחנו מנהלים בשבילכם.</p>
-  <div class="vis clock"><span class="t">27.11</span><span class="note">📝 מייל, SMS, וואטסאפ…<br>מוכנים? לא בטוח.</span></div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
+  <div class="vis clock"><span class="t" style="direction:rtl;font-size:120px">3 חורים</span><span class="note" style="white-space:nowrap">📝 מייל, SMS, וואטסאפ…<br>מה מחובר אצלכם?</span></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 
 <!-- G: real proof -->
@@ -117,37 +124,41 @@ h1 em{font-style:normal;color:var(--gold)}
   <span class="kick">מהחנות שלי</span>
   <h1>1.27 מיליון דולר <em>רק מהודעות טקסט.</em></h1>
   <p class="sub2">את אותו מנוע של מייל, SMS ווואטסאפ <b>אנחנו מנהלים לחנויות שופיפיי.</b> בלעדיו אתם מפספסים עד 30% תוספת להכנסה.</p>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="proof"><div style="overflow:hidden;border-radius:14px;direction:ltr"><img src="../img/p_sms.jpg" style="width:150%;max-width:none;border-radius:0"></div><p>צילום מסך ממערכת ה-SMS של החנות שאני מנהל</p></div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <!-- H: Aviv's face + quote -->
 <div class="ab" id="H"><div class="top" style="padding-left:430px;position:relative"><img class="face" src="../img/aviv_studio.jpg">
   <span class="kick">15 שנה באיקומרס</span>
   <h1 style="font-size:74px">"אתם מפספסים <em>עד 30% תוספת להכנסה</em> שאתם כבר עושים."</h1>
   <p class="sub2">מיילים שלא יוצאים, עגלות שאף אחד לא מחזיר, לקוחות שקנו פעם אחת. <b>בואו נבדוק את שלכם, בחינם.</b></p>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+  <div class="hole" style="margin-top:auto">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
+  
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <!-- I: before / after -->
 <div class="ab" id="I"><div class="top">
   <span class="kick">מייל · SMS · וואטסאפ</span>
   <h1>אותה חנות, אותם לקוחות. <em>עד 30% יותר הכנסה.</em></h1>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="split">
     <div class="col b4"><h3>היום</h3><ul><li>מבצע אחד בחודש, כשנזכרים</li><li>עגלות נטושות נשארות נטושות</li><li>שאלות בוואטסאפ מחכות לבוקר</li></ul></div>
     <div class="col af"><h3>✓ עם ניהול שלנו</h3><ul><li>מייל, SMS ווואטסאפ כל שבוע</li><li>אוטומציות שמחזירות קונים</li><li>בוט שעונה ללקוחות מיד</li></ul></div>
   </div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <!-- J: notifications -->
 <div class="ab" id="J"><div class="top">
   <span class="kick">בזמן שאתם ישנים</span>
   <h1>הזמנות שמגיעות <em>מלקוחות שכבר קנו פעם.</em></h1>
   <p class="sub2">אוטומציות שאנחנו מנהלים בשבילכם מוסיפות <b>עד 30% להכנסה שאתם כבר עושים.</b></p>
+  <div class="hole">🔍 <b>נמצא איפה החורים בחנות שלכם,</b> ונראה לכם כמה אפשר להוסיף לשורת הרווח כבר ממחר.</div>
   <div class="ntf"><p class="lab">המחשה</p>
     <div class="nt"><i>🛍</i><div><b>הזמנה חדשה · 02:13</b><span>חזרה מתזכורת עגלה נטושה בוואטסאפ</span></div></div>
-    <div class="nt"><i>🛍</i><div><b>הזמנה חדשה · 06:40</b><span>לקוחה חוזרת, אחרי מייל "חסר לנו אותך"</span></div></div>
     <div class="nt"><i>🛍</i><div><b>הזמנה חדשה · 08:05</b><span>מ-SMS המבצע של הבוקר</span></div></div>
   </div>
-</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+</div><div class="bot"><div class="who"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>מנהלים לחנויות שופיפיי מייל, SMS, וואטסאפ ובוט</span></div></div><div class="cta">לבדיקה חינם של החנות שלכם ←</div></div></div>
 
 <script>var k=(location.hash||'#A').slice(1);document.getElementById(k).classList.add('on');</script>
 </body>
