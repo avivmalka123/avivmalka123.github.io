@@ -105,7 +105,8 @@
   /* campaign pixel: PageView on load, Lead after name + phone */
   var PX='2210072352882860';
   function pxBoot(){if(TEST)return;try{if(!window.fbq){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js')}if(window.__kbPx)return;window.__kbPx=1;fbq('init',PX);fbq('trackSingle',PX,'PageView')}catch(x){}}
-  function pxLead(){if(TEST)return;try{window.fbq&&fbq('trackSingle',PX,'Lead',{content_name:'backend'})}catch(x){}}
+  var PX2='2731672797072992';/* Kajabi site pixel: the Aviv Malka Ecom ad account optimizes on it */
+  function pxLead(){if(TEST)return;try{if(!window.fbq)return;var has=false;try{has=fbq.getState().pixels.some(function(p){return p.id===PX2})}catch(x){}if(!has)fbq('init',PX2);fbq('trackSingle',PX,'Lead',{content_name:'backend'});fbq('trackSingle',PX2,'Lead',{content_name:'backend'})}catch(x){}}
   pxBoot();
   render();
 })();
