@@ -130,6 +130,15 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 #ls.full .ls-tools{max-width:760px;margin:20px auto 0}
 #ls.full .ls-cta{max-width:760px;margin:12px auto 0}
 #ls.full .ls-q{max-width:760px;margin:20px auto 0}
+.ls-fsteps{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 14px}
+.ls-fsteps span{display:flex;flex-direction:column;align-items:center;gap:4px;background:#FBFAF6;border:1px solid var(--line);border-radius:12px;padding:9px 4px;font-size:12.5px;font-weight:800;color:var(--ink2);text-align:center}
+.ls-fsteps i{font-style:normal;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1205;font-size:13px;font-weight:900}
+.ls-qn{margin:-6px 0 12px;color:var(--mute);font-size:14px}
+.ls-ta{resize:vertical;min-height:110px;line-height:1.5}
+.ls-fnext{list-style:none;counter-reset:f;padding:0;margin:0 auto 16px;max-width:460px;text-align:right;display:grid;gap:8px}
+.ls-fnext li{counter-increment:f;display:grid;grid-template-columns:30px 1fr;column-gap:10px;align-items:center;background:#FBFAF6;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.ls-fnext li:before{content:counter(f);grid-row:span 2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--okbg);color:#14532d;font-weight:900}
+.ls-fnext b{font-size:15.5px}.ls-fnext span{color:var(--mute);font-size:13.5px}
 @media (max-width:540px){.ls-vg{grid-template-columns:1fr}.ls-steps span{font-size:0}.ls-steps a{font-size:0}}
 </style>
 
@@ -315,6 +324,104 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
     if (waHref) $('lsNext').insertAdjacentHTML('beforeend', '<p class="ls-alt">מעדיפים לדלג על המבחן? <a href="' + waHref + '" target="_blank" rel="noopener">לבדיקת התאמה לתהליך אישי</a></p>');
   }
 
+  /* hinam1 (17.11, Aviv): fit check for the club. Name + phone first (lead-hold, 5-min partial),
+     13 questions (Daniel Mol's typeform structure, our own wording + our sales questions),
+     then a Zoom-call screen with one WhatsApp button. Every answer goes to Aviv through Make. */
+  function fit(where){
+    var WA = 'https://wa.me/972525535537?text=' + encodeURIComponent('היי אביב, אני רוצה לעבור התאמה למועדון האיקומרס ולקבוע שיחת זום.');
+    var Q = [
+      {k: 'מצב היום', q: 'איפה אתה עומד היום בעולם האיקומרס?', o: [['🌱', 'מתחיל לגמרי, עוד לא ממש מבין איך זה עובד'], ['📚', 'מבין את הבסיס, אבל עוד לא פתחתי חנות'], ['🛍️', 'פתחתי חנות, אבל עוד אין מכירות משמעותיות'], ['📈', 'יש לי חנות שמוכרת, ואני רוצה להגדיל אותה'], ['🏢', 'יש לי עסק אחר, ואני רוצה להוסיף מכירות אונליין']]},
+      {k: 'למה עכשיו', q: 'מה קרה שהחלטת להתעניין בתחום הזה דווקא עכשיו?', o: [['💼', 'אני חווה משבר תעסוקתי'], ['📉', 'אני מתמודד עם קושי תזרימי'], ['🕊️', 'אני מרגיש שאין לי מספיק חופש היום'], ['🌍', 'הבנתי שהעולם הולך לכיוון הזה, ואני לא רוצה להישאר מאחור'], ['🤷', 'אין שום סיבה מיוחדת']]},
+      {k: 'עיסוק היום', q: 'במה אתה עוסק היום?', t: 'לדוגמה: שכיר בהייטק, עצמאי בשיפוצים, חייל משוחרר, סטודנט...', s: 1},
+      {k: 'גיל', q: 'מה טווח הגילאים שלך?', o: [['🎒', 'מתחת ל־18'], ['🎓', '18–24'], ['💼', '25–34'], ['🏡', '35–44'], ['🧭', '45–54'], ['🌿', '55 ומעלה']]},
+      {k: 'זמן בשבוע', q: 'כמה זמן בשבוע תוכל להקדיש לבניית העסק?', o: [['⏱️', 'פחות מ־5 שעות'], ['🕐', '5 עד 10 שעות'], ['🕒', '10 עד 20 שעות'], ['🔥', 'יותר מ־20 שעות']]},
+      {k: 'מה עצר', q: 'בוא נהיה כנים: מה באמת עצר אותך עד היום?', o: [['🧭', 'לא ידעתי מאיפה מתחילים, אז לא התחלתי בכלל'], ['😰', 'פחד להפסיד כסף'], ['🧱', 'ניסיתי לבד ונתקעתי'], ['📅', 'תירצתי לעצמי שאין לי זמן, ודחיתי']]},
+      {k: 'מה חסר', q: 'מה הדבר העיקרי שחסר לך היום כדי להקים חנות, או להגדיל את החנות שלך?', t: 'כתוב במילים שלך, אין תשובה לא נכונה', s: 1, long: 1},
+      {k: 'אם כלום לא ישתנה', q: 'מה יקרה אם כלום לא ישתנה בזמן הקרוב?', o: [['🚨', 'אכנס לבעיה כלכלית שתשפיע עליי ועל המשפחה שלי'], ['🔧', 'אצטרך עבודה נוספת כדי לסגור את החודש'], ['🪞', 'ארגיש שלא עשיתי מספיק כדי לקחת אחריות על החיים שלי'], ['🔒', 'לא אוכל לאפשר לעצמי את החיים שאני רוצה'], ['😌', 'לא יקרה שום דבר, די סבבה לי גם עכשיו']]},
+      {k: 'עסק אמיתי', q: 'איקומרס הוא עסק לכל דבר, לא "הכנסה פסיבית". הוא דורש זמן, מאמץ וגם הון התחלתי. איך זה מתיישב אצלך?', o: [['💪', 'ברור לי, ואני מוכן לעשות את מה שצריך'], ['🤝', 'אני מוכן, אבל יש לי מגבלות שצריך לבנות סביבן תוכנית'], ['🙅', 'לא, חיפשתי משהו שלא דורש השקעה']]},
+      {k: 'תקציב', q: 'כמה אתה יכול להקצות לבניית העסק בחודשים הקרובים (ליווי, כלים ופרסום)?', n: 'התשובה עוזרת לנו להתאים לך את המסלול הנכון', o: [['🪙', 'עד 5,000 ₪'], ['💵', '5,000 עד 10,000 ₪'], ['💰', '10,000 עד 20,000 ₪'], ['🏦', '20,000 עד 50,000 ₪'], ['💎', 'מעל 50,000 ₪'], ['⛔', 'כרגע אין לי סכום פנוי']]},
+      {k: 'מי מחליט', q: 'מי מקבל את ההחלטה על כניסה לתהליך כזה?', o: [['🦁', 'רק אני. החיים שלי, האחריות שלי'], ['🤝', 'אני, ויש לי גיבוי מלא מהסביבה'], ['👫', 'בעיקר אני, אבל זה תלוי גם במישהו נוסף (בן או בת זוג, הורים)'], ['🙅', 'כרגע ההחלטה לא בידיים שלי']]},
+      {k: 'מוכנות', q: 'אם בשיחה יתברר שהמועדון מתאים לך, כמה אתה מוכן להתחיל?', o: [['🔥', 'לגמרי. בגלל זה אני רוצה את השיחה', '100%'], ['💪', 'כמעט. רק רוצה לוודא שזה מה שאני צריך', '90%'], ['🙂', 'אולי. כנראה אתחיל רק בהמשך', '50%'], ['👀', 'רק בודק כרגע', '10%']]},
+      {k: 'שיחת זום', q: 'השלב הבא הוא שיחת התאמה אישית בזום, בלי עלות ובלי התחייבות. מגיעים מהבית, ממקום שקט עם אינטרנט טוב. נחזור אליך לתאם שעה. אתה מתחייב להגיע?', o: [['✅', 'כן. אעלה לזום בזמן, כמה דקות לפני'], ['📅', 'כן, רק צריך לתאם שעה שמתאימה לי'], ['⏸️', 'עדיין לא בטוח שאני רוצה שיחה']]}
+    ];
+    var N = Q.length, A = [], box = $('lsQ');
+    var HOLD = 'https://lead-hold.aviv1988.workers.dev/hold';
+    var HOOK = 'https://hook.eu2.make.com/aos52nvubr4hbal7r1a9a9i7tvfjqcny';
+    var lead = {}; try { lead = JSON.parse(localStorage.getItem('alm_lead') || '{}') || {}; } catch(e){}
+    var LID = '', direct = false, sentFull = false;
+    var stamp = function(){ return new Date().toLocaleString('he-IL', {timeZone: 'Asia/Jerusalem'}); };
+    function lines(){ return A.map(function(a, i){ return a ? Q[i].k + ': ' + a : ''; }).filter(Boolean); }
+    function hold(op, extra){
+      var body = {op: op, id: LID, name: lead.name, phone: lead.phone, total: N, where: where, lines: lines()};
+      for (var k in extra) body[k] = extra[k];
+      return fetch(HOLD, {method: 'POST', headers: {'Content-Type': 'text/plain'}, keepalive: true, body: JSON.stringify(body)})
+        .then(function(r){ if (!r.ok) throw 0; return r; });
+    }
+    function toMake(o){ try { fetch(HOOK, {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify(o)}); } catch(x){} }
+    function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
+    function bar(i){ return '<div class="ls-qbar"><span>' + (i + 1) + '/' + N + '</span><i><b style="width:' + (i / N * 100) + '%"></b></i></div>'; }
+    function intro(){
+      box.innerHTML = '<p class="lab">🎯 השלב הבא</p>' +
+        '<h3>בדיקת התאמה למועדון האיקומרס</h3>' +
+        '<p class="intro">המועדון מתאים לאנשים שמוכנים לבנות עסק אמיתי, ולכן לפני שיחת הזום אנחנו רוצים להכיר אותך. ' + N + ' שאלות קצרות, כ־3 דקות.</p>' +
+        '<div class="ls-fsteps"><span><i>1</i>שאלון התאמה</span><span><i>2</i>שיחת זום אישית</span><span><i>3</i>תשובה אם זה מתאים</span></div>' +
+        '<input class="ls-in" id="lsQN" placeholder="שם מלא" autocomplete="name">' +
+        '<input class="ls-in" id="lsQP" type="tel" inputmode="tel" placeholder="מספר וואטסאפ" autocomplete="tel" dir="ltr" style="text-align:right">' +
+        '<p class="ls-err" id="lsQE"></p><button class="ls-btn" id="lsQGo">מלאו שאלון לבדיקת התאמה ←</button>' +
+        '<p class="ls-lock">🔒 הפרטים נשמרים רק אצלנו · השיחה בלי עלות ובלי התחייבות</p>';
+      $('lsQN').value = lead.name || ''; $('lsQP').value = lead.phone || '';
+      $('lsQGo').onclick = function(){
+        var name = $('lsQN').value.trim(), phone = $('lsQP').value.replace(/[^\d+]/g, ''), e = $('lsQE');
+        var bad = name.length < 2 ? 'רק שם, כדי שנדע איך לפנות אליך' : !/^(\+?972|0)5\d{8}$/.test(phone) ? 'מספר הוואטסאפ לא נראה מלא' : '';
+        if (bad){ e.textContent = bad; e.style.display = 'block'; return; }
+        lead.name = name; lead.phone = phone;
+        try { localStorage.setItem('alm_lead', JSON.stringify(lead)); } catch(x){}
+        LID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+        hold('start').catch(function(){ direct = true; toMake({source: 'course-readiness', stage: 'lead', submitted_at: stamp(), name: name, phone: phone, summary: '📝 ליד מ' + where + ': השאיר פרטים לפני שאלון ההתאמה\n' + name + ' · ' + phone}); });
+        try { window.fbq && fbq('track', 'Lead'); } catch(x){}
+        step(0, true);
+      };
+    }
+    function next(i){
+      if (!direct && !sentFull && i < N - 1) hold('update').catch(function(){});
+      i < N - 1 ? step(i + 1) : done();
+    }
+    function step(i, fresh){
+      var q = Q[i], h = (fresh ? '<div class="ls-okbar">✅ נרשמת, ' + esc(lead.name.split(' ')[0]) + '. עכשיו כמה שאלות כדי שנכיר אותך</div>' : '') + bar(i) + '<p class="ls-qq">' + q.q + '</p>' + (q.n ? '<p class="ls-qn">' + q.n + '</p>' : '');
+      if (q.t) h += (q.long ? '<textarea class="ls-in ls-ta" id="lsQT" rows="4"' : '<input class="ls-in" id="lsQT"') + ' placeholder="' + q.t + '">' + (q.long ? '</textarea>' : '') + '<p class="ls-err" id="lsQE"></p><button class="ls-btn" id="lsQNx">המשך ←</button>';
+      else h += '<div class="ls-opts">' + q.o.map(function(o, j){ return '<button class="ls-opt" data-j="' + j + '"><span class="e">' + o[0] + '</span><span class="tx">' + o[1] + '</span>' + (o[2] ? '<span class="lv">' + o[2] + '</span>' : '') + '</button>'; }).join('') + '</div>';
+      if (i) h += '<button class="ls-back" id="lsQB">→ חזרה</button>';
+      box.innerHTML = h;
+      if (q.t){
+        var f = $('lsQT'); if (A[i]) f.value = A[i];
+        $('lsQNx').onclick = function(){
+          var v = f.value.trim().replace(/\s+/g, ' ');
+          if (v.length < 2){ var e = $('lsQE'); e.textContent = 'כמה מילים מספיקות'; e.style.display = 'block'; return; }
+          A[i] = v.slice(0, 280); next(i);
+        };
+      }
+      else [].forEach.call(box.querySelectorAll('.ls-opt'), function(b){ b.onclick = function(){ var o = q.o[+b.getAttribute('data-j')]; A[i] = o[1] + (o[2] ? ' (' + o[2] + ')' : ''); next(i); }; });
+      if (i) $('lsQB').onclick = function(){ step(i - 1); };
+      box.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+    }
+    function done(){
+      var name = lead.name, phone = lead.phone, L2 = lines().join('\n');
+      var summary = '🎯 שאלון התאמה למועדון, ' + where + '\n' + name + ' · ' + phone + '\n\n' + L2;
+      var full = {source: 'course-readiness', stage: 'full', submitted_at: stamp(), name: name, phone: phone, score: '', profile: 'בדיקת התאמה', answers: Q.map(function(q, i){ return {q: q.k, a: A[i] || ''}; }), summary: summary};
+      if (sentFull) {} else if (direct || !LID) toMake(full); else hold('finish', {full: {score: 0, profile: 'בדיקת התאמה', summary: summary}}).catch(function(){ toMake(full); });
+      sentFull = true;
+      box.innerHTML = '<div class="ls-res"><p class="lab">✅ השאלון התקבל</p>' +
+        '<h3>תודה ' + esc(name.split(' ')[0]) + ', עברת לשלב הבא</h3>' +
+        '<p class="why">השלב הבא הוא שיחת התאמה אישית בזום. שלח לנו עכשיו הודעה בוואטסאפ כדי לשריין את המקום שלך, ונחזור אליך לתאם שעה.</p>' +
+        '<ol class="ls-fnext"><li><b>שולחים הודעה בוואטסאפ</b><span>בכפתור למטה, ההודעה כבר כתובה</span></li><li><b>מתאמים שעה לשיחה</b><span>נחזור אליך אישית עם זמנים</span></li><li><b>עולים לזום בזמן</b><span>מהבית, ממקום שקט, כמה דקות לפני</span></li></ol>' +
+        '<a class="ls-btn wa" href="' + WA + '" target="_blank" rel="noopener">💬 לתיאום שיחת הזום בוואטסאפ</a>' +
+        '<p class="ls-done">👆 לוחצים שלח, ונחזור אליך לתאם את השיחה.</p></div>';
+      var cta = document.querySelector('#lsNext .ls-cta'); if (cta) cta.style.display = 'none';   /* one WhatsApp button at the end */
+      box.scrollIntoView({block: 'start', behavior: 'smooth'});
+    }
+    intro();
+  }
+
   var c = LESSONS[L] || LESSONS[1], P = PROOF[L] || PROOF[1];
 
   if (c.full) { $('lsSteps').style.display = 'none'; $('ls').classList.add('full'); }
@@ -351,7 +458,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
   if (c.full){
     /* 16.11 (Aviv): the readiness quiz from hinam5 sits above the WhatsApp button */
     $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div><a class="ls-btn wa ls-cta" href="' + c.wa + '" target="_blank" rel="noopener">💬 להמשך ליווי עם אביב לחץ כאן</a>';
-    readiness(null, 'הקורס המלא בחינם (hinam1)');
+    fit('הקורס המלא בחינם (hinam1)');   /* 17.11: fit check for the club instead of the readiness test */
   } else if (c.final){
     $('lsNext').innerHTML = '<div class="ls-q mini" id="lsQ"></div>';
     readiness(c.href);
