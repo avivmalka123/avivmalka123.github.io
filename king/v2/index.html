@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>בדיקה חינם למייל, SMS ווואטסאפ של החנות | אביב מלכה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4F7;--card:#fff;--ink:#141A2B;--ink2:#3A4258;--mute:#6B7287;--line:#E3E5EC;--navy:#0E1424;--navy2:#18213A;--gold:#F2B705;--gold2:#C98A00;--ok:#15803d;--okbg:#E7F6EC;--err:#C62828}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Heebo,Assistant,Arial,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.bk-page{direction:rtl;text-align:right}
+.bk-w{max-width:880px;margin:0 auto;padding:0 18px}
+.bk-page h1,.bk-page h2,.bk-page h3{font-family:Heebo,Arial,sans-serif;color:inherit;margin:0;text-wrap:balance}
+.bk-page p{margin:0}
+/* top + hero */
+.bk-hero{background:radial-gradient(120% 90% at 0% 100%,#3a2a05 0%,rgba(58,42,5,0) 55%),linear-gradient(180deg,var(--navy),var(--navy2));color:#fff;padding:18px 0 46px}
+.bk-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:30px}
+.bk-logo{font-weight:900;font-size:19px;color:#fff;letter-spacing:-.01em}
+.bk-logo small{display:block;font-weight:500;font-size:12.5px;color:#C9CEDD;letter-spacing:.02em}
+.bk-hg{display:grid;grid-template-columns:1fr 260px;gap:34px;align-items:center}
+.bk-h1{font-size:clamp(31px,7.4vw,48px);line-height:1.12;font-weight:900;letter-spacing:-.02em}
+.bk-h1 em{font-style:normal;color:var(--gold)}
+.bk-sub{margin-top:16px;font-size:clamp(17.5px,2.2vw,19.5px);color:#D3D8E6;line-height:1.65;max-width:560px}
+.bk-sub b{color:#fff}
+.bk-fit{display:inline-block;margin-top:16px;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);font-size:14.5px;color:#C9CEDD}
+.bk-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:0 26px;border-radius:14px;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:18.5px;color:#1B1405;background:linear-gradient(180deg,#FFD84D,var(--gold));box-shadow:0 12px 26px -12px rgba(224,138,0,.7);text-decoration:none;transition:transform .1s}
+.bk-btn:active{transform:scale(.98)}
+.bk-btn[disabled]{opacity:.6;cursor:default}
+.bk-hcta{margin-top:22px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.bk-hcta small{font-size:14px;color:#AEB4C6}
+.bk-ph{position:relative;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.12);aspect-ratio:680/907;max-width:100%;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.bk-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.bk-ph span{position:absolute;bottom:10px;right:10px;left:10px;padding:8px 12px;border-radius:12px;background:rgba(14,20,36,.82);font-size:13.5px;font-weight:700;color:#fff;line-height:1.35}
+/* sections */
+.bk-sec{padding:46px 0 0}
+.bk-h2{font-size:clamp(25px,5.6vw,34px);line-height:1.18;font-weight:900;letter-spacing:-.01em}
+.bk-lead{margin-top:10px;color:var(--ink2);font-size:17.5px;max-width:640px}
+.bk-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.bk-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-width:0}
+.bk-n{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:26px;padding:0 8px;border-radius:8px;background:#FFF4D1;color:var(--gold2);font-weight:900;font-size:14px}
+.bk-card b{display:block;margin-top:10px;font-size:18px;line-height:1.3}
+.bk-card p{margin-top:6px;font-size:16px;color:var(--mute);line-height:1.5}
+.bk-shot{margin-top:12px;border-radius:10px;border:1px solid var(--line);overflow:hidden;background:#fff}
+.bk-shot img{display:block;width:100%;height:auto}
+.bk-note{margin-top:10px;font-size:13.5px;color:var(--mute)}
+.bk-list{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.bk-list li{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:17px;color:var(--ink2);line-height:1.5}
+.bk-list li:before{content:"";flex:none;width:22px;height:22px;margin-top:2px;border-radius:50%;background:var(--okbg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%2315803d' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.bk-list.x li:before{background:#FDECEC url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 7l10 10M17 7L7 17' fill='none' stroke='%23C62828' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/12px no-repeat}
+.bk-get{margin-top:12px;display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,#FFF3C4,#FFFBEA);border:1px solid #F5D77A;border-radius:16px;padding:16px 18px}
+.bk-get i{font-style:normal;font-size:28px}
+.bk-get p{font-size:17px;color:#3a3220;line-height:1.5}
+.bk-steps{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:10px;counter-reset:s}
+.bk-steps li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.bk-steps li:before{content:counter(s);width:44px;height:44px;border-radius:12px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:19px}
+.bk-steps b{display:block;font-size:17.5px;color:var(--ink)}
+.bk-steps span{display:block;font-size:15.5px;color:var(--mute);line-height:1.45}
+.bk-mid{margin-top:20px;text-align:center}
+.bk-about{display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:center;margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.bk-about img{width:110px;height:110px;border-radius:50%;object-fit:cover;display:block}
+.bk-about p{font-size:17px;color:var(--ink2);line-height:1.6}
+.bk-about p+p{margin-top:8px}
+.bk-about strong{color:var(--ink)}
+.bk-faq{margin-top:18px;display:grid;gap:10px}
+.bk-faq details{background:var(--card);border:1px solid var(--line);border-radius:14px}
+.bk-faq summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:800;font-size:17.5px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.bk-faq summary::-webkit-details-marker{display:none}
+.bk-faq summary:after{content:"+";flex:none;font-size:22px;font-weight:500;color:var(--gold2);line-height:1}
+.bk-faq details[open] summary:after{content:"–"}
+.bk-faq details p{padding:0 18px 16px;font-size:16.5px;color:var(--ink2);line-height:1.6}
+/* form */
+.bk-form{margin:46px 0 0;background:var(--navy);color:#fff;border-radius:24px;padding:26px 20px 24px}
+.bk-form .bk-h2{color:#fff}
+.bk-stepl{font-size:13.5px;font-weight:700;color:var(--gold);letter-spacing:.04em}
+.bk-form .bk-lead{color:#C9CEDD}
+.bk-f{display:grid;gap:12px;margin-top:18px;max-width:520px}
+.bk-in{width:100%;min-height:54px;border-radius:12px;border:1px solid #2C3654;background:#fff;color:var(--ink);font:inherit;font-size:17px;padding:0 14px;text-align:right}
+.bk-in:focus{outline:3px solid rgba(242,183,5,.5);outline-offset:1px}
+select.bk-in{appearance:none;-webkit-appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%236B7287' stroke-width='2'/%3E%3C/svg%3E") 14px center/18px no-repeat}
+.bk-ck{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:#C9CEDD;line-height:1.45;cursor:pointer}
+.bk-ck input{flex:none;width:20px;height:20px;margin-top:1px;accent-color:var(--gold)}
+.bk-err{display:none;color:#FFB4A9;font-size:15px;font-weight:700}
+.bk-lock{font-size:13.5px;color:#9CA3B8}
+.bk-back{background:none;border:0;color:#C9CEDD;font:inherit;font-size:15px;cursor:pointer;padding:6px 0;justify-self:start}
+.bk-ty{text-align:center;padding:10px 0}
+.bk-ty h3{font-size:26px;font-weight:900}
+.bk-ty p{margin-top:8px;color:#C9CEDD;font-size:17px}
+.bk-wa{margin-top:18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 22px;border-radius:14px;background:#25D366;color:#fff;font-weight:800;font-size:17px;text-decoration:none}
+.bk-foot{text-align:center;color:var(--mute);font-size:13.5px;padding:28px 0 110px}
+/* sticky mobile */
+.bk-sticky{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(243,244,247,.94);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .25s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.bk-sticky.on{transform:none}
+.bk-sticky .bk-btn{width:100%}
+@media (min-width:760px){.bk-sticky{display:none}.bk-form{padding:34px}}
+@media (max-width:759px){
+  .bk-hg{grid-template-columns:1fr}
+  .bk-ph{order:-1;width:150px;aspect-ratio:1;border-radius:50%;margin:0 0 4px;border:3px solid var(--gold)}
+  .bk-ph span{display:none}
+  .bk-hcta .bk-btn{width:100%}
+  .bk-cards{grid-template-columns:1fr}
+  .bk-about{grid-template-columns:76px 1fr}.bk-about img{width:76px;height:76px}
+}
+</style>
+</head>
+<body>
+<div class="bk-page" id="bkPage">
+
+<header class="bk-hero">
+  <div class="bk-w">
+    <div class="bk-top"><div class="bk-logo">אביב מלכה<small>מייל · SMS · וואטסאפ לחנויות שופיפיי</small></div></div>
+    <div class="bk-hg">
+      <div>
+        <h1 class="bk-h1">נמאס לכם להתעסק במיילים, ב-SMS <em>ובוואטסאפ של החנות?</em></h1>
+        <p class="bk-sub">בואו נתחיל מבדיקה, <b>בלי עלות</b>. אני עובר בעצמי על מה שקורה היום בחנות שלכם במייל, ב-SMS ובוואטסאפ, ומראה לכם כמה לקוחות קנו פעם אחת ולא שמעו מכם שוב, ומה הייתי מפעיל קודם.</p>
+        <span class="bk-fit">לחנויות שופיפיי שמוכרות מעל 5,000 ₪ בחודש</span>
+        <div class="bk-hcta" id="bkHeroCta"><a class="bk-btn" href="#bkForm" data-bk-go>לבדיקה חינם של החנות ←</a><small>שתי דקות למלא. אני חוזר אליכם אישית.</small></div>
+      </div>
+      <div class="bk-ph"><img src="../img/aviv_studio.jpg" alt="אביב מלכה" width="680" height="907" fetchpriority="high"><span>אביב מלכה · 15 שנה באיקומרס</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="bk-w">
+  <section class="bk-sec">
+    <h2 class="bk-h2">ככה זה נראה כשזה עובד, בחנות שלי</h2>
+    <p class="bk-lead">את רוב הכסף בחנות שאני מנהל לא הביא הקמפיין הבא. הביאו אותו לקוחות שחזרו לקנות, בזכות מיילים, הודעות טקסט ווואטסאפ שעבדו כל יום.</p>
+    <div class="bk-cards">
+      <div class="bk-card"><span class="bk-n">01</span><b>1.27 מיליון דולר מהודעות טקסט בלבד</b><p>מתוך 91,640 נרשמים ל-SMS.</p><div class="bk-shot"><img src="../img/p_sms.jpg" alt="Total Earned $1,268,777.46" width="880" height="150" loading="lazy"></div></div>
+      <div class="bk-card"><span class="bk-n">02</span><b>מעל 20 מיליון דולר מכירות</b><p>בחנות השופיפיי שאני מנהל, לאורך 10 שנים.</p><div class="bk-shot"><img src="../img/p_total_num.jpg" alt="Total sales over time US$20,645,265.27" width="300" height="80" loading="lazy"></div></div>
+      <div class="bk-card"><span class="bk-n">03</span><b>מעל 370 אלף הזמנות</b><p>וכל לקוח שקנה פעם אחת הוא לקוח שאפשר להחזיר.</p></div>
+    </div>
+    <p class="bk-note">צילומי מסך מהמערכות של החנות שלי. כל חנות שונה, ולכן מתחילים מבדיקה.</p>
+  </section>
+
+  <section class="bk-sec">
+    <h2 class="bk-h2">מה אני בודק בחנות שלכם</h2>
+    <ul class="bk-list">
+      <li>כמה לקוחות קנו פעם אחת ולא חזרו, וכמה נרשמים עוד לא קנו בכלל</li>
+      <li>אילו אוטומציות עובדות היום (עגלה נטושה, ברוכים הבאים, אחרי רכישה), ואילו חסרות</li>
+      <li>כמה מהמכירות מגיעות היום מהמייל, מה-SMS ומהוואטסאפ</li>
+      <li>אילו שאלות הלקוחות שואלים שוב ושוב בוואטסאפ, ומה בוט שירות לקוחות יכול לענות במקומכם</li>
+    </ul>
+    <div class="bk-get"><i>📋</i><p><b>מה מקבלים:</b> תמונה ברורה של מה עובד, מה חסר ומה הייתי מפעיל ראשון, בשיחה קצרה איתי.</p></div>
+  </section>
+
+  <section class="bk-sec">
+    <h2 class="bk-h2">איך זה עובד</h2>
+    <ol class="bk-steps">
+      <li><span><b>משאירים פרטים</b><span>ואני חוזר אליכם לשיחה קצרה, כדי להכיר את החנות.</span></span></li>
+      <li><span><b>אני בודק</b><span>מה קורה היום במייל, ב-SMS ובוואטסאפ. בלי לשנות שום דבר בחנות.</span></span></li>
+      <li><span><b>שיחת ממצאים</b><span>אני מראה לכם מה מצאתי ומה הייתי עושה קודם.</span></span></li>
+      <li><span><b>אם זה מתאים לשני הצדדים, אנחנו לוקחים את זה מכם</b><span>ואם לא, נשארת לכם תוכנית ביד.</span></span></li>
+    </ol>
+    <div class="bk-mid"><a class="bk-btn" href="#bkForm" data-bk-go>לבדיקה חינם של החנות ←</a></div>
+  </section>
+
+  <section class="bk-sec">
+    <h2 class="bk-h2">ואם מתאים, זה מה שאנחנו מנהלים בשבילכם</h2>
+    <ul class="bk-list">
+      <li><span><b>ניהול שבועי מלא</b> של המייל, ה-SMS והוואטסאפ של החנות</span></li>
+      <li><span><b>מבצעים ויוזמות:</b> תכנון, כתיבה, עיצוב ושליחה ללקוחות שלכם</span></li>
+      <li><span><b>בוט שירות לקוחות מבוסס AI</b> שעונה ללקוחות גם בעשר בלילה</span></li>
+    </ul>
+    <div class="bk-about">
+      <img src="../img/aviv_round.jpg" alt="אביב מלכה" width="480" height="480" loading="lazy">
+      <div><p><strong>אביב מלכה.</strong> 15 שנה אני בונה ומנהל חנויות אונליין, ובחנות שאני מנהל עברנו 20 מיליון דולר במכירות.</p><p>קודם בודקים מה קורה אצלכם. רק אחר כך מדברים על מספרים.</p></div>
+    </div>
+  </section>
+
+  <section class="bk-sec">
+    <h2 class="bk-h2">זה לא מתאים אם</h2>
+    <ul class="bk-list x">
+      <li>החנות מוכרת פחות מ-5,000 ₪ בחודש</li>
+      <li>החנות לא בנויה על שופיפיי</li>
+      <li>אתם מחפשים עוד כלי, ולא מישהו שינהל את זה בשבילכם</li>
+    </ul>
+  </section>
+
+  <section class="bk-sec">
+    <h2 class="bk-h2">שאלות נפוצות</h2>
+    <div class="bk-faq">
+      <details><summary>למה הבדיקה בלי עלות?</summary><p>כי ככה שנינו רואים אם יש בכלל על מה לדבר. אם אין מה לשפר, אגיד לכם את זה.</p></details>
+      <details><summary>יש לי כבר מישהו שמטפל בדיוור</summary><p>מצוין. הבדיקה רק מראה מה המצב היום. מה עושים איתה, זו החלטה שלכם.</p></details>
+      <details><summary>אני כבר עובד עם מערכת דיוור. צריך לעבור?</summary><p>לא בהכרח. בשיחה נבדוק מה יש לכם היום ומה צריך, אם בכלל.</p></details>
+      <details><summary>איזו גישה לחנות צריך?</summary><p>מתאמים את זה יחד בשיחה. שום דבר בחנות לא משתנה בלי אישור שלכם.</p></details>
+      <details><summary>מה קורה אחרי הבדיקה?</summary><p>אם יש התאמה, אציג בשיחה איך נראה הניהול השוטף ובכמה, מראש. אם לא, נפרדים כידידים עם תוכנית ביד.</p></details>
+    </div>
+  </section>
+
+  <section class="bk-form" id="bkForm">
+    <div id="bkFormIn"></div>
+  </section>
+</main>
+<p class="bk-foot">© אביב מלכה · מועדון האיקומרס</p>
+<div class="bk-sticky" id="bkSticky" aria-hidden="true"><a class="bk-btn" href="#bkForm" data-bk-go tabindex="-1">לבדיקה חינם של החנות ←</a></div>
+</div>
+
+<script>
+(function(){
+  var page=document.getElementById('bkPage'); if(!page) return;
+  var TEST=/[?&]test=1(&|$)/.test(location.search)||/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  var HOOK='https://hook.eu2.make.com/aos52nvubr4hbal7r1a9a9i7tvfjqcny';
+  var HOLD='https://lead-hold.aviv1988.workers.dev/hold';
+  var WHERE='דף הבקנד · בדיקה חינם';
+  var WA='https://wa.me/972525535537?text='+encodeURIComponent('היי אביב, השארתי פרטים לבדיקה חינם של החנות שלי במייל, SMS ווואטסאפ');
+  var $=function(id){return document.getElementById(id)};
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function cleanPhone(p){return String(p||'').replace(/[^\d+]/g,'')}
+  var lead={}; try{lead=JSON.parse(localStorage.getItem('alm_lead')||'{}')||{}}catch(x){}
+  var S={step:1,name:lead.name||'',phone:lead.phone||'',email:lead.email||'',site:'',rev:'',ok:false,id:Date.now().toString(36)+Math.random().toString(36).slice(2,8),held:false,done:false};
+  var REV=['פחות מ-5,000 ₪','5,000–20,000 ₪','20,000–50,000 ₪','50,000–150,000 ₪','150,000–500,000 ₪','מעל 500,000 ₪'];
+
+  /* scroll to form */
+  page.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-bk-go]');if(!a)return;e.preventDefault();$('bkForm').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){var f=$('bkFormIn').querySelector('input,select');if(f&&window.innerWidth>=760)try{f.focus({preventScroll:true})}catch(x){}},500)});
+
+  /* sticky bar on mobile */
+  var heroVis=true,formVis=false,st=$('bkSticky');
+  function upd(){var on=!heroVis&&!formVis;st.classList.toggle('on',on);st.setAttribute('aria-hidden',on?'false':'true');st.querySelector('a').tabIndex=on?0:-1}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){heroVis=es[0].isIntersecting;upd()}).observe($('bkHeroCta'));
+    new IntersectionObserver(function(es){formVis=es[0].isIntersecting;upd()},{threshold:.15}).observe($('bkForm'));
+  }
+
+  function render(){
+    var h='';
+    if(S.done){
+      h='<div class="bk-ty"><h3>קיבלתי, '+esc(S.name.trim().split(/\s+/)[0])+' 🙌</h3><p>אני עובר על כל פנייה בעצמי, ואחזור אליכם לתאם שיחה קצרה.</p>'+
+        (S.rev===REV[0]?'<p>הבדיקה בנויה לחנויות שכבר מוכרות 5,000 ₪ בחודש, אבל שמרתי את הפרטים.</p>':'')+
+        '<a class="bk-wa" href="'+WA+'" target="_blank" rel="noopener">💬 רוצים לתאם כבר עכשיו? וואטסאפ</a></div>';
+    } else if(S.step===1){
+      h='<p class="bk-stepl">שלב 1 מתוך 2</p><h2 class="bk-h2">לבדיקה חינם של החנות</h2><p class="bk-lead">לאן לחזור אליכם?</p>'+
+        '<form class="bk-f" id="bkF1" novalidate>'+
+        '<input class="bk-in" id="bkName" placeholder="שם מלא" autocomplete="name" value="'+esc(S.name)+'">'+
+        '<input class="bk-in" id="bkPhone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="מספר נייד" style="text-align:right" value="'+esc(S.phone)+'">'+
+        '<p class="bk-err" id="bkErr"></p><button class="bk-btn" type="submit">המשך ←</button><p class="bk-lock">🔒 הפרטים נשארים אצלי. בלי ספאם.</p></form>';
+    } else {
+      h='<p class="bk-stepl">שלב 2 מתוך 2</p><h2 class="bk-h2">ספרו לי על החנות</h2><p class="bk-lead">כדי שאגיע לשיחה מוכן.</p>'+
+        '<form class="bk-f" id="bkF2" novalidate>'+
+        '<input class="bk-in" id="bkEmail" type="email" autocomplete="email" dir="ltr" placeholder="אימייל" style="text-align:right" value="'+esc(S.email)+'">'+
+        '<input class="bk-in" id="bkSite" inputmode="url" autocomplete="url" dir="ltr" placeholder="כתובת החנות" style="text-align:right" value="'+esc(S.site)+'">'+
+        '<select class="bk-in" id="bkRev"><option value="">מחזור חודשי משוער</option>'+REV.map(function(r){return '<option'+(S.rev===r?' selected':'')+'>'+r+'</option>'}).join('')+'</select>'+
+        '<label class="bk-ck"><input type="checkbox" id="bkOk"'+(S.ok?' checked':'')+'><span>אני מאשר/ת שאביב מלכה יחזור אליי בטלפון ובוואטסאפ.</span></label>'+
+        '<p class="bk-err" id="bkErr"></p><button class="bk-btn" type="submit" id="bkSend">שליחה לאביב ←</button>'+
+        '<button type="button" class="bk-back" id="bkBack">→ חזרה</button></form>';
+    }
+    $('bkFormIn').innerHTML=h;
+    var f1=$('bkF1'),f2=$('bkF2');
+    if(f1) f1.addEventListener('submit',step1);
+    if(f2){f2.addEventListener('submit',step2);$('bkBack').onclick=function(){keep2();S.step=1;render()}}
+  }
+  function err(t){var e=$('bkErr');e.textContent=t;e.style.display=t?'block':'none'}
+  function keep2(){S.email=$('bkEmail').value;S.site=$('bkSite').value;S.rev=$('bkRev').value;S.ok=$('bkOk').checked}
+
+  function holdPost(body){return fetch(HOLD,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw 0;return r})}
+  function step1(e){
+    e.preventDefault();
+    S.name=$('bkName').value.trim();S.phone=$('bkPhone').value;
+    if(S.name.length<2) return err('נא למלא שם מלא');
+    if(!/^(\+?972|0)5\d{8}$/.test(cleanPhone(S.phone))) return err('נא למלא מספר נייד ישראלי תקין');
+    S.step=2;render();
+    try{localStorage.setItem('alm_lead',JSON.stringify({name:S.name,phone:cleanPhone(S.phone),email:S.email||lead.email||''}))}catch(x){}
+    if(TEST){try{console.log('[bk test] start (not sent)',S.name,S.phone)}catch(x){}return}
+    if(!S.held){S.held=true;pxLead();holdPost({op:'start',id:S.id,name:S.name,phone:cleanPhone(S.phone),total:3,where:WHERE,lines:[]}).catch(function(){S.direct=true})}
+  }
+  function step2(e){
+    e.preventDefault();keep2();
+    if(!/^\S+@\S+\.\S+$/.test(S.email.trim())) return err('נא למלא אימייל תקין');
+    if(!S.rev) return err('נא לבחור מחזור חודשי משוער');
+    if(!S.ok) return err('צריך לאשר שאחזור אליכם');
+    var name=S.name,phone=cleanPhone(S.phone),site=S.site.trim()||'לא צוין';
+    var lines=['אימייל: '+S.email.trim(),'אתר: '+site,'מחזור חודשי: '+S.rev];
+    var summary='📈 ליד חדש · '+WHERE+'\n'+name+' · '+phone+'\n\n'+lines.join('\n')+'\n\n'+(S.rev===REV[0]?'⚠️ מתחת לרף של 5,000 ₪':'✅ מעל הרף של 5,000 ₪');
+    var full={source:'backend',stage:'full',submitted_at:new Date().toISOString(),name:name,phone:phone,email:S.email.trim(),site:site,revenue:S.rev,summary:summary};
+    var b=$('bkSend');b.disabled=true;b.textContent='שולח…';
+    function done(){if(S.done)return;S.done=true;render()}
+    try{localStorage.setItem('alm_lead',JSON.stringify({name:name,phone:phone,email:S.email.trim()}))}catch(x){}
+    if(TEST){try{console.log('[bk test] full (not sent)',full);console.log(summary)}catch(x){}setTimeout(done,400);return}
+    if(S.direct) sendLead(full,done);
+    else holdPost({op:'finish',id:S.id,lines:lines,full:{score:0,profile:'בדיקה חינם',summary:summary}}).then(done,function(){sendLead(full,done)});
+    setTimeout(done,3000);
+  }
+  /* direct Make delivery when the worker is down: fetch → retry → beacon; a copy waits in localStorage until Make answers OK */
+  var QK='bk_lead_q';
+  function qGet(){try{return JSON.parse(localStorage.getItem(QK)||'[]')}catch(x){return []}}
+  function qSet(a){try{localStorage.setItem(QK,JSON.stringify(a))}catch(x){}}
+  function qDrop(id){qSet(qGet().filter(function(l){return l.lid!==id}))}
+  function post(pl){return fetch(HOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(pl),keepalive:true}).then(function(r){if(!r.ok)throw 0;return r})}
+  function sendLead(pl,cb){
+    pl.lid=pl.lid||S.id;var q=qGet();if(!q.some(function(l){return l.lid===pl.lid})){q.push(pl);qSet(q)}
+    function ok(){qDrop(pl.lid);cb&&cb()}
+    function beacon(){try{if(navigator.sendBeacon&&navigator.sendBeacon(HOOK,new Blob([JSON.stringify(pl)],{type:'text/plain'})))qDrop(pl.lid)}catch(x){}cb&&cb()}
+    post(pl).then(ok,function(){setTimeout(function(){post(pl).then(ok,beacon)},1500)});
+  }
+  if(!TEST){try{qGet().forEach(function(l){if(Date.now()-new Date(l.submitted_at).getTime()<7*864e5){if(!l.resent){l.resent=true;l.summary='🔁 שליחה חוזרת (ייתכן שכבר קיבלת)\n'+l.summary}sendLead(l)}else qDrop(l.lid)})}catch(x){}}
+
+  /* campaign pixel: PageView on load, Lead after name + phone */
+  var PX='2210072352882860';
+  function pxBoot(){if(TEST)return;try{if(!window.fbq){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js')}if(window.__kbPx)return;window.__kbPx=1;fbq('init',PX);fbq('trackSingle',PX,'PageView')}catch(x){}}
+  function pxLead(){if(TEST)return;try{window.fbq&&fbq('trackSingle',PX,'Lead',{content_name:'backend'})}catch(x){}}
+  pxBoot();
+  render();
+})();
+</script>
+</body>
+</html>
