@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0E1424;--navy2:#18213A;--gold:#F2B705;--gold2:#C98A00;--ink:#141A2B;--mute:#6B7287;--line:#E3E5EC;--ok:#15803d;--okbg:#E7F6EC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:Heebo,sans-serif}
+.ab{width:1080px;height:1350px;position:relative;overflow:hidden;display:none;flex-direction:column;
+  background:radial-gradient(900px 700px at 0% 100%,rgba(120,84,10,.55),transparent 60%),linear-gradient(180deg,#0E1424,#18213A);color:#fff}
+.ab.on{display:flex}
+.top{flex:1;padding:96px 84px 40px;display:flex;flex-direction:column}
+.kick{align-self:flex-start;font-weight:800;font-size:30px;color:var(--gold);border:2px solid rgba(242,183,5,.45);background:rgba(242,183,5,.08);padding:10px 26px;border-radius:999px}
+h1{margin-top:38px;font-weight:900;font-size:86px;line-height:1.08;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--gold)}
+.sub{margin-top:28px;font-size:40px;line-height:1.4;color:#D3D8E6;font-weight:500}
+.sub b{color:#fff;font-weight:800}
+.vis{margin-top:auto}
+.bot{background:#F3F4F7;color:var(--ink);padding:34px 84px 40px;display:flex;align-items:center;gap:26px}
+.bot img{width:118px;height:118px;border-radius:50%;object-fit:cover;border:4px solid var(--gold)}
+.bot .n{flex:1}
+.bot .n b{display:block;font-size:38px;font-weight:900}
+.bot .n span{display:block;font-size:27px;color:var(--mute);margin-top:2px}
+.btn{background:linear-gradient(180deg,#FFD84D,var(--gold));color:#1B1405;font-weight:900;font-size:36px;padding:22px 34px;border-radius:20px;white-space:nowrap}
+/* visuals */
+.card{background:#fff;color:var(--ink);border-radius:30px;padding:34px 38px;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.row{display:flex;align-items:center;gap:22px;font-size:38px;font-weight:700;padding:16px 0}
+.row+.row{border-top:2px solid var(--line)}
+.ck{width:52px;height:52px;border-radius:50%;background:var(--okbg);flex:none;display:flex;align-items:center;justify-content:center;color:var(--ok);font-size:32px;font-weight:900}
+.bx{width:52px;height:52px;border-radius:12px;border:4px solid #C9CEDD;flex:none}
+.lab{font-size:24px;font-weight:700;color:var(--mute);margin-bottom:6px}
+.chat{background:#E9E2D6;border-radius:30px;padding:30px;display:flex;flex-direction:column;gap:18px}
+.bub{max-width:80%;padding:20px 26px;border-radius:24px;font-size:36px;line-height:1.35;color:#111;position:relative}
+.bub small{display:block;text-align:left;font-size:22px;color:#667;margin-top:6px}
+.in{background:#fff;align-self:flex-start;border-top-right-radius:6px}
+.out{background:#D9FDD3;align-self:flex-end;border-top-left-radius:6px}
+.clock{display:flex;align-items:center;gap:30px}
+.clock .t{font-size:150px;font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1}
+.note{background:#FFF4D1;color:#3a3220;border-radius:22px;padding:24px 30px;font-size:36px;font-weight:700;transform:rotate(-2deg)}
+.lst .r{display:flex;justify-content:space-between;align-items:center;font-size:34px;padding:14px 0;color:var(--ink)}
+.lst .r+.r{border-top:2px solid var(--line)}
+.lst .r span{color:var(--mute);font-size:28px}
+.tag{display:inline-block;background:#FDECEC;color:#C62828;font-weight:800;font-size:24px;padding:4px 14px;border-radius:999px}
+.flow{display:flex;align-items:center;gap:22px}
+.flow .card{flex:1;text-align:center;font-size:36px;font-weight:800;padding:30px 20px}
+.flow .ar{font-size:60px;color:var(--gold);font-weight:900}
+.old{opacity:.7;text-decoration:line-through;text-decoration-thickness:4px}
+</style>
+</head>
+<body>
+
+<!-- A: fear of switching -->
+<div class="ab" id="A"><div class="top">
+  <span class="kick">מייל · SMS · וואטסאפ</span>
+  <h1>חושבים להחליף מערכת דיוור <em>ומפחדים מכאב הראש?</em></h1>
+  <p class="sub">אנחנו מנהלים לכם את כל השיווק החוזר של החנות. <b>בלי להעסיק עוד עובד.</b></p>
+  <div class="vis card">
+    <div class="row"><span class="ck">✓</span>מיילים ומבצעים שבועיים</div>
+    <div class="row"><span class="ck">✓</span>SMS ווואטסאפ ללקוחות</div>
+    <div class="row"><span class="ck">✓</span>אוטומציות שעובדות לבד</div>
+  </div>
+</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+
+<!-- B: agency cost -->
+<div class="ab" id="B"><div class="top">
+  <span class="kick">בלי עלות</span>
+  <h1>לא רוצים לשלם לסוכנות <em>לפני שרואים משהו?</em></h1>
+  <p class="sub">מתחילים מבדיקה חינם של החנות. <b>אני עובר עליה בעצמי.</b></p>
+  <div class="vis card">
+    <p class="lab">מה מקבלים בבדיקה</p>
+    <div class="row"><span class="ck">✓</span>מה עובד היום</div>
+    <div class="row"><span class="ck">✓</span>מה חסר</div>
+    <div class="row"><span class="ck">✓</span>מה הייתי מפעיל קודם</div>
+  </div>
+</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+
+<!-- C: one-time buyers -->
+<div class="ab" id="C"><div class="top">
+  <span class="kick">שאלה לבעלי חנויות</span>
+  <h1>כמה לקוחות קנו אצלכם פעם אחת, <em>ומאז שקט?</em></h1>
+  <p class="sub">בדיקה חינם תראה לכם <b>כמה כסף יושב ברשימה</b> שלא נוגעים בה.</p>
+  <div class="vis card lst">
+    <p class="lab">המחשה</p>
+    <div class="r"><b>דנה כ.</b><span>קנתה פעם אחת · לפני 7 חודשים</span></div>
+    <div class="r"><b>יוסי ל.</b><span>קנה פעם אחת · לפני 11 חודשים</span></div>
+    <div class="r"><b>מיכל ש.</b><span>נרשמה · עוד לא קנתה</span></div>
+  </div>
+</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+
+<!-- D: day in the life -->
+<div class="ab" id="D"><div class="top">
+  <span class="kick">יום רגיל בחנות</span>
+  <h1>כל היום אורזים הזמנות, <em>ורק בלילה נזכרים בניוזלטר.</em></h1>
+  <p class="sub">אצלנו זה התפקיד שלנו: <b>מייל, SMS ווואטסאפ כל שבוע</b>, ובוט שעונה ללקוחות.</p>
+  <div class="vis clock"><span class="t">23:40</span><span class="note">📝 לשלוח מבצע ללקוחות…<br>מחר. בטוח מחר.</span></div>
+</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+
+<!-- E: customer service bot -->
+<div class="ab" id="E"><div class="top">
+  <span class="kick">בוט שירות לקוחות</span>
+  <h1>לקוחות שואלים בוואטסאפ <em>גם בעשר בלילה.</em></h1>
+  <p class="sub">בוט מבוסס AI עונה במקומכם, <b>ואנחנו מפעילים אותו</b> כחלק מהניהול.</p>
+  <div class="vis chat">
+    <p class="lab" style="color:#556">שיחה לדוגמה</p>
+    <div class="bub in">היי, איפה ההזמנה שלי? 🙏<small>22:04</small></div>
+    <div class="bub out">היי! ההזמנה יצאה אתמול. הנה הקישור למעקב 📦<small>22:04</small></div>
+  </div>
+</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+
+<!-- F: black friday -->
+<div class="ab" id="F"><div class="top">
+  <span class="kick">בלאק פריידיי מתקרב</span>
+  <h1>מבצע בלי מייל, SMS ווואטסאפ מוכנים <em>זה תקציב שהולך לפח.</em></h1>
+  <p class="sub">בואו נבדוק עכשיו, בחינם, <b>מה מוכן אצלכם ומה חסר.</b></p>
+  <div class="vis card">
+    <p class="lab">מוכנים לבלאק פריידיי?</p>
+    <div class="row"><span class="bx"></span>מייל ללקוחות קודמים</div>
+    <div class="row"><span class="bx"></span>SMS ביום המבצע</div>
+    <div class="row"><span class="bx"></span>וואטסאפ לעגלות נטושות</div>
+  </div>
+</div><div class="bot"><img src="../img/aviv_round.jpg"><div class="n"><b>אביב מלכה</b><span>לחנויות שופיפיי מעל 5,000 ₪ בחודש</span></div><span class="btn">לבדיקה חינם ←</span></div></div>
+
+<script>var k=(location.hash||'#A').slice(1);document.getElementById(k).classList.add('on');</script>
+</body>
+</html>
