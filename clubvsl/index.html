@@ -445,6 +445,20 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 .ls-fnext li:before{content:counter(f);grid-row:span 2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--okbg);color:#14532d;font-weight:900}
 .ls-fnext b{font-size:15.5px}.ls-fnext span{color:var(--mute);font-size:13.5px}
 /* ===== club-vsl v2: real media + quiz in the agency look ===== */
+.vph.tp .ph-in{background:radial-gradient(120% 80% at 50% 0%,#1C3360 0%,#0A1428 70%);gap:22px;padding:24px}
+.vph.tp .tpq{font-family:var(--he);font-weight:900;font-size:34px;line-height:1.05;color:#fff;letter-spacing:-.02em;text-wrap:balance}
+.vph.tp .tpw{font-size:13px;font-weight:800;color:var(--amb);letter-spacing:.06em}
+
+.vimg{display:block;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#fff;padding:0;cursor:zoom-in}
+.vimg img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.vt-cta{background:var(--amb) !important;border-color:var(--amb) !important;color:var(--ink);justify-content:center;text-align:center;padding:26px 18px !important;gap:10px !important;min-height:300px}
+.vt-cta p{font-family:var(--he);font-weight:800;font-size:18px;margin:0;color:var(--ink)}
+.vt-cta b{font-family:var(--he);font-weight:900;font-size:30px;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
+.vt-cta .cta{background:var(--ink);color:#fff;box-shadow:0 6px 0 #000;font-size:19px;padding:16px 20px;margin-top:8px}
+.vt-cta .cta::after{display:none}
+.vt-cta small{font-weight:700;color:rgba(10,20,40,.75)}
+.vt{padding-bottom:60px}
+
 .vt{margin:56px auto 0;max-width:1140px;text-align:right}
 .vt-h{font-family:var(--he);font-weight:900;font-size:clamp(30px,4.4vw,52px);line-height:1.05;letter-spacing:-.03em;text-align:center;margin:0 0 26px;text-wrap:balance}
 .vt-feed{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
@@ -521,311 +535,11 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
       <a class="cta" href="#cvQuiz" data-cta="hero">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
       <p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p>
     </div>
-    <div class="vt rv" id="voices"><h2 class="vt-h">תקשיבו למי שכבר <span class="amb">עשה את זה!</span></h2><div class="vt-feed" id="vtFeed"><article class="vt-card"><div class="vt-top"><b>₪118,000</b><em>בחצי שנה</em><span>רואי</span></div><button class="vph r916" type="button" data-video="roy" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-9jwg71zrya.jpg)" aria-label="נגן את הסרטון: רואי"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">10:28</span></button></article><article class="vt-card"><div class="vt-top"><b>832 הזמנות</b><em>ב־8 חודשים, לצד העבודה</em><span>מעיין · שכיר ואבא לארבעה</span></div><button class="vph r916" type="button" data-video="maayan" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-maayan.jpg)" aria-label="נגן את הסרטון: מעיין · שכיר ואבא לארבעה"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">4:24</span></button></article><article class="vt-card"><div class="vt-top"><b>₪27,000</b><em>ב־3 החודשים הראשונים</em><span>ניבין · מורה</span></div><button class="vph r916" type="button" data-video="nivin" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-5mntv13f3k.jpg)" aria-label="נגן את הסרטון: ניבין · מורה"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">6:27</span></button></article><article class="vt-card"><div class="vt-top"><b class="q">"הלוואי שהייתי מתחיל קודם"</b><span>תלמיד במועדון</span></div><button class="vph r916" type="button" data-video="sooner" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-uso5vl68e1.jpg)" aria-label="נגן את הסרטון: תלמיד במועדון"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">3:59</span></button></article><article class="vt-card"><div class="vt-top"><b class="q">"עשיתי את זה מהבית"</b><span>תלמידה במועדון</span></div><button class="vph r916" type="button" data-video="home" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-4vf0nnjrq6.jpg)" aria-label="נגן את הסרטון: תלמידה במועדון"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">2:14</span></button></article><article class="vt-card"><div class="vt-top"><b>מה עשה את ההבדל</b><span>תלמידים מספרים</span></div><button class="vph r916" type="button" data-video="diff" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-6ujyzfnt0y.jpg)" aria-label="נגן את הסרטון: תלמידים מספרים"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">4:53</span></button></article><article class="vt-card"><div class="vt-top"><b>פי 7.32</b><em>החזר על הפרסום</em><span>דינה · "עלה לי הדופק"</span></div><button class="vph r916" type="button" data-video="dina" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-dina.jpg)" aria-label="נגן את הסרטון: דינה · "עלה לי הדופק""><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">0:10</span></button></article></div><div id="vtMore" class="vt-more" aria-hidden="true"></div></div>
+    <div class="vt rv" id="voices"><h2 class="vt-h">תקשיבו למי שכבר <span class="amb">עשה את זה!</span></h2><div class="vt-feed" id="vtFeed"><article class="vt-card"><div class="vt-top"><b>₪118,000</b><em>בחצי שנה</em><span>רואי</span></div><button class="vph r916" type="button" data-video="roy" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-9jwg71zrya.jpg)" aria-label="נגן את הסרטון: רואי"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">10:28</span></button></article><article class="vt-card"><div class="vt-top"><b>832 הזמנות · ₪135,813</b><span>מעיין · דצמבר 2025 עד ספטמבר 2026</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/aw/img/maayan-graph.jpg" alt="832 הזמנות · ₪135,813 · מעיין · דצמבר 2025 עד ספטמבר 2026" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b>₪31,641 ב־30 יום</b><span>ניבין · 237 הזמנות</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/dl/img/nivin-sales.jpg" alt="₪31,641 ב־30 יום · ניבין · 237 הזמנות" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b>832 הזמנות</b><em>ב־8 חודשים, לצד העבודה</em><span>מעיין · שכיר ואבא לארבעה</span></div><button class="vph r916" type="button" data-video="maayan" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-maayan.jpg)" aria-label="נגן את הסרטון: מעיין · שכיר ואבא לארבעה"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">4:24</span></button></article><article class="vt-card"><div class="vt-top"><b>₪22,947 ב־23 ימים</b><span>דביר · ההודעה שלו בקבוצת התלמידים</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/aw/img/dvir.jpg" alt="₪22,947 ב־23 ימים · דביר · ההודעה שלו בקבוצת התלמידים" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b>32 הזמנות</b><span>אילן · אחרי חודשיים וחצי, מאפס</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/clubvsl/img/ilan.png" alt="32 הזמנות · אילן · אחרי חודשיים וחצי, מאפס" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b>₪27,000</b><em>ב־3 החודשים הראשונים</em><span>ניבין · מורה</span></div><button class="vph r916" type="button" data-video="nivin" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-5mntv13f3k.jpg)" aria-label="נגן את הסרטון: ניבין · מורה"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">6:27</span></button></article><article class="vt-card"><div class="vt-top"><b>₪12,775 ב־30 יום</b><span>יהב · 137 הזמנות</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/aw/img/yahav.jpg" alt="₪12,775 ב־30 יום · יהב · 137 הזמנות" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">"ב־8 חודשים"</b><span>מעיין · מהוואטסאפ של אביב</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/clubvsl/img/maayan-chat-full.webp" alt="&quot;ב־8 חודשים&quot; · מעיין · מהוואטסאפ של אביב" loading="lazy"></button></article><article class="vt-card vt-cta"><p>הם היו בדיוק איפה שאתה עכשיו.</p><b>אתה יכול להיות הסיפור הבא.</b><a class="cta" href="#cvQuiz" data-cta="feed">לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><small>2 דקות · בלי התחייבות</small></article><article class="vt-card"><div class="vt-top"><b class="q">"הלוואי שהייתי מתחיל קודם"</b><span>תלמיד במועדון</span></div><button class="vph r916" type="button" data-video="sooner" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-uso5vl68e1.jpg)" aria-label="נגן את הסרטון: תלמיד במועדון"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">3:59</span></button></article><article class="vt-card"><div class="vt-top"><b class="q">ההזמנה הראשונה</b><span>רון</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/aw/img/ron.jpg" alt="ההזמנה הראשונה · רון" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">"עזבתי קורס אחר כי לא היה מענה"</b><span>חני · בקהילה</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/aw/img/hani.jpg" alt="&quot;עזבתי קורס אחר כי לא היה מענה&quot; · חני · בקהילה" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">"עשיתי את זה מהבית"</b><span>תלמידים מספרים</span></div><button class="vph r916" type="button" data-video="home" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-4vf0nnjrq6.jpg)" aria-label="נגן את הסרטון: תלמידים מספרים"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">2:14</span></button></article><article class="vt-card"><div class="vt-top"><b class="q">מהוואטסאפ הפרטי של אביב</b><span>הודעה מתלמיד</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/chat-75k.jpg" alt="מהוואטסאפ הפרטי של אביב · הודעה מתלמיד" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">מכירות של תלמיד</b><span>צילום מסך ששלח לאביב</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/sales-778k.jpg" alt="מכירות של תלמיד · צילום מסך ששלח לאביב" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b>מה עשה את ההבדל</b><span>תלמידים מספרים</span></div><button class="vph r916 tp" type="button" data-video="diff" aria-label="נגן את הסרטון: תלמידים מספרים"><span class="ph-in"><span class="tpq">מה עשה את ההבדל</span><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><span class="tpw">מועדון האיקומרס · תלמידים מספרים</span></span><span class="dur">4:53</span></button></article><article class="vt-card"><div class="vt-top"><b class="q">מקבוצת הוואטסאפ</b><span>הודעה מתלמיד</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/chat-daniel.jpg" alt="מקבוצת הוואטסאפ · הודעה מתלמיד" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">עוד הזמנה, ועוד הזמנה</b><span>התראות הזמנה של תלמיד</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/orders-1.jpg" alt="עוד הזמנה, ועוד הזמנה · התראות הזמנה של תלמיד" loading="lazy"></button></article><article class="vt-card vt-cta"><p>הם היו בדיוק איפה שאתה עכשיו.</p><b>אתה יכול להיות הסיפור הבא.</b><a class="cta" href="#cvQuiz" data-cta="feed">לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><small>2 דקות · בלי התחייבות</small></article><article class="vt-card"><div class="vt-top"><b>פי 7.32</b><em>החזר על הפרסום</em><span>דינה · "עלה לי הדופק"</span></div><button class="vph r916" type="button" data-video="dina" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-dina.jpg)" aria-label="נגן את הסרטון: דינה · "עלה לי הדופק""><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span></span><span class="dur">0:10</span></button></article><article class="vt-card"><div class="vt-top"><b class="q">מכירות של תלמיד</b><span>צילום מסך ששלח לאביב</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/sales-22k.jpg" alt="מכירות של תלמיד · צילום מסך ששלח לאביב" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">מקבוצת הוואטסאפ</b><span>הודעה מתלמיד</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/chat-raviv.jpg" alt="מקבוצת הוואטסאפ · הודעה מתלמיד" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">מעיין</b><span>מהוואטסאפ של אביב</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/aw/img/maayan-chat.jpg" alt="מעיין · מהוואטסאפ של אביב" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">עוד הזמנה, ועוד הזמנה</b><span>התראות הזמנה של תלמיד</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/orders-2.jpg" alt="עוד הזמנה, ועוד הזמנה · התראות הזמנה של תלמיד" loading="lazy"></button></article><article class="vt-card"><div class="vt-top"><b class="q">הקהילה הסגורה</b><span>פוסטים של תלמידים</span></div><button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="https://avivmalka123.github.io/club/img/community.jpg" alt="הקהילה הסגורה · פוסטים של תלמידים" loading="lazy"></button></article><article class="vt-card vt-cta"><p>הם היו בדיוק איפה שאתה עכשיו.</p><b>אתה יכול להיות הסיפור הבא.</b><a class="cta" href="#cvQuiz" data-cta="feed">לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><small>2 דקות · בלי התחייבות</small></article></div><div id="vtMore" class="vt-more" aria-hidden="true"></div></div>
 
   </div>
 
   <!-- פס תוצאות רץ: רק תוצאות אמיתיות של תלמידים מהבריף -->
-  <div class="ticker" aria-label="תוצאות של תלמידים">
-    <div class="tk-row">
-      <span><i></i>מעיין · <b>135,813 ₪</b> ב־8 חודשים, לצד העבודה</span><span><i></i>ניבין · <b>27,000 ₪</b> ב־3 חודשים</span><span><i></i>דביר · <b>22,947 ₪</b> ב־23 ימים</span><span><i></i>רואי · <b>118,000 ₪</b> בחצי שנה</span><span><i></i>אילן · <b>32 הזמנות</b> מאפס, בחודשיים וחצי</span><span><i></i>דינה · <b>ROAS 7.32</b> עלה לי הדופק</span><span><i></i>ניבין · <b>237 הזמנות</b> ב־30 יום</span><span><i></i>מעיין · <b>135,813 ₪</b> ב־8 חודשים, לצד העבודה</span><span><i></i>ניבין · <b>27,000 ₪</b> ב־3 חודשים</span><span><i></i>דביר · <b>22,947 ₪</b> ב־23 ימים</span><span><i></i>רואי · <b>118,000 ₪</b> בחצי שנה</span><span><i></i>אילן · <b>32 הזמנות</b> מאפס, בחודשיים וחצי</span><span><i></i>דינה · <b>ROAS 7.32</b> עלה לי הדופק</span><span><i></i>ניבין · <b>237 הזמנות</b> ב־30 יום</span>
-    </div>
-  </div>
-  <!-- מספר אחד בכל הדף: 20.6 מיליון דולר, כמו בסרטון -->
-  <div class="stats">
-    <div class="stat"><b data-count="20.6">20.6</b><span>מיליון דולר מחזור, בחנות שלי</span></div>
-    <div class="stat"><b data-count="15">15</b><span>שנה באיקומרס</span></div>
-    <div class="stat"><b data-count="666">666</b><span>חברים במועדון</span></div>
-  </div>
-</section>
-
-<!-- ================= עוד מעט ================= -->
-<section class="sec saved">
-  <div class="wrap saved-g">
-    <div>
-      <span class="kick rv">בוא נהיה כנים רגע</span>
-      <h2 class="h2 rv">כמה זמן אתה כבר <span class="u">מסתובב עם הרעיון הזה?</span></h2>
-      <p class="p rv">שנה? שנתיים? מאה סרטונים ביוטיוב. עשרים פוסטים שמורים. אולי אפילו חנות שפתחת, <b>ואף אחד לא קנה בה.</b> ובכל פעם, אותו משפט:</p>
-      <div class="ex-list" id="excuses">
-        <span class="ex">עוד מעט.</span><span class="ex">כשיהיה זמן.</span><span class="ex">כשיהיה כסף.</span><span class="ex">כשאבין יותר.</span>
-      </div>
-      <div class="punch rv">
-        <p class="big">עוד מעט לא מגיע.</p>
-        <p>מי שמחכה להרגיש מוכן נשאר בדיוק איפה שהוא, ורואה אחרים עושים את מה שהוא היה אמור לעשות.</p>
-      </div>
-    </div>
-    <div class="rv">
-      <!-- טלפון חי: רשימת הסרטונים השמורים, חותמת, ואז ההתראות של התלמידים. הכל בקוד, בלי תמונות. -->
-      <div class="phone" id="phone" aria-hidden="true">
-        <div class="scr a">
-          <div class="scr-h"><span>שמורים</span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4.500L6 21z"/></svg></div>
-          <div class="sv-list"><div class="sv-roll"><div class="sv"><i></i><p>איך בוחרים מוצר מנצח<small>נשמר לפני שנה · לא נצפה</small></p></div><div class="sv"><i></i><p>חנות שופיפיי מאפס, מדריך מלא<small>נשמר לפני 14 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>דרופשיפינג למתחילים<small>נשמר לפני שנתיים · לא נצפה</small></p></div><div class="sv"><i></i><p>איך כותבים מודעה שמוכרת<small>נשמר לפני 8 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>10 טעויות של מתחילים באיקומרס<small>נשמר לפני שנה וחצי · לא נצפה</small></p></div><div class="sv"><i></i><p>ככה מוצאים ספק אמין<small>נשמר לפני 10 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>הנישות הכי חמות השנה<small>נשמר לפני שנה · לא נצפה</small></p></div><div class="sv"><i></i><p>איך בוחרים מוצר מנצח<small>נשמר לפני שנה · לא נצפה</small></p></div><div class="sv"><i></i><p>חנות שופיפיי מאפס, מדריך מלא<small>נשמר לפני 14 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>דרופשיפינג למתחילים<small>נשמר לפני שנתיים · לא נצפה</small></p></div><div class="sv"><i></i><p>איך כותבים מודעה שמוכרת<small>נשמר לפני 8 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>10 טעויות של מתחילים באיקומרס<small>נשמר לפני שנה וחצי · לא נצפה</small></p></div><div class="sv"><i></i><p>ככה מוצאים ספק אמין<small>נשמר לפני 10 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>הנישות הכי חמות השנה<small>נשמר לפני שנה · לא נצפה</small></p></div></div></div>
-        </div>
-        <div class="stamp">נשמר. לא נפתח.</div>
-        <div class="scr b">
-          <div class="scr-h"><span>התלמידים במועדון</span><small>עכשיו</small></div>
-          <div>
-            <div class="nt"><i>מ</i><p><b>מעיין · 832 הזמנות</b>135,813 ₪ ב־8 חודשים, לצד העבודה</p></div>
-            <div class="nt"><i>נ</i><p><b>ניבין · 237 הזמנות</b>31,641 ₪ ב־30 הימים האחרונים</p></div>
-            <div class="nt"><i>ד</i><p><b>דביר · 22,947 ₪</b>הכנסות ב־23 ימים</p></div>
-            <div class="nt"><i>ר</i><p><b>רואי · 118,000 ₪</b>בחצי שנה</p></div>
-            <div class="nt"><i>א</i><p><b>אילן · 32 הזמנות</b>אחרי חודשיים וחצי, מאפס</p></div>
-            <div class="nt"><i>ד</i><p><b>דינה · ROAS 7.32</b>עלה לי הדופק</p></div>
-          </div>
-        </div>
-      </div>
-      <p class="ph-cap" id="phCap">ככה נראה הטלפון שלך עכשיו.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= לבד (כתום) ================= -->
-<section class="sec alone">
-  <div class="wrap">
-    <h2 class="h2 rv">זה לא עבד לך. <span class="u">וזה לא בגללך.</span></h2>
-    <div class="nots rv"><span>לא כי אתה לא מספיק חכם</span><span>לא כי אין לך זמן</span><span>ולא כי איקומרס מת</span></div>
-    <p class="giant rv"><small>זה לא עבד כי היית</small>לבד.</p>
-    <div class="whys">
-      <div class="why rv"><span class="n">01</span><p><b>כל מדריך ביוטיוב אמר לך משהו אחר.</b> אז עשית קצת מהכל, ושום דבר עד הסוף.</p></div>
-      <div class="why rv"><span class="n">02</span><p><b>בחרת מוצר כי הוא נראה לך מגניב.</b> לא כי אנשים באמת קונים אותו.</p></div>
-      <div class="why rv"><span class="n">03</span><p><b>המודעה הראשונה נפלה.</b> ולא היה אף אחד שיגיד לך מה משנים מחר בבוקר.</p></div>
-    </div>
-    <div class="verdict rv">
-      <p>איקומרס לא נכשל מחוסר ידע. הוא נכשל מבדידות.</p>
-      <p>אז בניתי מקום שבו אתה לא לבד.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= המועדון ================= -->
-<section class="sec club">
-  <div class="wrap">
-    <div class="club-top">
-      <div>
-        <span class="kick rv">המועדון</span>
-        <h2 class="h2 rv">זה לא עוד קורס. <span class="u">פה לא משחררים אותך.</span></h2>
-        <p class="p rv">קורס נותן לך סרטונים, ושולח אותך הביתה. <b>המועדון נותן לך את כל מה שצריך כדי לבנות עסק איקומרס אמיתי, ולא משחרר אותך עד שזה עובד.</b></p>
-      </div>
-      <div class="dots-wrap rv">
-        <!-- 666 נקודות, אחת לכל חבר במועדון. הנקודה הלבנה האחרונה היא הגולש. -->
-        <div class="dots" id="dots" aria-hidden="true"></div>
-        <p class="dots-cap"><b>666</b>אנשים שבונים בדיוק כמוך. הנקודה הלבנה? זה אתה.</p>
-      </div>
-    </div>
-
-    <!-- חמשת הרכיבים: מה שאביב אומר בסרטון עצמו -->
-    <div class="parts">
-      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><path class="a-step" d="M5 33h8v-7h8v-7h8v-7h6"/><circle class="a-pulse" cx="35" cy="8" r="3" fill="currentColor"/></svg></span><div><h3>הכשרה מסודרת, צעד אחרי צעד</h3><p>מעל 100 שעות תוכן, וספריית הזהב: כל ההקלטות מספטמבר 2024 ועד היום.</p></div></div>
-      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="13" r="5"/><path d="M5 31c1-6 5-9 9-9s8 3 9 9"/><g class="a-bob"><path d="M24 7h12v9h-6l-4 3v-3h-2z" fill="currentColor" fill-opacity=".25"/></g></svg></span><div><h3>לייבים כל שבוע</h3><p>מאסטר קלאס שבועי בלייב, ו־4 עד 8 מפגשים חיים בחודש. שואלים, מקבלים תשובה, מתקדמים.</p></div></div>
-      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><g class="a-spin"><circle cx="20" cy="7" r="4"/><circle cx="31" cy="27" r="4"/><circle cx="9" cy="27" r="4"/></g><circle cx="20" cy="20" r="3" fill="currentColor"/></svg></span><div><h3>666 אנשים שדוחפים אותך</h3><p>קהילה סגורה. שיתופי הצלחות, פרגונים ותוצאות, כל יום.</p></div></div>
-      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="24" height="20" rx="5"/><path d="M20 4v6M14 30v5M26 30v5M16 25h8"/><circle class="a-blink" cx="15" cy="19" r="2" fill="currentColor"/><circle class="a-blink" cx="25" cy="19" r="2" fill="currentColor"/></svg></span><div><h3>כלי AI לעבודה השחורה</h3><p>קלוד קוד וצ׳אט ג׳י־פי־טי לעיצוב, תמונות, סרטונים וקריאייטיב.</p></div></div>
-      <div class="part me rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><path d="M20 5a14 14 0 0 0-12 21l-2 8 8-2A14 14 0 1 0 20 5z"/><path class="a-pulse" d="M14 17c0 5 4 9 9 9l2-2-3-2-1.500 1.500c-1.500-.5-3.500-2.500-4-4L18 18l-2-3z" fill="currentColor"/></svg></span><div><h3>ואני. בלי פילטר.</h3><p>ספקים חדשים, מוצרים ומה שעובד עכשיו, ישר ממני. לא מפספסים כלום ממה שקורה בתחום.</p></div></div>
-    </div>
-
-    <div class="tour">
-      <div class="rv"><h3>רוצה לראות מה קורה <span class="amb">מבפנים?</span></h3><p>סיור של 17 דקות בתוך המועדון. בלי עריכה מתחנפת.</p></div>
-      <!-- PLACEHOLDER: סרטון הסיור, 17 דקות. קישור במשתנה CFG.TOUR_EMBED -->
-      <button class="vph rv" type="button" data-video="TOUR_EMBED" aria-label="נגן את סרטון הסיור במועדון">
-        <span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן סרטון הסיור בתוך המועדון</small></span>
-        <span class="dur">17:00</span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= הוכחות ================= -->
-<section class="sec proof" id="proof">
-  <div class="wrap">
-    <div class="ctr">
-      <span class="kick rv">תוצאות אמיתיות</span>
-      <h2 class="h2 rv">הם עמדו בדיוק איפה שאתה עומד. <span class="u">תסתכל איפה הם היום.</span></h2>
-      <p class="p rv" style="max-width:820px;margin-inline:auto">שכיר. מורה. לוחם בסיירת. ואחד שלא ידע כלום על איקומרס. <b>אף אחד מהם לא נולד יזם.</b> צילומי מסך אמיתיים. טשטשנו רק טלפונים ושמות חנויות.</p>
-    </div>
-
-    <div class="wins">
-      <a class="win rv" href="#st-maayan"><span class="v">₪<span data-count="135813">135,813</span></span><span class="w">מעיין · שכיר ואבא לארבעה</span><span class="d">832 הזמנות ב־8 חודשים, לצד העבודה</span></a>
-      <a class="win rv" href="#st-nivin"><span class="v">₪<span data-count="27000">27,000</span></span><span class="w">ניבין · מורה</span><span class="d">בתוך שלושה חודשים</span></a>
-      <a class="win rv" href="#st-dvir"><span class="v">₪<span data-count="22947">22,947</span></span><span class="w">דביר · לוחם סיירת</span><span class="d">הכנסות ב־23 ימים</span></a>
-      <a class="win rv" href="#voices"><span class="v">₪<span data-count="118000">118,000</span></span><span class="w">רואי</span><span class="d">בחצי שנה</span></a>
-      <a class="win rv" href="#st-ilan"><span class="v"><span data-count="32">32</span></span><span class="w">אילן · התחיל מאפס</span><span class="d">הזמנות, אחרי חודשיים וחצי</span></a>
-      <a class="win rv" href="#voices"><span class="v">7.32</span><span class="w">דינה · ROAS</span><span class="d">עלה לי הדופק</span></a>
-    </div>
-
-    <div class="stories">
-      <article class="story rv" id="st-maayan">
-        <span class="tag">לצד העבודה</span>
-        <div>
-          <div class="who"><span class="av" aria-hidden="true">מ</span><div><h3>מעיין</h3><small>שכיר, בן 42, נשוי ואבא לארבעה</small></div></div>
-          <div class="beats">
-            <div class="beat"><p class="t">איפה היה</p><p>ראה קורסים ב־12 עד 15 אלף שקל, <b>והיה בטוח שאין לו לא כסף ולא זמן.</b></p></div>
-            <div class="beat"><p class="t">מה עשה</p><p>התחיל בדצמבר 2025. לצד העבודה.</p></div>
-            <div class="beat"><p class="t">מה השתנה</p><p><b>אחרי 8 חודשים: 832 הזמנות ו־135,813 שקל מכירות.</b> עכשיו הוא פותח אתר נוסף בחו״ל.</p></div>
-          </div>
-          <button class="vlink" type="button" data-video="maayan"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg>מעיין מספר · 4:24</button>
-        </div>
-        <div class="nums">
-          <div class="num"><b>₪135,813</b><span>מכירות ב־8 חודשים</span></div>
-          <div class="num"><b>832</b><span>הזמנות</span></div>
-          <!-- PLACEHOLDER: צילום מסך אמיתי של מעיין. כמו שהוא, מטשטשים רק טלפון ושם חנות. -->
-          <img class="shot img zoom" src="https://avivmalka123.github.io/aw/img/maayan-graph.jpg" alt="מעיין: 832 הזמנות ו־135,813 ש״ח מכירות בין דצמבר 2025 לספטמבר 2026" loading="lazy">
-        </div>
-        <p class="quote">צוות תותחים, כל אחד מהם מנטור בפני עצמו, שמלווה אותך ובונה אותך להצלחה. אם אני הצלחתי, גם אתם יכולים.</p>
-      </article>
-
-      <article class="story rv" id="st-nivin">
-        <span class="tag">מחנות בלי מכירות</span>
-        <div>
-          <div class="who"><span class="av" aria-hidden="true">נ</span><div><h3>ניבין</h3><small>מורה</small></div></div>
-          <div class="beats">
-            <div class="beat"><p class="t">איפה הייתה</p><p>חנות פתוחה. <b>בלי מכירות.</b> ניסתה לבד, בלי שיטה.</p></div>
-            <div class="beat"><p class="t">מה השתנה</p><p><b>בתוך שלושה חודשים: 27,000 שקל מכירות.</b> וב־30 הימים האחרונים: 31,641 שקל ו־237 הזמנות.</p></div>
-          </div>
-          <button class="vlink" type="button" data-video="nivin"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg>ניבין מספרת · 6:27</button>
-        </div>
-        <div class="nums">
-          <div class="num"><b>₪27,000</b><span>ב־3 החודשים הראשונים</span></div>
-          <div class="num"><b>237</b><span>הזמנות ב־30 יום · 31,641 ₪</span></div>
-          <!-- PLACEHOLDER: צילום מסך אמיתי של ניבין -->
-          <img class="shot img zoom" src="https://avivmalka123.github.io/dl/img/nivin-sales.jpg" alt="ניבין: 237 הזמנות ו־31,641 ש״ח ב־30 יום" loading="lazy">
-        </div>
-        <p class="quote">בזמן של אזעקות במדינה, גם אצלי נשמעות של הזמנות 😅</p>
-      </article>
-
-      <div class="midcta rv">
-        <a class="cta" href="#cvQuiz" data-cta="mid_proof">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
-        <p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p>
-      </div>
-
-      <article class="story rv" id="st-dvir">
-        <span class="tag">כמעט בלי זמן פנוי</span>
-        <div>
-          <div class="who"><span class="av" aria-hidden="true">ד</span><div><h3>דביר ביטון</h3><small>לוחם סיירת</small></div></div>
-          <div class="beats">
-            <div class="beat"><p class="t">איפה היה</p><p>הרבה בחו״ל. <b>מעט מאוד זמן פנוי.</b></p></div>
-            <div class="beat"><p class="t">מה השתנה</p><p><b>ב־23 ימים: 22,947 שקל הכנסות.</b> 4,300 שקל על שיווק, ורווח נקי של 10 עד 12 אלף שקל, לדבריו.</p></div>
-          </div>
-        </div>
-        <div class="nums">
-          <div class="num"><b>₪22,947</b><span>הכנסות ב־23 ימים</span></div>
-          <div class="num"><b>₪4,300</b><span>על שיווק</span></div>
-          <!-- PLACEHOLDER: צילום מסך אמיתי של דביר -->
-          <img class="shot img zoom" src="https://avivmalka123.github.io/aw/img/dvir.jpg" alt="ההודעה של דביר בקבוצת התלמידים" loading="lazy">
-        </div>
-        <p class="quote">גם אני בהתחלה תירצתי לעצמי שאין זמן.</p>
-      </article>
-
-      <article class="story rv" id="st-ilan">
-        <span class="tag">מאפס מוחלט</span>
-        <div>
-          <div class="who"><span class="av" aria-hidden="true">א</span><div><h3>אילן ארד</h3><small>לא ידע כלום על איקומרס</small></div></div>
-          <div class="beats">
-            <div class="beat"><p class="t">איפה היה</p><p><b>לפני חודשיים וחצי לא ידע כלום על איקומרס.</b></p></div>
-            <div class="beat"><p class="t">מה עשה</p><p>התחיל באמצע אפריל. היו לא מעט ניסיונות, מוצרים שלא עבדו, ושינויים.</p></div>
-            <div class="beat"><p class="t">מה השתנה</p><p><b>אחרי כחודשיים וחצי: 32 הזמנות וכמעט 5,600 שקל במכירות.</b></p></div>
-          </div>
-        </div>
-        <div class="nums">
-          <div class="num"><b>32</b><span>הזמנות</span></div>
-          <div class="num"><b>₪5,600</b><span>כמעט, במכירות</span></div>
-          <!-- PLACEHOLDER: צילום מסך אמיתי של הפוסט של אילן בקהילה -->
-          <img class="shot img zoom" src="https://avivmalka123.github.io/clubvsl/img/ilan.png" alt="הפוסט של אילן בקהילה" loading="lazy">
-        </div>
-      </article>
-    </div>
-
-    <div class="wall">
-      <div class="wall-intro">
-        <h2 class="h2 rv">אף אחד לא ביקש מהם <span class="u">לכתוב את זה.</span></h2>
-        <p class="p rv">הודעות מקבוצת הוואטסאפ ומהוואטסאפ הפרטי שלי, ופוסטים מהקהילה. מאנשים שלא האמינו שזה קורה להם. <b>לחיצה מגדילה.</b></p>
-      </div>
-      <div class="masonry">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/yahav.jpg" alt="יהב: 12,775 ש״ח ו־137 הזמנות ב־30 יום" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/chat-75k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/ron.jpg" alt="רון: ההזמנה הראשונה" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/sales-22k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/maayan-chat.jpg" alt="מעיין: התוצאות שלו" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/hani.jpg" alt="חני: עזבתי קורס אחר כי לא היה מענה" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/chat-daniel.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/orders-1.jpg" alt="התראות הזמנה של תלמיד" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/sales-778k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/dina-poster.jpg" alt="דינה" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/chat-raviv.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/orders-2.jpg" alt="התראות הזמנה של תלמיד" loading="lazy">
-        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/community.jpg" alt="פוסטים של תלמידים בקהילה הסגורה" loading="lazy">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= מי אני ================= -->
-<section class="sec about">
-  <div class="wrap about-g">
-    <!-- PLACEHOLDER: תמונה אמיתית של אביב, יחס 4 על 5. אמיתית, לא סטודיו מלוטש. -->
-    <div class="portrait rv has"><img src="https://avivmalka123.github.io/club/img/aviv-desk.jpg" alt="אביב מלכה" loading="lazy"><span class="yr">מאז 2010</span></div>
-    <div>
-      <span class="kick rv">מי אני</span>
-      <h2 class="h2 rv">למה להקשיב <span class="u">דווקא לי?</span></h2>
-      <div class="timeline">
-        <div class="tl rv"><span class="y">2010</span><p><b>חייל. 800 שקל בחודש, ומינוס קבוע בבנק.</b> לקחתי מוצרים מהשק״ם ומכרתי אותם. כולם אמרו לי שזה לא יעבוד.</p></div>
-        <div class="tl now rv"><span class="y">היום</span><p><b>15 שנה באיקומרס. מחזור של 20.6 מיליון דולר בחנות אחת שלי.</b> ונפלתי בכל בור שאתה עומד ליפול בו.</p></div>
-      </div>
-      <p class="short rv">במועדון אני לא מלמד תיאוריה. <span class="amb">אני מראה לך את הדרך הקצרה, אחרי שכבר הלכתי בארוכה.</span></p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= למי זה לא מתאים ================= -->
-<section class="sec notfor">
-  <div class="wrap">
-    <div class="ctr"><h2 class="h2 rv">אני לא לוקח <span class="u">כל אחד.</span></h2></div>
-    <div class="nf">
-      <div class="nfc rv">מחפש כסף מהיר בלי לעבוד?<span class="rej">לא מתאים</span></div>
-      <div class="nfc rv">לא מוכן להשקיע לפחות שעה ביום?<span class="rej">לא מתאים</span></div>
-      <div class="nfc rv">מחפש עוד קורס לשים במגירה?<span class="rej">לא מתאים</span></div>
-    </div>
-    <div class="but">
-      <p class="rv">אבל אם נמאס לך לחכות, אם אתה מוכן לעבוד עם שיטה וליווי, ואם משהו בך כבר יודע שהגיע הזמן,</p>
-      <p class="big rv">השאלון מחכה לך.</p>
-      <div class="cta-wrap rv"><a class="cta" href="#cvQuiz" data-cta="not_for">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= מה קורה אחרי ================= -->
-<section class="sec after">
-  <div class="wrap">
-    <div class="ctr"><h2 class="h2 rv">מה קורה <span class="u">אחרי שאתה לוחץ?</span></h2></div>
-    <ol class="steps">
-      <li class="rv"><span class="sn">1</span><h3>שאלון קצר</h3><p>שתי דקות. זהו.</p></li>
-      <li class="rv"><span class="sn">2</span><h3>הצוות עובר עליו</h3><p>יש התאמה? חוזרים אליך לשיחה.</p></li>
-      <li class="rv"><span class="sn">3</span><h3>שיחה כנה</h3><p>מבינים איפה אתה היום, ואם המועדון הוא הצעד הנכון. ואם לא, אומרים לך ישר.</p></li>
-    </ol>
-    <p class="calm rv">בלי לחץ. <span class="amb">בדיקה כנה, משני הצדדים.</span></p>
-
-    <div class="faq nar" style="margin-inline:auto">
-      <div class="qa rv"><button type="button" aria-expanded="false">אין לי ניסיון באיקומרס.<i></i></button><div class="an"><div><p><b>גם לאילן לא היה.</b> לפני חודשיים וחצי הוא לא ידע כלום, והיום יש לו הזמנות. המועדון בנוי בדיוק למי שמתחיל מאפס.</p></div></div></div>
-      <div class="qa rv"><button type="button" aria-expanded="false">אין לי זמן, אני עובד.<i></i></button><div class="an"><div><p><b>מעיין שכיר ואבא לארבעה. דביר לוחם בסיירת, הרבה בחו״ל.</b> שניהם בנו עסק איקומרס לצד החיים. שעה ביום מספיקה כדי להתחיל.</p></div></div></div>
-      <div class="qa rv"><button type="button" aria-expanded="false">ניסיתי כבר, ונכשלתי.<i></i></button><div class="an"><div><p><b>מעולה. אתה כבר יודע מה לא עובד.</b> ניבין הגיעה עם חנות פתוחה בלי מכירות, ובתוך שלושה חודשים הגיעה ל־27 אלף שקל.</p></div></div></div>
-      <div class="qa rv"><button type="button" aria-expanded="false">אני לא בטוח שזה בשבילי.<i></i></button><div class="an"><div><p><b>בשביל זה יש שיחת התאמה.</b> אם זה לא בשבילך, נגיד לך. לא נמכור לך משהו שלא יעבוד.</p></div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= דחיפה אחרונה ================= -->
-<section class="sec final">
-  <div class="wrap ctr">
-    <h2 class="h2 rv">בעוד שנה מהיום, <span class="u">תהיה אחד משניים.</span></h2>
-    <div class="fork rv">
-      <div class="fk same"><small>אפשרות 1</small><span>מי שעדיין שומר סרטונים</span></div>
-      <div class="fk new"><small>אפשרות 2</small>מי שהתחיל היום</div>
-    </div>
-    <p class="p rv">מעיין, ניבין ודביר עמדו בדיוק איפה שאתה עומד. אותם פחדים, אותם תירוצים, אותו קול בראש: מי מבטיח לי שזה יעבוד? <b>ההבדל ביניכם הוא לא כישרון ולא כסף. זו החלטה אחת שהם קיבלו, ואתה עוד דוחה.</b></p>
-    <p class="last rv">תפסיק לחכות להרגיש מוכן.</p>
-    <div class="cta-wrap rv">
-      <a class="cta" href="#cvQuiz" data-cta="final">אני קופץ למים. לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
-      <p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p>
-    </div>
-  </div>
 </section>
 
 <!-- ================= השאלון =================
@@ -884,12 +598,12 @@ $$('.arrows button').forEach(function(b){b.addEventListener('click',function(){v
 $$('.qa button').forEach(function(b){b.addEventListener('click',function(){var q=b.parentNode,on=!q.classList.contains('on');q.classList.toggle('on',on);b.setAttribute('aria-expanded',on);if(on)dl({event:'objection_open',q:b.textContent.trim()});});});
 
 /* 666 נקודות */
-var dots=$('#dots'),N=666,html='';for(var i=0;i<N;i++)html+='<i></i>';dots.innerHTML=html;
+var dots=$('#dots')||document.createElement('div'),N=666,html='';for(var i=0;i<N;i++)html+='<i></i>';dots.innerHTML=html;
 var D=$$('i',dots);
 function fillDots(){var i=0,step=Math.ceil(N/60);(function go(){for(var k=0;k<step&&i<N-1;k++,i++)D[i].classList.add('on');if(i<N-1)setTimeout(go,22);else D[N-1].classList.add('you');})();}
 
 /* טלפון: שמורים, חותמת, התראות של תלמידים */
-var ph=$('#phone'),cap=$('#phCap'),phT=[];
+var ph=$('#phone')||document.createElement('div'),cap=$('#phCap')||document.createElement('p'),phT=[];
 function phoneLoop(){ph.className='phone';cap.innerHTML='ככה נראה הטלפון שלך עכשיו.';
   phT.push(setTimeout(function(){ph.classList.add('st');},3200));
   phT.push(setTimeout(function(){ph.classList.add('flip');cap.innerHTML='ככה הוא נראה אצל <b>מי שהפסיק לחכות.</b>';},5200));
@@ -898,7 +612,7 @@ function phoneLoop(){ph.className='phone';cap.innerHTML='ככה נראה הטל�
 if('IntersectionObserver' in window&&!reduce){
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:.06});
   $$('.rv,.nfc').forEach(function(el){io.observe(el);});
-  var exs=$$('.ex'),eio=new IntersectionObserver(function(es){if(es[0].isIntersecting){exs.forEach(function(x,i){setTimeout(function(){x.classList.add('x');},400+i*600);});eio.disconnect();}},{threshold:.5});eio.observe($('#excuses'));
+  var exs=$$('.ex'),eio=new IntersectionObserver(function(es){if(es[0].isIntersecting){exs.forEach(function(x,i){setTimeout(function(){x.classList.add('x');},400+i*600);});eio.disconnect();}},{threshold:.5});if($('#excuses'))eio.observe($('#excuses'));
   var dio=new IntersectionObserver(function(es){if(es[0].isIntersecting){fillDots();dio.disconnect();}},{threshold:.4});dio.observe(dots);
   var pio=new IntersectionObserver(function(es){if(es[0].isIntersecting){if(!phT.length)phoneLoop();}else{phT.forEach(clearTimeout);phT=[];}},{threshold:.35});pio.observe(ph);
   var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;cio.unobserve(e.target);var el=e.target,to=+el.dataset.count,t0=null;

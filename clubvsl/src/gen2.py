@@ -35,14 +35,16 @@ VOICES = [
     ('maayan', '832 הזמנות', 'ב־8 חודשים, לצד העבודה', 'מעיין · שכיר ואבא לארבעה', '4:24'),
     ('nivin', '₪27,000', 'ב־3 החודשים הראשונים', 'ניבין · מורה', '6:27'),
     ('sooner', '"הלוואי שהייתי מתחיל קודם"', '', 'תלמיד במועדון', '3:59'),
-    ('home', '"עשיתי את זה מהבית"', '', 'תלמידה במועדון', '2:14'),
+    ('home', '"עשיתי את זה מהבית"', '', 'תלמידים מספרים', '2:14'),
     ('diff', 'מה עשה את ההבדל', '', 'תלמידים מספרים', '4:53'),
     ('dina', 'פי 7.32', 'החזר על הפרסום', 'דינה · "עלה לי הדופק"', '0:10'),
 ]
 PLAY = '<span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span>'
 cards = ''.join(
     '<article class="vt-card"><div class="vt-top"><b' + (' class="q"' if big.startswith('"') else '') + '>' + big + '</b>' + ('<em>' + sub + '</em>' if sub else '') + '<span>' + who + '</span></div>'
-    '<button class="vph r916" type="button" data-video="' + k + '" style="--poster:url(' + CFGJ['reels'][k]['poster'] + ')" aria-label="נגן את הסרטון: ' + who + '"><span class="ph-in">' + PLAY + '</span><span class="dur">' + dur + '</span></button></article>'
+    + ('<button class="vph r916 tp" type="button" data-video="' + k + '" aria-label="נגן את הסרטון: ' + who + '"><span class="ph-in"><span class="tpq">' + big.strip('"') + '</span>' + PLAY + '<span class="tpw">מועדון האיקומרס · תלמידים מספרים</span></span><span class="dur">' + dur + '</span></button></article>'
+     if k == 'diff' else   # Aviv: Roi is already the first video, so this one gets a text cover instead of his face
+     '<button class="vph r916" type="button" data-video="' + k + '" style="--poster:url(' + CFGJ['reels'][k]['poster'] + ')" aria-label="נגן את הסרטון: ' + who + '"><span class="ph-in">' + PLAY + '</span><span class="dur">' + dur + '</span></button></article>')
     for k, big, sub, who, dur in VOICES)
 voices = ('\n    <div class="vt rv" id="voices"><h2 class="vt-h">תקשיבו למי שכבר <span class="amb">עשה את זה!</span></h2>'
           '<div class="vt-feed" id="vtFeed">' + cards + '</div><div id="vtMore" class="vt-more" aria-hidden="true"></div></div>\n')
@@ -112,12 +114,73 @@ s = s[:q0] + ('<section class="quiz" id="cvQuiz">\n  <div class="wrap ctr"><span
               '<div class="cta-wrap"><a class="cta" href="#cvQuiz" data-cta="quiz_section">לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>'
               '<p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p></div></div>\n</section>') + s[q1:]
 
+# ---- Aviv 18.11 night: only hook + video + button + an endless testimonials grid. Everything else out. ----
+t0 = s.index('  <div class="ticker"'); t1 = s.index('</section>', t0)
+s = s[:t0] + s[t1:]                                        # ticker + stats (inside the hero section)
+x0 = s.index('<!-- ================= עוד מעט'); x1 = s.index('<!-- ================= השאלון')
+s = s[:x0] + s[x1:]                                        # all agency sections between the hero and the quiz
+IMGS = [
+    ('aw/img/maayan-graph.jpg', '832 הזמנות · ₪135,813', 'מעיין · דצמבר 2025 עד ספטמבר 2026'),
+    ('dl/img/nivin-sales.jpg', '₪31,641 ב־30 יום', 'ניבין · 237 הזמנות'),
+    ('aw/img/dvir.jpg', '₪22,947 ב־23 ימים', 'דביר · ההודעה שלו בקבוצת התלמידים'),
+    ('clubvsl/img/ilan.png', '32 הזמנות', 'אילן · אחרי חודשיים וחצי, מאפס'),
+    ('aw/img/yahav.jpg', '₪12,775 ב־30 יום', 'יהב · 137 הזמנות'),
+    ('clubvsl/img/maayan-chat-full.webp', '"ב־8 חודשים"', 'מעיין · מהוואטסאפ של אביב'),
+    ('aw/img/ron.jpg', 'ההזמנה הראשונה', 'רון'),
+    ('aw/img/hani.jpg', '"עזבתי קורס אחר כי לא היה מענה"', 'חני · בקהילה'),
+    ('club/img/chat-75k.jpg', 'מהוואטסאפ הפרטי של אביב', 'הודעה מתלמיד'),
+    ('club/img/sales-778k.jpg', 'מכירות של תלמיד', 'צילום מסך ששלח לאביב'),
+    ('club/img/chat-daniel.jpg', 'מקבוצת הוואטסאפ', 'הודעה מתלמיד'),
+    ('club/img/orders-1.jpg', 'עוד הזמנה, ועוד הזמנה', 'התראות הזמנה של תלמיד'),
+    ('club/img/sales-22k.jpg', 'מכירות של תלמיד', 'צילום מסך ששלח לאביב'),
+    ('club/img/chat-raviv.jpg', 'מקבוצת הוואטסאפ', 'הודעה מתלמיד'),
+    ('aw/img/maayan-chat.jpg', 'מעיין', 'מהוואטסאפ של אביב'),
+    ('club/img/orders-2.jpg', 'עוד הזמנה, ועוד הזמנה', 'התראות הזמנה של תלמיד'),
+    ('club/img/community.jpg', 'הקהילה הסגורה', 'פוסטים של תלמידים'),
+] + [tuple(x) for x in CFGJ.get('more_imgs', [])]
+vids = re.findall(r'<article class="vt-card">.*?</article>', s, re.S)
+def img_card(src, big, who):
+    full = src if src.startswith('http') else GH + src
+    return ('<article class="vt-card"><div class="vt-top"><b' + (' class="q"' if big.startswith('"') or not re.search(r'\d', big) else '') + '>' + big + '</b><span>' + who + '</span></div>'
+            '<button class="vimg zoom-btn" type="button" aria-label="הגדלת צילום המסך"><img class="zoom" src="' + full + '" alt="' + H.escape(big + ' · ' + who) + '" loading="lazy"></button></article>')
+imgs = [img_card(*x) for x in IMGS]
+CTA = ('<article class="vt-card vt-cta"><p>הם היו בדיוק איפה שאתה עכשיו.</p><b>אתה יכול להיות הסיפור הבא.</b>'
+       '<a class="cta" href="#cvQuiz" data-cta="feed">לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><small>2 דקות · בלי התחייבות</small></article>')
+feed, vi, ii = [], 0, 0
+while vi < len(vids) or ii < len(imgs):          # 1 video, 2 screenshots, …; a sign-up card after every 9
+    if vi < len(vids): feed.append(vids[vi]); vi += 1
+    for _ in range(2):
+        if ii < len(imgs): feed.append(imgs[ii]); ii += 1
+    if len(feed) % 10 == 9: feed.append(CTA)
+if not feed[-1].startswith('<article class="vt-card vt-cta"'): feed.append(CTA)
+f0 = s.index('<div class="vt-feed" id="vtFeed">') + len('<div class="vt-feed" id="vtFeed">'); f1 = s.index('</div><div id="vtMore"', f0)
+s = s[:f0] + ''.join(feed) + s[f1:]
+print('feed items', len(feed), 'videos', len(vids), 'images', len(imgs))
+# agency script: the removed sections are no longer on the page
+rep("var dots=$('#dots'),", "var dots=$('#dots')||document.createElement('div'),")
+rep("var ph=$('#phone'),cap=$('#phCap'),", "var ph=$('#phone')||document.createElement('div'),cap=$('#phCap')||document.createElement('p'),")
+rep("eio.observe($('#excuses'));", "if($('#excuses'))eio.observe($('#excuses'));")
+
 # ---- extra CSS ----
 lb_css = re.search(r'<style>(.*?)</style>', lb, re.S).group(1).split('\n')
 keep = [l for l in lb_css if l.startswith('.ls{') or l.startswith('direction:rtl;text-align:right;font-family') or
         any(l.startswith(p) for p in ('.ls-btn', 'background:linear-gradient(180deg,#FFD84D', '@keyframes lsg', '.ls-done', '.ls-q', '.ls-opt', '.ls-opts', '.ls-back', '.ls-res', '.ls-in', '.ls-err', '.ls-lock', '.ls-okbar', '.ls-fsteps', '.ls-who', '.ls-qn', '.ls-ta', '.ls-fnext', '.ls-alt', '.ls-qbar', '.ls-qq'))]
 extra = '\n'.join(keep) + '''
 /* ===== club-vsl v2: real media + quiz in the agency look ===== */
+.vph.tp .ph-in{background:radial-gradient(120% 80% at 50% 0%,#1C3360 0%,#0A1428 70%);gap:22px;padding:24px}
+.vph.tp .tpq{font-family:var(--he);font-weight:900;font-size:34px;line-height:1.05;color:#fff;letter-spacing:-.02em;text-wrap:balance}
+.vph.tp .tpw{font-size:13px;font-weight:800;color:var(--amb);letter-spacing:.06em}
+
+.vimg{display:block;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#fff;padding:0;cursor:zoom-in}
+.vimg img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.vt-cta{background:var(--amb) !important;border-color:var(--amb) !important;color:var(--ink);justify-content:center;text-align:center;padding:26px 18px !important;gap:10px !important;min-height:300px}
+.vt-cta p{font-family:var(--he);font-weight:800;font-size:18px;margin:0;color:var(--ink)}
+.vt-cta b{font-family:var(--he);font-weight:900;font-size:30px;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
+.vt-cta .cta{background:var(--ink);color:#fff;box-shadow:0 6px 0 #000;font-size:19px;padding:16px 20px;margin-top:8px}
+.vt-cta .cta::after{display:none}
+.vt-cta small{font-weight:700;color:rgba(10,20,40,.75)}
+.vt{padding-bottom:60px}
+
 .vt{margin:56px auto 0;max-width:1140px;text-align:right}
 .vt-h{font-family:var(--he);font-weight:900;font-size:clamp(30px,4.4vw,52px);line-height:1.05;letter-spacing:-.03em;text-align:center;margin:0 0 26px;text-wrap:balance}
 .vt-feed{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
