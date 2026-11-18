@@ -173,8 +173,8 @@ extra = '\n'.join(keep) + '''
 .vph.tp .tpq{font-family:var(--he);font-weight:900;font-size:34px;line-height:1.05;color:#fff;letter-spacing:-.02em;text-wrap:balance}
 .vph.tp .tpw{font-size:13px;font-weight:800;color:var(--amb);letter-spacing:.06em}
 
-.vimg{display:block;width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:#fff;padding:0;cursor:zoom-in}
-.vimg img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.vimg{display:block;width:100%;border-radius:16px;overflow:hidden;background:#fff;padding:0;cursor:zoom-in}
+.vimg img{width:100%;height:auto;display:block}
 .vt-cta{background:var(--amb) !important;border-color:var(--amb) !important;color:var(--ink);justify-content:center;text-align:center;padding:26px 18px !important;gap:10px !important;min-height:300px}
 .vt-cta p{font-family:var(--he);font-weight:800;font-size:18px;margin:0;color:var(--ink)}
 .vt-cta b{font-family:var(--he);font-weight:900;font-size:30px;line-height:1.05;letter-spacing:-.02em;color:var(--ink)}
