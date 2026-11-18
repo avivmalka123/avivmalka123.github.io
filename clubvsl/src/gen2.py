@@ -38,6 +38,7 @@ VOICES = [
     ('home', '"עשיתי את זה מהבית"', '', 'תלמידים מספרים', '2:14'),
     ('diff', 'מה עשה את ההבדל', '', 'תלמידים מספרים', '4:53'),
     ('dina', 'פי 7.32', 'החזר על הפרסום', 'דינה · "עלה לי הדופק"', '0:10'),
+    ('gennady', 'גנדי מספר', '', 'גנדי · ₪22,185 ב־26 ימים', '1:46'),
 ]
 PLAY = '<span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span>'
 cards = ''.join(
@@ -128,16 +129,17 @@ IMGS = [
     ('clubvsl/img/maayan-chat-full.webp', '"ב־8 חודשים"', 'מעיין · מהוואטסאפ של אביב'),
     ('aw/img/ron.jpg', 'ההזמנה הראשונה', 'רון'),
     ('aw/img/hani.jpg', '"עזבתי קורס אחר כי לא היה מענה"', 'חני · בקהילה'),
-    ('club/img/chat-75k.jpg', 'מהוואטסאפ הפרטי של אביב', 'הודעה מתלמיד'),
-    ('club/img/sales-778k.jpg', 'מכירות של תלמיד', 'צילום מסך ששלח לאביב'),
-    ('club/img/chat-daniel.jpg', 'מקבוצת הוואטסאפ', 'הודעה מתלמיד'),
-    ('club/img/orders-1.jpg', 'עוד הזמנה, ועוד הזמנה', 'התראות הזמנה של תלמיד'),
-    ('club/img/sales-22k.jpg', 'מכירות של תלמיד', 'צילום מסך ששלח לאביב'),
+    ('club/img/chat-75k.jpg', '75K בחודש שעבר', 'מהוואטסאפ הפרטי של אביב'),
+    ('club/img/sales-778k.jpg', '₪778,889 ב־2024', 'איתמר'),
+    ('club/img/chat-daniel.jpg', '₪507 · 3 הזמנות', 'דניאל · ההזמנות הראשונות'),
+    ('club/img/orders-1.jpg', 'עוד הזמנה, ועוד הזמנה', 'איתמר · התראות הזמנה'),
+    ('club/img/sales-22k.jpg', '₪22,185 ב־26 ימים', 'גנדי'),
     ('club/img/chat-raviv.jpg', 'מקבוצת הוואטסאפ', 'הודעה מתלמיד'),
     ('aw/img/maayan-chat.jpg', 'מעיין', 'מהוואטסאפ של אביב'),
-    ('club/img/orders-2.jpg', 'עוד הזמנה, ועוד הזמנה', 'התראות הזמנה של תלמיד'),
+    ('club/img/orders-2.jpg', 'עוד הזמנה, ועוד הזמנה', 'איתמר · התראות הזמנה'),
     ('club/img/community.jpg', 'הקהילה הסגורה', 'פוסטים של תלמידים'),
-] + [tuple(x) for x in CFGJ.get('more_imgs', [])]
+]
+IMGS = IMGS[:4] + [tuple(x) for x in CFGJ.get('more_imgs', [])] + IMGS[4:]
 vids = re.findall(r'<article class="vt-card">.*?</article>', s, re.S)
 def img_card(src, big, who):
     full = src if src.startswith('http') else GH + src
