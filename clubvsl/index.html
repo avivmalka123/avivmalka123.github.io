@@ -469,6 +469,12 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 .lbx{position:fixed;inset:0;z-index:90;background:rgba(5,11,23,.92);display:none;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
 .lbx.on{display:flex}
 .lbx img{max-width:100%;max-height:92vh;border-radius:12px}
+.qm{position:fixed;inset:0;z-index:95;background:rgba(5,11,23,.86);display:none;align-items:flex-start;justify-content:center;padding:max(16px,env(safe-area-inset-top)) 12px 16px;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.qm.on{display:flex}
+.qmi{position:relative;width:100%;max-width:720px;margin:auto 0;animation:qmIn .35s var(--e)}
+@keyframes qmIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+.qx{position:absolute;top:-6px;left:-4px;z-index:3;width:44px;height:44px;border-radius:50%;background:#fff;color:#0A1428;font:900 28px/1 'Heebo',sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.4);display:grid;place-items:center}
+.qm .ls-q{margin:14px 0 0 !important}
 </style>
 </head>
 <body>
@@ -820,7 +826,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
      (שם מלא, מספר וואטסאפ, והכפתור לשאלון). חובה לשמור על id="cvQuiz".
      אם השאלון בכתובת אחרת: משנים את CFG.QUIZ_URL, וכל הכפתורים עוברים לשם. -->
 <section class="quiz" id="cvQuiz">
-  <div class="wrap"><div class="ctr" style="margin-bottom:34px"><h2 class="h2" style="font-size:clamp(34px,4.6vw,56px);margin-top:0">שאלון ההתאמה. <span class="u">2 דקות, וזהו.</span></h2></div><div class="ls"><div class="ls-q" id="lsQ"></div></div></div>
+  <div class="wrap ctr"><span class="kick">השלב הבא</span><h2 class="h2" style="font-size:clamp(34px,4.6vw,56px)">שאלון ההתאמה. <span class="u">2 דקות, וזהו.</span></h2><p class="p" style="max-width:640px;margin-inline:auto">כמה שאלות קצרות, כדי שנבין איפה אתה נמצא היום. חוזרים אליך רק אם יש התאמה.</p><div class="cta-wrap"><a class="cta" href="#cvQuiz" data-cta="quiz_section">לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p></div></div>
 </section>
 </main>
 
@@ -830,6 +836,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 <div class="stk" id="stk"><a class="cta" href="#cvQuiz" data-cta="sticky">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
 <div class="toast" id="toast" role="status"></div>
 <div class="lbx" id="lbx" role="dialog" aria-label="צילום מסך מוגדל"><img alt=""></div>
+<div class="qm" id="qm" role="dialog" aria-modal="true" aria-label="שאלון ההתאמה"><div class="qmi"><button class="qx" id="qmX" type="button" aria-label="סגירה">×</button><div class="ls"><div class="ls-q" id="lsQ"></div></div></div></div>
 
 <script>
 /* ================================================================
@@ -848,7 +855,7 @@ var internal=CFG.QUIZ_URL.charAt(0)==='#';
 $$('[data-cta]').forEach(function(a){
   var u=CFG.QUIZ_URL;if(!internal&&location.search)u+=(u.indexOf('?')>-1?'&':'?')+location.search.slice(1);a.href=u;
   a.addEventListener('click',function(e){dl({event:'cta_click',cta:a.dataset.cta});
-    if(internal){var t=$(CFG.QUIZ_URL);if(t){e.preventDefault();t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}}});
+    if(internal){e.preventDefault();if(window.cvOpenQuiz)window.cvOpenQuiz(a.dataset.cta);}});
 });
 
 /* סרטונים: נטענים רק בלחיצה */
@@ -1021,6 +1028,20 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
     wrap.addEventListener('pointerdown', hide, true);
     document.addEventListener('play', function(e){ if (wrap.contains(e.target)) hide(); }, true);
   })();
+
+  /* quiz popup: every CTA opens it right away (Aviv 18.11: scrolling to the bottom got lost in the reveal animations) */
+  var qm = $('qm');
+  window.cvOpenQuiz = function(src){
+    qm.classList.add('on'); document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
+    qm.scrollTop = 0;
+    try { (window.dataLayer = window.dataLayer || []).push({event: 'quiz_open', cta: src || ''}); } catch(x){}
+    setTimeout(function(){ var f = qm.querySelector('.ls-btn, .ls-opt, input'); try { f && f.focus({preventScroll: true}); } catch(x){} }, 350);
+  };
+  function closeQuiz(){ qm.classList.remove('on'); document.documentElement.style.overflow = ''; document.body.style.overflow = ''; }
+  $('qmX').onclick = closeQuiz;
+  qm.addEventListener('click', function(e){ if (e.target === qm) closeQuiz(); });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape' && qm.classList.contains('on')) closeQuiz(); });
+  if (/[#&?](quiz|cvQuiz)\b/.test(location.hash + location.search)) setTimeout(function(){ window.cvOpenQuiz('url'); }, 600);
 
   /* screenshots: tap to zoom */
   var lbx = $('lbx');
