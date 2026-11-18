@@ -49,6 +49,20 @@ td.win{color:var(--ok);font-weight:900}
 .legend{display:flex;gap:16px;font-size:14px;color:var(--mut);margin:0 0 10px}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-left:6px;vertical-align:-1px}
 svg text{fill:var(--dim);font-family:'Assistant',sans-serif;font-size:11px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 0;border-bottom:1px solid var(--line);padding-bottom:12px}
+.tabs button{font:900 16px 'Heebo',sans-serif;background:var(--bg3);color:var(--mut);border:1.5px solid var(--line);border-radius:12px;padding:10px 16px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.tabs button i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.tabs button.on{color:#0A1428;background:#fff;border-color:#fff}
+.pane[hidden]{display:none}
+.vgrid{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+.shot{width:100%;border-radius:18px;border:1px solid var(--line);display:block}
+.vname{font-family:'Heebo',sans-serif;font-weight:900;font-size:28px;margin:0 0 6px}
+.vbtn{display:inline-block;margin:12px 0 4px;font:800 15px 'Heebo',sans-serif;background:var(--b);color:#0A1428;text-decoration:none;padding:10px 16px;border-radius:10px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.kpi{background:var(--bg3);border-radius:12px;padding:12px}
+.kpi b{display:block;font:900 26px 'Heebo',sans-serif}
+.kpi span{color:var(--mut);font-size:13.5px}
+@media (max-width:760px){.vgrid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
 .log{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .log li{display:grid;grid-template-columns:96px 1fr;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px}
 .log .d{color:var(--b);font-weight:800;font-variant-numeric:tabular-nums}
@@ -61,11 +75,14 @@ svg text{fill:var(--dim);font-family:'Assistant',sans-serif;font-size:11px}
 <div class="w">
   <h1>לוח הניסוי · דף הסרטון של המועדון</h1>
   <p class="sub">הדף: <a href="https://www.avivmalka.com/club-vsl" target="_blank" rel="noopener">avivmalka.com/club-vsl</a> · חצי מהגולשים רואים את גרסה א׳ וחצי את גרסה ב׳. המספרים מתעדכנים בזמן אמת.</p>
+  <div class="tabs" id="tabs"><button data-t="cmp" class="on">השוואה בין הגרסאות</button><button data-t="A"><i style="background:var(--a)"></i><span id="tA">גרסה א׳</span></button><button data-t="B"><i style="background:var(--b)"></i><span id="tB">גרסה ב׳</span></button></div>
   <div class="bar" id="range">
     <button data-r="all" class="on">מתחילת הניסוי</button><button data-r="7">7 ימים אחרונים</button><button data-r="1">היום</button>
     <span class="upd" id="upd">טוען…</span>
   </div>
 
+  <div class="pane" id="pA" hidden></div><div class="pane" id="pB" hidden></div>
+  <div class="pane" id="pcmp">
   <div class="card"><h2>שתי הגרסאות</h2><div class="vars" id="vars"></div></div>
   <div class="card"><div class="verdict" id="verdict"></div></div>
 
@@ -95,6 +112,7 @@ svg text{fill:var(--dim);font-family:'Assistant',sans-serif;font-size:11px}
     <div class="card"><h2>מאיפה הגיעו</h2><div class="tblw"><table id="src"></table></div></div>
   </div>
 
+  </div>
   <div class="card"><h2>יומן שינויים</h2><ul class="log" id="log"></ul>
     <p class="note">כל שינוי בדף נרשם כאן עם תאריך, כדי שאפשר יהיה לקשור אותו לשינוי במספרים.</p>
   </div>
@@ -122,7 +140,9 @@ svg text{fill:var(--dim);font-family:'Assistant',sans-serif;font-size:11px}
   }
   function draw(d, L){
     $('upd').textContent = 'עודכן ' + new Date(d.at).toLocaleTimeString('he-IL', {hour: '2-digit', minute: '2-digit'});
-    $('vars').innerHTML = ['A', 'B'].map(function(v){ return '<div class="var ' + v.toLowerCase() + '"><b>' + HE[v] + '</b><p>' + esc(L.variants[v]) + '</p></div>'; }).join('');
+    ['A', 'B'].forEach(function(v){ var x = L.variants[v]; if (x && x.name) HE[v] = (v === 'A' ? 'גרסה א׳ · ' : 'גרסה ב׳ · ') + x.name; });
+    $('tA').textContent = HE.A; $('tB').textContent = HE.B;
+    $('vars').innerHTML = ['A', 'B'].map(function(v){ var x = L.variants[v] || {}; return '<div class="var ' + v.toLowerCase() + '"><b>' + esc(HE[v]) + '</b><p>' + esc(x.desc || x) + '</p></div>'; }).join('');
     var T = {A: {}, B: {}};
     d.tot.forEach(function(r){ T[r.v][r.ev] = r.u; });
     var nA = T.A.view || 0, nB = T.B.view || 0;
@@ -183,9 +203,20 @@ svg text{fill:var(--dim);font-family:'Assistant',sans-serif;font-size:11px}
     }
     $('dev').innerHTML = cross(d.dev, 'dev', 'מכשיר');
     $('src').innerHTML = cross(d.src, 'src', 'מקור');
+    ['A', 'B'].forEach(function(v){
+      var x = L.variants[v] || {}, t = T[v], n = t.view || 0, col = v === 'A' ? 'var(--a)' : 'var(--b)';
+      var k = function(ev, lab){ var c = t[ev] || 0; return '<div class="kpi"><b style="color:' + col + '">' + c.toLocaleString('he-IL') + '</b><span>' + lab + (ev !== 'view' ? ' · ' + fmtP(pct(c, n)) : '') + '</span></div>'; };
+      var rows = ROWS.filter(function(r){ return r[0] !== 'wa'; }).map(function(r){ var c = t[r[0]] || 0; return '<div class="fr"><span class="l">' + r[1] + '</span><div class="bars"><div class="bt ' + v.toLowerCase() + '" style="width:' + (88 * c / Math.max(n, 1)) + '%"><span>' + c + ' · ' + fmtP(pct(c, n)) + '</span></div></div></div>'; }).join('');
+      $('p' + v).innerHTML = '<div class="card"><div class="vgrid">' + (x.img ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener"><img class="shot" src="' + esc(x.img) + '?v=' + (L.log.length) + '" alt="' + esc(HE[v]) + '"></a>' : '') +
+        '<div><p class="vname" style="color:' + col + '">' + esc(HE[v]) + '</p><p style="color:var(--mut);margin:0">' + esc(x.desc || '') + '</p>' +
+        (x.url ? '<a class="vbtn" href="' + esc(x.url) + '" target="_blank" rel="noopener">לפתוח את הגרסה הזאת ←</a><p class="note" style="margin-top:4px">כניסה דרך הקישור הזה לא נספרת בתוצאות.</p>' : '') +
+        '<div class="kpis">' + k('view', 'נכנסו לדף') + k('lead', 'השאירו שם וטלפון') + k('done', 'סיימו את השאלון') + k('play', 'ניגנו את הסרטון') + k('open', 'פתחו את השאלון') + k('wa', 'לחצו על הוואטסאפ') + '</div></div></div></div>' +
+        '<div class="card"><h2>המשפך של הגרסה</h2><div class="fun">' + rows + '</div></div>';
+    });
     $('log').innerHTML = L.log.slice().reverse().map(function(x){ return '<li><span class="d">' + x.date.split('-').reverse().join('.') + '</span><span>' + esc(x.what) + '</span></li>'; }).join('');
   }
   [].forEach.call(document.querySelectorAll('#range button'), function(b){ b.onclick = function(){ [].forEach.call(document.querySelectorAll('#range button'), function(x){ x.classList.toggle('on', x === b); }); range = b.dataset.r; load(); }; });
+  [].forEach.call(document.querySelectorAll('#tabs button'), function(b){ b.onclick = function(){ [].forEach.call(document.querySelectorAll('#tabs button'), function(x){ x.classList.toggle('on', x === b); }); ['cmp', 'A', 'B'].forEach(function(k){ $('p' + k).hidden = k !== b.dataset.t; }); }; });
   load(); setInterval(load, 60000);
 })();
 </script>
