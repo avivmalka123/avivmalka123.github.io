@@ -342,13 +342,12 @@ our = r'''
   addEventListener('keydown', function(e){ if (e.key === 'Escape' && qm.classList.contains('on')) closeQuiz(); });
   if (/[#&?](quiz|cvQuiz)\b/.test(location.hash + location.search)) setTimeout(function(){ window.cvOpenQuiz('url'); }, 600);
 
-  /* voices feed (Aviv 18.11): one after another, more cards appear as you scroll */
-  (function(){ var feed = $('vtFeed'), more = $('vtMore'); if (!feed) return;
-    var cards = [].slice.call(feed.children), FIRST = matchMedia('(max-width:600px)').matches ? 3 : 8, STEP = matchMedia('(max-width:600px)').matches ? 3 : 8, shown = 0;
-    cards.forEach(function(c){ c.classList.add('wait'); });
-    function reveal(n){ cards.slice(shown, shown + n).forEach(function(c, i){ c.classList.remove('wait'); c.classList.add('new'); setTimeout(function(){ c.classList.remove('new'); }, 40 + i * 90); }); shown = Math.min(cards.length, shown + n); if (shown >= cards.length && io) io.disconnect(); }
-    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function(es){ if (es[0].isIntersecting) reveal(STEP); }, {rootMargin: '600px 0px'}) : null;
-    reveal(FIRST); if (io && shown < cards.length) io.observe(more); else reveal(cards.length);
+  /* voices feed: every card is on the page (images load lazily as you get near); each card fades in when it enters the screen */
+  (function(){ var feed = $('vtFeed'); if (!feed || !('IntersectionObserver' in window)) return;
+    var cards = [].slice.call(feed.children);
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.remove('new'); io.unobserve(e.target); } }); }, {rootMargin: '0px 0px -40px 0px'});
+    cards.forEach(function(c, i){ if (i > 2){ c.classList.add('new'); io.observe(c); } });
+    setTimeout(function(){ cards.forEach(function(c){ c.classList.remove('new'); }); }, 15000);   /* safety: never leave a card invisible */
   })();
 
   /* screenshots: tap to zoom */
