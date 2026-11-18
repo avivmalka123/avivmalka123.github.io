@@ -125,7 +125,8 @@ extra = '\n'.join(keep) + '''
 @keyframes qmIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
 .qx{position:absolute;top:-6px;left:-4px;z-index:3;width:44px;height:44px;border-radius:50%;background:#fff;color:#0A1428;font:900 28px/1 'Heebo',sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.4);display:grid;place-items:center}
 .qm .ls-q{margin:14px 0 0 !important}
-.qinline{max-width:720px;margin:34px auto 0;position:relative;z-index:1;text-align:right}
+.ls-opt .e{flex:none;width:30px;height:30px;border-radius:50%;background:#0A1428;color:#FFA826;font:900 15px/30px 'Heebo',sans-serif;text-align:center;direction:ltr}
+.ls-opt:hover .e{background:#FFA826;color:#0A1428}
 .qinline .ls-q{margin:0 auto !important}
 '''
 s = s.replace('</style>', extra + '</style>', 1)
@@ -154,6 +155,10 @@ fit = fit.replace("hold('start').catch(", "window.cvTrack && cvTrack('lead');\n 
 fit = fit.replace("    function step(i, fresh){\n", "    function step(i, fresh){\n      window.cvTrack && cvTrack('q', i + 1);\n", 1)
 fit = fit.replace("    function done(){\n", "    function done(){\n      window.cvTrack && cvTrack('done');\n", 1)
 assert fit.count('cvTrack') == 6, fit.count('cvTrack')
+fit = fit.replace("<span class=\"e\">' + o[0] + '</span>", "<span class=\"e\">' + String.fromCharCode(65 + j) + '</span>", 1)
+for emo in ('🎯 ', '✅ ', '🔒 ', '💬 ', '👆 ', '↺ '):
+    fit = fit.replace(emo, '')
+assert '<span class="e">\' + o[0]' not in fit
 fit = fit.replace("var cta = document.querySelector('#lsNext .ls-cta'); if (cta) cta.style.display = 'none';   /* one WhatsApp button at the end */", "")
 our = r'''
 /* ===== club-vsl: our working parts (kept from v1) ===== */
@@ -211,11 +216,9 @@ our = r'''
   /* quiz popup: every CTA opens it right away (Aviv 18.11: scrolling to the bottom got lost in the reveal animations) */
   var qm = $('qm'), lsBox = document.querySelector('#qm .ls'), lsQ = $('lsQ'), home = null;
   if (AV === 'B'){
-    var heroCta = document.querySelector('.hero .cta-wrap');
-    home = document.createElement('div'); home.className = 'ls qinline'; home.id = 'cvQinline';
-    heroCta.parentNode.insertBefore(home, heroCta); heroCta.style.display = 'none';
-    home.appendChild(lsQ);
-    home.addEventListener('pointerdown', function(){ cvTrack('open', null, 'inline'); }, true);
+    /* B (Aviv 18.11): the button under the video says "מלאו שאלון לבדיקת התאמה"; like A it opens the popup */
+    var heroCta = document.querySelector('.hero .cta-wrap'), hb = heroCta && heroCta.querySelector('.cta');
+    if (hb){ hb.firstChild.nodeValue = 'מלאו שאלון לבדיקת התאמה'; hb.setAttribute('data-cta', 'hero_b'); }
   }
   window.cvOpenQuiz = function(src){
     cvTrack('cta', null, src || ''); cvTrack('open', null, src || '');
