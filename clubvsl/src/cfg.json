@@ -1,0 +1,35 @@
+{
+  "vsl_vid": "OEMH0v7ynQBgdDj1",
+  "tour": "https://fast.wistia.net/embed/iframe/hh3hr7vomq?autoPlay=true&playerColor=FFA826",
+  "portrait": "https://avivmalka123.github.io/club/img/aviv-desk.jpg",
+  "reels": {
+    "roy": {"src": "https://embed-ssl.wistia.com/deliveries/11ccc77a8d2120f38f83a144d05112bd2860968d/file.mp4", "poster": "https://avivmalka123.github.io/dl/img/reel-9jwg71zrya.jpg"},
+    "maayan": {"src": "https://avivmalka123.github.io/aw/vid/maayan.mp4", "poster": "https://avivmalka123.github.io/dl/img/reel-maayan.jpg"},
+    "nivin": {"src": "https://embed-ssl.wistia.com/deliveries/72c8f200286624310178728cf193bfd518f07a0a/file.mp4", "poster": "https://avivmalka123.github.io/dl/img/reel-5mntv13f3k.jpg"},
+    "dina": {"src": "https://avivmalka123.github.io/aw/vid/dina.mp4", "poster": "https://avivmalka123.github.io/dl/img/reel-dina.jpg"},
+    "home": {"src": "https://embed-ssl.wistia.com/deliveries/83e24c3e903a15b7b2f125c5fa6952f87b2c2af0/file.mp4", "poster": "https://avivmalka123.github.io/dl/img/reel-4vf0nnjrq6.jpg"},
+    "diff": {"src": "https://embed-ssl.wistia.com/deliveries/b9abf35ece8a36e60af486ca9b68cf0c9ccb9288/file.mp4", "poster": "https://avivmalka123.github.io/dl/img/reel-6ujyzfnt0y.jpg"},
+    "sooner": {"src": "https://embed-ssl.wistia.com/deliveries/53e8f29fcf3ea31e1c388ca7d28a903a4583a05b/file.mp4", "poster": "https://avivmalka123.github.io/dl/img/reel-uso5vl68e1.jpg"}
+  },
+  "shots": [
+    ["מעיין", "https://avivmalka123.github.io/aw/img/maayan-graph.jpg", "מעיין: 832 הזמנות ו־135,813 ש״ח מכירות בין דצמבר 2025 לספטמבר 2026"],
+    ["ניבין", "https://avivmalka123.github.io/dl/img/nivin-sales.jpg", "ניבין: 237 הזמנות ו־31,641 ש״ח ב־30 יום"],
+    ["דביר", "https://avivmalka123.github.io/aw/img/dvir.jpg", "ההודעה של דביר בקבוצת התלמידים"],
+    ["אילן", "https://avivmalka123.github.io/clubvsl/img/ilan.png", "הפוסט של אילן בקהילה"]
+  ],
+  "wall": [
+    ["https://avivmalka123.github.io/aw/img/yahav.jpg", "יהב: 12,775 ש״ח ו־137 הזמנות ב־30 יום"],
+    ["https://avivmalka123.github.io/club/img/chat-75k.jpg", "צילום מסך של תלמיד"],
+    ["https://avivmalka123.github.io/aw/img/ron.jpg", "רון: ההזמנה הראשונה"],
+    ["https://avivmalka123.github.io/club/img/sales-22k.jpg", "צילום מסך של תלמיד"],
+    ["https://avivmalka123.github.io/aw/img/maayan-chat.jpg", "מעיין: התוצאות שלו"],
+    ["https://avivmalka123.github.io/aw/img/hani.jpg", "חני: עזבתי קורס אחר כי לא היה מענה"],
+    ["https://avivmalka123.github.io/club/img/chat-daniel.jpg", "צילום מסך של תלמיד"],
+    ["https://avivmalka123.github.io/club/img/orders-1.jpg", "התראות הזמנה של תלמיד"],
+    ["https://avivmalka123.github.io/club/img/sales-778k.jpg", "צילום מסך של תלמיד"],
+    ["https://avivmalka123.github.io/aw/img/dina-poster.jpg", "דינה"],
+    ["https://avivmalka123.github.io/club/img/chat-raviv.jpg", "צילום מסך של תלמיד"],
+    ["https://avivmalka123.github.io/club/img/orders-2.jpg", "התראות הזמנה של תלמיד"],
+    ["https://avivmalka123.github.io/club/img/community.jpg", "פוסטים של תלמידים בקהילה הסגורה"]
+  ]
+}

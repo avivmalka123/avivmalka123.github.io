@@ -3,343 +3,399 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>אביב מלכה · מועדון האיקומרס</title>
-<meta name="robots" content="noindex">
-<meta name="theme-color" content="#0B1426">
+<title>מועדון האיקומרס של אביב מלכה · תפסיק לבנות לבד</title>
+<meta name="description" content="אתה לא צריך לעזוב את העבודה. אתה צריך להפסיק לעשות את זה לבד. 17 דקות, ושאלון התאמה של 2 דקות.">
+<meta name="theme-color" content="#0A1428">
+<!--
+================================================================
+  דף VSL חדש · מועדון האיקומרס של אביב מלכה · Cope Media
+  לפני שנוגעים בקוד, קוראים את BUILD-GUIDE.md שמגיע איתו.
+  הגדרות (קישור לשאלון, סרטונים): במשתנה CFG בתחתית הקובץ.
+  PLACEHOLDER = מקום לתמונה או לסרטון אמיתי.
+  CONFIRM = דורש אישור של אביב לפני העלייה.
+================================================================
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--n0:#0B1426;--n1:#101C33;--n2:#15233F;--n3:#1F3156;--line:rgba(255,255,255,.1);--ink:#F5F7FB;--mute:#A7B2C6;--or:#F28C28;--or2:#FFB547;--paper:#F6F1E8;--paper2:#EDE5D6;--dark:#0B1426;--dmute:#5B6375;--ok:#2BB673;--no:#E5484D}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--n0);color:var(--ink);font-family:'Heebo',Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;direction:rtl;text-align:right}
-img,video{max-width:100%;display:block}
+:root{
+  --bg:#0A1428;--bg2:#0E1B33;--bg3:#13233F;--line:#22355A;
+  --tx:#FFFFFF;--mut:#B8C4D9;--dim:#7E8DAA;
+  --amb:#FFA826;--amb2:#FFBC52;--ambd:#C97A08;
+  --paper:#F6F1E8;--ink:#0A1428;--red:#FF5A4A;--grn:#3DDC84;
+  --he:'Heebo',system-ui,sans-serif;--tf:'Assistant','Heebo',system-ui,sans-serif;
+  --e:cubic-bezier(.2,.8,.2,1);--eb:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font-family:var(--tf);font-size:19px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img,iframe{display:block;max-width:100%}
 a{color:inherit}
-p{margin-top:0;color:inherit}
-.w{max-width:1040px;margin:0 auto;padding:0 16px}
-.nw{max-width:720px;margin-left:auto;margin-right:auto}
-h1,h2,h3{margin:0;text-wrap:balance;font-weight:900;line-height:1.15;color:#fff}
-h1{font-size:clamp(30px,7.4vw,56px);letter-spacing:-.015em;line-height:1.12}
-h2{font-size:clamp(27px,6.2vw,44px);margin:0 0 12px;letter-spacing:-.01em}
-h3{font-size:20px;line-height:1.3}
-em{font-style:normal;background:linear-gradient(180deg,#FFD27A,var(--or) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.eye{display:inline-block;color:var(--or2);font-weight:800;font-size:13.5px;letter-spacing:.12em;margin:0 0 10px}
-.lead{color:var(--mute);font-size:clamp(16.5px,4vw,19.5px);margin:0 0 22px;text-wrap:balance}
-.c{text-align:center}
-.sec{padding:72px 0 0}
-.bold{font-weight:800;color:#fff}
-/* top line */
-.top{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 10px;padding:11px 16px;font-size:13.5px;font-weight:700;color:var(--mute);border-bottom:1px solid var(--line);background:rgba(255,255,255,.02);text-align:center;line-height:1.35}
-.top b{color:#fff;font-weight:800}
-.top i{width:6px;height:6px;border-radius:50%;background:var(--or);flex:none}
-.top span{color:var(--or2)}
-@media (max-width:759px){.top{flex-direction:column;gap:2px;padding:9px 16px;font-size:13px}.top i,.top .dot{display:none}}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--amb);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+.nar{max-width:780px}
+.sec{padding:120px 0;position:relative}
+.ctr{text-align:center}
+.amb{color:var(--amb)}
+b{font-weight:800}
+
+/* type */
+.kick{display:inline-block;font-family:var(--he);font-weight:800;font-size:14px;letter-spacing:.14em;color:var(--amb);border:1.5px solid var(--amb);padding:6px 12px;border-radius:6px}
+.h2{font-family:var(--he);font-weight:900;font-size:clamp(38px,5.6vw,72px);line-height:1;letter-spacing:-.035em;margin-top:20px;text-wrap:balance}
+.h2 .u{color:var(--amb)}
+.p{font-size:clamp(19px,1.9vw,23px);color:var(--mut);margin-top:22px;line-height:1.55;text-wrap:pretty}
+.p b{color:var(--tx)}
+
 /* buttons */
-.btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;max-width:560px;min-height:58px;margin:0 auto;border:0;border-radius:16px;padding:15px 22px;font-size:clamp(17.5px,4.5vw,20px);line-height:1.25;font-weight:900;color:#1b1205;text-decoration:none;cursor:pointer;font-family:inherit;text-align:center;
-background:linear-gradient(180deg,#FFC05A,var(--or) 58%,#E0700F);box-shadow:0 14px 34px -14px rgba(242,140,40,.75),inset 0 1px 0 rgba(255,255,255,.45);transition:transform .15s}
-.btn small{display:block;font-size:13.5px;font-weight:700;color:rgba(27,18,5,.72)}
-.btn:hover{transform:translateY(-1px)}
-.btn:active{transform:translateY(1px)}
-.btn[disabled]{opacity:.65;cursor:default}
-.under{color:var(--mute);font-size:14px;text-align:center;margin:10px 0 0}
-.cta{margin-top:28px}
-/* hero */
-.hero{padding:26px 0 0;text-align:center;position:relative;isolation:isolate}
-.hero:before{content:"";position:absolute;inset:-40px -16px auto;height:520px;background:radial-gradient(60% 70% at 50% 0%,rgba(242,140,40,.16),transparent 70%);pointer-events:none;z-index:-1}
-.hero h1{max-width:860px;margin:0 auto}
-.nos{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:14px auto 0;max-width:720px;padding:0;list-style:none}
-.nos li{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--n1);border-radius:999px;padding:5px 11px 5px 9px;font-size:13.5px;font-weight:700;color:#DCE2EE}
-.nos li:before{content:"✕";display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:rgba(229,72,77,.16);color:#FF8A8D;font-size:11px;font-weight:900}
-.wow{max-width:760px;margin:18px auto 0}
-.crew{display:none !important}
-.wow .q1{font-size:clamp(16px,4vw,18px);color:var(--or2);font-weight:800;margin:0 0 6px}
-.wow .q2{font-size:clamp(19px,4.8vw,30px);font-weight:900;line-height:1.25;color:#fff;margin:0 0 4px;text-wrap:balance}
-.wow .q3{color:var(--mute);font-size:16px;margin:0}
-.crew{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-.crew .me1{display:flex;flex-direction:column;align-items:center;justify-content:center;width:74px;height:74px;border-radius:50%;background:linear-gradient(180deg,#FFC05A,var(--or));color:#1b1205;font-weight:900;font-size:13px;line-height:1.1;box-shadow:0 0 0 6px rgba(242,140,40,.15)}
-.crew .me1 b{font-size:24px}
-.crew .plus{color:var(--mute);font-weight:900;font-size:22px}
-.crew ul{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;list-style:none;margin:0;padding:0;max-width:520px}
-.crew li{font-size:13.5px;font-weight:700;color:#C9D3E6;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:5px 10px}
-.crew li b{color:var(--or2);font-weight:900;margin-left:4px}
-.vlab{display:block;text-align:center;margin:18px auto 10px;font-weight:800;font-size:clamp(15.5px,4vw,18px);color:#fff;text-wrap:balance}
-.vlab i{display:inline-block;vertical-align:middle;margin-left:8px;width:10px;height:10px;border-radius:50%;background:#FF4D4F;box-shadow:0 0 0 0 rgba(255,77,79,.6);animation:dlRec 1.6s infinite}
-@keyframes dlRec{0%{box-shadow:0 0 0 0 rgba(255,77,79,.55)}70%{box-shadow:0 0 0 10px rgba(255,77,79,0)}100%{box-shadow:0 0 0 0 rgba(255,77,79,0)}}
-.vsl{position:relative;max-width:760px;margin:0 auto 18px;border-radius:18px;overflow:hidden;background:#000;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.8),0 0 0 6px rgba(242,140,40,.08)}
-.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:620px;margin:22px auto 0}
-.trust span{border:1px solid var(--line);background:var(--n1);border-radius:14px;padding:10px 6px;font-size:13px;color:var(--mute);line-height:1.25;text-align:center}
-.trust b{display:block;color:#fff;font-size:clamp(18px,4.6vw,22px);font-weight:900;font-variant-numeric:tabular-nums}
-.byline{color:var(--mute);font-size:14px;margin:10px 0 0;text-align:center}
-.byline b{color:#fff}
-/* results wall (right under the video) */
-.res{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
-.rc{position:relative;display:flex;flex-direction:column;background:var(--n1);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;min-width:0;transition:border-color .15s,transform .15s}
-.rc:hover{border-color:rgba(242,140,40,.6);transform:translateY(-2px)}
-.rc .ph{aspect-ratio:4/3;overflow:hidden;background:#000}
-.rc .ph img{width:100%;height:100%;object-fit:cover}
-.rc .tx{padding:12px 14px 14px;display:flex;flex-direction:column;gap:3px;flex:1}
-.rc .num{font-size:clamp(22px,5.6vw,28px);font-weight:900;line-height:1.1;color:var(--or2);font-variant-numeric:tabular-nums}
-.rc .lbl{font-size:14.5px;color:#DCE2EE;line-height:1.35}
-.rc .nm{font-size:13.5px;color:var(--mute);margin-top:auto;padding-top:6px}
-.rc .nm b{color:#fff}
-.rc.big{grid-column:1/-1;flex-direction:row}
-.rc.big .ph{flex:0 0 42%;aspect-ratio:auto;min-height:190px}
-.rc.big .tx{padding:18px}
-.rc.big .num{font-size:clamp(28px,7vw,40px)}
-.resmore{text-align:center;color:var(--mute);font-size:16px;margin:16px 0 0}
-.resmore a{color:var(--or2);font-weight:800}
-/* identification */
-.mirror{display:grid;gap:10px;max-width:700px;margin:22px auto 0}
-.mirror button{display:flex;gap:14px;align-items:center;width:100%;text-align:right;background:var(--n1);border:2px solid var(--line);border-radius:16px;padding:15px 18px;font-size:clamp(16.5px,4.2vw,18.5px);font-weight:700;line-height:1.35;color:#fff;font-family:inherit;cursor:pointer;transition:border-color .15s,background .15s}
-.mirror button:hover{border-color:rgba(242,140,40,.45)}
-.mirror i{flex:none;width:30px;height:30px;border-radius:9px;border:2px solid var(--or);position:relative;transition:background .15s}
-.mirror button.on{border-color:var(--or);background:rgba(242,140,40,.1)}
-.mirror button.on i{background:var(--or)}
-.mirror button.on i:after{content:"";position:absolute;left:8px;top:3px;width:8px;height:14px;border:solid #1b1205;border-width:0 3px 3px 0;transform:rotate(45deg)}
-.mhint{text-align:center;color:var(--mute);font-size:13.5px;margin:10px 0 0}
-.after{max-width:700px;margin:16px auto 0;text-align:center;color:var(--mute);font-size:17px}
-.after b{color:#fff}
-/* why it didn't work */
-.story{max-width:720px;margin:22px auto 0;font-size:clamp(17px,4.2vw,19px);line-height:1.7;color:#DCE2EE}
-.story p{margin:0 0 16px}
-.story .hit{font-size:clamp(21px,5.2vw,27px);font-weight:900;line-height:1.3;color:#fff;text-wrap:balance}
-.story .aside{color:var(--mute);font-style:normal}
-.story .turn{border-right:4px solid var(--or);padding:4px 16px 4px 0;font-weight:800;color:#fff}
-.mist{display:grid;gap:12px;margin-top:28px}
-.mc{background:linear-gradient(180deg,var(--n2),var(--n1));border:1px solid var(--line);border-radius:20px;padding:22px 20px 20px;position:relative;overflow:hidden}
-.mc .n{position:absolute;left:16px;top:8px;font-size:58px;font-weight:900;line-height:1;color:rgba(255,255,255,.06)}
-.mc small{display:block;font-size:12.5px;font-weight:800;letter-spacing:.08em;margin:0 0 6px;color:#FF8A8D}
-.mc h3{margin:0 0 12px;padding-left:46px}
-.mc p{margin:0;font-size:16px;line-height:1.55}
-.mc .bad{color:var(--mute);padding:0 0 12px;margin:0 0 12px;border-bottom:1px dashed var(--line)}
-.mc .good{color:#fff}
-.mc .good b{display:block;font-size:12.5px;font-weight:800;letter-spacing:.08em;color:var(--or2);margin:0 0 3px}
-.verdict{margin:22px auto 0;max-width:760px;text-align:center;font-size:clamp(19px,4.8vw,24px);font-weight:900;line-height:1.35;color:#fff;background:rgba(242,140,40,.08);border:1px solid rgba(242,140,40,.4);border-radius:18px;padding:18px 18px;text-wrap:balance}
-.verdict em{display:inline}
-/* 10% rule */
-.rule{background:radial-gradient(120% 120% at 50% 0%,#1A2B4D 0%,var(--n1) 60%);border:1px solid var(--line);border-radius:26px;padding:28px 18px 22px;margin-top:22px}
-.bar{display:flex;height:58px;border-radius:14px;overflow:hidden;margin:0 0 18px;font-weight:900}
-.bar .b90{flex:9;display:flex;align-items:center;justify-content:center;gap:8px;background:repeating-linear-gradient(135deg,#253A63 0 12px,#21345A 12px 24px);color:#C9D3E6;font-size:18px}
-.bar .b10{flex:1;min-width:58px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#FFC05A,var(--or));color:#1b1205;font-size:17px}
-.rcols{display:grid;gap:12px}
-.rcols>div{border-radius:18px;padding:18px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
-.rcols .r10{border-color:rgba(242,140,40,.55);background:rgba(242,140,40,.08)}
-.rcols b{display:block;font-size:40px;font-weight:900;line-height:1;margin:0 0 6px;color:#C9D3E6}
-.rcols .r10 b{color:var(--or2)}
-.rcols h3{margin:0 0 10px}
-.rcols ul{list-style:none;margin:0;padding:0}
-.rcols li{position:relative;padding:5px 22px 5px 0;color:var(--mute);font-size:15.5px}
-.rcols li:before{content:"";position:absolute;right:2px;top:13px;width:8px;height:8px;border-radius:2px;background:#4A6190}
-.rcols .r10 li{color:#fff}.rcols .r10 li:before{background:var(--or)}
-.dream{margin:18px 0 0;text-align:center}
-.dream p{margin:0;font-size:clamp(17px,4.2vw,19px);color:#DCE2EE;font-weight:700;text-wrap:balance}
-.dream .d30{display:inline-block;margin-top:12px;font-size:clamp(20px,5vw,26px);font-weight:900;color:#fff}
-/* what you get */
-.gets{display:grid;gap:12px;margin-top:24px}
-.gc{display:flex;gap:16px;align-items:flex-start;background:var(--n1);border:1px solid var(--line);border-radius:20px;padding:20px 18px}
-.gc .k{flex:none;width:46px;height:46px;border-radius:14px;background:linear-gradient(180deg,#FFC05A,var(--or));color:#1b1205;font-weight:900;font-size:20px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
-.gc .t{min-width:0}
-.gc small{display:block;color:var(--or2);font-weight:800;font-size:13px;letter-spacing:.06em;margin:0 0 2px}
-.gc h3{margin:0 0 6px}
-.gc .hl{display:block;color:#fff;font-weight:700;font-size:16.5px;margin:0 0 6px}
-.gc p{margin:0;color:var(--mute);font-size:15.5px;line-height:1.55}
-.pathimg{width:100%;max-width:760px;margin:24px auto 0;border-radius:18px;border:1px solid var(--line);cursor:zoom-in}
-.gift{position:relative;margin:22px 0 0;border:2px dashed rgba(255,181,71,.7);border-radius:22px;padding:22px 18px 18px;background:linear-gradient(160deg,rgba(242,140,40,.14),rgba(242,140,40,.03));text-align:center}
-.gift .tag{display:inline-block;background:var(--or2);color:#1b1205;font-weight:900;font-size:14px;border-radius:999px;padding:5px 14px;margin:0 0 10px}
-.gift h3{font-size:clamp(20px,5vw,25px);margin:0 0 8px}
-.gift p{margin:0 auto;color:#DCE2EE;font-size:16.5px;max-width:620px}
-.gift p b{color:#fff}
-/* closed community */
-.comm{margin-top:80px;padding:68px 0 72px;background:radial-gradient(90% 60% at 50% 0%,rgba(242,140,40,.14),transparent 70%),linear-gradient(180deg,#0E1A31,var(--n0));border-top:1px solid rgba(242,140,40,.35);border-bottom:1px solid var(--line)}
-.live{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(43,182,115,.5);background:rgba(43,182,115,.1);color:#7BE0AE;border-radius:999px;padding:5px 14px;font-weight:800;font-size:13.5px;margin:0 0 14px}
-.live i{width:8px;height:8px;border-radius:50%;background:#2BB673;animation:dlLive 1.8s infinite}
-@keyframes dlLive{0%{box-shadow:0 0 0 0 rgba(43,182,115,.6)}70%{box-shadow:0 0 0 9px rgba(43,182,115,0)}100%{box-shadow:0 0 0 0 rgba(43,182,115,0)}}
-.cintro{max-width:720px;margin:0 auto;text-align:center;font-size:clamp(17px,4.2vw,19px);color:#DCE2EE}
-.cintro p{margin:0 0 10px}
-.cintro .big{font-size:clamp(20px,5vw,25px);font-weight:900;color:#fff;text-wrap:balance}
-.cgrid{display:grid;gap:18px;margin-top:28px;align-items:center}
-.cimg{width:100%;border-radius:18px;border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);cursor:zoom-in}
-.clist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.clist li{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:14px 16px;font-size:16px;color:#C9D3E6;line-height:1.5}
-.clist li .ic{flex:none;width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;background:rgba(242,140,40,.14)}
-.clist li b{color:#fff;display:block;font-size:16.5px}
-/* students band: the brightest surface on the page */
-.light{background:var(--paper);color:var(--dark);margin-top:0;padding:68px 0 70px;border-top:4px solid var(--or)}
-.light h2,.light h3{color:var(--dark)}
-.light .lead{color:var(--dmute)}
-.light .eye{color:#C2620A}
-.light em{background:linear-gradient(180deg,#F28C28,#C2620A);-webkit-background-clip:text;background-clip:text;color:transparent}
-.st{background:#fff;border:2px solid #F3C38F;border-radius:26px;padding:18px;margin:0 0 18px;box-shadow:0 30px 60px -45px rgba(120,60,0,.55);display:grid;gap:20px;scroll-margin-top:16px}
-.st .media{min-width:0}
-.who{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 4px}
-.who b{font-size:26px;font-weight:900}
-.who span{color:var(--dmute);font-size:15px}
-.arc{list-style:none;margin:14px 0 16px;padding:0;position:relative}
-.arc:before{content:"";position:absolute;right:9px;top:10px;bottom:16px;width:2px;background:linear-gradient(180deg,#D9CFBE,var(--or))}
-.arc li{position:relative;padding:0 32px 14px 0}
-.arc li:before{content:"";position:absolute;right:3px;top:5px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #CFC4B1}
-.arc li.now:before{border-color:var(--or);background:var(--or)}
-.arc small{display:block;font-size:12.5px;font-weight:800;letter-spacing:.08em;color:#8A7F6C}
-.arc li.now small{color:#C2620A}
-.arc p{margin:0;font-size:16.5px;color:#262B38}
-.arc li.now p{font-weight:700;color:var(--dark)}
-.nums{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
-.nums span{background:#FFF4E6;border:1px solid #F6D3A8;border-radius:12px;padding:8px 12px;font-size:13.5px;color:#7A4A12;line-height:1.25}
-.nums b{display:block;color:var(--dark);font-size:21px;font-weight:900;font-variant-numeric:tabular-nums}
-.q{margin:0 0 12px;padding:12px 16px;background:var(--paper);border-right:4px solid var(--or);border-radius:12px;font-size:16.5px;color:#262B38}
-.shot{border-radius:14px;border:1px solid #E4DCCD;cursor:zoom-in;background:#fff}
-.vbox{position:relative;border-radius:18px;overflow:hidden;background:#000;aspect-ratio:9/16;max-width:320px;margin:0 auto}
-.vbox video{width:100%;height:100%;object-fit:cover}
-.play{position:absolute;inset:0;border:0;padding:0;background:transparent;cursor:pointer;display:block;width:100%;height:100%}
-.play img{width:100%;height:100%;object-fit:cover}
-.play:after{content:"";position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;background:rgba(242,140,40,.96) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%231b1205'/%3E%3C/svg%3E") center/32px no-repeat;box-shadow:0 10px 30px rgba(0,0,0,.4)}
-.play .tag{position:absolute;right:12px;top:12px;background:rgba(0,0,0,.66);color:#fff;font-weight:800;font-size:13px;border-radius:999px;padding:4px 11px;z-index:1}
-.wide{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000}
-.shotcap{max-height:520px;width:auto;margin:0 auto}
-.sub{font-size:clamp(21px,5vw,28px);font-weight:900;text-align:center;margin:44px 0 16px;color:var(--dark)}
-/* proof wall */
-.wallw{position:relative}
-.wall{columns:2 150px;column-gap:10px}
-.wall img{width:100%;margin:0 0 10px;break-inside:avoid;border-radius:14px;border:1px solid #E4DCCD;cursor:zoom-in;background:#fff}
-.wallw.clip{max-height:900px;overflow:hidden}
-.wallw.clip:after{content:"";position:absolute;left:0;right:0;bottom:0;height:200px;background:linear-gradient(180deg,rgba(246,241,232,0),var(--paper) 85%);pointer-events:none}
-.more{position:relative;z-index:1;display:none;margin:-24px auto 0;min-height:48px;padding:12px 22px;border-radius:999px;border:2px solid var(--dark);background:#fff;color:var(--dark);font-weight:800;font-size:16px;font-family:inherit;cursor:pointer}
-.wallw.clip+.more{display:block}
-.disc{color:#7B8190;font-size:13px;text-align:center;margin:18px auto 0;max-width:620px}
-/* fit */
-.fit{display:grid;gap:12px;margin-top:22px}
-.fit>div{border-radius:20px;padding:20px;border:1px solid var(--line);background:var(--n1)}
-.fit .yes{border-color:rgba(43,182,115,.45)}
-.fit .no{border-color:rgba(229,72,77,.35)}
-.fit h3{margin:0 0 10px;display:flex;align-items:center;gap:10px}
-.fit h3 i{width:28px;height:28px;border-radius:50%;font-style:normal;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}
-.fit .yes h3 i{background:var(--ok)}.fit .no h3 i{background:var(--no)}
-.fit ul{list-style:none;margin:0;padding:0}
-.fit li{padding:10px 0;border-bottom:1px solid var(--line);font-size:16.5px;color:#DCE2EE}
-.fit li:last-child{border-bottom:0}
-/* aviv */
-.me{display:grid;gap:18px;background:var(--n1);border:1px solid var(--line);border-radius:24px;padding:18px;align-items:center}
-.me .ph{position:relative}
-.me .ph .main{border-radius:18px;width:100%;aspect-ratio:4/3;object-fit:cover}
-.me .mini{position:absolute;left:10px;bottom:-14px;width:44%;border-radius:12px;border:3px solid var(--n1);cursor:zoom-in;box-shadow:0 10px 30px rgba(0,0,0,.5)}
-.me .bio{font-size:clamp(17px,4.2vw,18.5px);color:#DCE2EE;line-height:1.7;margin:0 0 14px}
-.me .bio b{color:#fff}
-.me .facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
-.me .facts span{border:1px solid var(--line);background:var(--n0);border-radius:12px;padding:8px 12px;font-size:13.5px;color:var(--mute);line-height:1.2}
-.me .facts b{display:block;color:var(--or2);font-size:20px;font-weight:900}
-.sig{font-weight:900;font-size:22px;color:#fff;margin:6px 0 0}
-/* how to join */
-.join{display:grid;gap:10px;margin-top:22px}
-.join>div{display:flex;gap:14px;align-items:flex-start;background:var(--n1);border:1px solid var(--line);border-radius:18px;padding:18px}
-.join>div.g{border-color:rgba(255,181,71,.55);background:rgba(242,140,40,.07)}
-.join i{flex:none;width:42px;height:42px;border-radius:12px;background:linear-gradient(180deg,#FFC05A,var(--or));color:#1b1205;font-style:normal;font-weight:900;font-size:19px;display:flex;align-items:center;justify-content:center}
-.join h3{margin:2px 0 4px}
-.join p{margin:0;color:var(--mute);font-size:15.5px}
-/* quiz */
-.qz{max-width:600px;margin:0 auto;background:var(--n2);border:2px solid rgba(242,140,40,.55);border-radius:24px;padding:22px 18px 20px;box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
-.qh{display:flex;align-items:center;gap:12px;margin:0 0 16px}
-.qp{flex:1;height:8px;border-radius:8px;background:rgba(255,255,255,.1);overflow:hidden}
-.qp i{display:block;height:100%;background:linear-gradient(90deg,var(--or),var(--or2));transition:width .3s}
-.qc{font-weight:900;font-size:15px;font-variant-numeric:tabular-nums;color:var(--or2);min-width:30px}
-.qt{font-size:clamp(20px,5vw,24px);font-weight:900;margin:0 0 16px;line-height:1.35;color:#fff}
-.qo{display:block;width:100%;min-height:56px;text-align:right;background:var(--n1);border:2px solid var(--line);color:#fff;border-radius:14px;padding:15px 17px;margin:0 0 10px;font-size:17px;font-weight:700;line-height:1.35;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s}
-.qo:hover,.qo:focus-visible,.qo.sel{border-color:var(--or);background:rgba(242,140,40,.12);outline:0}
-.qb{display:block;min-height:44px;margin:6px auto 0;background:none;border:0;color:var(--mute);text-decoration:underline;cursor:pointer;font-size:15px;font-family:inherit}
-.qpre{font-size:clamp(21px,5.2vw,25px);font-weight:900;line-height:1.3;margin:0 0 8px;color:#fff}
-.qsub{color:var(--mute);font-size:16.5px;margin:0 0 18px}
-.fl{display:block;margin:0 0 12px}
-.fl span{display:block;font-weight:700;font-size:15px;margin:0 0 6px;color:#DCE2EE}
-.fl input{display:block;width:100%;min-height:54px;border-radius:13px;border:2px solid transparent;background:#fff;color:var(--dark);font-size:17px;font-family:inherit;padding:12px 14px;outline:0;box-shadow:none;margin:0}
-.fl input:focus{border-color:var(--or)}
-.fl input.bad{border-color:var(--no)}
-.err{color:#FF9A9D;font-weight:700;font-size:15px;min-height:0;margin:0 0 10px}
-.err:empty{display:none}
-.done{text-align:center;padding:8px 0}
-.done .big{font-size:clamp(23px,5.6vw,28px);font-weight:900;margin:0 0 10px;color:#fff}
-.done p{color:var(--mute);font-size:16.5px;margin:0 0 8px}
-.done p b{color:#fff}
-.done .btn{margin-top:14px}
-/* faq */
-details{background:var(--n1);border:1px solid var(--line);border-radius:16px;padding:0 18px;margin:0 0 10px}
-summary{cursor:pointer;list-style:none;padding:17px 0;min-height:44px;font-weight:800;font-size:17px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:#fff}
-summary::-webkit-details-marker{display:none}
-summary:after{content:"+";color:var(--or);font-size:24px;line-height:1;flex:none}
-details[open] summary:after{content:"–"}
-details p{margin:0 0 16px;color:var(--mute);font-size:16px;line-height:1.6}
-/* close */
-.close{padding:84px 0 0}
-.close h2{font-size:clamp(25px,5.8vw,40px);line-height:1.25;max-width:860px;margin:0 auto 14px}
-.foot{color:#6E7891;font-size:12.5px;text-align:center;padding:40px 16px 110px;line-height:1.6}
-.qm{position:fixed;inset:0;z-index:90;background:rgba(4,8,18,.9);display:none;align-items:center;justify-content:center;padding:14px}
-.qm.on{display:flex}
-.qmi{position:relative;width:100%;max-width:620px;max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;animation:qmUp .28s ease-out}
-@keyframes qmUp{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
-.qmi .qz{margin:0}
-.qx{position:absolute;top:12px;left:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;font-size:24px;line-height:1;cursor:pointer}
-.qlab{color:#F28C28;font-weight:800;font-size:14px;letter-spacing:.08em;text-align:center;margin:6px 0 2px}
-.qmt{font-weight:900;font-size:19px;text-align:center;color:#fff;margin:0 0 14px;padding:0 40px}
-/* reels slider */
-.reels{position:relative;margin:14px -16px 0}
-.rtrack{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 16px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.rtrack::-webkit-scrollbar{display:none}
-.reel{position:relative;flex:none;width:min(68vw,270px);aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:#000;scroll-snap-align:center;box-shadow:0 24px 50px -26px rgba(0,0,0,.8);border:2px solid rgba(242,140,40,.35)}
-.reel video{position:absolute;inset:0;width:100%;height:100%;background:#000}
-.reel .rplay{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;cursor:pointer;z-index:2}
-.reel .rplay:after{content:"";position:absolute;left:50%;top:46%;width:66px;height:66px;margin:-33px 0 0 -33px;border-radius:50%;background:rgba(242,140,40,.95) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%230b1426'/%3E%3C/svg%3E") 55% 50%/30px no-repeat;box-shadow:0 10px 30px rgba(0,0,0,.45);transition:opacity .2s,transform .2s}
-.reel.on .rplay:after{opacity:0;transform:scale(.7)}
-.reel.on.paused .rplay:after{opacity:1;transform:none}
-.reel .rlen{position:absolute;top:10px;right:10px;z-index:3;background:rgba(0,0,0,.6);color:#fff;font-size:12.5px;font-weight:800;border-radius:999px;padding:3px 9px}
-.reel .rcap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:40px 14px 16px;background:linear-gradient(180deg,transparent,rgba(5,9,18,.88));pointer-events:none}
-.reel .rcap b{display:block;font-size:19px;color:#fff}.reel .rcap small{display:block;font-size:14px;color:var(--or2);font-weight:700}
-.reel .rbar{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.18);z-index:4}.reel .rbar i{display:block;height:100%;width:0;background:var(--or)}
-.rnav{display:none;position:absolute;top:44%;z-index:5;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(11,20,38,.9);color:#fff;font-size:30px;line-height:1;cursor:pointer}
-.rprev{right:4px}.rnext{left:4px}
-.rtour:after{display:none !important}
-.rhint{text-align:center;color:var(--dmute);font-size:14px;margin:4px 0 0}
-@media (min-width:860px){.reels{margin:14px 0 0}.rnav{display:block}.rtrack{padding:6px 56px 14px}}
-/* sticky + lightbox */
-.sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(11,20,38,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .3s}
-.sticky.on{transform:none}
-.sticky .btn{min-height:52px;padding:12px;font-size:17.5px}
-.lb{position:fixed;inset:0;z-index:100;background:rgba(6,10,20,.94);display:none;align-items:center;justify-content:center;padding:16px}
-.lb.on{display:flex}
-.lb img{max-height:92vh;border-radius:12px}
-.lb .v{width:min(960px,96vw);aspect-ratio:16/9}
-.lb .v.tall{width:min(420px,92vw);aspect-ratio:9/16;max-height:90vh}
-.lb iframe,.lb video{width:100%;height:100%;border:0;border-radius:12px;background:#000}
-.lb .x{position:absolute;top:14px;left:14px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:#0B1426;font-size:24px;cursor:pointer;z-index:2}
-@media (min-width:760px){
-  .sec{padding-top:96px}
-  .hero{padding-top:40px}
-  .wow{margin-top:30px;background:linear-gradient(160deg,#17284A,var(--n1));border:1px solid rgba(242,140,40,.32);border-radius:24px;padding:26px 30px 24px}
-  .wow .q3{margin-bottom:16px}
-  .crew{display:flex !important}
-  .nos li{font-size:15px;padding:7px 14px 7px 12px}
-  .vlab{margin-top:34px}
-  .res{grid-template-columns:repeat(4,1fr);gap:12px}
-  .rc.big{grid-column:1/3;grid-row:1/3;flex-direction:column}
-  .rc.big .ph{flex:none;aspect-ratio:4/3.4;min-height:0}
-  .mist{grid-template-columns:repeat(3,1fr)}
-  .rule{padding:36px 32px 28px}
-  .rcols{grid-template-columns:1.4fr 1fr}
-  .gets{grid-template-columns:1fr 1fr;gap:14px}
-  .gc{padding:22px}
-  .cgrid{grid-template-columns:1fr 1fr;gap:28px}
-  .st{grid-template-columns:340px 1fr;padding:24px;gap:28px;align-items:start}
-  .st.rev .media{order:2}
-  .wall{columns:3 220px;column-gap:12px}
-  .wall img{margin-bottom:12px}
-  .wallw.clip{max-height:1100px}
-  .join{grid-template-columns:repeat(3,1fr)}
-  .join>div{flex-direction:column}
-  .fit{grid-template-columns:1fr 1fr}
-  .me{grid-template-columns:380px 1fr;padding:26px;gap:34px}
-  .qz{padding:30px 30px 26px}
-  .sticky{display:none}
-  .foot{padding-bottom:40px}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;background:var(--amb);color:var(--ink);font-family:var(--he);font-weight:900;font-size:22px;line-height:1.15;padding:22px 36px;border-radius:14px;text-decoration:none;box-shadow:0 6px 0 var(--ambd);transition:transform .12s,box-shadow .12s,background .2s;position:relative;overflow:hidden}
+.cta:hover{background:var(--amb2)}
+.cta:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ambd)}
+.cta svg{width:24px;height:24px;flex:none;animation:nud 1.6s ease-in-out infinite}
+.cta::after{content:'';position:absolute;top:0;bottom:0;width:70px;right:-110px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite}
+@keyframes shine{0%,65%{right:-110px}100%{right:120%}}
+@keyframes nud{50%{transform:translateX(-6px)}}
+.cta-wrap{margin-top:36px}
+.cta-sub{font-size:15.5px;color:var(--mut);margin-top:14px;font-weight:700}
+.cta-sub i{font-style:normal;color:var(--amb);margin:0 7px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s var(--e),transform .9s var(--e)}
+.rv.in{opacity:1;transform:none}
+
+/* ===== top bar ===== */
+.topbar{background:var(--amb);color:var(--ink);text-align:center;font-family:var(--he);font-weight:800;font-size:14.5px;padding:9px 14px;line-height:1.35}
+.topbar span{opacity:.5;margin:0 8px}
+
+/* ===== HERO ===== */
+.hero{padding:56px 0 0;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:56px 56px;opacity:.35;-webkit-mask:linear-gradient(#000,transparent 70%);mask:linear-gradient(#000,transparent 70%);pointer-events:none}
+.hero .wrap{position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--he);font-weight:800;font-size:clamp(16px,1.8vw,20px);color:var(--ink);background:var(--amb);padding:9px 18px 9px 16px;border-radius:999px;transform:rotate(-1.5deg)}
+.eyebrow svg{width:20px;height:20px;flex:none;animation:bm 2.2s ease-in-out infinite;transform-origin:50% 0}
+@keyframes bm{0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg)}40%{transform:rotate(9deg)}60%{transform:rotate(0)}}
+.hero h1{font-family:var(--he);font-weight:900;font-size:clamp(44px,7.4vw,104px);line-height:.96;letter-spacing:-.045em;margin:28px auto 0;max-width:1100px}
+.hero h1 .a{display:block;color:var(--dim)}
+.hero h1 .b{display:block;margin-top:.1em}
+.lone{position:relative;display:inline-block;color:var(--amb);padding:0 .05em}
+.lone svg{position:absolute;left:-12%;right:-12%;top:-22%;width:124%;height:144%;overflow:visible;pointer-events:none}
+.lone svg path{fill:none;stroke:var(--amb);stroke-width:5;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 1.1s 1s var(--e) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hero .sub{font-size:clamp(18px,1.9vw,23px);color:var(--mut);max-width:800px;margin:30px auto 0;line-height:1.5;text-wrap:pretty}
+.hero .sub b{color:var(--tx)}
+
+/* video */
+.vsl{max-width:940px;margin:44px auto 0;position:relative}
+.vph{position:relative;width:100%;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:#050B17;border:2px solid var(--line);display:block}
+.vph.r916{aspect-ratio:9/16}
+.ph-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;background:repeating-linear-gradient(135deg,#0B162C 0 18px,#0D1A33 18px 36px)}
+.ph-in small{font-size:13.5px;color:#7E8DAA;font-weight:600;line-height:1.4;max-width:80%}
+.play{width:104px;height:104px;border-radius:50%;background:var(--amb);display:grid;place-items:center;animation:ring 1.8s ease-out infinite;transition:transform .25s var(--eb)}
+.vph:hover .play{transform:scale(1.08)}
+.play svg{width:40px;height:40px;margin-right:-6px;color:var(--ink)}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,168,38,.55)}100%{box-shadow:0 0 0 30px rgba(255,168,38,0)}}
+.vph .dur{position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,.78);color:#fff;font-family:var(--he);font-weight:700;font-size:13.5px;padding:3px 9px;border-radius:6px;direction:ltr}
+.vph iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vsl-over{position:absolute;top:18px;right:18px;z-index:2;text-align:right;pointer-events:none}
+.vsl-over b{display:inline-block;font-family:var(--he);font-weight:900;font-size:clamp(20px,2.6vw,30px);background:var(--amb);color:var(--ink);padding:4px 14px;border-radius:8px;transform:rotate(-2deg)}
+.vsl-over span{display:block;font-size:14.5px;font-weight:700;color:#fff;margin-top:8px;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+
+/* results ticker */
+.ticker{margin-top:70px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:var(--bg2)}
+.tk-row{display:flex;width:max-content;animation:tick 38s linear infinite}
+.tk-row span{display:flex;align-items:center;gap:12px;padding:18px 26px;font-family:var(--he);font-weight:800;font-size:18px;white-space:nowrap;border-left:1px solid var(--line)}
+.tk-row span b{color:var(--amb);font-weight:900;font-size:22px}
+.tk-row span i{width:9px;height:9px;border-radius:50%;background:var(--grn);box-shadow:0 0 0 4px rgba(61,220,132,.18)}
+@keyframes tick{to{transform:translateX(50%)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);max-width:940px;margin:0 auto}
+.stat{padding:30px 10px;text-align:center}
+.stat+.stat{border-right:1px solid var(--line)}
+.stat b{display:block;font-family:var(--he);font-weight:900;font-size:clamp(40px,5vw,66px);line-height:.9;color:var(--amb);letter-spacing:-.03em}
+.stat span{display:block;font-size:15.5px;color:var(--mut);margin-top:10px;font-weight:700}
+
+/* ===== SAVED: phone + excuses ===== */
+.saved-g{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center}
+.ex-list{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin-top:30px}
+.ex{position:relative;font-family:var(--he);font-weight:900;font-size:clamp(40px,5.4vw,70px);line-height:1.08;letter-spacing:-.035em;color:var(--tx);transition:color .5s}
+.ex::after{content:'';position:absolute;right:-4px;left:-4px;top:54%;height:.11em;background:var(--red);border-radius:6px;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--e)}
+.ex.x{color:#3D4E70}
+.ex.x::after{transform:scaleX(1)}
+.punch{margin-top:44px}
+.punch .big{font-family:var(--he);font-weight:900;font-size:clamp(34px,4.4vw,56px);line-height:1;letter-spacing:-.03em;color:var(--amb)}
+.punch p:last-child{font-size:clamp(19px,1.9vw,23px);color:var(--tx);margin-top:16px;font-weight:600;line-height:1.5}
+
+.phone{width:310px;max-width:100%;aspect-ratio:9/18.5;margin:0 auto;border-radius:44px;background:#050B17;border:10px solid #1C2C4C;box-shadow:0 0 0 2px #2B3F66,0 60px 100px -50px rgba(0,0,0,.9);position:relative;overflow:hidden;transform:rotate(-3deg)}
+.phone::before{content:'';position:absolute;top:10px;left:50%;width:90px;height:24px;margin-left:-45px;background:#1C2C4C;border-radius:14px;z-index:5}
+.scr{position:absolute;inset:0;padding:48px 14px 14px;transition:transform .7s var(--e),opacity .5s}
+.scr-h{display:flex;align-items:center;justify-content:space-between;font-family:var(--he);font-weight:800;font-size:18px;padding:0 4px 12px;border-bottom:1px solid #1C2C4C}
+.scr-h small{font-size:12.5px;color:var(--dim);font-weight:700}
+.scr-h svg{width:18px;height:18px;color:var(--amb)}
+.sv-list{position:absolute;top:96px;left:14px;right:14px;bottom:0;overflow:hidden;-webkit-mask:linear-gradient(#000 70%,transparent);mask:linear-gradient(#000 70%,transparent)}
+.sv-roll{animation:roll 16s linear infinite}
+@keyframes roll{to{transform:translateY(-50%)}}
+.sv{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #131F38}
+.sv i{flex:none;width:76px;height:44px;border-radius:7px;background:#1A2846;position:relative}
+.sv i::after{content:'';position:absolute;top:50%;left:50%;margin:-6px 0 0 -4px;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent #3A4F78}
+.sv p{font-size:13px;line-height:1.3;font-weight:700;color:#C9D3E6}
+.sv p small{display:block;font-size:11.5px;color:var(--dim);font-weight:600;margin-top:2px}
+.stamp{position:absolute;top:44%;left:50%;z-index:4;font-family:var(--he);font-weight:900;font-size:30px;line-height:1;color:var(--red);border:4px solid var(--red);border-radius:10px;padding:8px 14px;background:rgba(5,11,23,.85);transform:translate(-50%,-50%) rotate(-12deg) scale(2.2);opacity:0;transition:transform .35s var(--eb),opacity .2s;white-space:nowrap}
+.phone.st .stamp{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}
+.scr.b{transform:translateX(-105%);background:linear-gradient(180deg,#0E1B33,#050B17)}
+.phone.flip .scr.a{transform:translateX(105%)}
+.phone.flip .scr.b{transform:none}
+.phone.flip .stamp{opacity:0}
+.nt{display:flex;gap:10px;align-items:center;background:#16253F;border:1px solid #22355A;border-radius:14px;padding:10px 11px;margin-top:9px;opacity:0;transform:translateY(-14px) scale(.96);transition:opacity .4s,transform .5s var(--eb)}
+.phone.flip .nt{opacity:1;transform:none}
+.phone.flip .nt:nth-child(2){transition-delay:.5s}.phone.flip .nt:nth-child(3){transition-delay:1s}.phone.flip .nt:nth-child(4){transition-delay:1.5s}.phone.flip .nt:nth-child(5){transition-delay:2s}.phone.flip .nt:nth-child(6){transition-delay:2.5s}
+.nt i{flex:none;width:34px;height:34px;border-radius:9px;background:var(--amb);display:grid;place-items:center;color:var(--ink);font-family:var(--he);font-weight:900;font-size:15px;font-style:normal}
+.nt p{font-size:12.5px;line-height:1.3;color:#C9D3E6;font-weight:600}
+.nt p b{display:block;font-family:var(--he);font-size:14px;color:#fff}
+.ph-cap{text-align:center;margin-top:26px;font-family:var(--he);font-weight:800;font-size:17px;color:var(--mut);min-height:26px}
+.ph-cap b{color:var(--amb)}
+
+/* ===== LONE (amber) ===== */
+.alone{background:var(--amb);color:var(--ink);overflow:hidden}
+.alone .h2{color:var(--ink)}
+.alone .h2 .u{color:#fff;-webkit-text-stroke:0}
+.nots{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.nots span{display:inline-flex;align-items:center;gap:8px;font-family:var(--he);font-weight:800;font-size:clamp(16px,1.8vw,20px);background:rgba(10,20,40,.08);border:2px solid rgba(10,20,40,.18);padding:9px 16px;border-radius:999px;text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:rgba(10,20,40,.55)}
+.giant{font-family:var(--he);font-weight:900;font-size:clamp(70px,15vw,230px);line-height:.82;letter-spacing:-.06em;margin-top:44px;color:var(--ink)}
+.giant small{display:block;font-size:clamp(22px,2.6vw,34px);letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.whys{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:50px}
+.why{background:var(--ink);color:var(--tx);border-radius:18px;padding:24px 22px;position:relative}
+.why .n{font-family:var(--he);font-weight:900;font-size:46px;line-height:1;color:var(--amb)}
+.why p{font-size:18px;line-height:1.45;margin-top:10px;color:var(--mut)}
+.why p b{color:#fff}
+.verdict{margin-top:60px;border-top:3px solid var(--ink);padding-top:34px}
+.verdict p{font-family:var(--he);font-weight:900;font-size:clamp(30px,4.2vw,54px);line-height:1.04;letter-spacing:-.03em;text-wrap:balance}
+.verdict p+p{font-size:clamp(20px,2.2vw,26px);letter-spacing:0;margin-top:16px;font-weight:800}
+
+/* ===== CLUB ===== */
+.club-top{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.dots-wrap{position:relative;text-align:center}
+.dots{display:grid;grid-template-columns:repeat(37,1fr);gap:4px;max-width:470px;margin:0 auto}
+.dots i{aspect-ratio:1;border-radius:50%;background:#1A2846;transition:background .3s,transform .3s}
+.dots i.on{background:var(--amb)}
+.dots i.you{background:#fff;animation:you 1.2s ease-in-out infinite}
+@keyframes you{50%{transform:scale(1.9);box-shadow:0 0 0 3px rgba(255,255,255,.25)}}
+.dots-cap{margin-top:18px;font-family:var(--he);font-weight:800;font-size:18px;color:var(--mut)}
+.dots-cap b{font-size:34px;color:var(--amb);display:block;line-height:1}
+.parts{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:60px}
+.part{display:flex;gap:18px;align-items:flex-start;background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:24px 22px;transition:border-color .3s,transform .4s var(--e)}
+.part:hover{border-color:var(--amb);transform:translateY(-4px)}
+.part.me{grid-column:1/-1;background:var(--amb);color:var(--ink);border-color:var(--amb)}
+.ic{flex:none;width:68px;height:68px;border-radius:18px;background:rgba(255,168,38,.12);display:grid;place-items:center;color:var(--amb)}
+.part.me .ic{background:rgba(10,20,40,.12);color:var(--ink)}
+.ic svg{width:42px;height:42px;overflow:visible}
+.part h3{font-family:var(--he);font-weight:900;font-size:22px;line-height:1.15}
+.part p{font-size:17.5px;color:var(--mut);margin-top:6px}
+.part.me p{color:rgba(10,20,40,.82)}
+.a-pulse{animation:ap 2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes ap{50%{transform:scale(1.18)}}
+.a-bob{animation:ab 2.4s ease-in-out infinite}
+@keyframes ab{50%{transform:translateY(-4px)}}
+.a-step{stroke-dasharray:70;stroke-dashoffset:70;animation:as 3s ease-in-out infinite}
+@keyframes as{40%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:-70}}
+.a-spin{animation:asp 7s linear infinite;transform-box:view-box;transform-origin:20px 20px}
+@keyframes asp{to{transform:rotate(360deg)}}
+.a-blink{animation:abl 1.5s ease-in-out infinite}
+@keyframes abl{50%{opacity:.15}}
+.tour{margin-top:70px;display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:center}
+.tour h3{font-family:var(--he);font-weight:900;font-size:clamp(28px,3.4vw,42px);line-height:1.05;letter-spacing:-.02em}
+.tour p{font-size:18.5px;color:var(--mut);margin-top:12px}
+
+/* ===== PROOF ===== */
+.proof{background:var(--bg2);border-top:1px solid var(--line)}
+.wins{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:50px}
+.win{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:24px 22px;text-decoration:none;display:block;position:relative;overflow:hidden;transition:border-color .3s,transform .4s var(--e)}
+.win:hover{border-color:var(--amb);transform:translateY(-4px)}
+.win::before{content:'';position:absolute;top:0;right:0;width:5px;height:100%;background:var(--amb)}
+.win .v{display:block;font-family:var(--he);font-weight:900;font-size:clamp(36px,4.2vw,54px);line-height:.95;color:var(--amb);letter-spacing:-.03em;direction:ltr;text-align:right}
+.win .w{display:block;font-family:var(--he);font-size:17px;color:#fff;font-weight:800;margin-top:12px}
+.win .d{display:block;font-size:15px;color:var(--mut);margin-top:2px}
+.reels{margin-top:70px}
+.reels-h{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:16px}
+.reels-h h3{font-family:var(--he);font-weight:900;font-size:26px}
+.arrows{display:flex;gap:8px}
+.arrows button{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;transition:background .2s,border-color .2s}
+.arrows button:hover{background:var(--amb);border-color:var(--amb);color:var(--ink)}
+.arrows svg{width:20px;height:20px}
+.track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 14px;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.reel{flex:none;width:232px;scroll-snap-align:start}
+.reel .vph{border-radius:16px}
+.reel .play{width:66px;height:66px}
+.reel .play svg{width:26px;height:26px;margin-right:-4px}
+.reel b{display:block;font-family:var(--he);font-weight:900;font-size:18px;margin-top:10px}
+.reel span{display:block;font-size:15px;color:var(--mut)}
+.hint{font-size:14.5px;color:var(--dim);text-align:center;margin-top:6px;font-weight:600}
+.stories{margin-top:90px;display:grid;gap:24px}
+.story{background:var(--paper);color:var(--ink);border-radius:22px;padding:36px 36px 30px;display:grid;grid-template-columns:1.25fr .75fr;gap:34px;align-items:start;position:relative}
+.story .tag{position:absolute;top:-14px;right:30px;background:var(--amb);color:var(--ink);font-family:var(--he);font-weight:900;font-size:14px;padding:5px 12px;border-radius:6px;transform:rotate(-2deg)}
+.who{display:flex;align-items:center;gap:14px}
+.who .av{flex:none;width:60px;height:60px;border-radius:50%;background:#E3DACB;display:grid;place-items:center;font-family:var(--he);font-weight:900;font-size:24px;color:#6B5E48;border:2px dashed #B9AA8F}
+.who h3{font-family:var(--he);font-weight:900;font-size:30px;line-height:1}
+.who small{display:block;font-size:16px;color:#5B6478;font-weight:700;margin-top:4px}
+.beats{display:grid;gap:16px;margin-top:24px;border-right:3px solid #E3DACB;padding-right:18px}
+.beat .t{font-family:var(--he);font-weight:900;font-size:13px;letter-spacing:.1em;color:#A86A00}
+.beat p{font-size:18.5px;line-height:1.5;color:#1E2A40;margin-top:2px}
+.beat p b{color:var(--ink)}
+.nums{display:grid;gap:10px}
+.num{background:#fff;border-radius:16px;padding:16px 18px;border:1px solid #E5DCCB}
+.num b{display:block;font-family:var(--he);font-weight:900;font-size:clamp(34px,3.8vw,48px);line-height:.95;color:var(--ink);letter-spacing:-.03em;direction:ltr;text-align:right}
+.num span{display:block;font-size:14.5px;color:#5B6478;font-weight:700;margin-top:6px}
+.quote{grid-column:1/-1;font-family:var(--he);font-weight:900;font-size:clamp(22px,2.4vw,30px);line-height:1.25;letter-spacing:-.01em;border-top:2px solid #E3DACB;padding-top:22px;color:var(--ink);text-wrap:balance}
+.quote::before{content:'״';color:var(--amb);font-size:1.7em;line-height:0;vertical-align:-.32em;margin-left:6px}
+.shot{border:2px dashed #C8B99D;border-radius:12px;background:#EFE7DA;min-height:160px;display:grid;place-items:center;text-align:center;font-size:14px;color:#7A6C55;font-weight:700;padding:14px}
+.vlink{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:var(--he);font-weight:800;font-size:15.5px;color:var(--ink);background:#fff;border:1.5px solid #E5DCCB;padding:9px 16px;border-radius:999px;transition:border-color .2s}
+.vlink:hover{border-color:var(--amb)}
+.vlink svg{width:16px;height:16px;color:var(--amb)}
+.midcta{text-align:center;padding:30px 0}
+.wall{margin-top:100px}
+.wall-intro{text-align:center;max-width:860px;margin:0 auto}
+.wall-intro .h2{font-size:clamp(32px,4.4vw,54px)}
+.masonry{columns:3;column-gap:14px;margin-top:40px}
+.wshot{break-inside:avoid;margin-bottom:14px;border:2px dashed #2F4570;border-radius:14px;background:#0A1428;display:grid;place-items:center;text-align:center;font-size:14px;color:var(--dim);font-weight:700;padding:16px}
+.wshot.h1{min-height:220px}.wshot.h2{min-height:330px}.wshot.h3{min-height:270px}
+
+/* ===== ABOUT ===== */
+.about-g{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:center}
+.portrait{aspect-ratio:4/5;border-radius:22px;border:2px dashed #2F4570;background:#0C1730;display:grid;place-items:center;text-align:center;color:var(--dim);font-weight:700;font-size:15px;padding:20px;position:relative}
+.portrait .yr{position:absolute;bottom:-18px;right:-14px;background:var(--amb);color:var(--ink);font-family:var(--he);font-weight:900;font-size:22px;padding:8px 16px;border-radius:10px;transform:rotate(-4deg)}
+.timeline{margin-top:30px;display:grid;gap:0}
+.tl{display:grid;grid-template-columns:88px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.tl .y{font-family:var(--he);font-weight:900;font-size:26px;color:var(--amb);line-height:1.1}
+.tl p{font-size:clamp(18px,1.8vw,21px);color:var(--mut);line-height:1.45}
+.tl p b{color:#fff}
+.tl.now .y{color:#fff}
+.short{margin-top:28px;font-family:var(--he);font-weight:900;font-size:clamp(24px,2.8vw,34px);line-height:1.15;letter-spacing:-.02em;text-wrap:balance}
+
+/* ===== NOT FOR ===== */
+.notfor{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.nf{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+.nfc{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:28px 22px 58px;font-family:var(--he);font-weight:800;font-size:clamp(20px,2vw,24px);line-height:1.25;overflow:hidden}
+.nfc .rej{position:absolute;bottom:12px;left:14px;font-weight:900;font-size:15px;color:var(--red);border:2.5px solid var(--red);border-radius:6px;padding:2px 9px;transform:rotate(-8deg) scale(1.8);opacity:0;transition:transform .35s var(--eb),opacity .2s}
+.nfc.in .rej{opacity:1;transform:rotate(-8deg) scale(1);transition-delay:.5s}
+.but{margin-top:44px;text-align:center}
+.but p{font-size:clamp(20px,2.1vw,25px);color:var(--mut);font-weight:600;max-width:820px;margin:0 auto;line-height:1.5;text-wrap:balance}
+.but .big{font-family:var(--he);font-weight:900;font-size:clamp(36px,4.8vw,62px);line-height:1;letter-spacing:-.03em;color:var(--amb);margin-top:16px}
+
+/* ===== AFTER ===== */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px;position:relative}
+.steps li{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:28px 24px;position:relative}
+.sn{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--amb);color:var(--ink);font-family:var(--he);font-weight:900;font-size:26px}
+.steps h3{font-family:var(--he);font-weight:900;font-size:24px;margin-top:18px;line-height:1.15}
+.steps p{font-size:17.5px;color:var(--mut);margin-top:6px}
+.steps li:not(:last-child)::after{content:'';position:absolute;top:56px;left:-17px;width:18px;height:3px;background:var(--amb)}
+.calm{text-align:center;font-family:var(--he);font-weight:900;font-size:clamp(22px,2.6vw,32px);margin-top:44px}
+
+/* ===== OBJECTIONS ===== */
+.faq{display:grid;gap:12px;margin-top:44px}
+.qa{border:1px solid var(--line);border-radius:18px;background:var(--bg2);overflow:hidden;transition:border-color .3s}
+.qa.on{border-color:var(--amb)}
+.qa button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:right;padding:24px 26px;font-family:var(--he);font-weight:900;font-size:clamp(20px,2.1vw,24px)}
+.qa button i{flex:none;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);position:relative;transition:transform .35s var(--e),background .3s}
+.qa button i::before,.qa button i::after{content:'';position:absolute;top:50%;left:50%;width:14px;height:2.5px;margin:-1.25px 0 0 -7px;background:var(--amb)}
+.qa button i::after{transform:rotate(90deg);transition:transform .3s}
+.qa.on button i{background:var(--amb);border-color:var(--amb);transform:rotate(180deg)}
+.qa.on button i::before,.qa.on button i::after{background:var(--ink)}
+.qa.on button i::after{transform:rotate(0)}
+.an{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--e)}
+.an>div{overflow:hidden}
+.an p{padding:0 26px 24px;font-size:18.5px;color:var(--mut);line-height:1.55}
+.an p b{color:#fff}
+.qa.on .an{grid-template-rows:1fr}
+
+/* ===== FINAL ===== */
+.final{overflow:hidden}
+.final .h2{font-size:clamp(40px,6vw,80px)}
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:860px;margin:50px auto 0}
+.fk{border-radius:20px;padding:28px 22px;text-align:center;font-family:var(--he);font-weight:900;font-size:clamp(22px,2.6vw,30px);line-height:1.15}
+.fk small{display:block;font-family:var(--tf);font-weight:800;font-size:14.5px;margin-bottom:10px;letter-spacing:.06em}
+.fk.same{border:2px dashed #3A4F78;color:#5E6E8F}
+.fk.same span{text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:var(--red)}
+.fk.same small{color:#5E6E8F}
+.fk.new{background:var(--amb);color:var(--ink);transform:rotate(-1.5deg)}
+.fk.new small{color:rgba(10,20,40,.7)}
+.final .p{max-width:820px;margin-inline:auto}
+.final .last{font-family:var(--he);font-weight:900;font-size:clamp(26px,3.2vw,40px);line-height:1.1;margin-top:34px;color:#fff}
+
+/* quiz anchor */
+.quiz{padding:90px 0;background:var(--bg2);border-top:1px solid var(--line)}
+.quiz-ph{max-width:720px;margin:0 auto;border:2px dashed var(--amb);border-radius:22px;padding:44px 28px;text-align:center;background:var(--bg)}
+.quiz-ph h2{font-family:var(--he);font-weight:900;font-size:clamp(28px,3.4vw,40px)}
+.quiz-ph p{color:var(--mut);margin-top:10px;font-size:17px}
+.legal{padding:40px 0 120px;text-align:center;font-size:14.5px;color:var(--dim);line-height:1.6;border-top:1px solid var(--line)}
+
+/* sticky + toast */
+.stk{position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:60;display:none;transform:translateY(170%);transition:transform .45s var(--e)}
+.stk.on{transform:none}
+.stk .cta{width:100%;font-size:19.5px;padding:18px;box-shadow:0 5px 0 var(--ambd),0 18px 40px -10px rgba(0,0,0,.8)}
+.toast{position:fixed;bottom:96px;left:50%;transform:translate(-50%,20px);background:#fff;color:var(--ink);font-weight:700;font-size:15px;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:all .3s;z-index:70;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ===== RESPONSIVE (מובייל ראשון: 390 פיקסלים) ===== */
+@media (max-width:900px){
+  .saved-g,.club-top,.about-g,.tour{grid-template-columns:1fr;gap:44px}
+  .whys,.nf,.steps{grid-template-columns:1fr}
+  .steps li:not(:last-child)::after{display:none}
+  .wins{grid-template-columns:1fr 1fr}
+  .parts{grid-template-columns:1fr}
+  .story{grid-template-columns:1fr;padding:30px 20px 24px;gap:22px}
+  .portrait{max-width:330px;margin:0 auto;width:100%}
+  .masonry{columns:2}
+}
+@media (max-width:600px){
+  body{font-size:18px}
+  .wrap{padding:0 18px}
+  .sec{padding:84px 0}
+  .topbar{font-size:13px;padding:8px 10px}.topbar span{margin:0 4px}
+  .hero{padding:38px 0 0}
+  .eyebrow{font-size:15px;padding:8px 14px;line-height:1.3}
+  .hero h1{font-size:46px;margin-top:24px;letter-spacing:-.04em}
+  .hero .sub{font-size:18px;margin-top:22px}
+  .vsl{margin:30px -8px 0}
+  .vph{border-radius:14px}
+  .play{width:80px;height:80px}.play svg{width:30px;height:30px}
+  .vsl-over{top:12px;right:12px}
+  .vsl-over span{display:none}
+  .win .v{font-size:30px}
+  .cta{width:100%;font-size:20px;padding:20px 16px}
+  .cta-wrap{margin-top:28px}
+  .ticker{margin-top:54px}
+  .tk-row span{padding:14px 18px;font-size:16px}.tk-row span b{font-size:19px}
+  .stat{padding:22px 4px}
+  .stat b{font-size:38px}
+  .stat span{font-size:13px;line-height:1.3}
+  .ex{font-size:44px}
+  .phone{width:270px}
+  .nots span{font-size:15.5px;padding:8px 13px}
+  .giant{font-size:96px}
+  .why{padding:20px 18px}
+  .dots{grid-template-columns:repeat(26,1fr);gap:3px;max-width:340px}
+  .part{padding:20px 18px;gap:14px}
+  .ic{width:58px;height:58px}.ic svg{width:36px;height:36px}
+  .part h3{font-size:20px}.part p{font-size:16.5px}
+  .wins{gap:10px}
+  .win{padding:18px 16px}
+  .win .w{font-size:15px}.win .d{font-size:13.5px}
+  .reel{width:62vw;max-width:240px}
+  .who h3{font-size:26px}
+  .beat p{font-size:17.5px}
+  .masonry{columns:1}
+  .tl{grid-template-columns:70px 1fr;gap:12px}
+  .tl .y{font-size:22px}
+  .qa button{padding:20px 18px}
+  .an p{padding:0 18px 20px;font-size:17.5px}
+  .fork{grid-template-columns:1fr}
+  .stk{display:block}
+  .legal{padding-bottom:110px}
 }
 @media (prefers-reduced-motion:reduce){
-  .vlab i,.live i{animation:none}
-  .btn,.rc{transition:none}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+  .lone svg path{stroke-dashoffset:0}
 }
 .ls{--bg:#FAF8F3;--card:#FFFFFF;--line:#E8E3D8;--ink:#121318;--ink2:#2a2c35;--mute:#5F6170;--gold:#F2B705;--gold2:#E08A00;--soft:#FFF6DA;--ok:#16A34A;--okbg:#EEF9F1;
 direction:rtl;text-align:right;font-family:'Heebo',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
@@ -388,171 +444,466 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 .ls-fnext li{counter-increment:f;display:grid;grid-template-columns:30px 1fr;column-gap:10px;align-items:center;background:#FBFAF6;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .ls-fnext li:before{content:counter(f);grid-row:span 2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--okbg);color:#14532d;font-weight:900}
 .ls-fnext b{font-size:15.5px}.ls-fnext span{color:var(--mute);font-size:13.5px}
-.ls{background:transparent !important;padding:0}
-.qsec{padding-top:34px}
-.ls-q{max-width:640px;margin:0 auto !important;padding:26px 22px !important;border:2px solid #F3C38F !important;box-shadow:0 30px 70px -30px rgba(0,0,0,.6) !important}
-.ls h3,.ls .ls-qq{color:#121318 !important}
-.ls p{color:inherit}
-.vsl{position:relative}
-.cv-ph{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:#050a16;color:var(--mute);border-radius:18px;font-weight:700}
+/* ===== club-vsl v2: real media + quiz in the agency look ===== */
+.ls{--gold:#FFA826;--gold2:#E08A00;--soft:#FFF1D6;background:transparent !important;font-family:'Assistant','Heebo',system-ui,sans-serif}
+.ls-q{max-width:720px;margin:0 auto !important;padding:30px 26px !important;border:2px solid var(--amb) !important;border-radius:22px !important;box-shadow:0 30px 70px -30px rgba(0,0,0,.7) !important}
+.ls h3,.ls .ls-qq{color:#121318 !important;font-family:'Heebo',system-ui,sans-serif}
+.ls-btn{font-family:'Heebo',system-ui,sans-serif;background:var(--amb) !important;color:#0A1428 !important;box-shadow:0 6px 0 var(--ambd) !important;animation:none !important}
+.ls-btn.wa{background:linear-gradient(180deg,#3BDC7A,#1FA855) !important;color:#fff !important;box-shadow:0 6px 0 #137a3c !important}
+.vreal{background:#050B17}
+.vreal .vplayer{position:absolute;inset:0}
+.vreal .vplayer>div{position:absolute !important;inset:0;padding-top:0 !important;height:100% !important}
+.vsl-over{transition:opacity .4s}
+.vreal.played .vsl-over{opacity:0}
+.vph[style*="--poster"] .ph-in{background:var(--poster) center/cover no-repeat}
+.vph[style*="--poster"] .ph-in small{display:none}
+.vph[style*="--poster"] .ph-in::before{content:'';position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(5,11,23,.65))}
+.vph[style*="--poster"] .play{position:relative}
+.vph video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.vph video.fit{object-fit:contain}
+.shot.img{display:block;width:100%;height:auto;min-height:0;padding:0;border:1px solid #E5DCCB;background:#fff;object-fit:contain;max-height:520px}
+.masonry .wimg{display:block;width:100%;height:auto;break-inside:avoid;margin-bottom:14px;border-radius:14px;border:1px solid var(--line);background:#fff}
+.zoom{cursor:zoom-in}
+.portrait.has{padding:0;border:0;overflow:visible}
+.portrait.has img{width:100%;height:100%;object-fit:cover;border-radius:22px}
+.lbx{position:fixed;inset:0;z-index:90;background:rgba(5,11,23,.92);display:none;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+.lbx.on{display:flex}
+.lbx img{max-width:100%;max-height:92vh;border-radius:12px}
 </style>
 </head>
 <body>
-<div class="top"><i></i><b>מועדון האיקומרס של אביב מלכה</b><em class="dot" style="background:none;color:var(--mute)">·</em><span>17 דקות, בלי סיסמאות: מה העסק הזה דורש, ומה הוא יכול לתת לך</span></div>
 
-<div class="w">
-  <header class="hero">
-    <span class="eye">לפני שמחליטים</span>
-    <h1>האם אתה <em>באמת יכול</em> לבנות עסק איקומרס משלך, לצד העבודה?</h1>
-    <p class="lead nw" style="margin:14px auto 0">צפה בסרטון עד הסוף. אחריו תדע מה העסק הזה יכול לתת לך, מה הוא דורש ממך, ואיך אנחנו ניגשים לזה במועדון.</p>
-    <p class="vlab"><i></i>צפו עד הסוף · השאלון מחכה ממש מתחת לסרטון</p>
-    <div class="vsl" id="cvVsl"><div class="cv-ph">הסרטון נטען…</div></div>
-    <a class="btn" href="#cvQuiz">לשאלון ההתאמה ↓<small>לוקח כמה דקות · בלי התחייבות</small></a>
-    <div class="trust">
-      <span><b><bdi dir="ltr">$20.6M</bdi></b>מחזור בחנות שלי</span>
-      <span><b>15</b>שנה באיקומרס</span>
-      <span><b>666</b>חברים במועדון</span>
+<div class="topbar">מועדון האיקומרס של אביב מלכה<span>·</span>666 חברים<span>·</span>15 שנה באיקומרס</div>
+
+<main>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow rv"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h12v18l-6-4.500L6 21z"/></svg>כמה זמן עוד תמשיך לשמור סרטונים על איקומרס??</p>
+    <h1 class="rv"><span class="a">אתה לא צריך לעזוב את העבודה.</span><span class="b">אתה צריך להפסיק לעשות את זה <span class="lone">לבד.<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M190 52C192 20 120 6 70 12S6 38 10 60s70 34 120 30 66-22 58-46"/></svg></span></span></h1>
+    <p class="sub rv">מעיין שכיר ואבא לארבעה. בלי זמן מיותר, ובלי כסף לזרוק. <b>832 הזמנות בשמונה חודשים, לצד העבודה.</b> מה היה לו, שלך עוד אין? <b>שיטה, וקהילה שלא נותנת לו ליפול.</b></p>
+
+    <div class="vsl rv" id="vsl">
+      <!-- PLACEHOLDER: הסרטון הראשי, 17 דקות. קישור הטמעה במשתנה CFG.VSL_EMBED.
+           תמונת פתיחה: מחליפים את span.ph-in בתמונה של פריים עם הפנים של אביב. לא מתנגן לבד. -->
+      <div class="vph vreal" id="cvVsl"><span class="vsl-over"><b>תן לי 17 דקות.</b><span>בלי סיסמאות. ככה זה נראה מבפנים.</span></span><div id="cvPlayer" class="vplayer"></div></div>
     </div>
-  </header>
 
-  <section class="sec qsec" id="cvQuiz">
-    <div class="ls"><div class="ls-q" id="lsQ"></div></div>
-  </section>
-
-  <section class="sec" style="padding-top:64px">
-    <div class="c"><span class="eye">תוצאות של תלמידים</span><h2>הם היו בדיוק <em>איפה שאתה עכשיו</em></h2><p class="lead nw">גללו למטה: סרטונים, צילומי מסך מקבוצת הוואטסאפ והוואטסאפ הפרטי שלי, וסיפורים מלאים. הסרטונים מתנגנים רק כשלוחצים עליהם.</p></div>
-    <div class="res">
-      <a class="rc big" href="#st-maayan"><span class="ph"><img src="../dl/img/reel-maayan.jpg" alt="מעיין" loading="lazy" style="object-position:50% 30%"></span><span class="tx"><span class="num">₪135,813</span><span class="lbl">832 הזמנות ב־8 חודשים, לצד העבודה</span><span class="nm"><b>מעיין</b> · שכיר ואבא לארבעה</span></span></a>
-      <a class="rc" href="#st-nivin"><span class="ph"><img src="../club/img/poster-niven.jpg" alt="ניבין" loading="lazy"></span><span class="tx"><span class="num">₪27,000</span><span class="lbl">מכירות ב־3 החודשים הראשונים</span><span class="nm"><b>ניבין</b> · מורה</span></span></a>
-      <a class="rc" href="#st-dvir"><span class="ph"><img src="../aw/img/dvir.jpg" alt="ההודעה של דביר" loading="lazy" style="object-position:50% 40%"></span><span class="tx"><span class="num">₪22,947</span><span class="lbl">הכנסות ב־23 ימים</span><span class="nm"><b>דביר</b> · לוחם סיירת</span></span></a>
-      <a class="rc" href="#st-ilan"><span class="ph"><img src="img/ilan.png" alt="הפוסט של אילן" loading="lazy" style="object-position:50% 0%"></span><span class="tx"><span class="num">₪5,600</span><span class="lbl">32 הזמנות, אחרי חודשיים וחצי</span><span class="nm"><b>אילן</b> · "לא ידעתי כלום על איקומרס"</span></span></a>
-      <a class="rc" href="#reels"><span class="ph"><img src="../dl/img/reel-9jwg71zrya.jpg" alt="רואי" loading="lazy" style="object-position:50% 62%"></span><span class="tx"><span class="num">₪118,000</span><span class="lbl">בחצי שנה</span><span class="nm"><b>רואי</b></span></span></a>
+    <div class="cta-wrap rv">
+      <a class="cta" href="#cvQuiz" data-cta="hero">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+      <p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p>
     </div>
-    <div class="cta"><a class="btn" href="#cvQuiz">אני רוצה להיות הסיפור הבא ↑</a></div>
-  </section>
-</div>
+  </div>
 
-<section class="light" id="students">
-  <div class="w">
-    <p class="sub" style="margin-top:0">תלמידים מספרים, בסרטון</p>
-    <div class="reels" id="reels">
-      <button class="rnav rprev" aria-label="הקודם">›</button>
-      <div class="rtrack" id="rtrack">
-        <div class="reel" data-src="https://embed-ssl.wistia.com/deliveries/11ccc77a8d2120f38f83a144d05112bd2860968d/file.mp4" data-fit="contain"><video playsinline preload="none" poster="https://avivmalka123.github.io/dl/img/reel-9jwg71zrya.jpg" style="object-fit:contain"></video><button class="rplay" aria-label="נגן: רואי"></button><span class="rlen">10:28</span><div class="rcap"><b>רואי</b><small>118,000 ₪ בחצי שנה</small></div><div class="rbar"><i></i></div></div>
-        <div class="reel" data-src="https://avivmalka123.github.io/aw/vid/maayan.mp4" data-fit="cover"><video playsinline preload="none" poster="https://avivmalka123.github.io/dl/img/reel-maayan.jpg" style="object-fit:cover"></video><button class="rplay" aria-label="נגן: מעיין"></button><span class="rlen">4:24</span><div class="rcap"><b>מעיין</b><small>שכיר · 135,813 ₪ ב־8 חודשים</small></div><div class="rbar"><i></i></div></div>
-        <div class="reel" data-src="https://embed-ssl.wistia.com/deliveries/72c8f200286624310178728cf193bfd518f07a0a/file.mp4" data-fit="cover"><video playsinline preload="none" poster="https://avivmalka123.github.io/dl/img/reel-5mntv13f3k.jpg" style="object-fit:cover"></video><button class="rplay" aria-label="נגן: ניבין"></button><span class="rlen">6:27</span><div class="rcap"><b>ניבין</b><small>27,000 ₪ ב־3 חודשים</small></div><div class="rbar"><i></i></div></div>
-        <div class="reel" data-src="https://avivmalka123.github.io/aw/vid/dina.mp4" data-fit="cover"><video playsinline preload="none" poster="https://avivmalka123.github.io/dl/img/reel-dina.jpg" style="object-fit:cover"></video><button class="rplay" aria-label="נגן: דינה"></button><span class="rlen">0:10</span><div class="rcap"><b>דינה</b><small>ROAS 7.32 · "עלה לי הדופק"</small></div><div class="rbar"><i></i></div></div>
-        <div class="reel" data-src="https://embed-ssl.wistia.com/deliveries/83e24c3e903a15b7b2f125c5fa6952f87b2c2af0/file.mp4" data-fit="cover"><video playsinline preload="none" poster="https://avivmalka123.github.io/dl/img/reel-4vf0nnjrq6.jpg" style="object-fit:cover"></video><button class="rplay" aria-label="נגן: תלמידים מספרים"></button><span class="rlen">2:14</span><div class="rcap"><b>תלמידים מספרים</b><small>"עשיתי את זה מהבית"</small></div><div class="rbar"><i></i></div></div>
-        <div class="reel" data-src="https://embed-ssl.wistia.com/deliveries/b9abf35ece8a36e60af486ca9b68cf0c9ccb9288/file.mp4" data-fit="cover"><video playsinline preload="none" poster="https://avivmalka123.github.io/dl/img/reel-6ujyzfnt0y.jpg" style="object-fit:cover"></video><button class="rplay" aria-label="נגן: תלמידים מספרים"></button><span class="rlen">4:53</span><div class="rcap"><b>תלמידים מספרים</b><small>מה עשה את ההבדל</small></div><div class="rbar"><i></i></div></div>
-        <div class="reel" data-src="https://embed-ssl.wistia.com/deliveries/53e8f29fcf3ea31e1c388ca7d28a903a4583a05b/file.mp4" data-fit="contain"><video playsinline preload="none" poster="https://avivmalka123.github.io/dl/img/reel-uso5vl68e1.jpg" style="object-fit:contain"></video><button class="rplay" aria-label="נגן: תלמידים מספרים"></button><span class="rlen">3:59</span><div class="rcap"><b>תלמידים מספרים</b><small>"הלוואי שהייתי מתחיל קודם"</small></div><div class="rbar"><i></i></div></div>
-      </div>
-      <button class="rnav rnext" aria-label="הבא">‹</button>
+  <!-- פס תוצאות רץ: רק תוצאות אמיתיות של תלמידים מהבריף -->
+  <div class="ticker" aria-label="תוצאות של תלמידים">
+    <div class="tk-row">
+      <span><i></i>מעיין · <b>135,813 ₪</b> ב־8 חודשים, לצד העבודה</span><span><i></i>ניבין · <b>27,000 ₪</b> ב־3 חודשים</span><span><i></i>דביר · <b>22,947 ₪</b> ב־23 ימים</span><span><i></i>רואי · <b>118,000 ₪</b> בחצי שנה</span><span><i></i>אילן · <b>32 הזמנות</b> מאפס, בחודשיים וחצי</span><span><i></i>דינה · <b>ROAS 7.32</b> עלה לי הדופק</span><span><i></i>ניבין · <b>237 הזמנות</b> ב־30 יום</span><span><i></i>מעיין · <b>135,813 ₪</b> ב־8 חודשים, לצד העבודה</span><span><i></i>ניבין · <b>27,000 ₪</b> ב־3 חודשים</span><span><i></i>דביר · <b>22,947 ₪</b> ב־23 ימים</span><span><i></i>רואי · <b>118,000 ₪</b> בחצי שנה</span><span><i></i>אילן · <b>32 הזמנות</b> מאפס, בחודשיים וחצי</span><span><i></i>דינה · <b>ROAS 7.32</b> עלה לי הדופק</span><span><i></i>ניבין · <b>237 הזמנות</b> ב־30 יום</span>
     </div>
-    <p class="rhint">החליקו לצדדים · שום סרטון לא מתנגן לבד, לוחצים כדי לנגן</p>
-
-    <div class="c" style="margin-top:46px"><span class="eye" style="color:#C2620A">הסיפורים המלאים</span><h2>איפה הם היו, <em>ומה השתנה</em></h2><p class="lead nw">צילומי מסך אמיתיים. טשטשנו רק טלפונים ושמות חנויות.</p></div>
-
-    <article class="st" id="st-maayan">
-      <div class="media">
-        <div class="vbox" id="maayanBox"><button class="play" data-local="../aw/vid/maayan.mp4" aria-label="צפייה בסרטון של מעיין"><span class="tag">▶ 4:24 · מעיין מספר</span><img src="../aw/img/maayan-poster.jpg" alt="מעיין מספר על התהליך" loading="lazy"></button></div>
-      </div>
-      <div class="txt">
-        <div class="who"><b>מעיין</b><span>שכיר, בן 42, נשוי ואבא לארבעה</span></div>
-        <ol class="arc">
-          <li><small>איפה היה</small><p>עבד במשרה מלאה, ראה המון קורסים ב־12 עד 15 אלף שקל, והיה בטוח שאין לו לא את הכסף ולא את הזמן.</p></li>
-          <li><small>מה עשה</small><p>התחיל בדצמבר 2025, לצד העבודה.</p></li>
-          <li class="now"><small>מה השתנה</small><p>אחרי 8 חודשים: 832 הזמנות ו־135,813 שקל מכירות. ועכשיו הוא פותח אתר נוסף בחו״ל.</p></li>
-        </ol>
-        <div class="nums"><span><b>832</b>הזמנות</span><span><b>₪135,813</b>מכירות</span><span><b>8</b>חודשים</span></div>
-        <p class="q">"צוות תותחים. כל אחד מהם מנטור בפני עצמו, שמלווה אותך ובונה אותך להצלחה. אם אני הצלחתי, גם אתם יכולים."</p>
-        <img class="shot" src="../aw/img/maayan-graph.jpg" alt="832 הזמנות ו־135,813 ש״ח מכירות בין דצמבר 2025 לספטמבר 2026" loading="lazy">
-      </div>
-    </article>
-
-    <article class="st rev" id="st-nivin">
-      <div class="media">
-        <div class="wide"><button class="play" data-w="5mntv13f3k" aria-label="צפייה בסרטון של ניבין"><span class="tag">▶ ניבין מספרת</span><img src="../club/img/poster-niven.jpg" alt="ניבין" loading="lazy"></button></div>
-        <img class="shot shotcap" src="../dl/img/nivin-sales.jpg" alt="ההודעה של ניבין: 237 הזמנות ו־31,641 ש״ח ב־30 יום" loading="lazy" style="margin-top:12px">
-      </div>
-      <div class="txt">
-        <div class="who"><b>ניבין</b><span>מורה</span></div>
-        <ol class="arc">
-          <li><small>איפה הייתה</small><p>הייתה לה חנות פתוחה, בלי מכירות.</p></li>
-          <li><small>מה ניסתה קודם</small><p>לבד, בלי שיטה.</p></li>
-          <li class="now"><small>מה השתנה</small><p>בתוך שלושה חודשים בתוכנית הגיעה ל־27,000 שקל מכירות. ב־30 הימים האחרונים: 31,641 שקל ו־237 הזמנות.</p></li>
-        </ol>
-        <div class="nums"><span><b>₪27,000</b>ב־3 החודשים הראשונים</span><span><b>₪31,641</b>ב־30 הימים האחרונים</span><span><b>237</b>הזמנות בחודש</span></div>
-        <p class="q" style="margin:0">"בזמן של אזעקות במדינה, גם אצלי נשמעות של הזמנות 😅"</p>
-      </div>
-    </article>
-
-    <article class="st" id="st-dvir">
-      <div class="media"><img class="shot shotcap" src="../aw/img/dvir.jpg" alt="ההודעה של דביר בקבוצת התלמידים" loading="lazy"></div>
-      <div class="txt">
-        <div class="who"><b>דביר ביטון</b><span>לוחם סיירת</span></div>
-        <ol class="arc">
-          <li><small>איפה היה</small><p>הרבה בחו״ל, ועם מעט מאוד זמן פנוי.</p></li>
-          <li><small>מה עצר אותו</small><p>"גם אני בהתחלה תירצתי לעצמי שאין זמן."</p></li>
-          <li class="now"><small>מה השתנה</small><p>ב־23 ימים: 22,947 שקל הכנסות, עם 4,300 שקל על שיווק, ורווח נקי של 10 עד 12 אלף שקל, לדבריו.</p></li>
-        </ol>
-        <div class="nums"><span><b>₪22,947</b>ב־23 ימים</span><span><b>₪4,300</b>הוצאה על שיווק</span><span><b><bdi dir="ltr">₪10–12K</bdi></b>רווח נקי, לדבריו</span></div>
-        <p class="q" style="margin:0">"ברגע שפועלים נכון, בצורה מסודרת ועקבית, כפי מה שאביב מסביר, זה לגמרי אפשרי 🚀"</p>
-      </div>
-    </article>
-
-    <article class="st rev" id="st-ilan">
-      <div class="media"><img class="shot shotcap" src="img/ilan.png" alt="הפוסט של אילן בקהילה: לפני חודשיים וחצי לא ידעתי כלום על איקומרס" loading="lazy"></div>
-      <div class="txt">
-        <div class="who"><b>אילן ארד</b><span>פוסט בקהילה, בקטגוריית שיתוף הצלחות</span></div>
-        <ol class="arc">
-          <li><small>איפה היה</small><p>"לפני חודשיים וחצי לא ידעתי כלום על איקומרס."</p></li>
-          <li><small>מה עשה</small><p>התחיל את ההכשרה באמצע אפריל, למד, שינה ושיפר. "היו לא מעט ניסיונות, מוצרים שלא עבדו, שינויים, בדיקות."</p></li>
-          <li class="now"><small>מה השתנה</small><p>אחרי כחודשיים וחצי: 32 הזמנות וכמעט 5,600 שקל במכירות.</p></li>
-        </ol>
-        <div class="nums"><span><b>32</b>הזמנות</span><span><b>₪5,600</b>במכירות</span><span><b>2.5</b>חודשים</span></div>
-        <p class="q" style="margin:0">"תודה ענקית לאביב ולכל החברים בקהילה שתמיד עוזרים, מייעצים, עונים על שאלות. זה באמת עושה את ההבדל."</p>
-      </div>
-    </article>
-
-    <p class="sub">קיר צילומי המסך · מקבוצת הוואטסאפ ומהוואטסאפ הפרטי של אביב</p>
-    <div class="wallw clip" id="wallw">
-      <div class="wall">
-        <img src="../aw/img/yahav.jpg" alt="יהב: 12,775 ש״ח ו־137 הזמנות ב־30 יום" loading="lazy">
-        <img src="../club/img/chat-75k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img src="../aw/img/ron.jpg" alt="רון: ההזמנה הראשונה" loading="lazy">
-        <img src="../club/img/sales-22k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img src="../aw/img/maayan-chat.jpg" alt="מעיין: התוצאות שלו" loading="lazy">
-        <img src="../aw/img/hani.jpg" alt="חני: עזבתי קורס אחר כי לא היה מענה" loading="lazy">
-        <img src="../club/img/chat-daniel.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img src="../dl/img/nivin-sales.jpg" alt="ניבין: 31,641 ש״ח ב־30 יום" loading="lazy">
-        <img src="../club/img/orders-1.jpg" alt="התראות הזמנה של תלמיד" loading="lazy">
-        <img src="../club/img/sales-778k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img src="../aw/img/dina-poster.jpg" alt="דינה" loading="lazy">
-        <img src="../club/img/chat-raviv.jpg" alt="צילום מסך של תלמיד" loading="lazy">
-        <img src="../club/img/orders-2.jpg" alt="התראות הזמנה של תלמיד" loading="lazy">
-        <img src="../aw/img/dvir.jpg" alt="דביר: 22,947 ש״ח ב־23 ימים" loading="lazy">
-        <img src="img/ilan.png" alt="אילן: 32 הזמנות" loading="lazy">
-        <img src="../aw/img/maayan-graph.jpg" alt="מעיין: 832 הזמנות" loading="lazy">
-      </div>
-    </div>
-    <button class="more" type="button" id="wallMore">לעוד צילומי מסך ↓</button>
-
-    <p class="sub">מבפנים: הקהילה הסגורה</p>
-    <img class="shot" src="../club/img/community.jpg" alt="פוסטים של תלמידים בקהילה הסגורה" loading="lazy" style="border-radius:18px">
-    <p class="c" style="margin-top:14px"><button class="play rtour" data-w="hh3hr7vomq" style="position:static;width:auto;height:auto;display:inline-flex;background:none;color:#C2620A;font-weight:800;font-size:17px;text-decoration:underline">🎥 סיור של 17 דקות בתוך המועדון</button></p>
-
-    <div style="margin-top:30px"><a class="btn" href="#cvQuiz">ראיתי מספיק. לשאלון ההתאמה ↑</a></div>
-    <p class="disc">הסיפורים וצילומי המסך הם של תלמידים אמיתיים ופורסמו באישורם. התוצאות משתנות מאדם לאדם ואינן הבטחה להכנסה.</p>
+  </div>
+  <!-- מספר אחד בכל הדף: 20.6 מיליון דולר, כמו בסרטון -->
+  <div class="stats">
+    <div class="stat"><b data-count="20.6">20.6</b><span>מיליון דולר מחזור, בחנות שלי</span></div>
+    <div class="stat"><b data-count="15">15</b><span>שנה באיקומרס</span></div>
+    <div class="stat"><b data-count="666">666</b><span>חברים במועדון</span></div>
   </div>
 </section>
 
-<div class="sticky" id="sticky"><a class="btn" href="#cvQuiz">לשאלון ההתאמה ↑</a></div>
-<div class="lb" id="lb"><button class="x" type="button" aria-label="סגירה">×</button><div id="lbIn"></div></div>
+<!-- ================= עוד מעט ================= -->
+<section class="sec saved">
+  <div class="wrap saved-g">
+    <div>
+      <span class="kick rv">בוא נהיה כנים רגע</span>
+      <h2 class="h2 rv">כמה זמן אתה כבר <span class="u">מסתובב עם הרעיון הזה?</span></h2>
+      <p class="p rv">שנה? שנתיים? מאה סרטונים ביוטיוב. עשרים פוסטים שמורים. אולי אפילו חנות שפתחת, <b>ואף אחד לא קנה בה.</b> ובכל פעם, אותו משפט:</p>
+      <div class="ex-list" id="excuses">
+        <span class="ex">עוד מעט.</span><span class="ex">כשיהיה זמן.</span><span class="ex">כשיהיה כסף.</span><span class="ex">כשאבין יותר.</span>
+      </div>
+      <div class="punch rv">
+        <p class="big">עוד מעט לא מגיע.</p>
+        <p>מי שמחכה להרגיש מוכן נשאר בדיוק איפה שהוא, ורואה אחרים עושים את מה שהוא היה אמור לעשות.</p>
+      </div>
+    </div>
+    <div class="rv">
+      <!-- טלפון חי: רשימת הסרטונים השמורים, חותמת, ואז ההתראות של התלמידים. הכל בקוד, בלי תמונות. -->
+      <div class="phone" id="phone" aria-hidden="true">
+        <div class="scr a">
+          <div class="scr-h"><span>שמורים</span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12v18l-6-4.500L6 21z"/></svg></div>
+          <div class="sv-list"><div class="sv-roll"><div class="sv"><i></i><p>איך בוחרים מוצר מנצח<small>נשמר לפני שנה · לא נצפה</small></p></div><div class="sv"><i></i><p>חנות שופיפיי מאפס, מדריך מלא<small>נשמר לפני 14 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>דרופשיפינג למתחילים<small>נשמר לפני שנתיים · לא נצפה</small></p></div><div class="sv"><i></i><p>איך כותבים מודעה שמוכרת<small>נשמר לפני 8 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>10 טעויות של מתחילים באיקומרס<small>נשמר לפני שנה וחצי · לא נצפה</small></p></div><div class="sv"><i></i><p>ככה מוצאים ספק אמין<small>נשמר לפני 10 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>הנישות הכי חמות השנה<small>נשמר לפני שנה · לא נצפה</small></p></div><div class="sv"><i></i><p>איך בוחרים מוצר מנצח<small>נשמר לפני שנה · לא נצפה</small></p></div><div class="sv"><i></i><p>חנות שופיפיי מאפס, מדריך מלא<small>נשמר לפני 14 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>דרופשיפינג למתחילים<small>נשמר לפני שנתיים · לא נצפה</small></p></div><div class="sv"><i></i><p>איך כותבים מודעה שמוכרת<small>נשמר לפני 8 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>10 טעויות של מתחילים באיקומרס<small>נשמר לפני שנה וחצי · לא נצפה</small></p></div><div class="sv"><i></i><p>ככה מוצאים ספק אמין<small>נשמר לפני 10 חודשים · לא נצפה</small></p></div><div class="sv"><i></i><p>הנישות הכי חמות השנה<small>נשמר לפני שנה · לא נצפה</small></p></div></div></div>
+        </div>
+        <div class="stamp">נשמר. לא נפתח.</div>
+        <div class="scr b">
+          <div class="scr-h"><span>התלמידים במועדון</span><small>עכשיו</small></div>
+          <div>
+            <div class="nt"><i>מ</i><p><b>מעיין · 832 הזמנות</b>135,813 ₪ ב־8 חודשים, לצד העבודה</p></div>
+            <div class="nt"><i>נ</i><p><b>ניבין · 237 הזמנות</b>31,641 ₪ ב־30 הימים האחרונים</p></div>
+            <div class="nt"><i>ד</i><p><b>דביר · 22,947 ₪</b>הכנסות ב־23 ימים</p></div>
+            <div class="nt"><i>ר</i><p><b>רואי · 118,000 ₪</b>בחצי שנה</p></div>
+            <div class="nt"><i>א</i><p><b>אילן · 32 הזמנות</b>אחרי חודשיים וחצי, מאפס</p></div>
+            <div class="nt"><i>ד</i><p><b>דינה · ROAS 7.32</b>עלה לי הדופק</p></div>
+          </div>
+        </div>
+      </div>
+      <p class="ph-cap" id="phCap">ככה נראה הטלפון שלך עכשיו.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= לבד (כתום) ================= -->
+<section class="sec alone">
+  <div class="wrap">
+    <h2 class="h2 rv">זה לא עבד לך. <span class="u">וזה לא בגללך.</span></h2>
+    <div class="nots rv"><span>לא כי אתה לא מספיק חכם</span><span>לא כי אין לך זמן</span><span>ולא כי איקומרס מת</span></div>
+    <p class="giant rv"><small>זה לא עבד כי היית</small>לבד.</p>
+    <div class="whys">
+      <div class="why rv"><span class="n">01</span><p><b>כל מדריך ביוטיוב אמר לך משהו אחר.</b> אז עשית קצת מהכל, ושום דבר עד הסוף.</p></div>
+      <div class="why rv"><span class="n">02</span><p><b>בחרת מוצר כי הוא נראה לך מגניב.</b> לא כי אנשים באמת קונים אותו.</p></div>
+      <div class="why rv"><span class="n">03</span><p><b>המודעה הראשונה נפלה.</b> ולא היה אף אחד שיגיד לך מה משנים מחר בבוקר.</p></div>
+    </div>
+    <div class="verdict rv">
+      <p>איקומרס לא נכשל מחוסר ידע. הוא נכשל מבדידות.</p>
+      <p>אז בניתי מקום שבו אתה לא לבד.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= המועדון ================= -->
+<section class="sec club">
+  <div class="wrap">
+    <div class="club-top">
+      <div>
+        <span class="kick rv">המועדון</span>
+        <h2 class="h2 rv">זה לא עוד קורס. <span class="u">פה לא משחררים אותך.</span></h2>
+        <p class="p rv">קורס נותן לך סרטונים, ושולח אותך הביתה. <b>המועדון נותן לך את כל מה שצריך כדי לבנות עסק איקומרס אמיתי, ולא משחרר אותך עד שזה עובד.</b></p>
+      </div>
+      <div class="dots-wrap rv">
+        <!-- 666 נקודות, אחת לכל חבר במועדון. הנקודה הלבנה האחרונה היא הגולש. -->
+        <div class="dots" id="dots" aria-hidden="true"></div>
+        <p class="dots-cap"><b>666</b>אנשים שבונים בדיוק כמוך. הנקודה הלבנה? זה אתה.</p>
+      </div>
+    </div>
+
+    <!-- חמשת הרכיבים: מה שאביב אומר בסרטון עצמו -->
+    <div class="parts">
+      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><path class="a-step" d="M5 33h8v-7h8v-7h8v-7h6"/><circle class="a-pulse" cx="35" cy="8" r="3" fill="currentColor"/></svg></span><div><h3>הכשרה מסודרת, צעד אחרי צעד</h3><p>מעל 100 שעות תוכן, וספריית הזהב: כל ההקלטות מספטמבר 2024 ועד היום.</p></div></div>
+      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="13" r="5"/><path d="M5 31c1-6 5-9 9-9s8 3 9 9"/><g class="a-bob"><path d="M24 7h12v9h-6l-4 3v-3h-2z" fill="currentColor" fill-opacity=".25"/></g></svg></span><div><h3>לייבים כל שבוע</h3><p>מאסטר קלאס שבועי בלייב, ו־4 עד 8 מפגשים חיים בחודש. שואלים, מקבלים תשובה, מתקדמים.</p></div></div>
+      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><g class="a-spin"><circle cx="20" cy="7" r="4"/><circle cx="31" cy="27" r="4"/><circle cx="9" cy="27" r="4"/></g><circle cx="20" cy="20" r="3" fill="currentColor"/></svg></span><div><h3>666 אנשים שדוחפים אותך</h3><p>קהילה סגורה. שיתופי הצלחות, פרגונים ותוצאות, כל יום.</p></div></div>
+      <div class="part rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="24" height="20" rx="5"/><path d="M20 4v6M14 30v5M26 30v5M16 25h8"/><circle class="a-blink" cx="15" cy="19" r="2" fill="currentColor"/><circle class="a-blink" cx="25" cy="19" r="2" fill="currentColor"/></svg></span><div><h3>כלי AI לעבודה השחורה</h3><p>קלוד קוד וצ׳אט ג׳י־פי־טי לעיצוב, תמונות, סרטונים וקריאייטיב.</p></div></div>
+      <div class="part me rv"><span class="ic"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round"><path d="M20 5a14 14 0 0 0-12 21l-2 8 8-2A14 14 0 1 0 20 5z"/><path class="a-pulse" d="M14 17c0 5 4 9 9 9l2-2-3-2-1.500 1.500c-1.500-.5-3.500-2.500-4-4L18 18l-2-3z" fill="currentColor"/></svg></span><div><h3>ואני. בלי פילטר.</h3><p>ספקים חדשים, מוצרים ומה שעובד עכשיו, ישר ממני. לא מפספסים כלום ממה שקורה בתחום.</p></div></div>
+    </div>
+
+    <div class="tour">
+      <div class="rv"><h3>רוצה לראות מה קורה <span class="amb">מבפנים?</span></h3><p>סיור של 17 דקות בתוך המועדון. בלי עריכה מתחנפת.</p></div>
+      <!-- PLACEHOLDER: סרטון הסיור, 17 דקות. קישור במשתנה CFG.TOUR_EMBED -->
+      <button class="vph rv" type="button" data-video="TOUR_EMBED" aria-label="נגן את סרטון הסיור במועדון">
+        <span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן סרטון הסיור בתוך המועדון</small></span>
+        <span class="dur">17:00</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= הוכחות ================= -->
+<section class="sec proof" id="proof">
+  <div class="wrap">
+    <div class="ctr">
+      <span class="kick rv">תוצאות אמיתיות</span>
+      <h2 class="h2 rv">הם עמדו בדיוק איפה שאתה עומד. <span class="u">תסתכל איפה הם היום.</span></h2>
+      <p class="p rv" style="max-width:820px;margin-inline:auto">שכיר. מורה. לוחם בסיירת. ואחד שלא ידע כלום על איקומרס. <b>אף אחד מהם לא נולד יזם.</b> צילומי מסך אמיתיים. טשטשנו רק טלפונים ושמות חנויות.</p>
+    </div>
+
+    <div class="wins">
+      <a class="win rv" href="#st-maayan"><span class="v">₪<span data-count="135813">135,813</span></span><span class="w">מעיין · שכיר ואבא לארבעה</span><span class="d">832 הזמנות ב־8 חודשים, לצד העבודה</span></a>
+      <a class="win rv" href="#st-nivin"><span class="v">₪<span data-count="27000">27,000</span></span><span class="w">ניבין · מורה</span><span class="d">בתוך שלושה חודשים</span></a>
+      <a class="win rv" href="#st-dvir"><span class="v">₪<span data-count="22947">22,947</span></span><span class="w">דביר · לוחם סיירת</span><span class="d">הכנסות ב־23 ימים</span></a>
+      <a class="win rv" href="#reels"><span class="v">₪<span data-count="118000">118,000</span></span><span class="w">רואי</span><span class="d">בחצי שנה</span></a>
+      <a class="win rv" href="#st-ilan"><span class="v"><span data-count="32">32</span></span><span class="w">אילן · התחיל מאפס</span><span class="d">הזמנות, אחרי חודשיים וחצי</span></a>
+      <a class="win rv" href="#reels"><span class="v">7.32</span><span class="w">דינה · ROAS</span><span class="d">עלה לי הדופק</span></a>
+    </div>
+
+    <div class="reels" id="reels">
+      <div class="reels-h"><h3 class="rv">תשמע את זה מהם</h3>
+        <div class="arrows"><button type="button" data-dir="1" aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button><button type="button" data-dir="-1" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+      </div>
+      <div class="track" id="track">
+        <!-- PLACEHOLDER: סרטון העדות רואי (118,000 ₪ בחצי שנה), 10:28. קישור במשתנה CFG.VIDEOS.roy --><div class="reel"><button class="vph r916" type="button" data-video="roy" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-9jwg71zrya.jpg)" aria-label="נגן את הסרטון של רואי"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן הסרטון: 118,000 ₪ בחצי שנה</small></span><span class="dur">10:28</span></button><b>רואי</b><span>118,000 ₪ בחצי שנה</span></div>
+        <!-- PLACEHOLDER: סרטון העדות מעיין (שכיר · 135,813 ₪ ב־8 חודשים), 4:24. קישור במשתנה CFG.VIDEOS.maayan --><div class="reel"><button class="vph r916" type="button" data-video="maayan" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-maayan.jpg)" aria-label="נגן את הסרטון של מעיין"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן הסרטון: שכיר · 135,813 ₪ ב־8 חודשים</small></span><span class="dur">4:24</span></button><b>מעיין</b><span>שכיר · 135,813 ₪ ב־8 חודשים</span></div>
+        <!-- PLACEHOLDER: סרטון העדות ניבין (27,000 ₪ ב־3 חודשים), 6:27. קישור במשתנה CFG.VIDEOS.nivin --><div class="reel"><button class="vph r916" type="button" data-video="nivin" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-5mntv13f3k.jpg)" aria-label="נגן את הסרטון של ניבין"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן הסרטון: 27,000 ₪ ב־3 חודשים</small></span><span class="dur">6:27</span></button><b>ניבין</b><span>27,000 ₪ ב־3 חודשים</span></div>
+        <!-- PLACEHOLDER: סרטון העדות דינה (ROAS 7.32 · עלה לי הדופק), 0:10. קישור במשתנה CFG.VIDEOS.dina --><div class="reel"><button class="vph r916" type="button" data-video="dina" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-dina.jpg)" aria-label="נגן את הסרטון של דינה"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן הסרטון: ROAS 7.32 · עלה לי הדופק</small></span><span class="dur">0:10</span></button><b>דינה</b><span>ROAS 7.32 · עלה לי הדופק</span></div>
+        <!-- PLACEHOLDER: סרטון העדות תלמידים מספרים (עשיתי את זה מהבית), 2:14. קישור במשתנה CFG.VIDEOS.home --><div class="reel"><button class="vph r916" type="button" data-video="home" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-4vf0nnjrq6.jpg)" aria-label="נגן את הסרטון של תלמידים מספרים"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן הסרטון: עשיתי את זה מהבית</small></span><span class="dur">2:14</span></button><b>תלמידים מספרים</b><span>עשיתי את זה מהבית</span></div>
+        <!-- PLACEHOLDER: סרטון העדות תלמידים מספרים (מה עשה את ההבדל), 4:53. קישור במשתנה CFG.VIDEOS.diff --><div class="reel"><button class="vph r916" type="button" data-video="diff" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-6ujyzfnt0y.jpg)" aria-label="נגן את הסרטון של תלמידים מספרים"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן הסרטון: מה עשה את ההבדל</small></span><span class="dur">4:53</span></button><b>תלמידים מספרים</b><span>מה עשה את ההבדל</span></div>
+        <!-- PLACEHOLDER: סרטון העדות תלמידים מספרים (הלוואי שהייתי מתחיל קודם), 3:59. קישור במשתנה CFG.VIDEOS.sooner --><div class="reel"><button class="vph r916" type="button" data-video="sooner" style="--poster:url(https://avivmalka123.github.io/dl/img/reel-uso5vl68e1.jpg)" aria-label="נגן את הסרטון של תלמידים מספרים"><span class="ph-in"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span><small>כאן הסרטון: הלוואי שהייתי מתחיל קודם</small></span><span class="dur">3:59</span></button><b>תלמידים מספרים</b><span>הלוואי שהייתי מתחיל קודם</span></div>
+      </div>
+      <p class="hint">מחליקים לצדדים · שום סרטון לא מתנגן לבד</p>
+    </div>
+
+    <div class="stories">
+      <article class="story rv" id="st-maayan">
+        <span class="tag">לצד העבודה</span>
+        <div>
+          <div class="who"><span class="av" aria-hidden="true">מ</span><div><h3>מעיין</h3><small>שכיר, בן 42, נשוי ואבא לארבעה</small></div></div>
+          <div class="beats">
+            <div class="beat"><p class="t">איפה היה</p><p>ראה קורסים ב־12 עד 15 אלף שקל, <b>והיה בטוח שאין לו לא כסף ולא זמן.</b></p></div>
+            <div class="beat"><p class="t">מה עשה</p><p>התחיל בדצמבר 2025. לצד העבודה.</p></div>
+            <div class="beat"><p class="t">מה השתנה</p><p><b>אחרי 8 חודשים: 832 הזמנות ו־135,813 שקל מכירות.</b> עכשיו הוא פותח אתר נוסף בחו״ל.</p></div>
+          </div>
+          <button class="vlink" type="button" data-video="maayan"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg>מעיין מספר · 4:24</button>
+        </div>
+        <div class="nums">
+          <div class="num"><b>₪135,813</b><span>מכירות ב־8 חודשים</span></div>
+          <div class="num"><b>832</b><span>הזמנות</span></div>
+          <!-- PLACEHOLDER: צילום מסך אמיתי של מעיין. כמו שהוא, מטשטשים רק טלפון ושם חנות. -->
+          <img class="shot img zoom" src="https://avivmalka123.github.io/aw/img/maayan-graph.jpg" alt="מעיין: 832 הזמנות ו־135,813 ש״ח מכירות בין דצמבר 2025 לספטמבר 2026" loading="lazy">
+        </div>
+        <p class="quote">צוות תותחים, כל אחד מהם מנטור בפני עצמו, שמלווה אותך ובונה אותך להצלחה. אם אני הצלחתי, גם אתם יכולים.</p>
+      </article>
+
+      <article class="story rv" id="st-nivin">
+        <span class="tag">מחנות בלי מכירות</span>
+        <div>
+          <div class="who"><span class="av" aria-hidden="true">נ</span><div><h3>ניבין</h3><small>מורה</small></div></div>
+          <div class="beats">
+            <div class="beat"><p class="t">איפה הייתה</p><p>חנות פתוחה. <b>בלי מכירות.</b> ניסתה לבד, בלי שיטה.</p></div>
+            <div class="beat"><p class="t">מה השתנה</p><p><b>בתוך שלושה חודשים: 27,000 שקל מכירות.</b> וב־30 הימים האחרונים: 31,641 שקל ו־237 הזמנות.</p></div>
+          </div>
+          <button class="vlink" type="button" data-video="nivin"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg>ניבין מספרת · 6:27</button>
+        </div>
+        <div class="nums">
+          <div class="num"><b>₪27,000</b><span>ב־3 החודשים הראשונים</span></div>
+          <div class="num"><b>237</b><span>הזמנות ב־30 יום · 31,641 ₪</span></div>
+          <!-- PLACEHOLDER: צילום מסך אמיתי של ניבין -->
+          <img class="shot img zoom" src="https://avivmalka123.github.io/dl/img/nivin-sales.jpg" alt="ניבין: 237 הזמנות ו־31,641 ש״ח ב־30 יום" loading="lazy">
+        </div>
+        <p class="quote">בזמן של אזעקות במדינה, גם אצלי נשמעות של הזמנות 😅</p>
+      </article>
+
+      <div class="midcta rv">
+        <a class="cta" href="#cvQuiz" data-cta="mid_proof">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+        <p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p>
+      </div>
+
+      <article class="story rv" id="st-dvir">
+        <span class="tag">כמעט בלי זמן פנוי</span>
+        <div>
+          <div class="who"><span class="av" aria-hidden="true">ד</span><div><h3>דביר ביטון</h3><small>לוחם סיירת</small></div></div>
+          <div class="beats">
+            <div class="beat"><p class="t">איפה היה</p><p>הרבה בחו״ל. <b>מעט מאוד זמן פנוי.</b></p></div>
+            <div class="beat"><p class="t">מה השתנה</p><p><b>ב־23 ימים: 22,947 שקל הכנסות.</b> 4,300 שקל על שיווק, ורווח נקי של 10 עד 12 אלף שקל, לדבריו.</p></div>
+          </div>
+        </div>
+        <div class="nums">
+          <div class="num"><b>₪22,947</b><span>הכנסות ב־23 ימים</span></div>
+          <div class="num"><b>₪4,300</b><span>על שיווק</span></div>
+          <!-- PLACEHOLDER: צילום מסך אמיתי של דביר -->
+          <img class="shot img zoom" src="https://avivmalka123.github.io/aw/img/dvir.jpg" alt="ההודעה של דביר בקבוצת התלמידים" loading="lazy">
+        </div>
+        <p class="quote">גם אני בהתחלה תירצתי לעצמי שאין זמן.</p>
+      </article>
+
+      <article class="story rv" id="st-ilan">
+        <span class="tag">מאפס מוחלט</span>
+        <div>
+          <div class="who"><span class="av" aria-hidden="true">א</span><div><h3>אילן ארד</h3><small>לא ידע כלום על איקומרס</small></div></div>
+          <div class="beats">
+            <div class="beat"><p class="t">איפה היה</p><p><b>לפני חודשיים וחצי לא ידע כלום על איקומרס.</b></p></div>
+            <div class="beat"><p class="t">מה עשה</p><p>התחיל באמצע אפריל. היו לא מעט ניסיונות, מוצרים שלא עבדו, ושינויים.</p></div>
+            <div class="beat"><p class="t">מה השתנה</p><p><b>אחרי כחודשיים וחצי: 32 הזמנות וכמעט 5,600 שקל במכירות.</b></p></div>
+          </div>
+        </div>
+        <div class="nums">
+          <div class="num"><b>32</b><span>הזמנות</span></div>
+          <div class="num"><b>₪5,600</b><span>כמעט, במכירות</span></div>
+          <!-- PLACEHOLDER: צילום מסך אמיתי של הפוסט של אילן בקהילה -->
+          <img class="shot img zoom" src="https://avivmalka123.github.io/clubvsl/img/ilan.png" alt="הפוסט של אילן בקהילה" loading="lazy">
+        </div>
+      </article>
+    </div>
+
+    <div class="wall">
+      <div class="wall-intro">
+        <h2 class="h2 rv">אף אחד לא ביקש מהם <span class="u">לכתוב את זה.</span></h2>
+        <p class="p rv">הודעות מקבוצת הוואטסאפ ומהוואטסאפ הפרטי שלי, ופוסטים מהקהילה. מאנשים שלא האמינו שזה קורה להם. <b>לחיצה מגדילה.</b></p>
+      </div>
+      <div class="masonry">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/yahav.jpg" alt="יהב: 12,775 ש״ח ו־137 הזמנות ב־30 יום" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/chat-75k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/ron.jpg" alt="רון: ההזמנה הראשונה" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/sales-22k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/maayan-chat.jpg" alt="מעיין: התוצאות שלו" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/hani.jpg" alt="חני: עזבתי קורס אחר כי לא היה מענה" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/chat-daniel.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/orders-1.jpg" alt="התראות הזמנה של תלמיד" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/sales-778k.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/aw/img/dina-poster.jpg" alt="דינה" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/chat-raviv.jpg" alt="צילום מסך של תלמיד" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/orders-2.jpg" alt="התראות הזמנה של תלמיד" loading="lazy">
+        <img class="wimg zoom" src="https://avivmalka123.github.io/club/img/community.jpg" alt="פוסטים של תלמידים בקהילה הסגורה" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= מי אני ================= -->
+<section class="sec about">
+  <div class="wrap about-g">
+    <!-- PLACEHOLDER: תמונה אמיתית של אביב, יחס 4 על 5. אמיתית, לא סטודיו מלוטש. -->
+    <div class="portrait rv has"><img src="https://avivmalka123.github.io/club/img/aviv-desk.jpg" alt="אביב מלכה" loading="lazy"><span class="yr">מאז 2010</span></div>
+    <div>
+      <span class="kick rv">מי אני</span>
+      <h2 class="h2 rv">למה להקשיב <span class="u">דווקא לי?</span></h2>
+      <div class="timeline">
+        <div class="tl rv"><span class="y">2010</span><p><b>חייל. 800 שקל בחודש, ומינוס קבוע בבנק.</b> לקחתי מוצרים מהשק״ם ומכרתי אותם. כולם אמרו לי שזה לא יעבוד.</p></div>
+        <div class="tl now rv"><span class="y">היום</span><p><b>15 שנה באיקומרס. מחזור של 20.6 מיליון דולר בחנות אחת שלי.</b> ונפלתי בכל בור שאתה עומד ליפול בו.</p></div>
+      </div>
+      <p class="short rv">במועדון אני לא מלמד תיאוריה. <span class="amb">אני מראה לך את הדרך הקצרה, אחרי שכבר הלכתי בארוכה.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= למי זה לא מתאים ================= -->
+<section class="sec notfor">
+  <div class="wrap">
+    <div class="ctr"><h2 class="h2 rv">אני לא לוקח <span class="u">כל אחד.</span></h2></div>
+    <div class="nf">
+      <div class="nfc rv">מחפש כסף מהיר בלי לעבוד?<span class="rej">לא מתאים</span></div>
+      <div class="nfc rv">לא מוכן להשקיע לפחות שעה ביום?<span class="rej">לא מתאים</span></div>
+      <div class="nfc rv">מחפש עוד קורס לשים במגירה?<span class="rej">לא מתאים</span></div>
+    </div>
+    <div class="but">
+      <p class="rv">אבל אם נמאס לך לחכות, אם אתה מוכן לעבוד עם שיטה וליווי, ואם משהו בך כבר יודע שהגיע הזמן,</p>
+      <p class="big rv">השאלון מחכה לך.</p>
+      <div class="cta-wrap rv"><a class="cta" href="#cvQuiz" data-cta="not_for">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= מה קורה אחרי ================= -->
+<section class="sec after">
+  <div class="wrap">
+    <div class="ctr"><h2 class="h2 rv">מה קורה <span class="u">אחרי שאתה לוחץ?</span></h2></div>
+    <ol class="steps">
+      <li class="rv"><span class="sn">1</span><h3>שאלון קצר</h3><p>שתי דקות. זהו.</p></li>
+      <li class="rv"><span class="sn">2</span><h3>הצוות עובר עליו</h3><p>יש התאמה? חוזרים אליך לשיחה.</p></li>
+      <li class="rv"><span class="sn">3</span><h3>שיחה כנה</h3><p>מבינים איפה אתה היום, ואם המועדון הוא הצעד הנכון. ואם לא, אומרים לך ישר.</p></li>
+    </ol>
+    <p class="calm rv">בלי לחץ. <span class="amb">בדיקה כנה, משני הצדדים.</span></p>
+
+    <div class="faq nar" style="margin-inline:auto">
+      <div class="qa rv"><button type="button" aria-expanded="false">אין לי ניסיון באיקומרס.<i></i></button><div class="an"><div><p><b>גם לאילן לא היה.</b> לפני חודשיים וחצי הוא לא ידע כלום, והיום יש לו הזמנות. המועדון בנוי בדיוק למי שמתחיל מאפס.</p></div></div></div>
+      <div class="qa rv"><button type="button" aria-expanded="false">אין לי זמן, אני עובד.<i></i></button><div class="an"><div><p><b>מעיין שכיר ואבא לארבעה. דביר לוחם בסיירת, הרבה בחו״ל.</b> שניהם בנו עסק איקומרס לצד החיים. שעה ביום מספיקה כדי להתחיל.</p></div></div></div>
+      <div class="qa rv"><button type="button" aria-expanded="false">ניסיתי כבר, ונכשלתי.<i></i></button><div class="an"><div><p><b>מעולה. אתה כבר יודע מה לא עובד.</b> ניבין הגיעה עם חנות פתוחה בלי מכירות, ובתוך שלושה חודשים הגיעה ל־27 אלף שקל.</p></div></div></div>
+      <div class="qa rv"><button type="button" aria-expanded="false">אני לא בטוח שזה בשבילי.<i></i></button><div class="an"><div><p><b>בשביל זה יש שיחת התאמה.</b> אם זה לא בשבילך, נגיד לך. לא נמכור לך משהו שלא יעבוד.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= דחיפה אחרונה ================= -->
+<section class="sec final">
+  <div class="wrap ctr">
+    <h2 class="h2 rv">בעוד שנה מהיום, <span class="u">תהיה אחד משניים.</span></h2>
+    <div class="fork rv">
+      <div class="fk same"><small>אפשרות 1</small><span>מי שעדיין שומר סרטונים</span></div>
+      <div class="fk new"><small>אפשרות 2</small>מי שהתחיל היום</div>
+    </div>
+    <p class="p rv">מעיין, ניבין ודביר עמדו בדיוק איפה שאתה עומד. אותם פחדים, אותם תירוצים, אותו קול בראש: מי מבטיח לי שזה יעבוד? <b>ההבדל ביניכם הוא לא כישרון ולא כסף. זו החלטה אחת שהם קיבלו, ואתה עוד דוחה.</b></p>
+    <p class="last rv">תפסיק לחכות להרגיש מוכן.</p>
+    <div class="cta-wrap rv">
+      <a class="cta" href="#cvQuiz" data-cta="final">אני קופץ למים. לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
+      <p class="cta-sub">2 דקות<i>·</i>בלי התחייבות<i>·</i>חוזרים רק אם יש התאמה</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= השאלון =================
+     PLACEHOLDER: מדביקים כאן את בלוק שאלון ההתאמה הקיים מהדף avivmalka.com/club-vsl
+     (שם מלא, מספר וואטסאפ, והכפתור לשאלון). חובה לשמור על id="cvQuiz".
+     אם השאלון בכתובת אחרת: משנים את CFG.QUIZ_URL, וכל הכפתורים עוברים לשם. -->
+<section class="quiz" id="cvQuiz">
+  <div class="wrap"><div class="ctr" style="margin-bottom:34px"><h2 class="h2" style="font-size:clamp(34px,4.6vw,56px);margin-top:0">שאלון ההתאמה. <span class="u">2 דקות, וזהו.</span></h2></div><div class="ls"><div class="ls-q" id="lsQ"></div></div></div>
+</section>
+</main>
+
+<!-- הבהרה משפטית: לא לשנות את הנוסח -->
+<footer class="legal"><div class="wrap nar">הסיפורים וצילומי המסך הם של תלמידים אמיתיים ופורסמו באישורם. התוצאות משתנות מאדם לאדם ואינן הבטחה להכנסה.</div></footer>
+
+<div class="stk" id="stk"><a class="cta" href="#cvQuiz" data-cta="sticky">אני רוצה להיות הסיפור הבא<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a></div>
+<div class="toast" id="toast" role="status"></div>
+<div class="lbx" id="lbx" role="dialog" aria-label="צילום מסך מוגדל"><img alt=""></div>
 
 <script>
+/* ================================================================
+   CFG: כל מה שמחליפים לפני העלייה
+   ================================================================ */
+var CFG={"QUIZ_URL": "#cvQuiz", "VSL_VID": "OEMH0v7ynQBgdDj1", "VSL_ACC": "YxS8sQvf", "TOUR_EMBED": "https://fast.wistia.net/embed/iframe/hh3hr7vomq?autoPlay=true&playerColor=FFA826", "VIDEOS": {"roy": "https://embed-ssl.wistia.com/deliveries/11ccc77a8d2120f38f83a144d05112bd2860968d/file.mp4", "maayan": "https://avivmalka123.github.io/aw/vid/maayan.mp4", "nivin": "https://embed-ssl.wistia.com/deliveries/72c8f200286624310178728cf193bfd518f07a0a/file.mp4", "dina": "https://avivmalka123.github.io/aw/vid/dina.mp4", "home": "https://embed-ssl.wistia.com/deliveries/83e24c3e903a15b7b2f125c5fa6952f87b2c2af0/file.mp4", "diff": "https://embed-ssl.wistia.com/deliveries/b9abf35ece8a36e60af486ca9b68cf0c9ccb9288/file.mp4", "sooner": "https://embed-ssl.wistia.com/deliveries/53e8f29fcf3ea31e1c388ca7d28a903a4583a05b/file.mp4"}};
+(function(){
+'use strict';
+var $=function(s,c){return (c||document).querySelector(s)},$$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function dl(o){try{(window.dataLayer=window.dataLayer||[]).push(o);}catch(e){}}
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('on');},2600);}
+
+/* כל הכפתורים לשאלון */
+var internal=CFG.QUIZ_URL.charAt(0)==='#';
+$$('[data-cta]').forEach(function(a){
+  var u=CFG.QUIZ_URL;if(!internal&&location.search)u+=(u.indexOf('?')>-1?'&':'?')+location.search.slice(1);a.href=u;
+  a.addEventListener('click',function(e){dl({event:'cta_click',cta:a.dataset.cta});
+    if(internal){var t=$(CFG.QUIZ_URL);if(t){e.preventDefault();t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}}});
+});
+
+/* סרטונים: נטענים רק בלחיצה */
+function embedFor(k){return k==='TOUR_EMBED'?CFG.TOUR_EMBED:(CFG.VIDEOS[k]||'');}
+function play(btn){var k=btn.dataset.video,u=embedFor(k);dl({event:'video_play',video:k});
+  if(!u){toast('כאן ייכנס הסרטון. מוסיפים קישור במשתנה CFG בתחתית הקובץ.');return;}
+  var box=btn.classList.contains('vph')?btn:$('.vph[data-video="'+k+'"]');if(!box)return;
+  var f;if(/\.mp4(\?|$)/.test(u)){$$('.vph video').forEach(function(v){try{v.pause();}catch(x){}});f=document.createElement('video');f.src=u;f.controls=true;f.playsInline=true;f.setAttribute('playsinline','');if(k==='roy'||k==='sooner')f.className='fit';}
+  else{f=document.createElement('iframe');f.src=u+(u.indexOf('?')>-1?'&':'?')+'autoplay=1&playsinline=1';f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;f.title='סרטון';}
+  box.innerHTML='';box.appendChild(f);box.removeAttribute('data-video');if(f.play){var pp=f.play();if(pp&&pp.catch)pp.catch(function(){});}
+  if(box!==btn)box.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});}
+$$('[data-video]').forEach(function(b){b.addEventListener('click',function(){if(b.dataset.video)play(b);});});
+
+/* קרוסלה */
+var tr=$('#track');
+$$('.arrows button').forEach(function(b){b.addEventListener('click',function(){var w=$('.reel',tr).getBoundingClientRect().width+14;tr.scrollBy({left:-(+b.dataset.dir)*w,behavior:reduce?'auto':'smooth'});});});
+
+/* אקורדיון */
+$$('.qa button').forEach(function(b){b.addEventListener('click',function(){var q=b.parentNode,on=!q.classList.contains('on');q.classList.toggle('on',on);b.setAttribute('aria-expanded',on);if(on)dl({event:'objection_open',q:b.textContent.trim()});});});
+
+/* 666 נקודות */
+var dots=$('#dots'),N=666,html='';for(var i=0;i<N;i++)html+='<i></i>';dots.innerHTML=html;
+var D=$$('i',dots);
+function fillDots(){var i=0,step=Math.ceil(N/60);(function go(){for(var k=0;k<step&&i<N-1;k++,i++)D[i].classList.add('on');if(i<N-1)setTimeout(go,22);else D[N-1].classList.add('you');})();}
+
+/* טלפון: שמורים, חותמת, התראות של תלמידים */
+var ph=$('#phone'),cap=$('#phCap'),phT=[];
+function phoneLoop(){ph.className='phone';cap.innerHTML='ככה נראה הטלפון שלך עכשיו.';
+  phT.push(setTimeout(function(){ph.classList.add('st');},3200));
+  phT.push(setTimeout(function(){ph.classList.add('flip');cap.innerHTML='ככה הוא נראה אצל <b>מי שהפסיק לחכות.</b>';},5200));
+  phT.push(setTimeout(phoneLoop,13500));}
+
+if('IntersectionObserver' in window&&!reduce){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px',threshold:.06});
+  $$('.rv,.nfc').forEach(function(el){io.observe(el);});
+  var exs=$$('.ex'),eio=new IntersectionObserver(function(es){if(es[0].isIntersecting){exs.forEach(function(x,i){setTimeout(function(){x.classList.add('x');},400+i*600);});eio.disconnect();}},{threshold:.5});eio.observe($('#excuses'));
+  var dio=new IntersectionObserver(function(es){if(es[0].isIntersecting){fillDots();dio.disconnect();}},{threshold:.4});dio.observe(dots);
+  var pio=new IntersectionObserver(function(es){if(es[0].isIntersecting){if(!phT.length)phoneLoop();}else{phT.forEach(clearTimeout);phT=[];}},{threshold:.35});pio.observe(ph);
+  var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;cio.unobserve(e.target);var el=e.target,to=+el.dataset.count,t0=null;
+    function st(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1300,1);var dec=(el.dataset.count.split('.')[1]||'').length,vv=to*(1-Math.pow(1-p,3));el.textContent=dec?vv.toFixed(dec):Math.round(vv).toLocaleString('en-US');if(p<1)requestAnimationFrame(st);}requestAnimationFrame(st);});},{threshold:.6});
+  $$('[data-count]').forEach(function(el){cio.observe(el);});
+}else{$$('.rv,.nfc').forEach(function(el){el.classList.add('in');});$$('.ex').forEach(function(x){x.classList.add('x');});D.forEach(function(d){d.classList.add('on');});D[N-1].className='you';ph.className='phone flip';}
+
+/* כפתור דביק במובייל */
+var stk=$('#stk'),vsl=$('#vsl'),quiz=$('#cvQuiz');
+function onScroll(){var vh=innerHeight,q=quiz.getBoundingClientRect();stk.classList.toggle('on',vsl.getBoundingClientRect().bottom<0&&!(q.top<vh*.85&&q.bottom>0));}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+
+/* ===== club-vsl: our working parts (kept from v1) ===== */
 (function(){
   var $ = function(id){ return document.getElementById(id); };
-  var WHERE = 'דף הסרטון של המועדון (club-vsl)';
+  /* campaign source into the lead message (utm_*), so Aviv sees which ad/page brought the lead */
+  var qs = new URLSearchParams(location.search), utm = ['utm_source','utm_campaign','utm_content'].map(function(k){ return qs.get(k); }).filter(Boolean).join(' / ');
+  var WHERE = 'דף הסרטון של המועדון (club-vsl)' + (utm ? ' · ' + utm : '');
   function fit(where){
     var WA = 'https://wa.me/972525535537?text=' + encodeURIComponent('היי אביב, אני רוצה לעבור התאמה למועדון האיקומרס ולקבוע שיחת זום.');
     var Q = [
@@ -646,7 +997,7 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
         '<ol class="ls-fnext"><li><b>שולחים הודעה בוואטסאפ</b><span>בכפתור למטה, ההודעה כבר כתובה</span></li><li><b>מתאמים שעה לשיחה</b><span>נחזור אליך אישית עם זמנים</span></li><li><b>עולים לזום בזמן</b><span>מהבית, ממקום שקט, כמה דקות לפני</span></li></ol>' +
         '<a class="ls-btn wa" href="' + WA + '" target="_blank" rel="noopener">💬 לתיאום שיחת הזום בוואטסאפ</a>' +
         '<p class="ls-done">👆 לוחצים שלח, ונחזור אליך לתאם את השיחה.</p></div>';
-      var cta = document.querySelector('#lsNext .ls-cta'); if (cta) cta.style.display = 'none';   /* one WhatsApp button at the end */
+      
       box.scrollIntoView({block: 'start', behavior: 'smooth'});
     }
     intro();
@@ -654,77 +1005,31 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 
   fit(WHERE);
 
-  /* main video: the Kajabi video block (uploaded VSL, autoplay off) moves into the hero */
+  /* main VSL: Vidalytics embed (autoplay is off in the Vidalytics player settings) */
   (function(){
-    var tries = 0, t = setInterval(function(){
-      var v = document.querySelector('.block-type--video');
-      if (v){ clearInterval(t); var box = $('cvVsl'); box.innerHTML = ''; box.appendChild(v); v.style.display = 'block'; return; }
-      if (++tries > 80) clearInterval(t);
-    }, 150);
+    var id = CFG.VSL_VID, box = $('cvPlayer'), wrap = $('cvVsl');
+    if (!id || !box) return;
+    box.innerHTML = '<div id="vidalytics_embed_' + id + '" style="width:100%;position:relative;padding-top:56.25%;"></div>';
+    (function (v, i, d, a, l, y, t, c, s) {
+      y='_'+d.toLowerCase();c=d+'L';if(!v[d]){v[d]={};}if(!v[c]){v[c]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[c][vl + 'Script'],vlf=v[c][vl + 'Loaded'],ve='Embed';
+      if (!vsl){vsl=function(u,cb){if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;
+        if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}
+        i.getElementsByTagName("head")[0].appendChild(s);};}
+      vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
+    })(window, document, 'Vidalytics', 'vidalytics_embed_' + id, 'https://fast.vidalytics.com/embeds/' + CFG.VSL_ACC + '/' + id + '/');
+    var hide = function(){ wrap.classList.add('played'); };
+    wrap.addEventListener('pointerdown', hide, true);
+    document.addEventListener('play', function(e){ if (wrap.contains(e.target)) hide(); }, true);
   })();
 
-  /* in-page anchors: smooth scroll */
-  [].forEach.call(document.querySelectorAll('a[href^="#"]'), function(a){
-    a.addEventListener('click', function(e){
-      var t = document.getElementById(a.getAttribute('href').slice(1)); if (!t) return;
-      e.preventDefault(); t.scrollIntoView({behavior: 'smooth', block: 'start'});
-    });
-  });
-
-  /* reels slider: nothing autoplays; tap = play with sound, one at a time */
-  (function(){
-    var track = $('rtrack'); if (!track) return;
-    var reels = [].slice.call(track.querySelectorAll('.reel'));
-    function load(r){ var v = r.querySelector('video'); if (!v.src){ v.src = r.getAttribute('data-src'); } v.preload = 'metadata'; }
-    function stopOthers(cur){ reels.forEach(function(r){ if (r !== cur){ var v = r.querySelector('video'); if (!v.paused) v.pause(); } }); }
-    reels.forEach(function(r){
-      var v = r.querySelector('video'), bar = r.querySelector('.rbar i');
-      r.querySelector('.rplay').addEventListener('click', function(){
-        load(r);
-        if (v.paused){ stopOthers(r); v.muted = false; var p = v.play(); r.classList.add('on'); r.classList.remove('paused'); if (p && p.catch) p.catch(function(){}); }
-        else { v.pause(); }
-      });
-      v.addEventListener('pause', function(){ r.classList.add('paused'); });
-      v.addEventListener('play', function(){ r.classList.remove('paused'); r.classList.add('on'); });
-      v.addEventListener('timeupdate', function(){ if (v.duration) bar.style.width = (100 * v.currentTime / v.duration) + '%'; });
-      v.addEventListener('ended', function(){ r.classList.remove('on'); r.classList.remove('paused'); bar.style.width = '0'; v.currentTime = 0; });
-    });
-    var step = function(){ return reels[0].getBoundingClientRect().width + 12; };
-    document.querySelector('.rnext').onclick = function(){ track.scrollBy({left: -step(), behavior: 'smooth'}); };
-    document.querySelector('.rprev').onclick = function(){ track.scrollBy({left: step(), behavior: 'smooth'}); };
-  })();
-
-  /* proof wall: show more */
-  $('wallMore').onclick = function(){ $('wallw').classList.remove('clip'); this.style.display = 'none'; };
-
-  /* sticky CTA (mobile): after the hero, hidden while the quiz is on screen */
-  var st = $('sticky'), heroBtn = document.querySelector('.hero .btn'), qz = $('cvQuiz');
-  function onScroll(){
-    var r = qz.getBoundingClientRect(), inQ = r.top < innerHeight && r.bottom > 0;
-    st.classList.toggle('on', heroBtn.getBoundingClientRect().bottom < 0 && !inQ);
-  }
-  addEventListener('scroll', onScroll, {passive: true}); onScroll();
-
-  /* lightbox: videos play only after a click, screenshots zoom */
-  var lb = $('lb'), lbIn = $('lbIn');
-  function close(){ lb.classList.remove('on'); lbIn.innerHTML = ''; }
-  lb.addEventListener('click', function(e){ if (e.target === lb || e.target.classList.contains('x')) close(); });
-  addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+  /* screenshots: tap to zoom */
+  var lbx = $('lbx');
   document.addEventListener('click', function(e){
-    var p = e.target.closest && e.target.closest('.play');
-    if (p){
-      var src = p.getAttribute('data-local');
-      if (src){
-        if (p.closest('#maayanBox')){ p.parentNode.innerHTML = '<video src="' + src + '" controls autoplay playsinline></video>'; return; }
-        lbIn.innerHTML = '<div class="v tall"><video src="' + src + '" controls autoplay playsinline></video></div>';
-      } else {
-        lbIn.innerHTML = '<div class="v"><iframe src="https://fast.wistia.net/embed/iframe/' + p.getAttribute('data-w') + '?autoPlay=true&playerColor=F28C28" allow="autoplay; fullscreen" allowfullscreen></iframe></div>';
-      }
-      lb.classList.add('on'); return;
-    }
-    var im = e.target.closest && e.target.closest('.shot, .wall img');
-    if (im){ lbIn.innerHTML = '<img src="' + im.src + '" alt="">'; lb.classList.add('on'); }
+    var im = e.target.closest && e.target.closest('.zoom');
+    if (im){ lbx.querySelector('img').src = im.src; lbx.classList.add('on'); return; }
+    if (e.target.closest && e.target.closest('#lbx')) lbx.classList.remove('on');
   });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape') lbx.classList.remove('on'); });
 })();
 </script>
 </body>
