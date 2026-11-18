@@ -45,7 +45,6 @@ cards = ''.join(
     '<button class="vph r916" type="button" data-video="' + k + '" style="--poster:url(' + CFGJ['reels'][k]['poster'] + ')" aria-label="נגן את הסרטון: ' + who + '"><span class="ph-in">' + PLAY + '</span><span class="dur">' + dur + '</span></button></article>'
     for k, big, sub, who, dur in VOICES)
 voices = ('\n    <div class="vt rv" id="voices"><h2 class="vt-h">תקשיבו למי שכבר <span class="amb">עשה את זה!</span></h2>'
-          '<p class="hint" style="margin:-8px 0 22px">לוחצים על סרטון כדי לנגן, עם קול · ממשיכים לגלול לעוד</p>'
           '<div class="vt-feed" id="vtFeed">' + cards + '</div><div id="vtMore" class="vt-more" aria-hidden="true"></div></div>\n')
 h0 = s.index('<p class="cta-sub">2 דקות', s.index('<div class="cta-wrap rv">'))
 h1 = s.index('</div>', h0) + len('</div>')
@@ -121,7 +120,7 @@ extra = '\n'.join(keep) + '''
 /* ===== club-vsl v2: real media + quiz in the agency look ===== */
 .vt{margin:56px auto 0;max-width:1140px;text-align:right}
 .vt-h{font-family:var(--he);font-weight:900;font-size:clamp(30px,4.4vw,52px);line-height:1.05;letter-spacing:-.03em;text-align:center;margin:0 0 26px;text-wrap:balance}
-.vt-feed{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.vt-feed{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
 .vt-card{background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:12px;transition:border-color .3s,opacity .5s,transform .5s var(--e)}
 .vt-card.wait{display:none}
 .vt-card.new{opacity:0;transform:translateY(24px)}
@@ -134,7 +133,7 @@ extra = '\n'.join(keep) + '''
 .vt-card .vph{border-radius:16px;border:0}
 .vt-card .play{width:70px;height:70px}.vt-card .play svg{width:28px;height:28px;margin-right:-4px}
 .vt-more{height:2px}
-@media (max-width:900px){.vt-feed{grid-template-columns:1fr 1fr}}
+@media (max-width:1000px){.vt-feed{grid-template-columns:repeat(3,1fr)}}@media (max-width:760px){.vt-feed{grid-template-columns:1fr 1fr}}
 @media (max-width:600px){.vt{margin-top:44px}.vt-feed{grid-template-columns:1fr;max-width:420px;margin:0 auto;gap:16px}.vt-top b{font-size:34px}.vt-top b.q{font-size:24px}}
 
 .hero h1.hook{font-size:clamp(34px,4.6vw,62px);line-height:1.12;letter-spacing:-.03em;max-width:1000px;margin-top:6px}
@@ -280,7 +279,7 @@ our = r'''
 
   /* voices feed (Aviv 18.11): one after another, more cards appear as you scroll */
   (function(){ var feed = $('vtFeed'), more = $('vtMore'); if (!feed) return;
-    var cards = [].slice.call(feed.children), FIRST = matchMedia('(max-width:600px)').matches ? 3 : 6, STEP = matchMedia('(max-width:600px)').matches ? 3 : 6, shown = 0;
+    var cards = [].slice.call(feed.children), FIRST = matchMedia('(max-width:600px)').matches ? 3 : 8, STEP = matchMedia('(max-width:600px)').matches ? 3 : 8, shown = 0;
     cards.forEach(function(c){ c.classList.add('wait'); });
     function reveal(n){ cards.slice(shown, shown + n).forEach(function(c, i){ c.classList.remove('wait'); c.classList.add('new'); setTimeout(function(){ c.classList.remove('new'); }, 40 + i * 90); }); shown = Math.min(cards.length, shown + n); if (shown >= cards.length && io) io.disconnect(); }
     var io = 'IntersectionObserver' in window ? new IntersectionObserver(function(es){ if (es[0].isIntersecting) reveal(STEP); }, {rootMargin: '600px 0px'}) : null;
