@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>לוח הניסוי · דף הסרטון של המועדון</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A1428;--bg2:#0E1B33;--bg3:#13233F;--line:#22355A;--tx:#fff;--mut:#B8C4D9;--dim:#7E8DAA;--a:#7FB0FF;--b:#FFA826;--ok:#3DDC84;--no:#FF6B5B}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Assistant','Heebo',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.w{max-width:1120px;margin:0 auto;padding:28px 16px 70px}
+h1,h2,h3{font-family:'Heebo',system-ui,sans-serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em}
+h2{font-size:22px;font-weight:900;margin:0 0 14px}
+.sub{color:var(--mut);margin:6px 0 0;font-size:16px}
+.sub a{color:var(--b)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:20px 0 6px}
+.bar button{font:800 15px 'Heebo',sans-serif;background:var(--bg3);color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.bar button.on{background:var(--b);color:#0A1428;border-color:var(--b)}
+.bar .upd{margin-right:auto;color:var(--dim);font-size:14px}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-top:16px}
+.vars{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.var{border-radius:14px;padding:14px 16px;background:var(--bg3);border-top:4px solid var(--a)}
+.var.b{border-top-color:var(--b)}
+.var b{font-family:'Heebo',sans-serif;font-size:18px}
+.var p{margin:6px 0 0;color:var(--mut);font-size:15.5px}
+.verdict{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:17px}
+.pill{font:900 14px 'Heebo',sans-serif;padding:5px 12px;border-radius:999px;background:var(--bg3);border:1px solid var(--line)}
+.pill.ok{background:rgba(61,220,132,.14);border-color:var(--ok);color:var(--ok)}
+.tblw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}#tbl{min-width:420px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;font-size:15.5px}
+th{color:var(--dim);font-weight:800;font-size:13.5px}
+td.k{color:var(--mut);font-weight:700}
+td .r{display:block;font-size:13px;color:var(--dim)}
+td.win{color:var(--ok);font-weight:900}
+.num{font-weight:800}
+.ca{color:var(--a)}.cb{color:var(--b)}
+.fun{display:grid;gap:10px}
+.fr{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center}
+.fr .l{color:var(--mut);font-weight:700;font-size:14.5px}
+.bars{display:grid;gap:4px}
+.bt{height:16px;border-radius:5px;position:relative;min-width:2px}
+.bt span{position:absolute;inset-inline-start:calc(100% + 6px);top:-2px;font-size:12.5px;color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bt.a{background:var(--a)}.bt.b{background:var(--b)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid2>*,.card,.fr>*{min-width:0}
+.legend{display:flex;gap:16px;font-size:14px;color:var(--mut);margin:0 0 10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-left:6px;vertical-align:-1px}
+svg text{fill:var(--dim);font-family:'Assistant',sans-serif;font-size:11px}
+.log{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.log li{display:grid;grid-template-columns:96px 1fr;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.log .d{color:var(--b);font-weight:800;font-variant-numeric:tabular-nums}
+.note{color:var(--dim);font-size:14px;margin-top:10px}
+.empty{color:var(--dim);text-align:center;padding:20px}
+@media (max-width:760px){.vars,.grid2{grid-template-columns:1fr}.fr{grid-template-columns:1fr}.log li{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="w">
+  <h1>לוח הניסוי · דף הסרטון של המועדון</h1>
+  <p class="sub">הדף: <a href="https://www.avivmalka.com/club-vsl" target="_blank" rel="noopener">avivmalka.com/club-vsl</a> · חצי מהגולשים רואים את גרסה א׳ וחצי את גרסה ב׳. המספרים מתעדכנים בזמן אמת.</p>
+  <div class="bar" id="range">
+    <button data-r="all" class="on">מתחילת הניסוי</button><button data-r="7">7 ימים אחרונים</button><button data-r="1">היום</button>
+    <span class="upd" id="upd">טוען…</span>
+  </div>
+
+  <div class="card"><h2>שתי הגרסאות</h2><div class="vars" id="vars"></div></div>
+  <div class="card"><div class="verdict" id="verdict"></div></div>
+
+  <div class="card"><h2>המספרים</h2>
+    <div class="tblw"><table id="tbl"></table></div>
+    <p class="note">כל מספר הוא גולשים שונים (גולש שחזר נספר פעם אחת). אחוזים מתוך מי שנכנס לדף. בדיקות פנימיות לא נספרות.</p>
+  </div>
+
+  <div class="card"><h2>המשפך, שלב אחרי שלב</h2>
+    <div class="legend"><span><i style="background:var(--a)"></i>גרסה א׳</span><span><i style="background:var(--b)"></i>גרסה ב׳</span></div>
+    <div class="fun" id="fun"></div>
+  </div>
+
+  <div class="card"><h2>איפה נושרים בשאלון</h2>
+    <div class="legend"><span><i style="background:var(--a)"></i>גרסה א׳</span><span><i style="background:var(--b)"></i>גרסה ב׳</span></div>
+    <div class="fun" id="qs"></div>
+    <p class="note">כמה גולשים הגיעו לכל שאלה, אחרי שהשאירו שם וטלפון.</p>
+  </div>
+
+  <div class="card"><h2>לפי יום: מי שהשאיר שם וטלפון</h2>
+    <div class="legend"><span><i style="background:var(--a)"></i>גרסה א׳</span><span><i style="background:var(--b)"></i>גרסה ב׳</span></div>
+    <div id="daily"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h2>נייד מול מחשב</h2><div class="tblw"><table id="dev"></table></div></div>
+    <div class="card"><h2>מאיפה הגיעו</h2><div class="tblw"><table id="src"></table></div></div>
+  </div>
+
+  <div class="card"><h2>יומן שינויים</h2><ul class="log" id="log"></ul>
+    <p class="note">כל שינוי בדף נרשם כאן עם תאריך, כדי שאפשר יהיה לקשור אותו לשינוי במספרים.</p>
+  </div>
+</div>
+<script>
+(function(){
+  var API = 'https://club-ab.aviv1988.workers.dev/stats';
+  var $ = function(id){ return document.getElementById(id); };
+  var HE = {A: 'גרסה א׳', B: 'גרסה ב׳'};
+  var ROWS = [['view', 'נכנסו לדף'], ['play', 'ניגנו את הסרטון'], ['w25', 'צפו ברבע מהסרטון'], ['w50', 'צפו בחצי'], ['w75', 'צפו ב־75%'], ['w95', 'צפו עד הסוף'],
+              ['open', 'פתחו את השאלון'], ['lead', 'השאירו שם וטלפון'], ['done', 'סיימו את השאלון'], ['wa', 'לחצו על הוואטסאפ בסוף']];
+  var range = 'all', LOG = null;
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function pct(a, b){ return b ? (100 * a / b) : 0; }
+  function fmtP(x){ return x.toFixed(x >= 10 ? 0 : 1) + '%'; }
+  function day(d){ return d.toISOString().slice(0, 10); }
+  function ztest(x1, n1, x2, n2){ if (!n1 || !n2) return 1; var p = (x1 + x2) / (n1 + n2), se = Math.sqrt(p * (1 - p) * (1 / n1 + 1 / n2)); if (!se) return 1; var z = Math.abs(x1 / n1 - x2 / n2) / se; var t = 1 / (1 + 0.2316419 * z), d = 0.3989423 * Math.exp(-z * z / 2); var q = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return 2 * q; }
+  function load(){
+    var q = '';
+    if (range !== 'all'){ var to = new Date(Date.now() + 2 * 3600e3), from = new Date(to - (range === '1' ? 0 : 6) * 864e5); q = '?from=' + day(from) + '&to=' + day(to); }
+    $('upd').textContent = 'טוען…';
+    Promise.all([fetch(API + q, {cache: 'no-store'}).then(function(r){ return r.json(); }), LOG ? Promise.resolve(LOG) : fetch('ab-log.json?x=' + Date.now()).then(function(r){ return r.json(); })])
+      .then(function(res){ LOG = res[1]; draw(res[0], res[1]); })
+      .catch(function(){ $('upd').textContent = 'לא הצלחתי לטעון. נסו לרענן.'; });
+  }
+  function draw(d, L){
+    $('upd').textContent = 'עודכן ' + new Date(d.at).toLocaleTimeString('he-IL', {hour: '2-digit', minute: '2-digit'});
+    $('vars').innerHTML = ['A', 'B'].map(function(v){ return '<div class="var ' + v.toLowerCase() + '"><b>' + HE[v] + '</b><p>' + esc(L.variants[v]) + '</p></div>'; }).join('');
+    var T = {A: {}, B: {}};
+    d.tot.forEach(function(r){ T[r.v][r.ev] = r.u; });
+    var nA = T.A.view || 0, nB = T.B.view || 0;
+    /* verdict on the main goal: finished the quiz (and left name + phone) */
+    var lA = T.A.lead || 0, lB = T.B.lead || 0, dA = T.A.done || 0, dB = T.B.done || 0;
+    var pL = ztest(lA, nA, lB, nB), pD = ztest(dA, nA, dB, nB);
+    var lead = pct(lB, nB) > pct(lA, nA) ? 'B' : pct(lA, nA) > pct(lB, nB) ? 'A' : null;
+    var sure = Math.max(0, 1 - pL);
+    var enough = nA >= 200 && nB >= 200 && lA + lB >= 30;
+    $('verdict').innerHTML = !nA && !nB ? '<span class="empty">עוד אין כניסות לדף מאז תחילת הניסוי.</span>' :
+      '<span class="pill' + (enough && pL < .05 ? ' ok' : '') + '">' + (enough && pL < .05 ? 'יש מנצח' : 'עדיין מוקדם לקבוע') + '</span>' +
+      '<span>השאירו שם וטלפון: <b class="ca">' + fmtP(pct(lA, nA)) + '</b> בגרסה א׳ מול <b class="cb">' + fmtP(pct(lB, nB)) + '</b> בגרסה ב׳.' +
+      (lead ? ' כרגע מובילה <b class="' + (lead === 'A' ? 'ca' : 'cb') + '">' + HE[lead] + '</b>, ברמת ביטחון של ' + Math.round(sure * 100) + '%.' : '') + '</span>' +
+      '<span style="color:var(--dim);font-size:14.5px">' + (enough ? 'קובעים מנצח כשרמת הביטחון מעל 95%.' : 'כדי לקבוע מנצח צריך לפחות 200 כניסות לכל גרסה ו־30 לידים בסך הכול. כרגע: ' + nA + ' ו־' + nB + ' כניסות, ' + (lA + lB) + ' לידים.') + '</span>';
+    /* table */
+    var h = '<tr><th>שלב</th><th class="ca">' + HE.A + '</th><th class="cb">' + HE.B + '</th></tr>';
+    ROWS.forEach(function(r){
+      var a = T.A[r[0]] || 0, b = T.B[r[0]] || 0, pa = pct(a, nA), pb = pct(b, nB);
+      var wa = r[0] !== 'view' && pa > pb && a > 0, wb = r[0] !== 'view' && pb > pa && b > 0;
+      h += '<tr><td class="k">' + r[1] + '</td><td class="' + (wa ? 'win' : '') + '"><span class="num">' + a.toLocaleString('he-IL') + '</span>' + (r[0] !== 'view' ? '<span class="r">' + fmtP(pa) + '</span>' : '') + '</td>' +
+           '<td class="' + (wb ? 'win' : '') + '"><span class="num">' + b.toLocaleString('he-IL') + '</span>' + (r[0] !== 'view' ? '<span class="r">' + fmtP(pb) + '</span>' : '') + '</td></tr>';
+    });
+    $('tbl').innerHTML = h;
+    /* funnel bars, scaled to the bigger audience */
+    var mx = Math.max(nA, nB, 1);
+    $('fun').innerHTML = ROWS.filter(function(r){ return r[0] !== 'wa'; }).map(function(r){
+      var a = T.A[r[0]] || 0, b = T.B[r[0]] || 0;
+      return '<div class="fr"><span class="l">' + r[1] + '</span><div class="bars"><div class="bt a" style="width:' + (88 * a / mx) + '%"><span>' + a + ' · ' + fmtP(pct(a, nA)) + '</span></div><div class="bt b" style="width:' + (88 * b / mx) + '%"><span>' + b + ' · ' + fmtP(pct(b, nB)) + '</span></div></div></div>';
+    }).join('');
+    /* questions */
+    var Q = {A: {}, B: {}}, maxQ = 0;
+    d.qs.forEach(function(r){ if (r.n){ Q[r.v][r.n] = r.u; maxQ = Math.max(maxQ, r.n); } });
+    var q1 = Math.max(Q.A[1] || 0, Q.B[1] || 0, 1), qh = '';
+    for (var i = 1; i <= maxQ; i++){ var a = Q.A[i] || 0, b = Q.B[i] || 0;
+      qh += '<div class="fr"><span class="l">שאלה ' + i + '</span><div class="bars"><div class="bt a" style="width:' + (88 * a / q1) + '%"><span>' + a + '</span></div><div class="bt b" style="width:' + (88 * b / q1) + '%"><span>' + b + '</span></div></div></div>'; }
+    $('qs').innerHTML = qh || '<p class="empty">עוד אין תשובות.</p>';
+    /* daily leads (SVG bars) */
+    var days = {}, dm = 1;
+    d.daily.forEach(function(r){ if (r.ev !== 'lead') return; days[r.day] = days[r.day] || {A: 0, B: 0}; days[r.day][r.v] = r.u; dm = Math.max(dm, r.u); });
+    var ks = Object.keys(days).sort();
+    if (!ks.length) $('daily').innerHTML = '<p class="empty">עוד אין לידים.</p>';
+    else { var W = Math.max(320, ks.length * 46), Hh = 170, bw = 14, svg = '<div class="tblw"><svg width="' + W + '" height="' + (Hh + 30) + '" viewBox="0 0 ' + W + ' ' + (Hh + 30) + '">';
+      ks.forEach(function(k, i){ var x = W - 30 - i * 46, ha = Hh * (days[k].A / dm), hb = Hh * (days[k].B / dm);
+        svg += '<rect x="' + (x - bw) + '" y="' + (Hh - ha) + '" width="' + bw + '" height="' + ha + '" rx="3" fill="#7FB0FF"/><rect x="' + x + '" y="' + (Hh - hb) + '" width="' + bw + '" height="' + hb + '" rx="3" fill="#FFA826"/>' +
+               '<text x="' + x + '" y="' + (Hh + 16) + '" text-anchor="middle">' + k.slice(8) + '.' + k.slice(5, 7) + '</text>' +
+               (days[k].A ? '<text x="' + (x - bw / 2) + '" y="' + (Hh - ha - 4) + '" text-anchor="middle">' + days[k].A + '</text>' : '') + (days[k].B ? '<text x="' + (x + bw / 2) + '" y="' + (Hh - hb - 4) + '" text-anchor="middle">' + days[k].B + '</text>' : ''); });
+      $('daily').innerHTML = svg + '</svg></div>'; }
+    /* device + source */
+    function cross(rows, key, label){
+      var M = {};
+      rows.forEach(function(r){ var k = r[key]; M[k] = M[k] || {A: {}, B: {}}; M[k][r.v][r.ev] = r.u; });
+      var keys = Object.keys(M).sort(function(x, y){ return ((M[y].A.view || 0) + (M[y].B.view || 0)) - ((M[x].A.view || 0) + (M[x].B.view || 0)); }).slice(0, 8);
+      if (!keys.length) return '<tr><td class="empty">עוד אין נתונים</td></tr>';
+      return '<tr><th>' + label + '</th><th class="ca">א׳: כניסות · לידים</th><th class="cb">ב׳: כניסות · לידים</th></tr>' + keys.map(function(k){
+        var a = M[k].A, b = M[k].B;
+        return '<tr><td class="k">' + esc(key === 'dev' ? (k === 'm' ? 'נייד' : 'מחשב') : (k || 'ישיר, בלי מקור')) + '</td><td>' + (a.view || 0) + ' · ' + (a.lead || 0) + ' <span class="r">' + fmtP(pct(a.lead || 0, a.view || 0)) + '</span></td><td>' + (b.view || 0) + ' · ' + (b.lead || 0) + ' <span class="r">' + fmtP(pct(b.lead || 0, b.view || 0)) + '</span></td></tr>';
+      }).join('');
+    }
+    $('dev').innerHTML = cross(d.dev, 'dev', 'מכשיר');
+    $('src').innerHTML = cross(d.src, 'src', 'מקור');
+    $('log').innerHTML = L.log.slice().reverse().map(function(x){ return '<li><span class="d">' + x.date.split('-').reverse().join('.') + '</span><span>' + esc(x.what) + '</span></li>'; }).join('');
+  }
+  [].forEach.call(document.querySelectorAll('#range button'), function(b){ b.onclick = function(){ [].forEach.call(document.querySelectorAll('#range button'), function(x){ x.classList.toggle('on', x === b); }); range = b.dataset.r; load(); }; });
+  load(); setInterval(load, 60000);
+})();
+</script>
+</body>
+</html>

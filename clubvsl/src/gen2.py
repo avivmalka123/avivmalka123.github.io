@@ -116,6 +116,8 @@ extra = '\n'.join(keep) + '''
 @keyframes qmIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
 .qx{position:absolute;top:-6px;left:-4px;z-index:3;width:44px;height:44px;border-radius:50%;background:#fff;color:#0A1428;font:900 28px/1 'Heebo',sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.4);display:grid;place-items:center}
 .qm .ls-q{margin:14px 0 0 !important}
+.qinline{max-width:720px;margin:34px auto 0;position:relative;z-index:1;text-align:right}
+.qinline .ls-q{margin:0 auto !important}
 '''
 s = s.replace('</style>', extra + '</style>', 1)
 rep('<div class="toast" id="toast" role="status"></div>', '<div class="toast" id="toast" role="status"></div>\n<div class="lbx" id="lbx" role="dialog" aria-label="צילום מסך מוגדל"><img alt=""></div>\n<div class="qm" id="qm" role="dialog" aria-modal="true" aria-label="שאלון ההתאמה"><div class="qmi"><button class="qx" id="qmX" type="button" aria-label="סגירה">×</button><div class="ls"><div class="ls-q" id="lsQ"></div></div></div></div>')
@@ -139,6 +141,10 @@ rep("el.textContent=Math.round(to*(1-Math.pow(1-p,3))).toLocaleString('en-US');"
     "var dec=(el.dataset.count.split('.')[1]||'').length,vv=to*(1-Math.pow(1-p,3));el.textContent=dec?vv.toFixed(dec):Math.round(vv).toLocaleString('en-US');")
 
 fit = lb[lb.index('  function fit(where){'):lb.index("\n  var c = LESSONS")]
+fit = fit.replace("hold('start').catch(", "window.cvTrack && cvTrack('lead');\n        hold('start').catch(", 1)
+fit = fit.replace("    function step(i, fresh){\n", "    function step(i, fresh){\n      window.cvTrack && cvTrack('q', i + 1);\n", 1)
+fit = fit.replace("    function done(){\n", "    function done(){\n      window.cvTrack && cvTrack('done');\n", 1)
+assert fit.count('cvTrack') == 6, fit.count('cvTrack')
 fit = fit.replace("var cta = document.querySelector('#lsNext .ls-cta'); if (cta) cta.style.display = 'none';   /* one WhatsApp button at the end */", "")
 our = r'''
 /* ===== club-vsl: our working parts (kept from v1) ===== */
@@ -146,7 +152,33 @@ our = r'''
   var $ = function(id){ return document.getElementById(id); };
   /* campaign source into the lead message (utm_*), so Aviv sees which ad/page brought the lead */
   var qs = new URLSearchParams(location.search), utm = ['utm_source','utm_campaign','utm_content'].map(function(k){ return qs.get(k); }).filter(Boolean).join(' / ');
-  var WHERE = 'דף הסרטון של המועדון (club-vsl)' + (utm ? ' · ' + utm : '');
+  /* ===== A/B test (Aviv 18.11): A = page as is (quiz in a popup) · B = quiz open right under the video. Events → club-ab worker (no personal data) ===== */
+  var EP = 'https://club-ab.aviv1988.workers.dev/e';
+  var forced = (location.search.match(/[?&]ab=([ab])\b/i) || [])[1];
+  var AV; try { AV = localStorage.getItem('cv_ab'); } catch(e){}
+  if (forced) AV = forced.toUpperCase();
+  if (AV !== 'A' && AV !== 'B'){ AV = Math.random() < 0.5 ? 'A' : 'B'; try { localStorage.setItem('cv_ab', AV); } catch(e){} }
+  var VID; try { VID = localStorage.getItem('cv_vid'); } catch(e){}
+  if (!VID || !/^[a-z0-9]{6,32}$/.test(VID)){ VID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).slice(0, 20); try { localStorage.setItem('cv_vid', VID); } catch(e){} }
+  var QA = !!forced || /[?&]qa=1\b/.test(location.search);
+  var DEV = matchMedia('(max-width:767px)').matches ? 'm' : 'd';
+  var SRC = qs.get('utm_source') || (document.referrer ? (function(){ try { return new URL(document.referrer).hostname.replace(/^www\./, ''); } catch(e){ return ''; } })() : '');
+  var sent = {};
+  window.cvTrack = function(ev, n, cta){
+    var k = ev + (n == null ? '' : n) + (cta || ''); if (sent[k]) return; sent[k] = 1;
+    var body = JSON.stringify({v: AV, ev: ev, vid: VID, n: n, cta: cta, dev: DEV, src: SRC, camp: qs.get('utm_campaign') || '', qa: QA ? 1 : 0});
+    try { if (navigator.sendBeacon) navigator.sendBeacon(EP, new Blob([body], {type: 'text/plain'})); else fetch(EP, {method: 'POST', body: body, keepalive: true}); } catch(e){}
+  };
+  document.documentElement.setAttribute('data-ab', AV);
+  cvTrack('view');
+  document.addEventListener('click', function(e){ if (e.target.closest && e.target.closest('.ls-btn.wa')) cvTrack('wa'); });
+  /* main video: play + how far they watched */
+  (function(){ var marks = [25, 50, 75, 95];
+    document.addEventListener('play', function(e){ if (e.target.closest && e.target.closest('#cvPlayer')) cvTrack('play'); }, true);
+    document.addEventListener('timeupdate', function(e){ var v = e.target; if (!(v.closest && v.closest('#cvPlayer')) || !v.duration) return;
+      var pc = 100 * v.currentTime / v.duration; marks.forEach(function(m){ if (pc >= m) cvTrack('w' + m); }); }, true);
+  })();
+  var WHERE = 'דף הסרטון של המועדון (club-vsl) · גרסה ' + (AV === 'A' ? 'א' : 'ב') + (utm ? ' · ' + utm : '');
 ''' + fit + r'''
   fit(WHERE);
 
@@ -168,14 +200,23 @@ our = r'''
   })();
 
   /* quiz popup: every CTA opens it right away (Aviv 18.11: scrolling to the bottom got lost in the reveal animations) */
-  var qm = $('qm');
+  var qm = $('qm'), lsBox = document.querySelector('#qm .ls'), lsQ = $('lsQ'), home = null;
+  if (AV === 'B'){
+    var heroCta = document.querySelector('.hero .cta-wrap');
+    home = document.createElement('div'); home.className = 'ls qinline'; home.id = 'cvQinline';
+    heroCta.parentNode.insertBefore(home, heroCta); heroCta.style.display = 'none';
+    home.appendChild(lsQ);
+    home.addEventListener('pointerdown', function(){ cvTrack('open', null, 'inline'); }, true);
+  }
   window.cvOpenQuiz = function(src){
+    cvTrack('cta', null, src || ''); cvTrack('open', null, src || '');
+    if (home) lsBox.appendChild(lsQ);
     qm.classList.add('on'); document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
     qm.scrollTop = 0;
     try { (window.dataLayer = window.dataLayer || []).push({event: 'quiz_open', cta: src || ''}); } catch(x){}
     setTimeout(function(){ var f = qm.querySelector('.ls-btn, .ls-opt, input'); try { f && f.focus({preventScroll: true}); } catch(x){} }, 350);
   };
-  function closeQuiz(){ qm.classList.remove('on'); document.documentElement.style.overflow = ''; document.body.style.overflow = ''; }
+  function closeQuiz(){ qm.classList.remove('on'); document.documentElement.style.overflow = ''; document.body.style.overflow = ''; if (home) home.appendChild(lsQ); }
   $('qmX').onclick = closeQuiz;
   qm.addEventListener('click', function(e){ if (e.target === qm) closeQuiz(); });
   addEventListener('keydown', function(e){ if (e.key === 'Escape' && qm.classList.contains('on')) closeQuiz(); });
