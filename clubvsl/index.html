@@ -636,6 +636,7 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
   var forced = (location.search.match(/[?&]ab=([ab])\b/i) || [])[1];
   var AV; try { AV = localStorage.getItem('cv_ab'); } catch(e){}
   if (forced) AV = forced.toUpperCase();
+  AV = 'B';   /* this file is version B; cv.js picks the version (Aviv 18.11: A = the agency's original page) */
   if (AV !== 'A' && AV !== 'B'){ AV = Math.random() < 0.5 ? 'A' : 'B'; try { localStorage.setItem('cv_ab', AV); } catch(e){} }
   var VID; try { VID = localStorage.getItem('cv_vid'); } catch(e){}
   if (!VID || !/^[a-z0-9]{6,32}$/.test(VID)){ VID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).slice(0, 20); try { localStorage.setItem('cv_vid', VID); } catch(e){} }

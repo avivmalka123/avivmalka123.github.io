@@ -279,6 +279,7 @@ our = r'''
   var forced = (location.search.match(/[?&]ab=([ab])\b/i) || [])[1];
   var AV; try { AV = localStorage.getItem('cv_ab'); } catch(e){}
   if (forced) AV = forced.toUpperCase();
+  AV = 'B';   /* this file is version B; cv.js picks the version (Aviv 18.11: A = the agency's original page) */
   if (AV !== 'A' && AV !== 'B'){ AV = Math.random() < 0.5 ? 'A' : 'B'; try { localStorage.setItem('cv_ab', AV); } catch(e){} }
   var VID; try { VID = localStorage.getItem('cv_vid'); } catch(e){}
   if (!VID || !/^[a-z0-9]{6,32}$/.test(VID)){ VID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).slice(0, 20); try { localStorage.setItem('cv_vid', VID); } catch(e){} }
@@ -414,5 +415,5 @@ pre = ("/* Aviv Malka club VSL page v2 (agency design) www.avivmalka.com/club-vs
        " var root=document.getElementById('cv-root'); if(!root){root=document.createElement('div');root.id='cv-root';document.body.appendChild(root);}\n"
        " try{ document.body.style.background='" + BG + "'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='" + BG + "'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; } p=p.parentElement; } document.querySelectorAll('header.header, footer.footer').forEach(function(el){ el.style.display='none'; }); var hs=document.createElement('style'); hs.textContent='.block-type--video{display:none !important}'; document.head.appendChild(hs); }catch(e){}\n"
        " root.innerHTML=" + json.dumps(markup, ensure_ascii=False) + ";\n})();\n")
-open(R + 'clubvsl/cv.js', 'w', encoding='utf-8').write(pre + js + '\n')
+open(R + 'clubvsl/cv-b.js', 'w', encoding='utf-8').write(pre + js + '\n')
 print('index.html', len(s), 'cv.js', len(pre + js))
