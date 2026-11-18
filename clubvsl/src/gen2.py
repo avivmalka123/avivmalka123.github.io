@@ -29,6 +29,36 @@ s, k3 = re.subn(r'    <h1 class="rv">.*?</h1>\n', '    <h1 class="rv hook">אי�
 s, k4 = re.subn(r'    <p class="sub rv">.*?</p>\n', '    <p class="sub rv">השיטה של אביב מלכה לבניית עסק איקומרס משלכם, עם כלי AI שמקצרים את העבודה וליווי אישי בכל שלב, <b>גם אם אתם מתחילים מאפס.</b></p>\n', s, count=1, flags=re.S)
 assert (k1, k2, k3, k4) == (1, 1, 1, 1), (k1, k2, k3, k4)
 
+# ---- "תקשיבו למי שכבר עשה את זה!" (Aviv 18.11): student videos right under the hero button, text on top, one by one on mobile ----
+VOICES = [
+    ('roy', '₪118,000', 'בחצי שנה', 'רואי', '10:28'),
+    ('maayan', '832 הזמנות', 'ב־8 חודשים, לצד העבודה', 'מעיין · שכיר ואבא לארבעה', '4:24'),
+    ('nivin', '₪27,000', 'ב־3 החודשים הראשונים', 'ניבין · מורה', '6:27'),
+    ('sooner', '"הלוואי שהייתי מתחיל קודם"', '', 'תלמיד במועדון', '3:59'),
+    ('home', '"עשיתי את זה מהבית"', '', 'תלמידה במועדון', '2:14'),
+    ('diff', 'מה עשה את ההבדל', '', 'תלמידים מספרים', '4:53'),
+    ('dina', 'פי 7.32', 'החזר על הפרסום', 'דינה · "עלה לי הדופק"', '0:10'),
+]
+PLAY = '<span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.500v15l13-7.500z"/></svg></span>'
+cards = ''.join(
+    '<article class="vt-card"><div class="vt-top"><b' + (' class="q"' if big.startswith('"') else '') + '>' + big + '</b>' + ('<em>' + sub + '</em>' if sub else '') + '<span>' + who + '</span></div>'
+    '<button class="vph r916" type="button" data-video="' + k + '" style="--poster:url(' + CFGJ['reels'][k]['poster'] + ')" aria-label="נגן את הסרטון: ' + who + '"><span class="ph-in">' + PLAY + '</span><span class="dur">' + dur + '</span></button></article>'
+    for k, big, sub, who, dur in VOICES)
+voices = ('\n    <div class="vt rv" id="voices"><h2 class="vt-h">תקשיבו למי שכבר <span class="amb">עשה את זה!</span></h2>'
+          '<div class="vt-track" id="vtTrack">' + cards + '</div>'
+          '<div class="vt-nav"><button type="button" class="vt-b" data-d="1" aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>'
+          '<span class="vt-n" id="vtN">1 / ' + str(len(VOICES)) + '</span>'
+          '<button type="button" class="vt-b" data-d="-1" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>'
+          '<p class="hint">מחליקים לצדדים · לוחצים כדי לנגן, עם קול</p></div>\n')
+h0 = s.index('<p class="cta-sub">2 דקות', s.index('<div class="cta-wrap rv">'))
+h1 = s.index('</div>', h0) + len('</div>')
+s = s[:h1] + voices + s[h1:]
+# the old reels row lower in the proof section moves up here
+r0 = s.index('    <div class="reels" id="reels">')
+r1 = s.index('    <div class="stories">')
+s = s[:r0] + s[r1:]
+s = s.replace('href="#reels"', 'href="#voices"')
+
 # club parts: what Aviv says in the VSL itself
 p0 = s.index('<div class="parts">')
 p1 = s.index('\n    <div class="tour">')
@@ -59,8 +89,7 @@ s = s[:i0] + ('      <div class="vph vreal" id="cvVsl"><span class="vsl-over"><b
               '<div id="cvPlayer" class="vplayer"></div></div>') + s[i1:]
 
 # ---- reels: posters ----
-for k, v in CFGJ['reels'].items():
-    rep('data-video="' + k + '" aria-label="נגן את הסרטון של', 'data-video="' + k + '" style="--poster:url(' + v['poster'] + ')" aria-label="נגן את הסרטון של')
+pass  # reel posters are set in the "voices" cards above
 
 # ---- story screenshots ----
 for name, src, alt in CFGJ['shots']:
@@ -93,6 +122,26 @@ keep = [l for l in lb_css if l.startswith('.ls{') or l.startswith('direction:rtl
         any(l.startswith(p) for p in ('.ls-btn', 'background:linear-gradient(180deg,#FFD84D', '@keyframes lsg', '.ls-done', '.ls-q', '.ls-opt', '.ls-opts', '.ls-back', '.ls-res', '.ls-in', '.ls-err', '.ls-lock', '.ls-okbar', '.ls-fsteps', '.ls-who', '.ls-qn', '.ls-ta', '.ls-fnext', '.ls-alt', '.ls-qbar', '.ls-qq'))]
 extra = '\n'.join(keep) + '''
 /* ===== club-vsl v2: real media + quiz in the agency look ===== */
+.vt{margin:56px auto 0;max-width:1140px;text-align:right}
+.vt-h{font-family:var(--he);font-weight:900;font-size:clamp(30px,4.4vw,52px);line-height:1.05;letter-spacing:-.03em;text-align:center;margin:0 0 26px;text-wrap:balance}
+.vt-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.vt-track::-webkit-scrollbar{display:none}
+.vt-card{flex:0 0 250px;scroll-snap-align:center;background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:14px 14px 14px;display:flex;flex-direction:column;gap:12px;transition:border-color .3s,transform .4s var(--e)}
+.vt-card:hover{border-color:var(--amb)}
+.vt-top{min-height:84px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;padding:2px 4px 0;border-right:4px solid var(--amb);padding-right:12px}
+.vt-top b{font-family:var(--he);font-weight:900;font-size:30px;line-height:1;color:var(--amb);letter-spacing:-.02em}
+.vt-top b.q{font-size:21px;line-height:1.15;color:#fff}
+.vt-top em{font-style:normal;font-weight:800;font-size:15px;color:#fff}
+.vt-top span{font-size:14px;color:var(--mut);font-weight:700}
+.vt-card .vph{border-radius:16px;border:0}
+.vt-card .play{width:70px;height:70px}.vt-card .play svg{width:28px;height:28px;margin-right:-4px}
+.vt-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:6px}
+.vt-b{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;transition:background .2s,border-color .2s}
+.vt-b:hover{background:var(--amb);border-color:var(--amb);color:var(--ink)}
+.vt-b svg{width:20px;height:20px}
+.vt-n{font-family:var(--he);font-weight:800;color:var(--mut);font-variant-numeric:tabular-nums;min-width:52px;text-align:center;direction:ltr}
+@media (max-width:600px){.vt{margin-top:44px}.vt-track{gap:12px;padding-inline:9vw}.vt-card{flex-basis:82vw}.vt-top b{font-size:34px}.vt-top b.q{font-size:24px}}
+
 .hero h1.hook{font-size:clamp(34px,4.6vw,62px);line-height:1.12;letter-spacing:-.03em;max-width:1000px;margin-top:6px}
 @media (max-width:600px){.hero h1.hook{font-size:32px;line-height:1.15}}
 .ls{--gold:#FFA826;--gold2:#E08A00;--soft:#FFF1D6;background:transparent !important;font-family:'Assistant','Heebo',system-ui,sans-serif}
@@ -233,6 +282,13 @@ our = r'''
   qm.addEventListener('click', function(e){ if (e.target === qm) closeQuiz(); });
   addEventListener('keydown', function(e){ if (e.key === 'Escape' && qm.classList.contains('on')) closeQuiz(); });
   if (/[#&?](quiz|cvQuiz)\b/.test(location.hash + location.search)) setTimeout(function(){ window.cvOpenQuiz('url'); }, 600);
+
+  /* voices carousel: arrows + counter */
+  (function(){ var tr = $('vtTrack'); if (!tr) return; var cards = [].slice.call(tr.children), n = $('vtN');
+    function cur(){ var c = tr.getBoundingClientRect(), mid = c.left + c.width / 2, best = 0, bd = 1e9; cards.forEach(function(el, i){ var r = el.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid); if (d < bd){ bd = d; best = i; } }); return best; }
+    tr.addEventListener('scroll', function(){ n.textContent = (cur() + 1) + ' / ' + cards.length; }, {passive: true});
+    [].forEach.call(document.querySelectorAll('.vt-b'), function(b){ b.onclick = function(){ var i = Math.max(0, Math.min(cards.length - 1, cur() + (+b.dataset.d === 1 ? -1 : 1))); cards[i].scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'center'}); }; });
+  })();
 
   /* screenshots: tap to zoom */
   var lbx = $('lbx');
