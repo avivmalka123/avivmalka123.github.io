@@ -22,6 +22,13 @@ rep('<div class="stat"><b data-count="19">19</b><span>מיליון דולר במ
 rep('<b>15 שנה באיקומרס. יותר מ־19 מיליון דולר במכירות.</b>', '<b>15 שנה באיקומרס. מחזור של 20.6 מיליון דולר בחנות אחת שלי.</b>')
 rep('<p class="quote">בזמן של אזעקות במדינה, גם אצלי נשמעות אזעקות של הזמנות.</p>',
     '<p class="quote">בזמן של אזעקות במדינה, גם אצלי נשמעות של הזמנות 😅</p>')
+# ---- hero hook (Aviv 18.11 night, both versions): no orange top bar / eyebrow, his new hook ----
+s, k1 = re.subn(r'<div class="topbar">.*?</div>\n', '', s, count=1)
+s, k2 = re.subn(r'    <p class="eyebrow rv">.*?</p>\n', '', s, count=1)
+s, k3 = re.subn(r'    <h1 class="rv">.*?</h1>\n', '    <h1 class="rv hook">איך בונים חנות אונליין בעזרת AI, עם יעד של <span class="amb">5,000 ₪ רווח נוסף בחודש</span>, בלי לעזוב את העבודה!</h1>\n', s, count=1, flags=re.S)
+s, k4 = re.subn(r'    <p class="sub rv">.*?</p>\n', '    <p class="sub rv">השיטה של אביב מלכה לבניית עסק איקומרס משלכם, עם כלי AI שמקצרים את העבודה וליווי אישי בכל שלב, <b>גם אם אתם מתחילים מאפס.</b></p>\n', s, count=1, flags=re.S)
+assert (k1, k2, k3, k4) == (1, 1, 1, 1), (k1, k2, k3, k4)
+
 # club parts: what Aviv says in the VSL itself
 p0 = s.index('<div class="parts">')
 p1 = s.index('\n    <div class="tour">')
@@ -86,6 +93,8 @@ keep = [l for l in lb_css if l.startswith('.ls{') or l.startswith('direction:rtl
         any(l.startswith(p) for p in ('.ls-btn', 'background:linear-gradient(180deg,#FFD84D', '@keyframes lsg', '.ls-done', '.ls-q', '.ls-opt', '.ls-opts', '.ls-back', '.ls-res', '.ls-in', '.ls-err', '.ls-lock', '.ls-okbar', '.ls-fsteps', '.ls-who', '.ls-qn', '.ls-ta', '.ls-fnext', '.ls-alt', '.ls-qbar', '.ls-qq'))]
 extra = '\n'.join(keep) + '''
 /* ===== club-vsl v2: real media + quiz in the agency look ===== */
+.hero h1.hook{font-size:clamp(34px,4.6vw,62px);line-height:1.12;letter-spacing:-.03em;max-width:1000px;margin-top:6px}
+@media (max-width:600px){.hero h1.hook{font-size:32px;line-height:1.15}}
 .ls{--gold:#FFA826;--gold2:#E08A00;--soft:#FFF1D6;background:transparent !important;font-family:'Assistant','Heebo',system-ui,sans-serif}
 .ls-q{max-width:720px;margin:0 auto !important;padding:30px 26px !important;border:2px solid var(--amb) !important;border-radius:22px !important;box-shadow:0 30px 70px -30px rgba(0,0,0,.7) !important}
 .ls h3,.ls .ls-qq{color:#121318 !important;font-family:'Heebo',system-ui,sans-serif}

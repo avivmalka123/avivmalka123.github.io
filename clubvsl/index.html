@@ -445,6 +445,8 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 .ls-fnext li:before{content:counter(f);grid-row:span 2;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--okbg);color:#14532d;font-weight:900}
 .ls-fnext b{font-size:15.5px}.ls-fnext span{color:var(--mute);font-size:13.5px}
 /* ===== club-vsl v2: real media + quiz in the agency look ===== */
+.hero h1.hook{font-size:clamp(34px,4.6vw,62px);line-height:1.12;letter-spacing:-.03em;max-width:1000px;margin-top:6px}
+@media (max-width:600px){.hero h1.hook{font-size:32px;line-height:1.15}}
 .ls{--gold:#FFA826;--gold2:#E08A00;--soft:#FFF1D6;background:transparent !important;font-family:'Assistant','Heebo',system-ui,sans-serif}
 .ls-q{max-width:720px;margin:0 auto !important;padding:30px 26px !important;border:2px solid var(--amb) !important;border-radius:22px !important;box-shadow:0 30px 70px -30px rgba(0,0,0,.7) !important}
 .ls h3,.ls .ls-qq{color:#121318 !important;font-family:'Heebo',system-ui,sans-serif}
@@ -481,16 +483,14 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 </head>
 <body>
 
-<div class="topbar">מועדון האיקומרס של אביב מלכה<span>·</span>666 חברים<span>·</span>15 שנה באיקומרס</div>
 
 <main>
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
   <div class="wrap">
-    <p class="eyebrow rv"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h12v18l-6-4.500L6 21z"/></svg>כמה זמן עוד תמשיך לשמור סרטונים על איקומרס??</p>
-    <h1 class="rv"><span class="a">אתה לא צריך לעזוב את העבודה.</span><span class="b">אתה צריך להפסיק לעשות את זה <span class="lone">לבד.<svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M190 52C192 20 120 6 70 12S6 38 10 60s70 34 120 30 66-22 58-46"/></svg></span></span></h1>
-    <p class="sub rv">מעיין שכיר ואבא לארבעה. בלי זמן מיותר, ובלי כסף לזרוק. <b>832 הזמנות בשמונה חודשים, לצד העבודה.</b> מה היה לו, שלך עוד אין? <b>שיטה, וקהילה שלא נותנת לו ליפול.</b></p>
+    <h1 class="rv hook">איך בונים חנות אונליין בעזרת AI, עם יעד של <span class="amb">5,000 ₪ רווח נוסף בחודש</span>, בלי לעזוב את העבודה!</h1>
+    <p class="sub rv">השיטה של אביב מלכה לבניית עסק איקומרס משלכם, עם כלי AI שמקצרים את העבודה וליווי אישי בכל שלב, <b>גם אם אתם מתחילים מאפס.</b></p>
 
     <div class="vsl rv" id="vsl">
       <!-- PLACEHOLDER: הסרטון הראשי, 17 דקות. קישור הטמעה במשתנה CFG.VSL_EMBED.
