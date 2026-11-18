@@ -211,7 +211,7 @@ while i < len(css):
     res.append(css[m.start():m.end()] + (inner if m.group(1) == 'keyframes' else scope_block(inner)) + '}')
     i = j
 scoped = '\n'.join(res) + ("\n#cv h1,#cv h2,#cv h3,#cv p,#cv a,#cv button,#cv span,#cv b,#cv small,#cv li,#cv input,#cv textarea{text-transform:none}"
-                           "\n#cv h1,#cv h2,#cv h3{margin-bottom:0}#cv p{margin-bottom:0}#cv .alone .h2{color:#0A1428}#cv .alone .h2 .u{color:#fff}"
+                           "\n#cv h1,#cv h2,#cv h3{margin-bottom:0;color:#fff}#cv p{margin-bottom:0}#cv .alone .h2{color:#0A1428}#cv .alone .h2 .u{color:#fff}#cv .story h3,#cv .part.me h3{color:#0A1428}"
                            "\n#cv{direction:rtl;text-align:right;background:var(--bg);color:var(--tx);font-family:var(--tf);font-size:19px;line-height:1.6}#cv .ctr{text-align:center}")
 fonts = '<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@700;800;900&display=swap" rel="stylesheet">'
 markup = fonts + '<style>' + scoped + '</style><div id="cv" dir="rtl">' + body + '</div>'
