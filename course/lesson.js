@@ -293,6 +293,22 @@
       vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[cc][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
     })(window, document, 'Vidalytics', 'vidalytics_embed_' + c.video.vid, 'https://fast.vidalytics.com/embeds/YxS8sQvf/' + c.video.vid + '/');
   }
+  /* 18.11: visitors who hit the 60-second lock on course-hadira continue from the same point (alm_resume, valid 12 h) */
+  try {
+    var rs = JSON.parse(localStorage.getItem('alm_resume') || 'null');
+    if (c.video.vid && rs && rs.vid === c.video.vid && rs.t > 5 && Date.now() - rs.at < 12 * 3600e3){
+      var rsI = setInterval(function(){
+        var v = document.querySelector('#lsVideo video'); if (!v || v.paused || v.muted) return;
+        clearInterval(rsI); try { localStorage.removeItem('alm_resume'); } catch(e){}
+        if (v.currentTime < rs.t - 3){ try { v.currentTime = rs.t; } catch(e){} }
+        var tt = document.createElement('div'); tt.textContent = '▶️ ממשיכים מהנקודה שעצרת';
+        tt.style.cssText = 'position:absolute;top:12px;right:12px;z-index:30;background:rgba(18,19,24,.88);color:#fff;font:700 15px Heebo,Arial,sans-serif;padding:8px 14px;border-radius:999px;pointer-events:none;transition:opacity .6s';
+        var box = $('lsVideo'); if (getComputedStyle(box).position === 'static') box.style.position = 'relative';
+        box.appendChild(tt); setTimeout(function(){ tt.style.opacity = '0'; setTimeout(function(){ tt.remove(); }, 700); }, 3500);
+      }, 300);
+      setTimeout(function(){ clearInterval(rsI); }, 30 * 60e3);
+    }
+  } catch(e){}
   $('lsTools').innerHTML = (c.tools || []).map(function(t){
     return '<a class="ls-tool" href="' + t[3] + '" target="_blank" rel="noopener"><span class="ic">' + t[0] + '</span><span><b>' + t[1] + '</b><small>' + t[2] + '</small></span><span class="go">' + t[4] + '</span></a>';
   }).join('');

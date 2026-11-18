@@ -83,6 +83,14 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
 .ch-lb.on{display:flex}.ch-lb .v{width:min(960px,96vw);aspect-ratio:16/9}.ch-lb .v.tall{width:min(420px,92vw);aspect-ratio:9/16}
 .ch-lb iframe{width:100%;height:100%;border:0;border-radius:12px;background:#000}.ch-lb img{max-height:92vh;border-radius:12px}
 @media (max-width:540px){.ch-proof,.ch-vg{grid-template-columns:1fr}.ch-les{grid-template-columns:44px 1fr}.ch-les .n{width:44px;height:44px}.ch-les .t{display:none}}
+.ch-vid{position:relative;margin:22px 0 4px;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 18px 40px -18px rgba(18,19,24,.55)}
+.ch-gate{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;text-align:center;padding:16px;background:rgba(10,10,14,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.ch-vid.locked .ch-gate{display:flex}
+.ch-gate>div{max-width:440px}
+#ch .ch-gate p{color:#fff;margin:0 0 12px;font-size:clamp(15px,3.8vw,18px)}
+#ch .ch-gate p.t{font-size:clamp(20px,5.4vw,28px);font-weight:900;margin:0 0 6px}
+.ch-gate .ch-btn{font-size:clamp(16px,4.2vw,19px);padding:14px 16px}
+.ch-vhint{color:var(--mute);font-size:14px;text-align:center;margin:6px 0 0}
 </style>
 
 <div class="ch" id="ch">
@@ -96,6 +104,10 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
       <div class="ch-chips"><span>🤖 צעד אחר צעד עם AI</span><span>🔎 מציאת מוצר</span><span>🛒 הקמת אתר</span><span>🎬 שיעור אחד מלא</span></div>
       <button class="ch-btn" data-open>אביב, תכניס אותי עכשיו לשיעור ←</button>
       <div class="ch-note">⏳ אני סוגר את המחזור אחרי 20 רציניים</div>
+      <div class="ch-vid" id="chVid"><div id="chVbox"></div>
+        <div class="ch-gate"><div><p class="t">🔒 רוצה להמשיך לצפות?</p><p>השאר פרטים, והשיעור ממשיך בדיוק מהנקודה שעצרת.</p><button class="ch-btn" data-open style="animation:none">אביב, תן לי להמשיך לצפות ←</button></div></div>
+      </div>
+      <p class="ch-vhint">▶️ הדקה הראשונה פתוחה לכולם</p>
     </section>
 
     <section class="ch-sec">
@@ -188,6 +200,31 @@ background:linear-gradient(180deg,#FFD84D,var(--gold) 50%,var(--gold2));box-shad
     var im = e.target.closest && e.target.closest('#ch .ch-shots img, #ch .ch-zoom');
     if (im){ lb.innerHTML = '<img src="' + im.src + '" alt="">'; lb.classList.add('on'); }
   });
+
+  /* 18.11 (Aviv): the full-course video from hinam1 under the hero button; after 60 s of real (unmuted) watching it locks and asks for the lead.
+     The position is saved in alm_resume, and lesson.js on hinam1 (the form's thank-you page) continues from there. */
+  var VID = 'mar6sKuvtJMwsUSJ', GATE = 60, watched = 0, last = null, gated = false;
+  $('chVbox').innerHTML = '<div id="vidalytics_embed_' + VID + '" style="width:100%;position:relative;padding-top:56.25%;"></div>';
+  (function (v, i, d, a, l, y, t, cc, s) {
+    y='_'+d.toLowerCase();cc=d+'L';if(!v[d]){v[d]={};}if(!v[cc]){v[cc]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[cc][vl + 'Script'],vlf=v[cc][vl + 'Loaded'],ve='Embed';
+    if (!vsl){vsl=function(u,cb){if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;
+      if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}
+      i.getElementsByTagName("head")[0].appendChild(s);};}
+    vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[cc][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
+  })(window, document, 'Vidalytics', 'vidalytics_embed_' + VID, 'https://fast.vidalytics.com/embeds/YxS8sQvf/' + VID + '/');
+  setInterval(function(){
+    var v = document.querySelector('#chVbox video'); if (!v) return;
+    if (gated){ if (!v.paused) try { v.pause(); } catch(e){} return; }
+    if (!v.paused && !v.muted){ var t = v.currentTime; if (last != null){ var dt = t - last; if (dt > 0 && dt < 1.5) watched += dt; } last = t; } else last = null;
+    if (watched >= GATE){
+      gated = true; try { v.pause(); } catch(e){}
+      $('chVid').classList.add('locked');
+      try { localStorage.setItem('alm_resume', JSON.stringify({vid: VID, t: Math.floor(v.currentTime), at: Date.now()})); } catch(e){}
+      try { if (window.fbq) fbq('trackCustom', 'VideoGate'); } catch(e){}
+      try { if (document.fullscreenElement) document.exitFullscreen(); } catch(e){}
+      if (window.innerWidth < 760) $('chVid').scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+  }, 250);
 
   /* sign-up: fills and submits the original Kajabi form 2149456079 (webhook + redirect to hinam1 stay untouched) */
   var realForm = document.querySelector('form[action*="/forms/2149456079/"]');
