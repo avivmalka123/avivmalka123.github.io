@@ -273,26 +273,28 @@ our = r'''
 (function(){
   var $ = function(id){ return document.getElementById(id); };
   /* campaign source into the lead message (utm_*), so Aviv sees which ad/page brought the lead */
-  var qs = new URLSearchParams(location.search), utm = ['utm_source','utm_campaign','utm_content'].map(function(k){ return qs.get(k); }).filter(Boolean).join(' / ');
-  /* ===== A/B test (Aviv 18.11): A = page as is (quiz in a popup) · B = quiz open right under the video. Events → club-ab worker (no personal data) ===== */
+  /* ===== creative tracking (Aviv 19.11, no more A/B): which ad brought each visit and each lead. Events → club-ab worker (no personal data, a random visitor id only) =====
+     Meta ads link here with: utm_source=fb&utm_medium=paid&utm_campaign={{campaign.name}}&utm_term={{adset.name}}&utm_content={{ad.name}}&ad_id={{ad.id}}
+     The last ad click is kept for 30 days, so a visitor who comes back later still counts for that ad. */
   var EP = 'https://club-ab.aviv1988.workers.dev/e';
-  var forced = (location.search.match(/[?&]ab=([ab])\b/i) || [])[1];
-  var AV; try { AV = localStorage.getItem('cv_ab'); } catch(e){}
-  if (forced) AV = forced.toUpperCase();
-  AV = 'B';   /* this file is version B; cv.js picks the version (Aviv 18.11: A = the agency's original page) */
-  if (AV !== 'A' && AV !== 'B'){ AV = Math.random() < 0.5 ? 'A' : 'B'; try { localStorage.setItem('cv_ab', AV); } catch(e){} }
+  var qs = new URLSearchParams(location.search), AV = 'B';
+  var cut = function(x, n){ return x ? String(x).slice(0, n) : ''; };
+  var T = {ad: cut(qs.get('utm_content'), 120), adid: cut((qs.get('ad_id') || '').replace(/\D/g, ''), 24), adset: cut(qs.get('utm_term'), 120), camp: cut(qs.get('utm_campaign'), 120), src: cut(qs.get('utm_source'), 60)};
+  if (!T.src && document.referrer){ try { var rh = new URL(document.referrer).hostname.replace(/^www\./, ''); if (!/avivmalka\.com$/.test(rh)) T.src = rh; } catch(e){} }
+  if (!T.src && qs.get('fbclid')) T.src = 'fb';
+  var paid = !!(T.ad || T.adid || T.camp);
+  try { if (paid){ T.t = Date.now(); localStorage.setItem('cv_touch', JSON.stringify(T)); } else { var o = JSON.parse(localStorage.getItem('cv_touch') || 'null'); if (o && Date.now() - o.t < 30 * 864e5) T = o; } } catch(e){}
+  var utm = [T.src, T.camp, T.adset, T.ad].filter(Boolean).join(' / ');
   var VID; try { VID = localStorage.getItem('cv_vid'); } catch(e){}
   if (!VID || !/^[a-z0-9]{6,32}$/.test(VID)){ VID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).slice(0, 20); try { localStorage.setItem('cv_vid', VID); } catch(e){} }
-  var QA = !!forced || /[?&]qa=1\b/.test(location.search);
+  var QA = /[?&](qa=1|ab=[ab]|test=1)\b/i.test(location.search);
   var DEV = matchMedia('(max-width:767px)').matches ? 'm' : 'd';
-  var SRC = qs.get('utm_source') || (document.referrer ? (function(){ try { return new URL(document.referrer).hostname.replace(/^www\./, ''); } catch(e){ return ''; } })() : '');
   var sent = {};
   window.cvTrack = function(ev, n, cta){
     var k = ev + (n == null ? '' : n) + (cta || ''); if (sent[k]) return; sent[k] = 1;
-    var body = JSON.stringify({v: AV, ev: ev, vid: VID, n: n, cta: cta, dev: DEV, src: SRC, camp: qs.get('utm_campaign') || '', qa: QA ? 1 : 0});
+    var body = JSON.stringify({v: AV, ev: ev, vid: VID, n: n, cta: cta, dev: DEV, src: T.src || '', camp: T.camp || '', adset: T.adset || '', ad: T.ad || '', adid: T.adid || '', qa: QA ? 1 : 0});
     try { if (navigator.sendBeacon) navigator.sendBeacon(EP, new Blob([body], {type: 'text/plain'})); else fetch(EP, {method: 'POST', body: body, keepalive: true}); } catch(e){}
   };
-  document.documentElement.setAttribute('data-ab', AV);
   cvTrack('view');
   document.addEventListener('click', function(e){ if (e.target.closest && e.target.closest('.ls-btn.wa')) cvTrack('wa'); });
   /* main video: play + how far they watched */
@@ -301,7 +303,7 @@ our = r'''
     document.addEventListener('timeupdate', function(e){ var v = e.target; if (!(v.closest && v.closest('#cvPlayer')) || !v.duration) return;
       var pc = 100 * v.currentTime / v.duration; marks.forEach(function(m){ if (pc >= m) cvTrack('w' + m); }); }, true);
   })();
-  var WHERE = 'דף הסרטון של המועדון (club-vsl) · גרסה ' + (AV === 'A' ? 'א' : 'ב') + (utm ? ' · ' + utm : '');
+  var WHERE = 'דף הסרטון של המועדון (club-vsl)' + (T.ad ? ' · ' + T.ad : utm ? ' · ' + utm : '');
 ''' + fit + r'''
   fit(WHERE);
 
@@ -415,5 +417,5 @@ pre = ("/* Aviv Malka club VSL page v2 (agency design) www.avivmalka.com/club-vs
        " var root=document.getElementById('cv-root'); if(!root){root=document.createElement('div');root.id='cv-root';document.body.appendChild(root);}\n"
        " try{ document.body.style.background='" + BG + "'; var p=root.parentElement; while(p && p!==document.body){ p.style.backgroundColor='" + BG + "'; p.style.backgroundImage='none'; if(/section|container|row|col|sizer|block/.test(p.className||'')){ p.style.padding='0'; p.style.margin='0'; p.style.maxWidth='none'; } p=p.parentElement; } document.querySelectorAll('header.header, footer.footer').forEach(function(el){ el.style.display='none'; }); var hs=document.createElement('style'); hs.textContent='.block-type--video{display:none !important}'; document.head.appendChild(hs); }catch(e){}\n"
        " root.innerHTML=" + json.dumps(markup, ensure_ascii=False) + ";\n})();\n")
-open(R + 'clubvsl/cv-b.js', 'w', encoding='utf-8').write(pre + js + '\n')
+open(R + 'clubvsl/cv.js', 'w', encoding='utf-8').write(pre + js + '\n')
 print('index.html', len(s), 'cv.js', len(pre + js))
