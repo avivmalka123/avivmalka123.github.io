@@ -56,5 +56,8 @@ def apply(fit):
       "          if (q.c){ var er = contactErr(q.c, v); if (er){ var e2 = $('lsQE'); e2.textContent = er; e2.style.display = 'block'; return; }\n"
       "            if (q.c === 'name') lead.name = v.slice(0, 60); else lead.phone = v.replace(/[^\\d+]/g, '');\n"
       "            A[i] = q.c === 'name' ? lead.name : lead.phone; if (q.c === 'phone') captured(); next(i); return; }\n")
+    # Aviv 19.11: show how many questions are left, small, above the progress bar
+    R("function bar(i){ return '<div class=\"ls-qbar\">", "function bar(i){ var L = N - i - 1; return '<p style=\"margin:0 0 6px;font-size:12.5px;font-weight:600;color:#8a7d64;text-align:right\">' + (L ? 'שאלה ' + (i + 1) + ' מתוך ' + N + ' · נשארו עוד ' + L : 'שאלה אחרונה') + '</p><div class=\"ls-qbar\">")
+    R("   /* no question count (Aviv) */", "")
     assert "$('lsQN')" not in fit and 'known ?' not in fit, 'leftover intro fields'
     return fit
