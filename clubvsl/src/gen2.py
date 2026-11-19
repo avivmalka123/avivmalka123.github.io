@@ -259,6 +259,9 @@ rep("el.textContent=Math.round(to*(1-Math.pow(1-p,3))).toLocaleString('en-US');"
     "var dec=(el.dataset.count.split('.')[1]||'').length,vv=to*(1-Math.pow(1-p,3));el.textContent=dec?vv.toFixed(dec):Math.round(vv).toLocaleString('en-US');")
 
 fit = lb[lb.index('  function fit(where){'):lb.index("\n  var c = LESSONS")]
+# Aviv 19.11: leads from this page go to the WhatsApp group "לידים רותחים טפסים/וובינר" (Make 10015312 via lead-hold dest 'dl'), not to his private chat
+fit = fit.replace("var HOOK = 'https://hook.eu2.make.com/aos52nvubr4hbal7r1a9a9i7tvfjqcny';", "var HOOK = 'https://hook.eu2.make.com/vyco5ocnauh8o7ue72gj2lldn1wfv0xt';", 1)
+fit = fit.replace("var body = {op: op, id: LID, name: lead.name, phone: lead.phone, total: N, where: where, lines: lines()};", "var body = {op: op, id: LID, name: lead.name, phone: lead.phone, total: N, where: where, dest: 'dl', lines: lines()};", 1)
 fit = fit.replace("hold('start').catch(", "window.cvTrack && cvTrack('lead');\n        hold('start').catch(", 1)
 fit = fit.replace("    function step(i, fresh){\n", "    function step(i, fresh){\n      window.cvTrack && cvTrack('q', i + 1);\n", 1)
 fit = fit.replace("    function done(){\n", "    function done(){\n      window.cvTrack && cvTrack('done');\n", 1)

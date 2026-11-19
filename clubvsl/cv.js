@@ -125,13 +125,13 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
     ];
     var N = Q.length, A = [], box = $('lsQ');
     var HOLD = 'https://lead-hold.aviv1988.workers.dev/hold';
-    var HOOK = 'https://hook.eu2.make.com/aos52nvubr4hbal7r1a9a9i7tvfjqcny';
+    var HOOK = 'https://hook.eu2.make.com/vyco5ocnauh8o7ue72gj2lldn1wfv0xt';
     var lead = {}; try { lead = JSON.parse(localStorage.getItem('alm_lead') || '{}') || {}; } catch(e){}
     var LID = '', direct = false, sentFull = false;
     var stamp = function(){ return new Date().toLocaleString('he-IL', {timeZone: 'Asia/Jerusalem'}); };
     function lines(){ return A.map(function(a, i){ return a ? Q[i].k + ': ' + a : ''; }).filter(Boolean); }
     function hold(op, extra){
-      var body = {op: op, id: LID, name: lead.name, phone: lead.phone, total: N, where: where, lines: lines()};
+      var body = {op: op, id: LID, name: lead.name, phone: lead.phone, total: N, where: where, dest: 'dl', lines: lines()};
       for (var k in extra) body[k] = extra[k];
       return fetch(HOLD, {method: 'POST', headers: {'Content-Type': 'text/plain'}, keepalive: true, body: JSON.stringify(body)})
         .then(function(r){ if (!r.ok) throw 0; return r; });
