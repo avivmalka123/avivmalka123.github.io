@@ -666,6 +666,8 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
     var Q = [
       {k: 'מצב היום', q: 'איפה אתה עומד היום בעולם האיקומרס?', o: [['🌱', 'מתחיל לגמרי, עוד לא ממש מבין איך זה עובד'], ['📚', 'מבין את הבסיס, אבל עוד לא פתחתי חנות'], ['🛍️', 'פתחתי חנות, אבל עוד אין מכירות משמעותיות'], ['📈', 'יש לי חנות שמוכרת, ואני רוצה להגדיל אותה'], ['🏢', 'יש לי עסק אחר, ואני רוצה להוסיף מכירות אונליין']]},
       {k: 'למה עכשיו', q: 'מה קרה שהחלטת להתעניין בתחום הזה דווקא עכשיו?', o: [['💼', 'אני חווה משבר תעסוקתי'], ['📉', 'אני מתמודד עם קושי תזרימי'], ['🕊️', 'אני מרגיש שאין לי מספיק חופש היום'], ['🌍', 'הבנתי שהעולם הולך לכיוון הזה, ואני לא רוצה להישאר מאחור'], ['🤷', 'אין שום סיבה מיוחדת']]},
+      {k: 'שם', c: 'name', q: 'איך קוראים לך?', n: 'שם פרטי מספיק', t: 'שם פרטי'},
+      {k: 'וואטסאפ', c: 'phone', q: 'מה מספר הוואטסאפ שלך?', n: 'כאן נחזור אליך עם תשובה, אם יש התאמה', t: '050-0000000'},
       {k: 'עיסוק היום', q: 'במה אתה עוסק היום?', t: 'לדוגמה: שכיר בהייטק, עצמאי בשיפוצים, חייל משוחרר, סטודנט...', s: 1},
       {k: 'גיל', q: 'מה טווח הגילאים שלך?', o: [['🎒', 'מתחת ל־18'], ['🎓', '18–24'], ['💼', '25–34'], ['🏡', '35–44'], ['🧭', '45–54'], ['🌿', '55 ומעלה']]},
       {k: 'זמן בשבוע', q: 'כמה זמן בשבוע תוכל להקדיש לבניית העסק?', o: [['⏱️', 'פחות מ־5 שעות'], ['🕐', '5 עד 10 שעות'], ['🕒', '10 עד 20 שעות'], ['🔥', 'יותר מ־20 שעות']]},
@@ -684,7 +686,7 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
     var lead = {}; try { lead = JSON.parse(localStorage.getItem('alm_lead') || '{}') || {}; } catch(e){}
     var LID = '', direct = false, sentFull = false;
     var stamp = function(){ return new Date().toLocaleString('he-IL', {timeZone: 'Asia/Jerusalem'}); };
-    function lines(){ return A.map(function(a, i){ return a ? Q[i].k + ': ' + a : ''; }).filter(Boolean); }
+    function lines(){ return A.map(function(a, i){ return a && !Q[i].c ? Q[i].k + ': ' + a : ''; }).filter(Boolean); }
     function hold(op, extra){
       var body = {op: op, id: LID, name: lead.name, phone: lead.phone, total: N, where: where, dest: 'dl', lines: lines()};
       for (var k in extra) body[k] = extra[k];
@@ -694,48 +696,49 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
     function toMake(o){ try { fetch(HOOK, {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify(o)}); } catch(x){} }
     function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
     function bar(i){ return '<div class="ls-qbar"><i><b style="width:' + (i / N * 100) + '%"></b></i></div>'; }   /* no question count (Aviv) */
+    var FB = 'https://hook.eu2.make.com/e27k6us2snsgxmqpnjkg95ybjg4vew6b';
     function intro(){
-      var known = (lead.name || '').trim().length >= 2 && /^(\+?972|0)5\d{8}$/.test(String(lead.phone || '').replace(/[^\d+]/g, ''));
       box.innerHTML = '<p class="lab">השלב הבא</p>' +
         '<h3>בדיקת התאמה למועדון האיקומרס</h3>' +
         '<p class="intro">המועדון מתאים לאנשים שמוכנים לבנות עסק אמיתי, ולכן לפני שמתקדמים אנחנו רוצים להכיר אותך.</p>' +
         '<div class="ls-fsteps"><span><i>1</i>שאלון התאמה</span><span><i>2</i>תשובה אם זה מתאים</span></div>' +
-        /* 17.11 (Aviv): details come from the course sign-up form (alm_lead), so known visitors only see a "not you?" line */
-        '<div id="lsQF"' + (known ? ' hidden' : '') + '><input class="ls-in" id="lsQN" placeholder="שם מלא" autocomplete="name">' +
-        '<input class="ls-in" id="lsQP" type="tel" inputmode="tel" placeholder="מספר וואטסאפ" autocomplete="tel" dir="ltr" style="text-align:right"></div>' +
-        (known ? '<p class="ls-who" id="lsQW">ממלאים בתור <b>' + esc(lead.name) + '</b> · <button type="button" id="lsQX">לא אתה?</button></p>' : '') +
-        '<p class="ls-err" id="lsQE"></p><button class="ls-btn" id="lsQGo">מלאו שאלון לבדיקת התאמה ←</button>' +
-        '<p class="ls-lock">הפרטים נשמרים רק אצלנו</p>';
-      $('lsQN').value = lead.name || ''; $('lsQP').value = lead.phone || '';
-      if (known) $('lsQX').onclick = function(){ $('lsQF').hidden = false; $('lsQW').hidden = true; $('lsQN').focus(); };
-      $('lsQGo').onclick = function(){
-        var name = $('lsQN').value.trim(), phone = $('lsQP').value.replace(/[^\d+]/g, ''), e = $('lsQE');
-        var bad = name.length < 2 ? 'רק שם, כדי שנדע איך לפנות אליך' : !/^(\+?972|0)5\d{8}$/.test(phone) ? 'מספר הוואטסאפ לא נראה מלא' : '';
-        if (bad){ e.textContent = bad; e.style.display = 'block'; return; }
-        lead.name = name; lead.phone = phone;
-        try { localStorage.setItem('alm_lead', JSON.stringify(lead)); } catch(x){}
-        LID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
-        window.cvTrack && cvTrack('lead');
-        hold('start').catch(function(){ direct = true; toMake({source: 'course-readiness', stage: 'lead', submitted_at: stamp(), name: name, phone: phone, summary: '📝 ליד מ' + where + ': השאיר פרטים לפני שאלון ההתאמה\n' + name + ' · ' + phone}); });
-        try { window.fbq && fbq('track', 'Lead'); } catch(x){}
-        step(0, true);
-      };
+        '<button class="ls-btn" id="lsQGo">מתחילים ←</button>' +
+        '<p class="ls-lock">2 דקות · הפרטים נשמרים רק אצלנו</p>';
+      $('lsQGo').onclick = function(){ step(0); };
+    }
+    function contactErr(c, v){
+      if (c === 'name') return v.replace(/[^A-Za-z֐-׿]/g, '').length < 2 ? 'רק שם פרטי, כדי שנדע איך לפנות אליך' : '';
+      return /^(\+?972|0)5\d{8}$/.test(v.replace(/[^\d+]/g, '')) ? '' : 'מספר הוואטסאפ לא נראה מלא';
+    }
+    function captured(){   /* once per quiz: going back and forth doesn't send twice */
+      try { localStorage.setItem('alm_lead', JSON.stringify(lead)); } catch(x){}
+      if (LID) return;
+      LID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+      var name = lead.name, phone = lead.phone;
+      window.cvTrack && cvTrack('lead');
+      hold('start').catch(function(){ direct = true; toMake({source: 'course-readiness', stage: 'lead', submitted_at: stamp(), name: name, phone: phone, summary: '📝 ליד מ' + where + ': השאיר פרטים באמצע שאלון ההתאמה\n' + name + ' · ' + phone}); });
+      try { window.fbq && fbq('track', 'Lead'); } catch(x){}
+      if (!QA) try { fetch(FB, {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify({id: LID, payload: {'השם שלך': name, 'טלפון': phone, form_title: 'שאלון התאמה club-vsl'}})}); } catch(x){}
     }
     function next(i){
-      if (!direct && !sentFull && i < N - 1) hold('update').catch(function(){});
-      i < N - 1 ? step(i + 1) : done();
+      if (LID && !direct && !sentFull && i < N - 1) hold('update').catch(function(){});
+      i < N - 1 ? step(i + 1, Q[i].c === 'phone') : done();
     }
     function step(i, fresh){
       window.cvTrack && cvTrack('q', i + 1);
-      var q = Q[i], h = (fresh ? '<div class="ls-okbar">נרשמת, ' + esc(lead.name.split(' ')[0]) + '. עכשיו כמה שאלות כדי שנכיר אותך</div>' : '') + bar(i) + '<p class="ls-qq">' + q.q + '</p>' + (q.n ? '<p class="ls-qn">' + q.n + '</p>' : '');
-      if (q.t) h += (q.long ? '<textarea class="ls-in ls-ta" id="lsQT" rows="4"' : '<input class="ls-in" id="lsQT"') + ' placeholder="' + q.t + '">' + (q.long ? '</textarea>' : '') + '<p class="ls-err" id="lsQE"></p><button class="ls-btn" id="lsQNx">המשך ←</button>';
+      var q = Q[i], h = (fresh ? '<div class="ls-okbar">תודה ' + esc(lead.name.split(' ')[0]) + ', עוד כמה שאלות קצרות</div>' : '') + bar(i) + '<p class="ls-qq">' + q.q + '</p>' + (q.n ? '<p class="ls-qn">' + q.n + '</p>' : '');
+      if (q.t) h += (q.long ? '<textarea class="ls-in ls-ta" id="lsQT" rows="4"' : '<input class="ls-in" id="lsQT"' + (q.c === 'phone' ? ' type="tel" inputmode="tel" autocomplete="tel" dir="ltr" style="text-align:right"' : q.c === 'name' ? ' autocomplete="given-name"' : '')) + ' placeholder="' + q.t + '">' + (q.long ? '</textarea>' : '') + '<p class="ls-err" id="lsQE"></p><button class="ls-btn" id="lsQNx">המשך ←</button>';
       else h += '<div class="ls-opts">' + q.o.map(function(o, j){ return '<button class="ls-opt" data-j="' + j + '"><span class="e">' + String.fromCharCode(65 + j) + '</span><span class="tx">' + o[1] + '</span>' + (o[2] ? '<span class="lv">' + o[2] + '</span>' : '') + '</button>'; }).join('') + '</div>';
       if (i) h += '<button class="ls-back" id="lsQB">→ חזרה</button>';
       box.innerHTML = h;
       if (q.t){
-        var f = $('lsQT'); if (A[i]) f.value = A[i];
+        var f = $('lsQT'); if (A[i]) f.value = A[i]; else if (q.c) f.value = q.c === 'name' ? (lead.name || '').split(' ')[0] : (lead.phone || '');
+        if (!q.long) f.onkeydown = function(e){ if (e.key === 'Enter') $('lsQNx').click(); };
         $('lsQNx').onclick = function(){
           var v = f.value.trim().replace(/\s+/g, ' ');
+          if (q.c){ var er = contactErr(q.c, v); if (er){ var e2 = $('lsQE'); e2.textContent = er; e2.style.display = 'block'; return; }
+            if (q.c === 'name') lead.name = v.slice(0, 60); else lead.phone = v.replace(/[^\d+]/g, '');
+            A[i] = q.c === 'name' ? lead.name : lead.phone; if (q.c === 'phone') captured(); next(i); return; }
           if (v.length < 2){ var e = $('lsQE'); e.textContent = 'כמה מילים מספיקות'; e.style.display = 'block'; return; }
           A[i] = v.slice(0, 280); next(i);
         };

@@ -271,6 +271,7 @@ for emo in ('🎯 ', '✅ ', '🔒 ', '💬 ', '👆 ', '↺ '):
     fit = fit.replace(emo, '')
 assert '<span class="e">\' + o[0]' not in fit
 fit = fit.replace("var cta = document.querySelector('#lsNext .ls-cta'); if (cta) cta.style.display = 'none';   /* one WhatsApp button at the end */", "")
+import quiz_contact; fit = quiz_contact.apply(fit)   # name + WhatsApp at steps 3-4, Fireberry right after (19.11)
 our = r'''
 /* ===== club-vsl: our working parts (kept from v1) ===== */
 (function(){
