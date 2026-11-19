@@ -644,7 +644,7 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
   var utm = [T.src, T.camp, T.adset, T.ad].filter(Boolean).join(' / ');
   var VID; try { VID = localStorage.getItem('cv_vid'); } catch(e){}
   if (!VID || !/^[a-z0-9]{6,32}$/.test(VID)){ VID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).slice(0, 20); try { localStorage.setItem('cv_vid', VID); } catch(e){} }
-  var QA = /[?&](qa=1|ab=[ab]|test=1)\b/i.test(location.search);
+  var QA = /[?&](qa=1|ab=[ab]|test=1)\b/i.test(location.search) || /kajabi\.com/.test(document.referrer);   /* Kajabi editor/preview visits don't count */
   var DEV = matchMedia('(max-width:767px)').matches ? 'm' : 'd';
   var sent = {};
   window.cvTrack = function(ev, n, cta){
