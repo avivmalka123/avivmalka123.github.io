@@ -282,7 +282,8 @@ our = r'''
      The last ad click is kept for 30 days, so a visitor who comes back later still counts for that ad. */
   var EP = 'https://club-ab.aviv1988.workers.dev/e';
   var qs = new URLSearchParams(location.search), AV = 'B';
-  var cut = function(x, n){ return x ? String(x).slice(0, n) : ''; };
+  var cut = function(x, n){ if (!x) return ''; x = String(x); for (var i = 0; i < 3 && /%[0-9A-F]{2}/i.test(x); i++){ try { x = decodeURIComponent(x); } catch(e){ break; } }   /* Meta sometimes double-encodes ad names */
+    return x.replace(/[\u200e\u200f\u202a-\u202e]/g, '').trim().slice(0, n); };
   var T = {ad: cut(qs.get('utm_content'), 120), adid: cut((qs.get('ad_id') || '').replace(/\D/g, ''), 24), adset: cut(qs.get('utm_term'), 120), camp: cut(qs.get('utm_campaign'), 120), src: cut(qs.get('utm_source') || qs.get('ref'), 60)};   /* ?ref=youtube etc. (Aviv 20.11) */
   if (!T.src && document.referrer){ try { var rh = new URL(document.referrer).hostname.replace(/^www\./, ''); if (!/avivmalka\.com$/.test(rh)) T.src = rh; } catch(e){} }
   if (!T.src && qs.get('fbclid')) T.src = 'fb';
