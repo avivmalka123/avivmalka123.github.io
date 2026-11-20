@@ -81,7 +81,7 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
   var EP = 'https://club-ab.aviv1988.workers.dev/e';
   var qs = new URLSearchParams(location.search), AV = 'B';
   var cut = function(x, n){ return x ? String(x).slice(0, n) : ''; };
-  var T = {ad: cut(qs.get('utm_content'), 120), adid: cut((qs.get('ad_id') || '').replace(/\D/g, ''), 24), adset: cut(qs.get('utm_term'), 120), camp: cut(qs.get('utm_campaign'), 120), src: cut(qs.get('utm_source'), 60)};
+  var T = {ad: cut(qs.get('utm_content'), 120), adid: cut((qs.get('ad_id') || '').replace(/\D/g, ''), 24), adset: cut(qs.get('utm_term'), 120), camp: cut(qs.get('utm_campaign'), 120), src: cut(qs.get('utm_source') || qs.get('ref'), 60)};   /* ?ref=youtube etc. (Aviv 20.11) */
   if (!T.src && document.referrer){ try { var rh = new URL(document.referrer).hostname.replace(/^www\./, ''); if (!/avivmalka\.com$/.test(rh)) T.src = rh; } catch(e){} }
   if (!T.src && qs.get('fbclid')) T.src = 'fb';
   var paid = !!(T.ad || T.adid || T.camp);
@@ -104,6 +104,49 @@ addEventListener('scroll',onScroll,{passive:true});onScroll();
     document.addEventListener('play', function(e){ if (e.target.closest && e.target.closest('#cvPlayer')) cvTrack('play'); }, true);
     document.addEventListener('timeupdate', function(e){ var v = e.target; if (!(v.closest && v.closest('#cvPlayer')) || !v.duration) return;
       var pc = 100 * v.currentTime / v.duration; marks.forEach(function(m){ if (pc >= m) cvTrack('w' + m); }); }, true);
+  })();
+  /* ===== our own heatmap + video drop-off (Aviv 20.11): one row per page load → club-ab /h, read by board.html.
+     Element-level clicks (which button / which testimonial card), scroll depth, which parts of the page were reached,
+     10-second watch buckets of the VSL and skips. No personal data and nothing typed into the quiz. ===== */
+  (function(){
+    var EPH = 'https://club-ab.aviv1988.workers.dev/h';
+    var SID = (Date.now().toString(36) + Math.random().toString(36).slice(2, 12)).slice(0, 20);
+    var H = {cl: [], se: {}, sc: 0, wb: {}, sk: [], dur: null}, dirty = false, lastT = 0;
+    var cards = function(){ return [].slice.call(document.querySelectorAll('#vtFeed .vt-card')); };
+    function key(el){
+      var c; if (!el || !el.closest) return null;
+      if (el.closest('#qm')) return 'quiz';
+      if ((c = el.closest('[data-cta]'))) return 'cta:' + c.getAttribute('data-cta');
+      if (el.closest('#cvVsl')) return 'vsl';
+      if ((c = el.closest('.vt-card'))){ var i = cards().indexOf(c), sp = c.querySelector('.vt-top span'), b = c.querySelector('.vt-top b');
+        return 'card:' + i + ':' + (c.querySelector('[data-video]') ? 'v' : 'i') + ':' + (((sp && sp.textContent.split('·')[0]) || (b && b.textContent) || '').trim().slice(0, 24)); }
+      if ((c = el.closest('a,button'))) return 'btn:' + (c.getAttribute('aria-label') || c.textContent || '').trim().slice(0, 30);
+      if ((c = el.closest('[id]'))) return 'area:' + c.id;
+      return 'other';
+    }
+    document.addEventListener('click', function(e){ var k = key(e.target); if (!k) return; var d = document.documentElement;
+      H.cl.push([k, Math.round(1000 * e.pageX / Math.max(1, d.scrollWidth)), Math.round(1000 * e.pageY / Math.max(1, d.scrollHeight))]); if (H.cl.length > 60) H.cl.shift(); dirty = true; }, true);
+    var tk = 0;
+    function scan(){ tk = 0; var d = document.documentElement, h = d.scrollHeight - innerHeight, p = h > 0 ? Math.round(100 * scrollY / h) : 100;
+      if (p > H.sc){ H.sc = p; dirty = true; }
+      var seen = function(el, k){ if (!el || H.se[k] || !el.offsetParent) return; var r = el.getBoundingClientRect(); if (r.top < innerHeight * .8 && r.bottom > 0){ H.se[k] = 1; dirty = true; } };
+      seen(document.querySelector('#cvVsl'), 'vsl'); seen(document.querySelector('#voices'), 'voices'); seen(document.querySelector('#cvQuiz'), 'quiz');
+      cards().forEach(function(c, i){ seen(c, 'c' + i); });
+    }
+    addEventListener('scroll', function(){ if (!tk) tk = setTimeout(scan, 300); }, {passive: true});
+    setTimeout(scan, 1500);
+    var inV = function(v){ return v && v.closest && v.closest('#cvPlayer'); };
+    document.addEventListener('timeupdate', function(e){ var v = e.target; if (!inV(v) || !v.duration) return; H.dur = Math.round(v.duration);
+      if (!v.paused && !v.seeking){ var b = Math.floor(v.currentTime / 10); if (!H.wb[b]){ H.wb[b] = 1; dirty = true; } lastT = v.currentTime; } }, true);
+    document.addEventListener('seeking', function(e){ var v = e.target; if (!inV(v)) return; if (Math.abs(v.currentTime - lastT) > 3){ H.sk.push([Math.round(lastT), Math.round(v.currentTime)]); if (H.sk.length > 40) H.sk.shift(); dirty = true; } }, true);
+    function flush(){ if (!dirty) return; dirty = false;
+      var body = JSON.stringify({sid: SID, vid: VID, dev: DEV, src: T.src || '', qa: QA ? 1 : 0, sc: H.sc, se: Object.keys(H.se), cl: H.cl,
+        wb: Object.keys(H.wb).map(Number), sk: H.sk, dur: H.dur});
+      try { if (navigator.sendBeacon) navigator.sendBeacon(EPH, new Blob([body], {type: 'text/plain'})); else fetch(EPH, {method: 'POST', body: body, keepalive: true}); } catch(e){}
+    }
+    document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'hidden') flush(); });
+    addEventListener('pagehide', flush);
+    setInterval(flush, 20000);
   })();
   var WHERE = 'דף הסרטון של המועדון (club-vsl)' + (T.ad ? ' · ' + T.ad : utm ? ' · ' + utm : '');
   function fit(where){
