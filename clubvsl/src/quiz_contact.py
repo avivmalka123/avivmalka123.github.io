@@ -4,6 +4,7 @@
 # Kajabi-style payload so the cloned mappings work as is: id + payload{השם שלך, טלפון, form_title}.
 
 INTRO = r"""    var FB = 'https://hook.eu2.make.com/e27k6us2snsgxmqpnjkg95ybjg4vew6b';
+    srcRef();   /* remember the source as soon as the quiz code loads */
     function intro(){
       box.innerHTML = '<p class="lab">השלב הבא</p>' +
         '<h3>בדיקת התאמה למועדון האיקומרס</h3>' +
@@ -17,6 +18,17 @@ INTRO = r"""    var FB = 'https://hook.eu2.make.com/e27k6us2snsgxmqpnjkg95ybjg4v
       if (c === 'name') return v.replace(/[^A-Za-z֐-׿]/g, '').length < 2 ? 'רק שם פרטי, כדי שנדע איך לפנות אליך' : '';
       return /^(\+?972|0)5\d{8}$/.test(v.replace(/[^\d+]/g, '')) ? '' : 'מספר הוואטסאפ לא נראה מלא';
     }
+    function srcRef(){   /* Aviv 20.11: lead source for Fireberry REF: ?ref=… (youtube, instagram…), Meta ads (utm_source=fb) → fb-ads; kept 30 days */
+      var r = '';
+      try {
+        var q = new URLSearchParams(location.search), u = (q.get('utm_source') || '').toLowerCase();
+        r = q.get('ref') || (/^(fb|facebook|ig|instagram|meta)$/.test(u) ? 'fb-ads' : u);
+        r = (r || '').replace(/[^\w\-֐-׿.]/g, '').slice(0, 40);
+        if (r) localStorage.setItem('cv_ref', JSON.stringify({r: r, t: Date.now()}));
+        else { var o = JSON.parse(localStorage.getItem('cv_ref') || 'null'); if (o && Date.now() - o.t < 30 * 864e5) r = o.r; }
+      } catch(x){}
+      return r || 'ליד ישיר';
+    }
     function captured(){   /* once per quiz: going back and forth doesn't send twice */
       try { localStorage.setItem('alm_lead', JSON.stringify(lead)); } catch(x){}
       if (LID) return;
@@ -25,7 +37,7 @@ INTRO = r"""    var FB = 'https://hook.eu2.make.com/e27k6us2snsgxmqpnjkg95ybjg4v
       window.cvTrack && cvTrack('lead');
       hold('start').catch(function(){ direct = true; toMake({source: 'course-readiness', stage: 'lead', submitted_at: stamp(), name: name, phone: phone, summary: '📝 ליד מ' + where + ': השאיר פרטים באמצע שאלון ההתאמה\n' + name + ' · ' + phone}); });
       try { window.fbq && fbq('track', 'Lead'); } catch(x){}
-      if (!QA) try { fetch(FB, {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify({id: LID, payload: {'השם שלך': name, 'טלפון': phone, form_title: 'שאלון התאמה club-vsl'}})}); } catch(x){}
+      if (!QA) try { fetch(FB, {method: 'POST', headers: {'Content-Type': 'application/json'}, keepalive: true, body: JSON.stringify({id: LID, payload: {'השם שלך': name, 'טלפון': phone, form_title: 'שאלון התאמה club-vsl', ref: srcRef()}})}); } catch(x){}
     }
 """
 
