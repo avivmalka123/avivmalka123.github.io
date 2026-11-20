@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>לוח הקריאייטיבים · דף הסרטון של המועדון</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A1428;--bg2:#0E1B33;--bg3:#13233F;--line:#22355A;--tx:#fff;--mut:#B8C4D9;--dim:#7E8DAA;--a:#7FB0FF;--b:#FFA826;--ok:#3DDC84;--no:#FF6B5B}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Assistant','Heebo',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.w{max-width:1200px;margin:0 auto;padding:28px 16px 70px}
+h1,h2{font-family:'Heebo',system-ui,sans-serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em}
+h2{font-size:22px;font-weight:900;margin:0 0 6px}
+.sub{color:var(--mut);margin:6px 0 0;font-size:16px}
+.sub a{color:var(--b)}
+.hint{color:var(--dim);font-size:14.5px;margin:0 0 14px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:20px 0 6px}
+.bar button{font:800 15px 'Heebo',sans-serif;background:var(--bg3);color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.bar button.on{background:var(--b);color:#0A1428;border-color:var(--b)}
+.bar .upd{margin-right:auto;color:var(--dim);font-size:14px}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-top:16px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{background:var(--bg3);border-radius:12px;padding:12px}
+.kpi b{display:block;font:900 28px 'Heebo',sans-serif;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--mut);font-size:13.5px}
+.kpi.hl{background:rgba(255,168,38,.12);outline:1.5px solid var(--b)}
+.kpi.hl b{color:var(--b)}
+.tblw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+#ct{min-width:980px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;font-size:15px;vertical-align:middle}
+th{color:var(--dim);font-weight:800;font-size:13px;white-space:nowrap}
+th.s{cursor:pointer}th.s:hover{color:var(--tx)}th.on{color:var(--b)}
+td.n{font-weight:800}
+td .r{display:block;font-size:12.5px;color:var(--dim);font-weight:600}
+td.best{color:var(--ok);font-weight:900}
+.cr{display:flex;gap:10px;align-items:center;min-width:240px}
+.cr img,.cr .ph{width:46px;height:46px;border-radius:8px;object-fit:cover;flex:none;background:var(--bg3);border:1px solid var(--line)}
+.cr .ph{display:grid;place-items:center;color:var(--dim);font:900 18px 'Heebo',sans-serif}
+.cr b{font-family:'Heebo',sans-serif;font-size:15.5px;display:block;line-height:1.25}
+.cr small{color:var(--dim);font-size:12.5px;display:block}
+.tag{display:inline-block;font:800 11.5px 'Heebo',sans-serif;padding:1px 8px;border-radius:999px;margin-inline-start:6px;vertical-align:1px;background:rgba(61,220,132,.15);color:var(--ok)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid2>*{min-width:0}
+.fun{display:grid;gap:10px}
+.fr{display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center}
+.fr .l{color:var(--mut);font-weight:700;font-size:14.5px}
+.bt{height:18px;border-radius:5px;position:relative;min-width:2px;background:var(--b)}
+.bt span{position:absolute;inset-inline-start:calc(100% + 6px);top:-1px;font-size:12.5px;color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+.setup code{display:block;direction:ltr;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;word-break:break-all;color:var(--mut);user-select:all}
+.setup ol{margin:8px 0 0;padding-inline-start:20px;color:var(--mut)}
+.btn{font:800 14px 'Heebo',sans-serif;background:var(--b);color:#0A1428;border:0;border-radius:10px;padding:9px 14px;cursor:pointer;margin-top:10px}
+.log{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.log li{display:grid;grid-template-columns:96px 1fr;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.log .d{color:var(--b);font-weight:800;font-variant-numeric:tabular-nums}
+.empty{color:var(--dim);text-align:center;padding:22px}
+.gate{max-width:420px;margin:60px auto;text-align:center}
+.gate input{width:100%;font:700 17px 'Assistant',sans-serif;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg3);color:var(--tx);margin-top:14px;text-align:center}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr}.fr{grid-template-columns:100px 1fr}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div id="gate" class="gate" hidden>
+    <h1>לוח הקריאייטיבים</h1>
+    <p class="sub">צריך קוד גישה. הוא מגיע בקישור שאביב שולח.</p>
+    <input id="gk" placeholder="קוד גישה" autocomplete="off">
+    <button class="btn" id="gb">כניסה</button>
+  </div>
+
+  <div id="app" hidden>
+    <h1>איזה קריאייטיב מביא לידים?</h1>
+    <p class="sub">דף הסרטון של המועדון · <a href="https://www.avivmalka.com/club-vsl" target="_blank" rel="noopener">www.avivmalka.com/club-vsl</a> · כל ביקור וכל ליד משויכים למודעה שממנה הגולש הגיע.</p>
+
+    <div class="bar" id="range">
+      <button data-r="1">היום</button>
+      <button data-r="7" class="on">7 ימים</button>
+      <button data-r="30">30 יום</button>
+      <button data-r="all">מההתחלה</button>
+      <span class="upd" id="upd"></span>
+    </div>
+
+    <div class="card">
+      <div class="kpis" id="kpis"></div>
+    </div>
+
+    <div class="card">
+      <h2>הקריאייטיבים</h2>
+      <p class="hint">כל שורה היא מודעה (או מקור תנועה בלי מודעה). "ביקורים" = גולשים שונים. "המרה" = כמה מהמבקרים השאירו פרטים. ההוצאה והקליקים מגיעים ממטא לאותם ימים. אפשר למיין בלחיצה על כותרת עמודה. בירוק: ההמרה הכי טובה (מ־30 ביקורים ומעלה) והעלות לליד הכי נמוכה.</p>
+      <div class="tblw"><table id="ct"><thead></thead><tbody></tbody></table></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>המשפך בדף</h2>
+        <p class="hint">מכל המבקרים, כמה הגיעו לכל שלב.</p>
+        <div class="fun" id="fun"></div>
+      </div>
+      <div class="card">
+        <h2>איפה נושרים בשאלון</h2>
+        <p class="hint">כמה גולשים ראו כל שאלה, אחרי שהשאירו פרטים.</p>
+        <div class="fun" id="qf"></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>לפי יום</h2>
+        <div class="tblw"><table id="dt"></table></div>
+      </div>
+      <div class="card">
+        <h2>נייד מול מחשב</h2>
+        <div class="tblw"><table id="vt"></table></div>
+      </div>
+    </div>
+
+    <div class="card setup">
+      <h2>איך מחברים מודעה ללוח</h2>
+      <p class="hint">בכל מודעה שמובילה לדף, מדביקים את השורה הזו בשדה "URL parameters" (פרמטרים של כתובת) ברמת המודעה במנהל המודעות. מטא ממלא לבד את שם הקמפיין, קבוצת המודעות, שם המודעה והמספר שלה.</p>
+      <code id="tags">utm_source=fb&amp;utm_medium=paid&amp;utm_campaign={{campaign.name}}&amp;utm_term={{adset.name}}&amp;utm_content={{ad.name}}&amp;ad_id={{ad.id}}</code>
+      <button class="btn" id="cp">העתקה</button>
+      <ol>
+        <li>תנו לכל מודעה שם ברור (למשל "סרטון עדויות 30 שנ׳"), כי זה השם שיופיע כאן.</li>
+        <li>גולש שלחץ על מודעה וחזר לדף מאוחר יותר (עד 30 יום) עדיין נספר לאותה מודעה.</li>
+        <li>בדיקות עם ‎?qa=1 בכתובת לא נספרות.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h2>יומן שינויים בדף</h2>
+      <ul class="log" id="log"></ul>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var API = 'https://club-ab.aviv1988.workers.dev/stats', START = '2026-11-19';
+  var $ = function(id){ return document.getElementById(id); };
+  var KEY = (location.hash.match(/k=([\w-]+)/) || [])[1];
+  try { if (KEY) localStorage.setItem('cvb_k', KEY); else KEY = localStorage.getItem('cvb_k'); } catch(e){}
+  if (location.hash) history.replaceState(null, '', location.pathname);
+  var range = '7', data = null, sortBy = 'lead', sortDir = -1;
+  var fmt = function(n){ return (n || 0).toLocaleString('he-IL'); };
+  var pct = function(a, b){ return b ? (100 * a / b) : null; };
+  var pf = function(x){ return x == null ? '–' : (x < 10 ? x.toFixed(1) : Math.round(x)) + '%'; };
+  var money = function(x){ return x ? '₪' + Math.round(x).toLocaleString('he-IL') : '–'; };
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+  var day = function(d){ return new Date(d.getTime()).toISOString().slice(0, 10); };
+  var SRC = {'': 'כניסה ישירה / לא ידוע', fb: 'פייסבוק', ig: 'אינסטגרם', 'l.facebook.com': 'פייסבוק (קישור)', 'lm.facebook.com': 'פייסבוק (קישור)', 'm.facebook.com': 'פייסבוק', 'l.instagram.com': 'אינסטגרם (קישור)', 'instagram.com': 'אינסטגרם', 'google.com': 'גוגל', 'youtube.com': 'יוטיוב', 'wa.me': 'וואטסאפ'};
+
+  function gate(){
+    $('gate').hidden = false; $('app').hidden = true;
+    $('gb').onclick = function(){ KEY = $('gk').value.trim(); try { localStorage.setItem('cvb_k', KEY); } catch(e){} load(); };
+    $('gk').onkeydown = function(e){ if (e.key === 'Enter') $('gb').click(); };
+  }
+
+  function load(){
+    var q = '?k=' + encodeURIComponent(KEY || '');
+    var to = new Date(Date.now() + 2 * 3600e3), f = START;
+    if (range !== 'all'){ f = day(new Date(to - (+range - 1) * 864e5)); if (f < START) f = START; }
+    q += '&from=' + f + '&to=' + day(to);
+    $('upd').textContent = 'טוען…';
+    fetch(API + q).then(function(r){ if (r.status === 401) throw 'key'; return r.json(); }).then(function(d){
+      data = d; $('gate').hidden = true; $('app').hidden = false; render();
+    }).catch(function(e){ if (e === 'key'){ try { localStorage.removeItem('cvb_k'); } catch(x){} gate(); } else $('upd').textContent = 'לא הצלחתי לטעון. נסו לרענן.'; });
+  }
+
+  function rows(){
+    return data.creatives.map(function(c){
+      var e = c.ev, m = c.meta || {}, isAd = !!(c.adid || c.ad);
+      var name = isAd ? (m.name || c.ad || 'מודעה ' + c.adid) : (SRC[c.src || ''] || c.src);
+      var v = e.view || 0, lead = e.lead || 0;
+      return {c: c, isAd: isAd, name: name, sub: isAd ? [m.camp || c.camp, m.adset || c.adset].filter(Boolean).join(' · ') : 'בלי מודעה', thumb: m.thumb,
+        spend: m.spend || 0, clicks: m.clicks || 0, view: v, play: e.play || 0, open: e.open || 0, lead: lead, done: e.done || 0,
+        conv: pct(lead, v), cpl: (m.spend && lead) ? m.spend / lead : null, live: m.status === 'ACTIVE'};
+    });
+  }
+
+  function render(){
+    var T = {}; data.tot.forEach(function(r){ T[r.ev] = r.u; });
+    $('upd').textContent = 'עודכן ' + new Date(data.at).toLocaleTimeString('he-IL', {hour: '2-digit', minute: '2-digit'}) + ' · ' + data.from.split('-').reverse().join('.') + '–' + data.to.split('-').reverse().join('.');
+    var R = rows(), spend = R.reduce(function(s, r){ return s + r.spend; }, 0);
+    var K = [['ביקורים', fmt(T.view)], ['השאירו פרטים (לידים)', fmt(T.lead), 1], ['סיימו את השאלון', fmt(T.done)], ['המרה מביקור לליד', pf(pct(T.lead, T.view)), 1]];
+    if (spend) K.push(['הוצאה במודעות', money(spend)], ['עלות לליד', T.lead ? money(spend / T.lead) : '–', 1], ['ניגנו את הסרטון', fmt(T.play)], ['פתחו את השאלון', fmt(T.open)]);
+    $('kpis').innerHTML = K.map(function(k){ return '<div class="kpi' + (k[2] ? ' hl' : '') + '"><b>' + k[1] + '</b><span>' + k[0] + '</span></div>'; }).join('');
+
+    var cols = [['name', 'קריאייטיב'], ['spend', 'הוצאה'], ['clicks', 'קליקים במטא'], ['view', 'ביקורים'], ['play', 'ניגנו סרטון'], ['open', 'פתחו שאלון'], ['lead', 'לידים'], ['done', 'סיימו שאלון'], ['conv', 'המרה'], ['cpl', 'עלות לליד']];
+    $('ct').tHead.innerHTML = '<tr>' + cols.map(function(c){ return '<th class="s' + (c[0] === sortBy ? ' on' : '') + '" data-k="' + c[0] + '">' + c[1] + (c[0] === sortBy ? (sortDir < 0 ? ' ▾' : ' ▴') : '') + '</th>'; }).join('') + '</tr>';
+    [].forEach.call($('ct').tHead.querySelectorAll('th'), function(th){ th.onclick = function(){ var k = th.getAttribute('data-k'); if (sortBy === k) sortDir = -sortDir; else { sortBy = k; sortDir = k === 'cpl' || k === 'name' ? 1 : -1; } render(); }; });
+    R.sort(function(a, b){ var x = a[sortBy], y = b[sortBy]; if (x == null && y == null) return b.view - a.view; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * sortDir || b.view - a.view; });
+    var MIN = 30, ok = R.filter(function(r){ return r.view >= MIN && r.lead; });
+    var bestConv = ok.length ? Math.max.apply(null, ok.map(function(r){ return r.conv; })) : null;
+    var cpls = R.filter(function(r){ return r.cpl != null && r.lead >= 2; }).map(function(r){ return r.cpl; });
+    var bestCpl = cpls.length ? Math.min.apply(null, cpls) : null;
+    $('ct').tBodies[0].innerHTML = R.length ? R.map(function(r){
+      var img = r.thumb ? '<img src="' + esc(r.thumb) + '" alt="" loading="lazy">' : '<span class="ph">' + (r.isAd ? '▶' : '↗') + '</span>';
+      var few = r.view < MIN ? '<span class="r">מעט נתונים</span>' : '';
+      return '<tr><td><div class="cr">' + img + '<div><b>' + esc(r.name) + (r.live ? '<span class="tag">פעילה</span>' : '') + '</b><small>' + esc(r.sub) + '</small></div></div></td>' +
+        '<td>' + money(r.spend) + '</td><td>' + (r.clicks ? fmt(r.clicks) : '–') + '</td><td class="n">' + fmt(r.view) + '</td><td>' + fmt(r.play) + '</td><td>' + fmt(r.open) + '</td>' +
+        '<td class="n">' + fmt(r.lead) + '</td><td>' + fmt(r.done) + '</td>' +
+        '<td class="' + (r.conv != null && r.conv === bestConv ? 'best' : 'n') + '">' + pf(r.conv) + few + '</td>' +
+        '<td class="' + (r.cpl != null && r.cpl === bestCpl ? 'best' : '') + '">' + money(r.cpl) + '</td></tr>';
+    }).join('') : '<tr><td colspan="10" class="empty">עוד אין ביקורים בטווח הזה. ברגע שמודעה מחוברת (ראו למטה) והגולשים מגיעים, הם יופיעו כאן.</td></tr>';
+
+    var F = [['ביקרו בדף', T.view], ['ניגנו את הסרטון', T.play], ['צפו בחצי', T.w50], ['פתחו את השאלון', T.open], ['השאירו פרטים', T.lead], ['סיימו את השאלון', T.done], ['לחצו לוואטסאפ', T.wa]];
+    var top = T.view || 1;
+    $('fun').innerHTML = F.map(function(f){ var w = Math.max(.5, 100 * (f[1] || 0) / top) * .78; return '<div class="fr"><span class="l">' + f[0] + '</span><div class="bt" style="width:' + w + '%"><span>' + fmt(f[1]) + ' · ' + pf(pct(f[1] || 0, T.view)) + '</span></div></div>'; }).join('');
+    var qt = data.qs.length ? Math.max.apply(null, data.qs.map(function(r){ return r.u; })) : 0;
+    $('qf').innerHTML = data.qs.length ? data.qs.map(function(r){ return '<div class="fr"><span class="l">שאלה ' + r.n + '</span><div class="bt" style="width:' + Math.max(.5, 78 * r.u / qt) + '%"><span>' + fmt(r.u) + '</span></div></div>'; }).join('') : '<div class="empty">עוד אין נתונים</div>';
+
+    var D = {}; data.daily.forEach(function(r){ (D[r.day] = D[r.day] || {})[r.ev] = r.u; });
+    var days = Object.keys(D).sort().reverse();
+    $('dt').innerHTML = '<tr><th>יום</th><th>ביקורים</th><th>פתחו שאלון</th><th>לידים</th><th>סיימו</th><th>המרה</th></tr>' + (days.length ? days.map(function(d){ var x = D[d]; return '<tr><td>' + d.split('-').reverse().slice(0, 2).join('.') + '</td><td>' + fmt(x.view) + '</td><td>' + fmt(x.open) + '</td><td class="n">' + fmt(x.lead) + '</td><td>' + fmt(x.done) + '</td><td>' + pf(pct(x.lead || 0, x.view)) + '</td></tr>'; }).join('') : '<tr><td colspan="6" class="empty">עוד אין נתונים</td></tr>');
+    var V = {m: {}, d: {}}; data.dev.forEach(function(r){ V[r.dev][r.ev] = r.u; });
+    $('vt').innerHTML = '<tr><th></th><th>ביקורים</th><th>לידים</th><th>סיימו</th><th>המרה</th></tr>' + [['m', 'נייד'], ['d', 'מחשב']].map(function(x){ var v = V[x[0]]; return '<tr><td class="n">' + x[1] + '</td><td>' + fmt(v.view) + '</td><td>' + fmt(v.lead) + '</td><td>' + fmt(v.done) + '</td><td>' + pf(pct(v.lead || 0, v.view)) + '</td></tr>'; }).join('');
+  }
+
+  [].forEach.call(document.querySelectorAll('#range button'), function(b){ b.onclick = function(){ [].forEach.call(document.querySelectorAll('#range button'), function(x){ x.classList.toggle('on', x === b); }); range = b.getAttribute('data-r'); load(); }; });
+  $('cp').onclick = function(){ var t = $('tags').textContent, b = this; var done = function(){ b.textContent = 'הועתק ✓'; setTimeout(function(){ b.textContent = 'העתקה'; }, 1600); };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, function(){ getSelection().selectAllChildren($('tags')); }); else getSelection().selectAllChildren($('tags')); };
+  fetch('ab-log.json?x=' + Date.now()).then(function(r){ return r.json(); }).then(function(L){
+    $('log').innerHTML = L.log.slice().reverse().map(function(e){ return '<li><span class="d">' + e.date.split('-').reverse().join('.') + '</span><span>' + esc(e.what) + '</span></li>'; }).join('');
+  }).catch(function(){});
+  if (KEY) load(); else gate();
+  setInterval(function(){ if (data && !document.hidden) load(); }, 120000);
+})();
+</script>
+</body>
+</html>

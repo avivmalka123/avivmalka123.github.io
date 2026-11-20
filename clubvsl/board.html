@@ -4,152 +4,230 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>לוח הקריאייטיבים · דף הסרטון של המועדון</title>
+<title>לוח דף המועדון</title>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0A1428;--bg2:#0E1B33;--bg3:#13233F;--line:#22355A;--tx:#fff;--mut:#B8C4D9;--dim:#7E8DAA;--a:#7FB0FF;--b:#FFA826;--ok:#3DDC84;--no:#FF6B5B}
+:root{--bg:#0A1428;--bg2:#0E1B33;--bg3:#13233F;--line:#22355A;--tx:#fff;--mut:#B8C4D9;--dim:#7E8DAA;--b:#FFA826;--ok:#3DDC84;--no:#FF6B5B;--blu:#7FB0FF}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:'Assistant','Heebo',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
-.w{max-width:1200px;margin:0 auto;padding:28px 16px 70px}
-h1,h2{font-family:'Heebo',system-ui,sans-serif;margin:0;text-wrap:balance}
-h1{font-size:clamp(26px,4.4vw,40px);font-weight:900;letter-spacing:-.02em}
-h2{font-size:22px;font-weight:900;margin:0 0 6px}
-.sub{color:var(--mut);margin:6px 0 0;font-size:16px}
-.sub a{color:var(--b)}
-.hint{color:var(--dim);font-size:14.5px;margin:0 0 14px}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:20px 0 6px}
-.bar button{font:800 15px 'Heebo',sans-serif;background:var(--bg3);color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
-.bar button.on{background:var(--b);color:#0A1428;border-color:var(--b)}
-.bar .upd{margin-right:auto;color:var(--dim);font-size:14px}
-.card{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-top:16px;min-width:0}
+.w{max-width:1200px;margin:0 auto;padding:24px 16px 70px}
+h1,h2,h3{font-family:'Heebo',system-ui,sans-serif;margin:0;text-wrap:balance}
+h1{font-size:clamp(24px,4vw,36px);font-weight:900;letter-spacing:-.02em}
+h2{font-size:21px;font-weight:900;margin:0 0 4px}
+h3{font-size:16px;font-weight:800;margin:0 0 8px;color:var(--mut)}
+.sub{color:var(--mut);margin:4px 0 0;font-size:15.5px}.sub a{color:var(--b)}
+.hint{color:var(--dim);font-size:14.5px;margin:0 0 14px;max-width:75ch}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
+.bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font:800 14.5px 'Heebo',sans-serif;background:var(--bg3);color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer}
+.pill.on{background:var(--b);color:#0A1428;border-color:var(--b)}
+.upd{color:var(--dim);font-size:13.5px;width:100%}
+.tabs{display:flex;gap:4px;overflow-x:auto;margin:18px 0 0;border-bottom:1px solid var(--line);scrollbar-width:none}
+.tabs button{font:800 15.5px 'Heebo',sans-serif;background:none;color:var(--dim);border:0;border-bottom:3px solid transparent;padding:10px 14px;cursor:pointer;white-space:nowrap}
+.tabs button.on{color:var(--tx);border-bottom-color:var(--b)}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px;min-width:0}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.kpi{background:var(--bg3);border-radius:12px;padding:12px}
-.kpi b{display:block;font:900 28px 'Heebo',sans-serif;font-variant-numeric:tabular-nums}
-.kpi span{color:var(--mut);font-size:13.5px}
-.kpi.hl{background:rgba(255,168,38,.12);outline:1.5px solid var(--b)}
-.kpi.hl b{color:var(--b)}
+.kpi{background:var(--bg3);border-radius:12px;padding:12px 14px}
+.kpi b{display:block;font:900 30px 'Heebo',sans-serif;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpi span{color:var(--mut);font-size:14px}
+.kpi.hl{background:rgba(255,168,38,.12);outline:1.5px solid var(--b)}.kpi.hl b{color:var(--b)}
+.notes{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.notes li{background:var(--bg3);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;font-size:15.5px}
+.notes li i{font-style:normal;font-size:19px;line-height:1.3}
+.notes li small{display:block;color:var(--dim);font-size:13px;margin-top:2px}
 .tblw{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 #ct{min-width:980px}
 th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;font-size:15px;vertical-align:middle}
 th{color:var(--dim);font-weight:800;font-size:13px;white-space:nowrap}
-th.s{cursor:pointer}th.s:hover{color:var(--tx)}th.on{color:var(--b)}
-td.n{font-weight:800}
-td .r{display:block;font-size:12.5px;color:var(--dim);font-weight:600}
-td.best{color:var(--ok);font-weight:900}
-.cr{display:flex;gap:10px;align-items:center;min-width:240px}
-.cr img,.cr .ph{width:46px;height:46px;border-radius:8px;object-fit:cover;flex:none;background:var(--bg3);border:1px solid var(--line)}
+th.s{cursor:pointer}th.on{color:var(--b)}
+td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-weight:600}td.best{color:var(--ok);font-weight:900}
+.cr{display:flex;gap:10px;align-items:center;min-width:220px}
+.cr img,.cr .ph{width:44px;height:44px;border-radius:8px;object-fit:cover;flex:none;background:var(--bg3);border:1px solid var(--line)}
 .cr .ph{display:grid;place-items:center;color:var(--dim);font:900 18px 'Heebo',sans-serif}
-.cr b{font-family:'Heebo',sans-serif;font-size:15.5px;display:block;line-height:1.25}
-.cr small{color:var(--dim);font-size:12.5px;display:block}
-.tag{display:inline-block;font:800 11.5px 'Heebo',sans-serif;padding:1px 8px;border-radius:999px;margin-inline-start:6px;vertical-align:1px;background:rgba(61,220,132,.15);color:var(--ok)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid2>*{min-width:0}
-.fun{display:grid;gap:10px}
-.fr{display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center}
+.cr b{font-family:'Heebo',sans-serif;font-size:15px;display:block;line-height:1.25}.cr small{color:var(--dim);font-size:12.5px;display:block}
+.tag{display:inline-block;font:800 11.5px 'Heebo',sans-serif;padding:1px 8px;border-radius:999px;margin-inline-start:6px;background:rgba(61,220,132,.15);color:var(--ok)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid2>*{min-width:0}
+.fun{display:grid;gap:9px}
+.fr{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center}
 .fr .l{color:var(--mut);font-weight:700;font-size:14.5px}
-.bt{height:18px;border-radius:5px;position:relative;min-width:2px;background:var(--b)}
-.bt span{position:absolute;inset-inline-start:calc(100% + 6px);top:-1px;font-size:12.5px;color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bt{height:20px;border-radius:5px;position:relative;min-width:2px;background:var(--b)}
+.bt.blu{background:var(--blu)}
+.bt span{position:absolute;inset-inline-start:calc(100% + 6px);top:0;font-size:13px;color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+.drop{color:var(--no);font-size:12.5px;font-weight:800;margin-inline-start:4px}
+.empty{color:var(--dim);text-align:center;padding:22px}
+.few{background:rgba(255,107,91,.1);border:1px solid rgba(255,107,91,.35);color:#FFB3A9;border-radius:10px;padding:9px 12px;font-size:14px;margin:0 0 12px}
+/* video */
+.chart{position:relative}
+.chart svg{width:100%;height:auto;display:block}
+.tip{position:absolute;pointer-events:none;background:#06101F;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13.5px;max-width:300px;box-shadow:0 8px 24px rgba(0,0,0,.4);display:none;z-index:2}
+.tip b{color:var(--b);font-family:'Heebo',sans-serif}
+.moments{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.moments li{background:var(--bg3);border-radius:12px;padding:12px 14px;border-inline-start:4px solid var(--no)}
+.moments li.up{border-inline-start-color:var(--ok)}
+.moments .t{font:900 15px 'Heebo',sans-serif;color:var(--b);font-variant-numeric:tabular-nums}
+.moments q{display:block;color:var(--mut);font-size:14.5px;margin-top:4px;quotes:"״" "״"}
+/* heatmap */
+.legend{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:13px;margin:0 0 12px;flex-wrap:wrap}
+.legend .g{width:140px;height:10px;border-radius:5px;background:linear-gradient(90deg,#1B2B4A,#3B5BA9,#FFA826,#FF5B3B)}
+.page{display:grid;gap:8px}
+.blk{border-radius:12px;padding:12px 14px;border:1px solid var(--line);position:relative;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.blk b{font-family:'Heebo',sans-serif;font-size:15.5px}
+.blk span{font-size:13.5px;color:#fff;opacity:.9;font-variant-numeric:tabular-nums}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.hc{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);aspect-ratio:3/4;background:var(--bg3)}
+.hc img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9}
+.hc .ov{position:absolute;inset:0;mix-blend-mode:multiply}
+.hc .hb{position:absolute;inset-inline:0;top:0;height:6px}
+.hc .lab{position:absolute;inset-inline:0;bottom:0;padding:8px;background:linear-gradient(transparent,rgba(5,10,20,.92));font-size:12.5px;line-height:1.3}
+.hc .lab b{display:block;font:800 13.5px 'Heebo',sans-serif}
+.hc .k{position:absolute;top:7px;inset-inline-start:7px;background:rgba(5,10,20,.85);border-radius:999px;padding:2px 8px;font:800 12px 'Heebo',sans-serif;font-variant-numeric:tabular-nums}
+.hc .ty{position:absolute;top:7px;inset-inline-end:7px;background:rgba(5,10,20,.85);border-radius:999px;padding:2px 7px;font-size:11.5px}
+.hc.cta{display:grid;place-items:center;text-align:center;background:linear-gradient(160deg,#3a2a10,#13233F)}
+.devsw{display:flex;gap:6px;margin:0 0 12px}
 .setup code{display:block;direction:ltr;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;word-break:break-all;color:var(--mut);user-select:all}
 .setup ol{margin:8px 0 0;padding-inline-start:20px;color:var(--mut)}
 .btn{font:800 14px 'Heebo',sans-serif;background:var(--b);color:#0A1428;border:0;border-radius:10px;padding:9px 14px;cursor:pointer;margin-top:10px}
 .log{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .log li{display:grid;grid-template-columns:96px 1fr;gap:10px;border-bottom:1px solid var(--line);padding-bottom:10px}
 .log .d{color:var(--b);font-weight:800;font-variant-numeric:tabular-nums}
-.empty{color:var(--dim);text-align:center;padding:22px}
 .gate{max-width:420px;margin:60px auto;text-align:center}
 .gate input{width:100%;font:700 17px 'Assistant',sans-serif;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg3);color:var(--tx);margin-top:14px;text-align:center}
-@media (max-width:900px){.grid2{grid-template-columns:1fr}}
-@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr}.fr{grid-template-columns:100px 1fr}}
+[data-p]{display:none}[data-p].on{display:block}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}.cards{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.kpis{grid-template-columns:1fr 1fr}.fr{grid-template-columns:105px 1fr}.cards{grid-template-columns:repeat(2,1fr)}.kpi b{font-size:25px}}
 </style>
 </head>
 <body>
 <div class="w">
   <div id="gate" class="gate" hidden>
-    <h1>לוח הקריאייטיבים</h1>
+    <h1>לוח דף המועדון</h1>
     <p class="sub">צריך קוד גישה. הוא מגיע בקישור שאביב שולח.</p>
     <input id="gk" placeholder="קוד גישה" autocomplete="off">
     <button class="btn" id="gb">כניסה</button>
   </div>
 
   <div id="app" hidden>
-    <h1>איזה קריאייטיב מביא לידים?</h1>
-    <p class="sub">דף הסרטון של המועדון · <a href="https://www.avivmalka.com/club-vsl" target="_blank" rel="noopener">www.avivmalka.com/club-vsl</a> · כל ביקור וכל ליד משויכים למודעה שממנה הגולש הגיע.</p>
-
-    <div class="bar" id="range">
-      <button data-r="1">היום</button>
-      <button data-r="7" class="on">7 ימים</button>
-      <button data-r="30">30 יום</button>
-      <button data-r="all">מההתחלה</button>
+    <div class="top">
+      <div>
+        <h1>מה קורה בדף הסרטון של המועדון</h1>
+        <p class="sub"><a href="https://www.avivmalka.com/club-vsl" target="_blank" rel="noopener">www.avivmalka.com/club-vsl</a> · מי נכנס, מאיפה, כמה צפו בסרטון, על מה לחצו ומי השאיר פרטים</p>
+      </div>
+      <div class="bar" id="range">
+        <button class="pill" data-r="1">היום</button>
+        <button class="pill on" data-r="7">7 ימים</button>
+        <button class="pill" data-r="30">30 יום</button>
+        <button class="pill" data-r="all">מההתחלה</button>
+      </div>
       <span class="upd" id="upd"></span>
     </div>
 
-    <div class="card">
-      <div class="kpis" id="kpis"></div>
-    </div>
+    <nav class="tabs" id="tabs">
+      <button data-t="sum" class="on">תמונת מצב</button>
+      <button data-t="vid">הסרטון: איפה עוזבים</button>
+      <button data-t="hm">מפת חום</button>
+      <button data-t="ads">מקורות ומודעות</button>
+      <button data-t="quiz">השאלון</button>
+      <button data-t="set">חיבור מודעות ויומן</button>
+    </nav>
 
-    <div class="card">
-      <h2>הקריאייטיבים</h2>
-      <p class="hint">כל שורה היא מודעה (או מקור תנועה בלי מודעה). "ביקורים" = גולשים שונים. "המרה" = כמה מהמבקרים השאירו פרטים. ההוצאה והקליקים מגיעים ממטא לאותם ימים. אפשר למיין בלחיצה על כותרת עמודה. בירוק: ההמרה הכי טובה (מ־30 ביקורים ומעלה) והעלות לליד הכי נמוכה.</p>
-      <div class="tblw"><table id="ct"><thead></thead><tbody></tbody></table></div>
-    </div>
+    <!-- summary -->
+    <section data-p="sum" class="on">
+      <div class="card"><div class="kpis" id="kpis"></div></div>
+      <div class="card"><h2>מה כדאי לראות עכשיו</h2><p class="hint">משפטים שנכתבים אוטומטית מהנתונים. "השערה" = כיוון לבדיקה, לא עובדה.</p><ul class="notes" id="notes"></ul></div>
+      <div class="grid2">
+        <div class="card"><h2>הדרך מכניסה לליד</h2><p class="hint">מכל מי שנכנס, כמה הגיעו לכל שלב. באדום: כמה נשרו מהשלב הקודם.</p><div class="fun" id="fun"></div></div>
+        <div class="card"><h2>לפי יום</h2><div class="tblw"><table id="dt"></table></div></div>
+      </div>
+    </section>
 
-    <div class="grid2">
+    <!-- video -->
+    <section data-p="vid">
       <div class="card">
-        <h2>המשפך בדף</h2>
-        <p class="hint">מכל המבקרים, כמה הגיעו לכל שלב.</p>
-        <div class="fun" id="fun"></div>
+        <h2>כמה עדיין צופים בכל רגע בסרטון</h2>
+        <p class="hint">מתוך מי שלחץ Play. ציר הזמן בדקות. מעבירים את העכבר (או נוגעים) על הגרף כדי לראות מה נאמר באותו רגע.</p>
+        <div id="vfew"></div>
+        <div class="chart" id="vchart"></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><h2>הרגעים שבהם הכי הרבה עוזבים</h2><p class="hint">10 השניות עם הירידה הגדולה ביותר, ומה נאמר בהן.</p><ul class="moments" id="vdrops"></ul></div>
+        <div class="card"><h2>דילוגים וחזרות</h2><p class="hint">כתום: מאיפה דילגו קדימה (משעמם?). כחול: לאן חזרו אחורה (מעניין או לא ברור).</p><div class="chart" id="vskip"></div><ul class="moments" id="vback" style="margin-top:12px"></ul></div>
+      </div>
+    </section>
+
+    <!-- heatmap -->
+    <section data-p="hm">
+      <div class="card">
+        <h2>מפת חום של הדף</h2>
+        <p class="hint">כל מלבן הוא חלק בדף, לפי הסדר מלמעלה למטה. הצבע מראה לכמה מהמבקרים זה קרה: כחול כהה = מעט, כתום ואדום = הרבה.</p>
+        <div class="devsw" id="hdev"><button class="pill on" data-d="all">הכל</button><button class="pill" data-d="m">נייד</button><button class="pill" data-d="d">מחשב</button></div>
+        <div class="legend"><span>מעט</span><span class="g"></span><span>הרבה</span></div>
+        <div id="hfew"></div>
+        <div class="page" id="hpage"></div>
       </div>
       <div class="card">
-        <h2>איפה נושרים בשאלון</h2>
-        <p class="hint">כמה גולשים ראו כל שאלה, אחרי שהשאירו פרטים.</p>
-        <div class="fun" id="qf"></div>
+        <h2>קיר העדויות: מה ראו ועל מה לחצו</h2>
+        <p class="hint">כל כרטיס כמו בדף, באותו סדר. הצבע = כמה מהמבקרים לחצו עליו. "ראו" = כמה גללו עד אליו.</p>
+        <div class="cards" id="hcards"></div>
       </div>
-    </div>
+      <div class="grid2">
+        <div class="card"><h2>עד איפה גוללים</h2><p class="hint">כמה מהמבקרים הגיעו לפחות לכל עומק בדף.</p><div class="fun" id="hscroll"></div></div>
+        <div class="card"><h2>הלחיצות הנפוצות</h2><p class="hint">על מה לחצו, לפי מספר מבקרים שונים.</p><div class="fun" id="hclicks"></div></div>
+      </div>
+    </section>
 
-    <div class="grid2">
+    <!-- ads -->
+    <section data-p="ads">
       <div class="card">
-        <h2>לפי יום</h2>
-        <div class="tblw"><table id="dt"></table></div>
+        <h2>מאיפה מגיעים ומה זה מביא</h2>
+        <p class="hint">כל שורה היא מודעה או מקור תנועה (יוטיוב, אינסטגרם וכו׳, לפי ref בקישור). "המרה" = כמה מהמבקרים השאירו פרטים. הוצאה וקליקים מגיעים ממטא.</p>
+        <div class="tblw"><table id="ct"><thead></thead><tbody></tbody></table></div>
       </div>
-      <div class="card">
-        <h2>נייד מול מחשב</h2>
-        <div class="tblw"><table id="vt"></table></div>
+      <div class="card"><h2>נייד מול מחשב</h2><div class="tblw"><table id="vt"></table></div></div>
+    </section>
+
+    <!-- quiz -->
+    <section data-p="quiz">
+      <div class="card"><h2>איפה נושרים בשאלון</h2><p class="hint">כמה גולשים הגיעו לכל שאלה. השם והוואטסאפ הם שאלות 3 ו־4.</p><div class="fun" id="qf"></div></div>
+    </section>
+
+    <!-- setup -->
+    <section data-p="set">
+      <div class="card setup">
+        <h2>איך מחברים מודעה ללוח</h2>
+        <p class="hint">בכל מודעה שמובילה לדף, מדביקים את השורה הזו בשדה "URL parameters" ברמת המודעה במנהל המודעות. בקישורים אורגניים מספיק ‎?ref=youtube / ‎?ref=instagram וכו׳.</p>
+        <code id="tags">utm_source=fb&amp;utm_medium=paid&amp;utm_campaign={{campaign.name}}&amp;utm_term={{adset.name}}&amp;utm_content={{ad.name}}&amp;ad_id={{ad.id}}</code>
+        <button class="btn" id="cp">העתקה</button>
+        <ol>
+          <li>תנו לכל מודעה שם ברור, כי זה השם שיופיע כאן.</li>
+          <li>גולש שלחץ על מודעה וחזר לדף מאוחר יותר (עד 30 יום) עדיין נספר לאותה מודעה.</li>
+          <li>בדיקות עם ‎?qa=1 בכתובת לא נספרות.</li>
+        </ol>
       </div>
-    </div>
-
-    <div class="card setup">
-      <h2>איך מחברים מודעה ללוח</h2>
-      <p class="hint">בכל מודעה שמובילה לדף, מדביקים את השורה הזו בשדה "URL parameters" (פרמטרים של כתובת) ברמת המודעה במנהל המודעות. מטא ממלא לבד את שם הקמפיין, קבוצת המודעות, שם המודעה והמספר שלה.</p>
-      <code id="tags">utm_source=fb&amp;utm_medium=paid&amp;utm_campaign={{campaign.name}}&amp;utm_term={{adset.name}}&amp;utm_content={{ad.name}}&amp;ad_id={{ad.id}}</code>
-      <button class="btn" id="cp">העתקה</button>
-      <ol>
-        <li>תנו לכל מודעה שם ברור (למשל "סרטון עדויות 30 שנ׳"), כי זה השם שיופיע כאן.</li>
-        <li>גולש שלחץ על מודעה וחזר לדף מאוחר יותר (עד 30 יום) עדיין נספר לאותה מודעה.</li>
-        <li>בדיקות עם ‎?qa=1 בכתובת לא נספרות.</li>
-      </ol>
-    </div>
-
-    <div class="card">
-      <h2>יומן שינויים בדף</h2>
-      <ul class="log" id="log"></ul>
-    </div>
+      <div class="card"><h2>יומן שינויים בדף</h2><ul class="log" id="log"></ul></div>
+    </section>
   </div>
 </div>
 <script>
 (function(){
-  var API = 'https://club-ab.aviv1988.workers.dev/stats', START = '2026-11-19';
+  var API = 'https://club-ab.aviv1988.workers.dev', START = '2026-11-19', HMSTART = '2026-11-20';
   var $ = function(id){ return document.getElementById(id); };
   var KEY = (location.hash.match(/k=([\w-]+)/) || [])[1];
   try { if (KEY) localStorage.setItem('cvb_k', KEY); else KEY = localStorage.getItem('cvb_k'); } catch(e){}
   if (location.hash) history.replaceState(null, '', location.pathname);
-  var range = '7', data = null, sortBy = 'lead', sortDir = -1;
+  var range = '7', data = null, hm = null, script = null, cards = [], sortBy = 'lead', sortDir = -1, hdev = 'all';
   var fmt = function(n){ return (n || 0).toLocaleString('he-IL'); };
   var pct = function(a, b){ return b ? (100 * a / b) : null; };
   var pf = function(x){ return x == null ? '–' : (x < 10 ? x.toFixed(1) : Math.round(x)) + '%'; };
   var money = function(x){ return x ? '₪' + Math.round(x).toLocaleString('he-IL') : '–'; };
   var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
   var day = function(d){ return new Date(d.getTime()).toISOString().slice(0, 10); };
-  var SRC = {'': 'כניסה ישירה / לא ידוע', fb: 'פייסבוק', ig: 'אינסטגרם', 'l.facebook.com': 'פייסבוק (קישור)', 'lm.facebook.com': 'פייסבוק (קישור)', 'm.facebook.com': 'פייסבוק', 'l.instagram.com': 'אינסטגרם (קישור)', 'instagram.com': 'אינסטגרם', 'google.com': 'גוגל', 'youtube.com': 'יוטיוב', 'wa.me': 'וואטסאפ'};
+  var mmss = function(s){ s = Math.round(s); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); };
+  var SRC = {'': 'כניסה ישירה / לא ידוע', fb: 'פייסבוק', 'fb-ads': 'מודעות פייסבוק', ig: 'אינסטגרם', instagram: 'אינסטגרם', youtube: 'יוטיוב', 'l.facebook.com': 'פייסבוק (קישור)', 'lm.facebook.com': 'פייסבוק (קישור)', 'm.facebook.com': 'פייסבוק', 'l.instagram.com': 'אינסטגרם (קישור)', 'instagram.com': 'אינסטגרם', 'google.com': 'גוגל', 'youtube.com': 'יוטיוב', 'wa.me': 'וואטסאפ', tiktok: 'טיקטוק', email: 'מייל'};
+  var MIN_V = 30, MIN_PLAYS = 20;
+  /* heat colour: 0 → dark blue, 1 → orange-red */
+  function heat(x){ x = Math.max(0, Math.min(1, x)); var S = [[27,43,74],[59,91,169],[255,168,38],[255,91,59]], p = x * 3, i = Math.min(2, Math.floor(p)), f = p - i, a = S[i], b = S[i + 1];
+    return 'rgb(' + [0,1,2].map(function(k){ return Math.round(a[k] + (b[k] - a[k]) * f); }).join(',') + ')'; }
 
   function gate(){
     $('gate').hidden = false; $('app').hidden = true;
@@ -158,13 +236,15 @@ td.best{color:var(--ok);font-weight:900}
   }
 
   function load(){
-    var q = '?k=' + encodeURIComponent(KEY || '');
     var to = new Date(Date.now() + 2 * 3600e3), f = START;
     if (range !== 'all'){ f = day(new Date(to - (+range - 1) * 864e5)); if (f < START) f = START; }
-    q += '&from=' + f + '&to=' + day(to);
+    var q = '?k=' + encodeURIComponent(KEY || '') + '&from=' + f + '&to=' + day(to);
     $('upd').textContent = 'טוען…';
-    fetch(API + q).then(function(r){ if (r.status === 401) throw 'key'; return r.json(); }).then(function(d){
-      data = d; $('gate').hidden = true; $('app').hidden = false; render();
+    Promise.all([
+      fetch(API + '/stats' + q).then(function(r){ if (r.status === 401) throw 'key'; return r.json(); }),
+      fetch(API + '/hm' + q.replace(f, f < HMSTART ? HMSTART : f)).then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+    ]).then(function(d){
+      data = d[0]; hm = d[1]; $('gate').hidden = true; $('app').hidden = false; render();
     }).catch(function(e){ if (e === 'key'){ try { localStorage.removeItem('cvb_k'); } catch(x){} gate(); } else $('upd').textContent = 'לא הצלחתי לטעון. נסו לרענן.'; });
   }
 
@@ -181,50 +261,160 @@ td.best{color:var(--ok);font-weight:900}
 
   function render(){
     var T = {}; data.tot.forEach(function(r){ T[r.ev] = r.u; });
-    $('upd').textContent = 'עודכן ' + new Date(data.at).toLocaleTimeString('he-IL', {hour: '2-digit', minute: '2-digit'}) + ' · ' + data.from.split('-').reverse().join('.') + '–' + data.to.split('-').reverse().join('.');
+    $('upd').textContent = 'עודכן ' + new Date(data.at).toLocaleTimeString('he-IL', {hour: '2-digit', minute: '2-digit'}) + ' · ' + data.from.split('-').reverse().join('.') + '–' + data.to.split('-').reverse().join('.') + ' · מתרענן לבד כל 2 דקות';
     var R = rows(), spend = R.reduce(function(s, r){ return s + r.spend; }, 0);
-    var K = [['ביקורים', fmt(T.view)], ['השאירו פרטים (לידים)', fmt(T.lead), 1], ['סיימו את השאלון', fmt(T.done)], ['המרה מביקור לליד', pf(pct(T.lead, T.view)), 1]];
-    if (spend) K.push(['הוצאה במודעות', money(spend)], ['עלות לליד', T.lead ? money(spend / T.lead) : '–', 1], ['ניגנו את הסרטון', fmt(T.play)], ['פתחו את השאלון', fmt(T.open)]);
+    var K = [['נכנסו לדף', fmt(T.view)], ['לחצו Play', fmt(T.play)], ['השאירו פרטים (לידים)', fmt(T.lead), 1], ['מכניסה לליד', pf(pct(T.lead, T.view)), 1]];
+    if (spend) K.push(['הוצאה במודעות', money(spend)], ['עלות לליד', T.lead ? money(spend / T.lead) : '–', 1], ['פתחו את השאלון', fmt(T.open)], ['סיימו את השאלון', fmt(T.done)]);
     $('kpis').innerHTML = K.map(function(k){ return '<div class="kpi' + (k[2] ? ' hl' : '') + '"><b>' + k[1] + '</b><span>' + k[0] + '</span></div>'; }).join('');
 
-    var cols = [['name', 'קריאייטיב'], ['spend', 'הוצאה'], ['clicks', 'קליקים במטא'], ['view', 'ביקורים'], ['play', 'ניגנו סרטון'], ['open', 'פתחו שאלון'], ['lead', 'לידים'], ['done', 'סיימו שאלון'], ['conv', 'המרה'], ['cpl', 'עלות לליד']];
+    /* funnel with drop between steps */
+    var F = [['נכנסו לדף', T.view], ['לחצו Play', T.play], ['צפו ברבע', T.w25], ['צפו בחצי', T.w50], ['צפו כמעט עד הסוף', T.w95], ['פתחו את השאלון', T.open], ['השאירו פרטים', T.lead], ['סיימו את השאלון', T.done]];
+    var top = T.view || 1, worst = null;
+    $('fun').innerHTML = F.map(function(f, i){ var w = Math.max(.5, 100 * (f[1] || 0) / top) * .72, d = '';
+      if (i && F[i - 1][1]){ var lost = 100 - 100 * (f[1] || 0) / F[i - 1][1]; d = '<b class="drop">−' + Math.round(Math.max(0, lost)) + '%</b>'; if (i > 1 && (!worst || lost > worst.lost)) worst = {lost: lost, a: F[i - 1][0], b: f[0]}; }
+      return '<div class="fr"><span class="l">' + f[0] + '</span><div class="bt" style="width:' + w + '%"><span>' + fmt(f[1]) + ' · ' + pf(pct(f[1] || 0, T.view)) + d + '</span></div></div>'; }).join('');
+
+    /* daily */
+    var D = {}; data.daily.forEach(function(r){ (D[r.day] = D[r.day] || {})[r.ev] = r.u; });
+    var days = Object.keys(D).sort().reverse();
+    $('dt').innerHTML = '<tr><th>יום</th><th>נכנסו</th><th>פתחו שאלון</th><th>לידים</th><th>המרה</th></tr>' + (days.length ? days.map(function(d){ var x = D[d]; return '<tr><td>' + d.split('-').reverse().slice(0, 2).join('.') + '</td><td>' + fmt(x.view) + '</td><td>' + fmt(x.open) + '</td><td class="n">' + fmt(x.lead) + '</td><td>' + pf(pct(x.lead || 0, x.view)) + '</td></tr>'; }).join('') : '<tr><td colspan="5" class="empty">אין עדיין נתונים</td></tr>');
+
+    /* auto notes */
+    var N = [];
+    if ((T.view || 0) < MIN_V) N.push(['⏳', 'יש רק ' + fmt(T.view) + ' כניסות בטווח הזה. מתחת ל־' + MIN_V + ' כל מסקנה היא ניחוש.', 'עובדה']);
+    if (worst && T.view >= MIN_V) N.push(['📉', 'הנשירה הגדולה ביותר: בין "' + worst.a + '" ל"' + worst.b + '" (' + Math.round(worst.lost) + '%).', 'עובדה. שם הכי משתלם לשפר.']);
+    var srcs = R.filter(function(r){ return r.view >= 15; }).sort(function(a, b){ return (b.conv || 0) - (a.conv || 0); });
+    if (srcs.length > 1) N.push(['🏆', 'המקור עם ההמרה הכי גבוהה: ' + srcs[0].name + ' (' + pf(srcs[0].conv) + ' מ־' + fmt(srcs[0].view) + ' כניסות).', srcs[0].view < MIN_V ? 'השערה: עוד מעט נתונים' : 'עובדה']);
+    if (T.view && T.play != null){ var pr = pct(T.play, T.view); if (pr != null && T.view >= MIN_V && pr < 40) N.push(['▶️', 'רק ' + pf(pr) + ' מהנכנסים לוחצים Play.', 'השערה: התמונה או הכותרת מעל הסרטון לא מספיק מסקרנות']); }
+    if (hm && hm.plays >= MIN_PLAYS){ var dr = drops(); if (dr[0]) N.push(['🎬', 'הכי הרבה עוזבים את הסרטון סביב ' + mmss(dr[0].s) + '.', 'עובדה. מה נאמר שם: בלשונית "הסרטון"']); }
+    if (!N.length) N.push(['✅', 'אין משהו חריג בטווח הזה.', '']);
+    $('notes').innerHTML = N.map(function(n){ return '<li><i>' + n[0] + '</i><span>' + esc(n[1]) + (n[2] ? '<small>' + esc(n[2]) + '</small>' : '') + '</span></li>'; }).join('');
+
+    renderAds(R); renderQuiz(); renderVideo(); renderHeat();
+  }
+
+  function renderAds(R){
+    var cols = [['name', 'מקור / מודעה'], ['spend', 'הוצאה'], ['clicks', 'קליקים במטא'], ['view', 'נכנסו'], ['play', 'לחצו Play'], ['open', 'פתחו שאלון'], ['lead', 'לידים'], ['done', 'סיימו שאלון'], ['conv', 'המרה'], ['cpl', 'עלות לליד']];
     $('ct').tHead.innerHTML = '<tr>' + cols.map(function(c){ return '<th class="s' + (c[0] === sortBy ? ' on' : '') + '" data-k="' + c[0] + '">' + c[1] + (c[0] === sortBy ? (sortDir < 0 ? ' ▾' : ' ▴') : '') + '</th>'; }).join('') + '</tr>';
     [].forEach.call($('ct').tHead.querySelectorAll('th'), function(th){ th.onclick = function(){ var k = th.getAttribute('data-k'); if (sortBy === k) sortDir = -sortDir; else { sortBy = k; sortDir = k === 'cpl' || k === 'name' ? 1 : -1; } render(); }; });
     R.sort(function(a, b){ var x = a[sortBy], y = b[sortBy]; if (x == null && y == null) return b.view - a.view; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * sortDir || b.view - a.view; });
-    var MIN = 30, ok = R.filter(function(r){ return r.view >= MIN && r.lead; });
-    var bestConv = ok.length ? Math.max.apply(null, ok.map(function(r){ return r.conv; })) : null;
-    var cpls = R.filter(function(r){ return r.cpl != null && r.lead >= 2; }).map(function(r){ return r.cpl; });
-    var bestCpl = cpls.length ? Math.min.apply(null, cpls) : null;
+    var ok = R.filter(function(r){ return r.view >= MIN_V && r.lead; }), bestConv = ok.length ? Math.max.apply(null, ok.map(function(r){ return r.conv; })) : null;
+    var cpls = R.filter(function(r){ return r.cpl != null && r.lead >= 2; }).map(function(r){ return r.cpl; }), bestCpl = cpls.length ? Math.min.apply(null, cpls) : null;
     $('ct').tBodies[0].innerHTML = R.length ? R.map(function(r){
       var img = r.thumb ? '<img src="' + esc(r.thumb) + '" alt="" loading="lazy">' : '<span class="ph">' + (r.isAd ? '▶' : '↗') + '</span>';
-      var few = r.view < MIN ? '<span class="r">מעט נתונים</span>' : '';
       return '<tr><td><div class="cr">' + img + '<div><b>' + esc(r.name) + (r.live ? '<span class="tag">פעילה</span>' : '') + '</b><small>' + esc(r.sub) + '</small></div></div></td>' +
         '<td>' + money(r.spend) + '</td><td>' + (r.clicks ? fmt(r.clicks) : '–') + '</td><td class="n">' + fmt(r.view) + '</td><td>' + fmt(r.play) + '</td><td>' + fmt(r.open) + '</td>' +
         '<td class="n">' + fmt(r.lead) + '</td><td>' + fmt(r.done) + '</td>' +
-        '<td class="' + (r.conv != null && r.conv === bestConv ? 'best' : 'n') + '">' + pf(r.conv) + few + '</td>' +
+        '<td class="' + (r.conv != null && r.conv === bestConv ? 'best' : 'n') + '">' + pf(r.conv) + (r.view < MIN_V ? '<span class="r">מעט נתונים</span>' : '') + '</td>' +
         '<td class="' + (r.cpl != null && r.cpl === bestCpl ? 'best' : '') + '">' + money(r.cpl) + '</td></tr>';
-    }).join('') : '<tr><td colspan="10" class="empty">עוד אין ביקורים בטווח הזה. ברגע שמודעה מחוברת (ראו למטה) והגולשים מגיעים, הם יופיעו כאן.</td></tr>';
-
-    var F = [['ביקרו בדף', T.view], ['ניגנו את הסרטון', T.play], ['צפו בחצי', T.w50], ['פתחו את השאלון', T.open], ['השאירו פרטים', T.lead], ['סיימו את השאלון', T.done], ['לחצו לוואטסאפ', T.wa]];
-    var top = T.view || 1;
-    $('fun').innerHTML = F.map(function(f){ var w = Math.max(.5, 100 * (f[1] || 0) / top) * .78; return '<div class="fr"><span class="l">' + f[0] + '</span><div class="bt" style="width:' + w + '%"><span>' + fmt(f[1]) + ' · ' + pf(pct(f[1] || 0, T.view)) + '</span></div></div>'; }).join('');
-    var qt = data.qs.length ? Math.max.apply(null, data.qs.map(function(r){ return r.u; })) : 0;
-    $('qf').innerHTML = data.qs.length ? data.qs.map(function(r){ return '<div class="fr"><span class="l">שאלה ' + r.n + '</span><div class="bt" style="width:' + Math.max(.5, 78 * r.u / qt) + '%"><span>' + fmt(r.u) + '</span></div></div>'; }).join('') : '<div class="empty">עוד אין נתונים</div>';
-
-    var D = {}; data.daily.forEach(function(r){ (D[r.day] = D[r.day] || {})[r.ev] = r.u; });
-    var days = Object.keys(D).sort().reverse();
-    $('dt').innerHTML = '<tr><th>יום</th><th>ביקורים</th><th>פתחו שאלון</th><th>לידים</th><th>סיימו</th><th>המרה</th></tr>' + (days.length ? days.map(function(d){ var x = D[d]; return '<tr><td>' + d.split('-').reverse().slice(0, 2).join('.') + '</td><td>' + fmt(x.view) + '</td><td>' + fmt(x.open) + '</td><td class="n">' + fmt(x.lead) + '</td><td>' + fmt(x.done) + '</td><td>' + pf(pct(x.lead || 0, x.view)) + '</td></tr>'; }).join('') : '<tr><td colspan="6" class="empty">עוד אין נתונים</td></tr>');
+    }).join('') : '<tr><td colspan="10" class="empty">עוד אין כניסות בטווח הזה.</td></tr>';
     var V = {m: {}, d: {}}; data.dev.forEach(function(r){ V[r.dev][r.ev] = r.u; });
-    $('vt').innerHTML = '<tr><th></th><th>ביקורים</th><th>לידים</th><th>סיימו</th><th>המרה</th></tr>' + [['m', 'נייד'], ['d', 'מחשב']].map(function(x){ var v = V[x[0]]; return '<tr><td class="n">' + x[1] + '</td><td>' + fmt(v.view) + '</td><td>' + fmt(v.lead) + '</td><td>' + fmt(v.done) + '</td><td>' + pf(pct(v.lead || 0, v.view)) + '</td></tr>'; }).join('');
+    $('vt').innerHTML = '<tr><th></th><th>נכנסו</th><th>לידים</th><th>סיימו</th><th>המרה</th></tr>' + [['m', 'נייד'], ['d', 'מחשב']].map(function(x){ var v = V[x[0]]; return '<tr><td class="n">' + x[1] + '</td><td>' + fmt(v.view) + '</td><td>' + fmt(v.lead) + '</td><td>' + fmt(v.done) + '</td><td>' + pf(pct(v.lead || 0, v.view)) + '</td></tr>'; }).join('');
   }
 
+  function renderQuiz(){
+    var qt = data.qs.length ? Math.max.apply(null, data.qs.map(function(r){ return r.u; })) : 0;
+    $('qf').innerHTML = data.qs.length ? data.qs.map(function(r, i){ var prev = i ? data.qs[i - 1].u : null, d = prev ? '<b class="drop">−' + Math.round(Math.max(0, 100 - 100 * r.u / prev)) + '%</b>' : '';
+      return '<div class="fr"><span class="l">שאלה ' + r.n + (r.n === 3 ? ' (שם)' : r.n === 4 ? ' (וואטסאפ)' : '') + '</span><div class="bt" style="width:' + Math.max(.5, 72 * r.u / qt) + '%"><span>' + fmt(r.u) + d + '</span></div></div>'; }).join('') : '<p class="empty">עוד אין נתונים</p>';
+  }
+
+  /* ---------- video ---------- */
+  function lineAt(sec){ if (!script) return ''; var L = script.lines[Math.floor(sec / script.bucket)]; return L ? L.t : ''; }
+  function drops(){
+    if (!hm || !hm.plays) return [];
+    var r = hm.ret, out = [];
+    for (var i = 1; i < r.length - 1; i++){ var d = (r[i - 1] - r[i]) / hm.plays; if (d > 0) out.push({s: i * 10, d: d}); }
+    return out.sort(function(a, b){ return b.d - a.d; }).slice(0, 3);
+  }
+  function renderVideo(){
+    var box = $('vchart');
+    if (!hm || !hm.plays){ box.innerHTML = '<p class="empty">המדידה של הסרטון התחילה ב־20.11. ברגע שיהיו צפיות, הגרף יופיע כאן.</p>'; $('vdrops').innerHTML = ''; $('vskip').innerHTML = ''; $('vback').innerHTML = ''; $('vfew').innerHTML = ''; return; }
+    $('vfew').innerHTML = hm.plays < MIN_PLAYS ? '<p class="few">רק ' + hm.plays + ' צפיות נמדדו. מתחת ל־' + MIN_PLAYS + ' הגרף עוד קופץ, אל תסיקו ממנו מסקנות.</p>' : '';
+    var r = hm.ret, n = r.length, Wd = 1000, Ht = 300, P = {l: 44, r: 12, t: 12, b: 30}, cw = Wd - P.l - P.r, ch = Ht - P.t - P.b;
+    var X = function(i){ return P.l + cw * (n - 1 - i) / Math.max(1, n - 1); };   /* RTL: start on the right */
+    var Y = function(v){ return P.t + ch * (1 - v); };
+    var pts = r.map(function(c, i){ return [X(i), Y(c / hm.plays)]; });
+    var path = pts.map(function(p, i){ return (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join('');
+    var area = path + 'L' + X(n - 1) + ',' + Y(0) + 'L' + X(0) + ',' + Y(0) + 'Z';
+    var g = '';
+    [0, .25, .5, .75, 1].forEach(function(v){ g += '<line x1="' + P.l + '" x2="' + (Wd - P.r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="#22355A"/><text x="' + (P.l - 6) + '" y="' + (Y(v) + 4) + '" fill="#7E8DAA" font-size="12" text-anchor="end">' + v * 100 + '%</text>'; });
+    for (var m = 0; m * 6 < n; m += 2){ var x = X(m * 6); g += '<text x="' + x + '" y="' + (Ht - 8) + '" fill="#7E8DAA" font-size="12" text-anchor="middle">' + m + '׳</text>'; }
+    var dr = drops();
+    dr.forEach(function(d){ var x = X(d.s / 10); g += '<line x1="' + x + '" x2="' + x + '" y1="' + P.t + '" y2="' + (Ht - P.b) + '" stroke="#FF6B5B" stroke-dasharray="4 4"/>'; });
+    box.innerHTML = '<svg viewBox="0 0 ' + Wd + ' ' + Ht + '" role="img" aria-label="אחוז הצופים לאורך הסרטון">' + g + '<path d="' + area + '" fill="rgba(255,168,38,.15)"/><path d="' + path + '" fill="none" stroke="#FFA826" stroke-width="2.5"/><line id="vcur" x1="0" x2="0" y1="' + P.t + '" y2="' + (Ht - P.b) + '" stroke="#fff" stroke-opacity=".5" visibility="hidden"/></svg><div class="tip" id="vtip"></div>';
+    var svg = box.querySelector('svg'), tip = $('vtip'), cur = $('vcur');
+    var move = function(ev){ var b = svg.getBoundingClientRect(), cx = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - b.left) * Wd / b.width;
+      var i = Math.round((n - 1) * (P.l + cw - cx) / cw); i = Math.max(0, Math.min(n - 1, i));
+      cur.setAttribute('x1', X(i)); cur.setAttribute('x2', X(i)); cur.setAttribute('visibility', 'visible');
+      tip.style.display = 'block'; tip.innerHTML = '<b>' + mmss(i * 10) + ' · ' + pf(100 * r[i] / hm.plays) + ' עדיין צופים</b><br>' + esc(lineAt(i * 10).slice(0, 160));
+      var tx = X(i) * b.width / Wd; tip.style.left = Math.max(0, Math.min(b.width - 300, tx - 150)) + 'px'; tip.style.top = '10px'; };
+    svg.addEventListener('mousemove', move); svg.addEventListener('touchstart', move, {passive: true}); svg.addEventListener('touchmove', move, {passive: true});
+    svg.addEventListener('mouseleave', function(){ tip.style.display = 'none'; cur.setAttribute('visibility', 'hidden'); });
+    $('vdrops').innerHTML = dr.length ? dr.map(function(d){ return '<li><span class="t">בין ' + mmss(d.s - 10) + ' ל־' + mmss(d.s) + ' · עזבו ' + pf(100 * d.d) + ' מהצופים</span><q>' + esc(lineAt(d.s - 10).slice(0, 220)) + '</q></li>'; }).join('') : '<li class="up">אין עדיין ירידות בולטות.</li>';
+    /* skips */
+    var F = hm.skipF, B = hm.skipB, mx = Math.max(1, Math.max.apply(null, F.concat(B))), h2 = 120, sg = '';
+    for (var i = 0; i < n; i++){ var x2 = X(i) - cw / n / 2, w2 = Math.max(1, cw / n - 1);
+      if (F[i]) sg += '<rect x="' + x2 + '" y="' + (60 - 56 * F[i] / mx) + '" width="' + w2 + '" height="' + (56 * F[i] / mx) + '" fill="#FFA826"/>';
+      if (B[i]) sg += '<rect x="' + x2 + '" y="62" width="' + w2 + '" height="' + (56 * B[i] / mx) + '" fill="#7FB0FF"/>'; }
+    for (var mm = 0; mm * 6 < n; mm += 4) sg += '<text x="' + X(mm * 6) + '" y="' + (h2 - 2) + '" fill="#7E8DAA" font-size="11" text-anchor="middle">' + mm + '׳</text>';
+    $('vskip').innerHTML = (F.some(Boolean) || B.some(Boolean)) ? '<svg viewBox="0 0 ' + Wd + ' ' + h2 + '"><line x1="' + P.l + '" x2="' + (Wd - P.r) + '" y1="61" y2="61" stroke="#22355A"/>' + sg + '</svg>' : '<p class="empty">עוד לא היו דילוגים.</p>';
+    var back = B.map(function(c, i){ return {i: i, c: c}; }).filter(function(x){ return x.c; }).sort(function(a, b){ return b.c - a.c; }).slice(0, 2);
+    $('vback').innerHTML = back.map(function(x){ return '<li class="up"><span class="t">חזרו אל ' + mmss(x.i * 10) + ' · ' + x.c + ' פעמים</span><q>' + esc(lineAt(x.i * 10).slice(0, 180)) + '</q></li>'; }).join('');
+  }
+
+  /* ---------- heatmap ---------- */
+  function renderHeat(){
+    var page = $('hpage');
+    if (!hm || !hm.loads){ $('hfew').innerHTML = ''; page.innerHTML = '<p class="empty">המדידה של מפת החום התחילה ב־20.11. ברגע שיהיו כניסות, היא תופיע כאן.</p>'; $('hcards').innerHTML = ''; $('hscroll').innerHTML = ''; $('hclicks').innerHTML = ''; return; }
+    var L = hdev === 'all' ? hm.loads : (hm.dev[hdev] || 0), keys = hdev === 'all' ? hm.keys : hm.keysBy[hdev];
+    $('hfew').innerHTML = hm.loads < MIN_V ? '<p class="few">רק ' + hm.loads + ' כניסות נמדדו. הצבעים עוד לא אומרים הרבה.</p>' : '';
+    var k = function(prefix){ var s = 0; for (var x in keys) if (x.indexOf(prefix) === 0) s += keys[x]; return s; };
+    var sec = function(x){ return hm.sec[x] || 0; };   /* sections: all devices */
+    var B = [
+      ['החלק העליון: כותרת + הסרטון', hm.loads, 'נכנסו לדף'],
+      ['לחיצה על הסרטון', k('vsl'), 'לחצו על הנגן'],
+      ['הכפתור שמתחת לסרטון', k('cta:hero'), 'לחצו'],
+      ['קיר העדויות', sec('voices'), 'גללו עד אליו'],
+      ['כרטיסי ההרשמה בתוך הקיר', k('cta:feed'), 'לחצו'],
+      ['הכפתור הצף בתחתית', k('cta:sticky'), 'לחצו'],
+      ['השאלון', k('quiz'), 'לחצו בתוך השאלון']
+    ];
+    page.innerHTML = B.map(function(b){ var p = L ? b[1] / (b[2] === 'גללו עד אליו' || b[2] === 'נכנסו לדף' ? hm.loads : L) : 0;
+      return '<div class="blk" style="background:' + heat(p) + '"><b>' + b[0] + '</b><span>' + b[2] + ': ' + fmt(b[1]) + ' · ' + pf(100 * p) + '</span></div>'; }).join('');
+    /* cards */
+    var by = {}; for (var x in keys){ var m = x.match(/^card:(\d+):/); if (m) by[m[1]] = (by[m[1]] || 0) + keys[x]; }
+    var mxc = Math.max(1, Math.max.apply(null, Object.keys(by).map(function(i){ return by[i]; }).concat([1])));
+    $('hcards').innerHTML = cards.map(function(c){ var cl = by[c.i] || 0, seen = sec('c' + c.i), p = cl / mxc;
+      if (c.t === 'cta') return '<div class="hc cta" style="outline:3px solid ' + heat(p) + '"><div><b>כרטיס הרשמה</b><br><span style="color:var(--mut);font-size:13px">לחצו ' + fmt(cl) + ' · ראו ' + pf(pct(seen, hm.loads)) + '</span></div></div>';
+      return '<div class="hc" style="outline:3px solid ' + heat(p) + '"><img src="' + esc(c.img) + '" alt="" loading="lazy"><div class="ov" style="background:' + heat(p) + ';opacity:' + (.05 + .35 * p).toFixed(2) + '"></div>' +
+        '<span class="hb" style="background:' + heat(p) + '"></span><span class="k">לחצו ' + fmt(cl) + '</span><span class="ty">' + (c.t === 'v' ? '▶ סרטון' : '🖼 תמונה') + '</span>' +
+        '<div class="lab"><b>' + esc(c.label) + '</b>' + esc(c.who) + ' · ראו ' + pf(pct(seen, hm.loads)) + '</div></div>'; }).join('');
+    /* scroll */
+    var S = hm.scroll, cum = [], acc = 0; for (var i = 10; i >= 0; i--){ acc += S[i]; cum[i] = acc; }
+    $('hscroll').innerHTML = [25, 50, 75, 90].map(function(t){ var c = cum[Math.floor(t / 10)] || 0; return '<div class="fr"><span class="l">' + t + '% מהדף</span><div class="bt blu" style="width:' + Math.max(.5, 72 * c / hm.loads) + '%"><span>' + fmt(c) + ' · ' + pf(pct(c, hm.loads)) + '</span></div></div>'; }).join('');
+    /* clicks */
+    var NM = function(x){ if (x === 'vsl') return 'הנגן של הסרטון'; if (x === 'quiz') return 'בתוך השאלון'; if (x === 'cta:hero' || x === 'cta:hero_b') return 'הכפתור מתחת לסרטון'; if (x === 'cta:sticky') return 'הכפתור הצף'; if (x === 'cta:feed') return 'כרטיס הרשמה בקיר';
+      var m = x.match(/^card:\d+:(\w):(.*)$/); if (m) return (m[1] === 'v' ? '▶ ' : '🖼 ') + m[2]; return x.replace(/^(btn|area|cta):/, ''); };
+    var top = Object.keys(keys).map(function(x){ return [x, keys[x]]; }).sort(function(a, b){ return b[1] - a[1]; }).slice(0, 10), mk = top.length ? top[0][1] : 1;
+    $('hclicks').innerHTML = top.length ? top.map(function(t){ return '<div class="fr"><span class="l">' + esc(NM(t[0])) + '</span><div class="bt" style="width:' + Math.max(.5, 72 * t[1] / mk) + '%"><span>' + fmt(t[1]) + ' · ' + pf(pct(t[1], L)) + '</span></div></div>'; }).join('') : '<p class="empty">עוד אין לחיצות</p>';
+  }
+
+  /* tabs, ranges, misc */
+  var TAB = 'sum';
+  [].forEach.call(document.querySelectorAll('#tabs button'), function(b){ b.onclick = function(){ TAB = b.getAttribute('data-t');
+    [].forEach.call(document.querySelectorAll('#tabs button'), function(x){ x.classList.toggle('on', x === b); });
+    [].forEach.call(document.querySelectorAll('[data-p]'), function(p){ p.classList.toggle('on', p.getAttribute('data-p') === TAB); });
+    try { history.replaceState(null, '', '#' + TAB); } catch(e){} if (data) render(); }; });
+  var h0 = (location.hash || '').replace('#', ''); if (h0 && document.querySelector('#tabs [data-t="' + h0 + '"]')) document.querySelector('#tabs [data-t="' + h0 + '"]').click();
   [].forEach.call(document.querySelectorAll('#range button'), function(b){ b.onclick = function(){ [].forEach.call(document.querySelectorAll('#range button'), function(x){ x.classList.toggle('on', x === b); }); range = b.getAttribute('data-r'); load(); }; });
+  [].forEach.call(document.querySelectorAll('#hdev button'), function(b){ b.onclick = function(){ [].forEach.call(document.querySelectorAll('#hdev button'), function(x){ x.classList.toggle('on', x === b); }); hdev = b.getAttribute('data-d'); if (hm) renderHeat(); }; });
   $('cp').onclick = function(){ var t = $('tags').textContent, b = this; var done = function(){ b.textContent = 'הועתק ✓'; setTimeout(function(){ b.textContent = 'העתקה'; }, 1600); };
     if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, function(){ getSelection().selectAllChildren($('tags')); }); else getSelection().selectAllChildren($('tags')); };
   fetch('ab-log.json?x=' + Date.now()).then(function(r){ return r.json(); }).then(function(L){
     $('log').innerHTML = L.log.slice().reverse().map(function(e){ return '<li><span class="d">' + e.date.split('-').reverse().join('.') + '</span><span>' + esc(e.what) + '</span></li>'; }).join('');
   }).catch(function(){});
-  if (KEY) load(); else gate();
+  Promise.all([fetch('script_map.json').then(function(r){ return r.json(); }).catch(function(){ return null; }), fetch('cards.json').then(function(r){ return r.json(); }).catch(function(){ return []; })])
+    .then(function(x){ script = x[0]; cards = x[1] || []; if (KEY) load(); else gate(); });
   setInterval(function(){ if (data && !document.hidden) load(); }, 120000);
 })();
 </script>
