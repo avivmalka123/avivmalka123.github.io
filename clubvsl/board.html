@@ -222,6 +222,7 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
   var money = function(x){ return x ? '₪' + Math.round(x).toLocaleString('he-IL') : '–'; };
   var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
   var day = function(d){ return new Date(d.getTime()).toISOString().slice(0, 10); };
+  var dec = function(x){ if (!x) return x; x = String(x); for (var i = 0; i < 3 && /%[0-9A-F]{2}/i.test(x); i++){ try { x = decodeURIComponent(x); } catch(e){ break; } } return x.replace(/[\u200e\u200f\u202a-\u202e]/g, '').trim(); };
   var mmss = function(s){ s = Math.round(s); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); };
   var SRC = {'': 'כניסה ישירה / לא ידוע', fb: 'פייסבוק', 'fb-ads': 'מודעות פייסבוק', ig: 'אינסטגרם', instagram: 'אינסטגרם', youtube: 'יוטיוב', 'l.facebook.com': 'פייסבוק (קישור)', 'lm.facebook.com': 'פייסבוק (קישור)', 'm.facebook.com': 'פייסבוק', 'l.instagram.com': 'אינסטגרם (קישור)', 'instagram.com': 'אינסטגרם', 'google.com': 'גוגל', 'youtube.com': 'יוטיוב', 'wa.me': 'וואטסאפ', tiktok: 'טיקטוק', email: 'מייל'};
   var MIN_V = 30, MIN_PLAYS = 20;
@@ -251,7 +252,7 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
   function rows(){
     return data.creatives.map(function(c){
       var e = c.ev, m = c.meta || {}, isAd = !!(c.adid || c.ad);
-      var name = isAd ? (m.name || c.ad || 'מודעה ' + c.adid) : (SRC[c.src || ''] || c.src);
+      var name = isAd ? (m.name || dec(c.ad) || 'מודעה ' + c.adid) : (SRC[dec(c.src) || ''] || dec(c.src));
       var v = e.view || 0, lead = e.lead || 0;
       return {c: c, isAd: isAd, name: name, sub: isAd ? [m.camp || c.camp, m.adset || c.adset].filter(Boolean).join(' · ') : 'בלי מודעה', thumb: m.thumb,
         spend: m.spend || 0, clicks: m.clicks || 0, view: v, play: e.play || 0, open: e.open || 0, lead: lead, done: e.done || 0,
