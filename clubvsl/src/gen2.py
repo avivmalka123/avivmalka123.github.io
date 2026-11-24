@@ -297,7 +297,7 @@ our = r'''
   var sent = {};
   window.cvTrack = function(ev, n, cta){
     var k = ev + (n == null ? '' : n) + (cta || ''); if (sent[k]) return; sent[k] = 1;
-    var body = JSON.stringify({v: AV, ev: ev, vid: VID, n: n, cta: cta, dev: DEV, src: T.src || '', camp: T.camp || '', adset: T.adset || '', ad: T.ad || '', adid: T.adid || '', qa: QA ? 1 : 0});
+    var body = JSON.stringify({v: AV, vv: CFG.VSL_VID, ev: ev, vid: VID, n: n, cta: cta, dev: DEV, src: T.src || '', camp: T.camp || '', adset: T.adset || '', ad: T.ad || '', adid: T.adid || '', qa: QA ? 1 : 0});
     try { if (navigator.sendBeacon) navigator.sendBeacon(EP, new Blob([body], {type: 'text/plain'})); else fetch(EP, {method: 'POST', body: body, keepalive: true}); } catch(e){}
   };
   cvTrack('view');
@@ -343,7 +343,7 @@ our = r'''
       if (!v.paused && !v.seeking){ var b = Math.floor(v.currentTime / 10); if (!H.wb[b]){ H.wb[b] = 1; dirty = true; } lastT = v.currentTime; } }, true);
     document.addEventListener('seeking', function(e){ var v = e.target; if (!inV(v)) return; if (Math.abs(v.currentTime - lastT) > 3){ H.sk.push([Math.round(lastT), Math.round(v.currentTime)]); if (H.sk.length > 40) H.sk.shift(); dirty = true; } }, true);
     function flush(){ if (!dirty) return; dirty = false;
-      var body = JSON.stringify({sid: SID, vid: VID, dev: DEV, src: T.src || '', qa: QA ? 1 : 0, sc: H.sc, se: Object.keys(H.se), cl: H.cl,
+      var body = JSON.stringify({sid: SID, vid: VID, vv: CFG.VSL_VID, dev: DEV, src: T.src || '', qa: QA ? 1 : 0, sc: H.sc, se: Object.keys(H.se), cl: H.cl,
         wb: Object.keys(H.wb).map(Number), sk: H.sk, dur: H.dur});
       try { if (navigator.sendBeacon) navigator.sendBeacon(EPH, new Blob([body], {type: 'text/plain'})); else fetch(EPH, {method: 'POST', body: body, keepalive: true}); } catch(e){}
     }
