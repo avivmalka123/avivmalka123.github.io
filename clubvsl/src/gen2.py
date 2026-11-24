@@ -237,6 +237,7 @@ extra = '\n'.join(keep) + '''
 .ls-opt:hover .e{background:#FFA826;color:#0A1428}
 .qinline .ls-q{margin:0 auto !important}
 '''
+import quiz_tiers as _qt; extra += _qt.CSS
 s = s.replace('</style>', extra + '</style>', 1)
 rep('<div class="toast" id="toast" role="status"></div>', '<div class="toast" id="toast" role="status"></div>\n<div class="lbx" id="lbx" role="dialog" aria-label="צילום מסך מוגדל"><img alt=""></div>\n<div class="qm" id="qm" role="dialog" aria-modal="true" aria-label="שאלון ההתאמה"><div class="qmi"><button class="qx" id="qmX" type="button" aria-label="סגירה">×</button><div class="ls"><div class="ls-q" id="lsQ"></div></div></div></div>')
 # every CTA opens the quiz popup (no long scroll through the reveal animations)
@@ -246,7 +247,7 @@ rep("if(internal){var t=$(CFG.QUIZ_URL);if(t){e.preventDefault();t.scrollIntoVie
 # ---- script ----
 c0 = s.index('var CFG={')
 c1 = s.index('};', c0) + 2
-cfg = {'QUIZ_URL': '#cvQuiz', 'VSL_VID': CFGJ['vsl_vid'], 'VSL_ACC': 'YxS8sQvf', 'TOUR_EMBED': CFGJ['tour'],
+cfg = {'QUIZ_URL': '#cvQuiz', 'TIERS': bool(CFGJ.get('tiers')), 'VSL_VID': CFGJ['vsl_vid'], 'VSL_ACC': 'YxS8sQvf', 'TOUR_EMBED': CFGJ['tour'],
        'VIDEOS': {k: v['src'] for k, v in CFGJ['reels'].items()}}
 s = s[:c0] + 'var CFG=' + json.dumps(cfg, ensure_ascii=False) + ';' + s[c1:]
 rep("function embedFor(k){return k==='VSL_EMBED'?CFG.VSL_EMBED:k==='TOUR_EMBED'?CFG.TOUR_EMBED:(CFG.VIDEOS[k]||'');}",
@@ -272,6 +273,7 @@ for emo in ('🎯 ', '✅ ', '🔒 ', '💬 ', '👆 ', '↺ '):
 assert '<span class="e">\' + o[0]' not in fit
 fit = fit.replace("var cta = document.querySelector('#lsNext .ls-cta'); if (cta) cta.style.display = 'none';   /* one WhatsApp button at the end */", "")
 import quiz_contact; fit = quiz_contact.apply(fit)   # name + WhatsApp at steps 3-4, Fireberry right after (19.11)
+import quiz_tiers; fit = quiz_tiers.apply(fit)     # hot / warm / cold end screens, hot → booking link (24.11)
 our = r'''
 /* ===== club-vsl: our working parts (kept from v1) ===== */
 (function(){
