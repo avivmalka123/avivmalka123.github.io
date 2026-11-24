@@ -1,0 +1,6 @@
+{
+ "videos": [
+  {"id": "OEMH0v7ynQBgdDj1", "short": "הקודם", "name": "הסרטון הקודם (VSL 1)", "len": "16:51", "from": "2026-11-18", "to": "2026-11-24", "script": "script_map.json", "vidalytics": "R8_kmnTBdLMzfQpB"},
+  {"id": "ZHX4aq0MJES95ltL", "short": "החדש", "name": "העריכה החדשה (VSL 2)", "len": "17:07", "from": "2026-11-24", "script": "script_map_v2.json", "vidalytics": "T88KIfqWZVowGEmy"}
+ ]
+}

@@ -22,6 +22,9 @@ h3{font-size:16px;font-weight:800;margin:0 0 8px;color:var(--mut)}
 .pill{font:800 14.5px 'Heebo',sans-serif;background:var(--bg3);color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer}
 .pill.on{background:var(--b);color:#0A1428;border-color:var(--b)}
 .upd{color:var(--dim);font-size:13.5px;width:100%}
+.vsel{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.vsel>span{color:var(--dim);font-size:13.5px;font-weight:700}
+.vleg{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;color:var(--mut);margin:0 0 8px}.vleg i{display:inline-block;width:18px;height:4px;border-radius:2px;margin-inline-end:6px;vertical-align:middle}
+#vcmp td.win{color:var(--ok);font-weight:900}
 .tabs{display:flex;gap:4px;overflow-x:auto;margin:18px 0 0;border-bottom:1px solid var(--line);scrollbar-width:none}
 .tabs button{font:800 15.5px 'Heebo',sans-serif;background:none;color:var(--dim);border:0;border-bottom:3px solid transparent;padding:10px 14px;cursor:pointer;white-space:nowrap}
 .tabs button.on{color:var(--tx);border-bottom-color:var(--b)}
@@ -119,6 +122,7 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
         <button class="pill" data-r="30">30 יום</button>
         <button class="pill" data-r="all">מההתחלה</button>
       </div>
+      <div class="bar vsel" id="vsel"></div>
       <span class="upd" id="upd"></span>
     </div>
 
@@ -134,6 +138,7 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
     <!-- summary -->
     <section data-p="sum" class="on">
       <div class="card"><div class="kpis" id="kpis"></div></div>
+      <div class="card" id="vcmpC"><h2>הסרטון הקודם מול החדש</h2><p class="hint">כל מבקר נספר לסרטון שהוצג לו. האחוזים של "צפו ברבע / בחצי / עד הסוף" הם מתוך מי שלחץ Play. בירוק: הגבוה מבין השניים.</p><div class="tblw"><table id="vcmp"></table></div><ul class="notes" id="vcmpN" style="margin-top:12px"></ul></div>
       <div class="card"><h2>מה כדאי לראות עכשיו</h2><p class="hint">משפטים שנכתבים אוטומטית מהנתונים. "השערה" = כיוון לבדיקה, לא עובדה.</p><ul class="notes" id="notes"></ul></div>
       <div class="grid2">
         <div class="card"><h2>הדרך מכניסה לליד</h2><p class="hint">מכל מי שנכנס, כמה הגיעו לכל שלב. באדום: כמה נשרו מהשלב הקודם.</p><div class="fun" id="fun"></div></div>
@@ -144,7 +149,13 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
     <!-- video -->
     <section data-p="vid">
       <div class="card">
-        <h2>כמה עדיין צופים בכל רגע בסרטון</h2>
+        <h2>השוואת צפייה בין הסרטונים</h2>
+        <p class="hint">כמה מהצופים עוד צפו בכל דקה, בכל סרטון. כל קו מחושב מתוך מי שלחץ Play באותו סרטון.</p>
+        <div class="vleg" id="vovL"></div>
+        <div class="chart" id="vov"></div>
+      </div>
+      <div class="card">
+        <h2 id="vtitle">כמה עדיין צופים בכל רגע בסרטון</h2>
         <p class="hint">מתוך מי שלחץ Play. ציר הזמן בדקות. מעבירים את העכבר (או נוגעים) על הגרף כדי לראות מה נאמר באותו רגע.</p>
         <div id="vfew"></div>
         <div class="chart" id="vchart"></div>
@@ -215,7 +226,7 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
   var KEY = (location.hash.match(/k=([\w-]+)/) || [])[1];
   try { if (KEY) localStorage.setItem('cvb_k', KEY); else KEY = localStorage.getItem('cvb_k'); } catch(e){}
   if (location.hash) history.replaceState(null, '', location.pathname);
-  var range = '7', data = null, hm = null, script = null, cards = [], sortBy = 'lead', sortDir = -1, hdev = 'all';
+  var range = '7', data = null, hm = null, hmAll = null, script = null, cards = [], VIDS = [], vsel = 'all', HMV = {}, SCR = {}, COL = ['#7FB0FF', '#FFA826', '#3DDC84'], sortBy = 'lead', sortDir = -1, hdev = 'all';
   var fmt = function(n){ return (n || 0).toLocaleString('he-IL'); };
   var pct = function(a, b){ return b ? (100 * a / b) : null; };
   var pf = function(x){ return x == null ? '–' : (x < 10 ? x.toFixed(1) : Math.round(x)) + '%'; };
@@ -239,13 +250,20 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
   function load(){
     var to = new Date(Date.now() + 2 * 3600e3), f = START;
     if (range !== 'all'){ f = day(new Date(to - (+range - 1) * 864e5)); if (f < START) f = START; }
-    var q = '?k=' + encodeURIComponent(KEY || '') + '&from=' + f + '&to=' + day(to);
+    var q = '?k=' + encodeURIComponent(KEY || '') + '&from=' + f + '&to=' + day(to), qv = q + (vsel !== 'all' ? '&vv=' + vsel : '');
+    var qh = function(x){ return x.replace('&from=' + f, '&from=' + (f < HMSTART ? HMSTART : f)); };
+    var getHm = function(x){ return fetch(API + '/hm' + qh(x)).then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; }); };
     $('upd').textContent = 'טוען…';
     Promise.all([
-      fetch(API + '/stats' + q).then(function(r){ if (r.status === 401) throw 'key'; return r.json(); }),
-      fetch(API + '/hm' + q.replace(f, f < HMSTART ? HMSTART : f)).then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; })
+      fetch(API + '/stats' + qv).then(function(r){ if (r.status === 401) throw 'key'; return r.json(); }),
+      getHm(qv),
+      Promise.all(VIDS.map(function(v){ return getHm(q + '&vv=' + v.id); })),
+      vsel !== 'all' ? fetch(API + '/stats' + q).then(function(r){ return r.json(); }) : null
     ]).then(function(d){
-      data = d[0]; hm = d[1]; $('gate').hidden = true; $('app').hidden = false; render();
+      data = d[0]; hmAll = d[1]; HMV = {}; VIDS.forEach(function(v, i){ HMV[v.id] = d[2][i]; });
+      if (d[3]) data.vids = d[3].vids;
+      var sh = shown(); hm = vsel === 'all' && HMV[sh.id] ? HMV[sh.id] : hmAll; script = SCR[sh.id] || script;
+      $('gate').hidden = true; $('app').hidden = false; render();
     }).catch(function(e){ if (e === 'key'){ try { localStorage.removeItem('cvb_k'); } catch(x){} gate(); } else $('upd').textContent = 'לא הצלחתי לטעון. נסו לרענן.'; });
   }
 
@@ -291,7 +309,7 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
     if (!N.length) N.push(['✅', 'אין משהו חריג בטווח הזה.', '']);
     $('notes').innerHTML = N.map(function(n){ return '<li><i>' + n[0] + '</i><span>' + esc(n[1]) + (n[2] ? '<small>' + esc(n[2]) + '</small>' : '') + '</span></li>'; }).join('');
 
-    renderAds(R); renderQuiz(); renderVideo(); renderHeat();
+    renderAds(R); renderQuiz(); renderVideo(); renderHeat(); renderCmp(); renderOverlay();
   }
 
   function renderAds(R){
@@ -328,7 +346,7 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
     return out.sort(function(a, b){ return b.d - a.d; }).slice(0, 3);
   }
   function renderVideo(){
-    var box = $('vchart');
+    var box = $('vchart'), sv = shown(); $('vtitle').textContent = 'כמה עדיין צופים בכל רגע: ' + (sv.name || 'הסרטון');
     if (!hm || !hm.plays){ box.innerHTML = '<p class="empty">המדידה של הסרטון התחילה ב־20.11. ברגע שיהיו צפיות, הגרף יופיע כאן.</p>'; $('vdrops').innerHTML = ''; $('vskip').innerHTML = ''; $('vback').innerHTML = ''; $('vfew').innerHTML = ''; return; }
     $('vfew').innerHTML = hm.plays < MIN_PLAYS ? '<p class="few">רק ' + hm.plays + ' צפיות נמדדו. מתחת ל־' + MIN_PLAYS + ' הגרף עוד קופץ, אל תסיקו ממנו מסקנות.</p>' : '';
     var r = hm.ret, n = r.length, Wd = 1000, Ht = 300, P = {l: 44, r: 12, t: 12, b: 30}, cw = Wd - P.l - P.r, ch = Ht - P.t - P.b;
@@ -363,9 +381,55 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
     $('vback').innerHTML = back.map(function(x){ return '<li class="up"><span class="t">חזרו אל ' + mmss(x.i * 10) + ' · ' + x.c + ' פעמים</span><q>' + esc(lineAt(x.i * 10).slice(0, 180)) + '</q></li>'; }).join('');
   }
 
+  /* ---------- video versions (Aviv 24.11: compare the first VSL with the new edit) ---------- */
+  function shown(){ if (vsel !== 'all') return VIDS.filter(function(v){ return v.id === vsel; })[0] || {}; return VIDS[VIDS.length - 1] || {}; }
+  function renderVsel(){
+    $('vsel').innerHTML = '<span>סרטון:</span><button class="pill' + (vsel === 'all' ? ' on' : '') + '" data-v="all">כל הסרטונים</button>' + VIDS.map(function(v){ return '<button class="pill' + (vsel === v.id ? ' on' : '') + '" data-v="' + v.id + '">' + esc(v.short) + '</button>'; }).join('');
+    [].forEach.call($('vsel').querySelectorAll('button'), function(b){ b.onclick = function(){ vsel = b.getAttribute('data-v'); renderVsel(); load(); }; });
+  }
+  function z2(a, n1, b, n2){ var p = (a + b) / (n1 + n2); if (!n1 || !n2 || !p || p === 1) return 0; return (a / n1 - b / n2) / Math.sqrt(p * (1 - p) * (1 / n1 + 1 / n2)); }
+  function renderCmp(){
+    var M = {}; (data.vids || []).forEach(function(r){ (M[r.vv] = M[r.vv] || {})[r.ev] = r.u; });
+    if (VIDS.length < 2){ $('vcmpC').hidden = true; return; } $('vcmpC').hidden = false;
+    var V = VIDS.map(function(v){ var e = M[v.id] || {}, h = HMV[v.id] || {}; return {v: v, e: e, h: h}; });
+    var rowsC = [
+      ['עלה לאוויר', function(x){ return x.v.from.split('-').reverse().join('.'); }, null],
+      ['אורך', function(x){ return x.v.len; }, null],
+      ['נכנסו לדף', function(x){ return fmt(x.e.view); }, null],
+      ['לחצו Play', function(x){ return fmt(x.e.play) + ' · ' + pf(pct(x.e.play || 0, x.e.view)); }, function(x){ return pct(x.e.play || 0, x.e.view); }],
+      ['צפו ברבע', function(x){ return pf(pct(x.e.w25 || 0, x.e.play)); }, function(x){ return pct(x.e.w25 || 0, x.e.play); }],
+      ['צפו בחצי', function(x){ return pf(pct(x.e.w50 || 0, x.e.play)); }, function(x){ return pct(x.e.w50 || 0, x.e.play); }],
+      ['צפו כמעט עד הסוף', function(x){ return pf(pct(x.e.w95 || 0, x.e.play)); }, function(x){ return pct(x.e.w95 || 0, x.e.play); }],
+      ['עוד צופים אחרי 3 דקות', function(x){ var r = x.h.ret || []; return x.h.plays && r[18] != null ? pf(100 * r[18] / x.h.plays) : '–'; }, function(x){ var r = x.h.ret || []; return x.h.plays && r[18] != null ? r[18] / x.h.plays : null; }],
+      ['פתחו את השאלון', function(x){ return fmt(x.e.open) + ' · ' + pf(pct(x.e.open || 0, x.e.view)); }, function(x){ return pct(x.e.open || 0, x.e.view); }],
+      ['השאירו פרטים (לידים)', function(x){ return fmt(x.e.lead) + ' · ' + pf(pct(x.e.lead || 0, x.e.view)); }, function(x){ return pct(x.e.lead || 0, x.e.view); }],
+      ['סיימו את השאלון', function(x){ return fmt(x.e.done); }, null]
+    ];
+    $('vcmp').innerHTML = '<tr><th></th>' + V.map(function(x, i){ return '<th><span style="color:' + COL[i] + '">●</span> ' + esc(x.v.name) + '</th>'; }).join('') + '</tr>' +
+      rowsC.map(function(r){ var vals = r[2] ? V.map(r[2]) : null, mx = vals ? Math.max.apply(null, vals.map(function(x){ return x == null ? -1 : x; })) : null;
+        return '<tr><td class="n">' + r[0] + '</td>' + V.map(function(x, i){ var w = vals && vals[i] != null && vals[i] === mx && vals.filter(function(y){ return y === mx; }).length === 1 && mx > 0; return '<td' + (w ? ' class="win"' : '') + '>' + r[1](x) + '</td>'; }).join('') + '</tr>'; }).join('');
+    var N = [], a = V[V.length - 2], b = V[V.length - 1];
+    if ((b.e.view || 0) < 200 || (a.e.view || 0) < 200) N.push(['⏳', 'כדי להכריע צריך לפחות 200 כניסות לכל סרטון (כרגע ' + fmt(a.e.view) + ' ו־' + fmt(b.e.view) + '), ולפחות 20 Play לכל אחד בשביל גרף הצפייה.', 'עד אז ההבדלים יכולים להיות מקריים']);
+    var zp = z2(b.e.play || 0, b.e.view || 0, a.e.play || 0, a.e.view || 0), zl = z2(b.e.lead || 0, b.e.view || 0, a.e.lead || 0, a.e.view || 0);
+    [['לחיצה על Play', zp], ['השארת פרטים', zl]].forEach(function(t){ if (Math.abs(t[1]) >= 1.96) N.push([t[1] > 0 ? '✅' : '⚠️', t[0] + ': ' + (t[1] > 0 ? 'הסרטון החדש טוב יותר' : 'הסרטון הקודם טוב יותר') + ', וההבדל כבר לא נראה מקרי (z=' + t[1].toFixed(1) + ').', 'עובדה סטטיסטית ברמת ביטחון 95%']); });
+    if (N.length === 0) N.push(['➖', 'עדיין אין הבדל מובהק בין הסרטונים, לא בלחיצות על Play ולא בלידים.', '']);
+    $('vcmpN').innerHTML = N.map(function(n){ return '<li><i>' + n[0] + '</i><span>' + esc(n[1]) + (n[2] ? '<small>' + esc(n[2]) + '</small>' : '') + '</span></li>'; }).join('');
+  }
+  function renderOverlay(){
+    var box = $('vov'), L = VIDS.map(function(v, i){ return {v: v, h: HMV[v.id], c: COL[i]}; }).filter(function(x){ return x.h && x.h.plays; });
+    $('vovL').innerHTML = VIDS.map(function(v, i){ var h = HMV[v.id]; return '<span><i style="background:' + COL[i] + '"></i>' + esc(v.name) + ' · ' + fmt(h && h.plays) + ' צפיות' + (h && h.plays < MIN_PLAYS ? ' (מעט)' : '') + '</span>'; }).join('');
+    if (!L.length){ box.innerHTML = '<p class="empty">עוד אין צפיות להשוות.</p>'; return; }
+    var Wd = 1000, Ht = 280, P = {l: 44, r: 12, t: 12, b: 30}, cw = Wd - P.l - P.r, ch = Ht - P.t - P.b, mxs = Math.max.apply(null, L.map(function(x){ return x.h.ret.length; }));
+    var X = function(i){ return P.l + cw * (mxs - 1 - i) / Math.max(1, mxs - 1); }, Y = function(v){ return P.t + ch * (1 - v); }, g = '';
+    [0, .25, .5, .75, 1].forEach(function(v){ g += '<line x1="' + P.l + '" x2="' + (Wd - P.r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="#22355A"/><text x="' + (P.l - 6) + '" y="' + (Y(v) + 4) + '" fill="#7E8DAA" font-size="12" text-anchor="end">' + v * 100 + '%</text>'; });
+    for (var m = 0; m * 6 < mxs; m += 2) g += '<text x="' + X(m * 6) + '" y="' + (Ht - 8) + '" fill="#7E8DAA" font-size="12" text-anchor="middle">' + m + '׳</text>';
+    L.forEach(function(x){ g += '<path d="' + x.h.ret.map(function(c, i){ return (i ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(c / x.h.plays).toFixed(1); }).join('') + '" fill="none" stroke="' + x.c + '" stroke-width="2.5"/>'; });
+    box.innerHTML = '<svg viewBox="0 0 ' + Wd + ' ' + Ht + '" role="img" aria-label="השוואת צפייה בין הסרטונים">' + g + '</svg>';
+  }
+
   /* ---------- heatmap ---------- */
   function renderHeat(){
-    var page = $('hpage');
+    var hm = hmAll, page = $('hpage');
     if (!hm || !hm.loads){ $('hfew').innerHTML = ''; page.innerHTML = '<p class="empty">המדידה של מפת החום התחילה ב־20.11. ברגע שיהיו כניסות, היא תופיע כאן.</p>'; $('hcards').innerHTML = ''; $('hscroll').innerHTML = ''; $('hclicks').innerHTML = ''; return; }
     var L = hdev === 'all' ? hm.loads : (hm.dev[hdev] || 0), keys = hdev === 'all' ? hm.keys : hm.keysBy[hdev];
     $('hfew').innerHTML = hm.loads < MIN_V ? '<p class="few">רק ' + hm.loads + ' כניסות נמדדו. הצבעים עוד לא אומרים הרבה.</p>' : '';
@@ -414,8 +478,11 @@ td.n{font-weight:800}td .r{display:block;font-size:12.5px;color:var(--dim);font-
   fetch('ab-log.json?x=' + Date.now()).then(function(r){ return r.json(); }).then(function(L){
     $('log').innerHTML = L.log.slice().reverse().map(function(e){ return '<li><span class="d">' + e.date.split('-').reverse().join('.') + '</span><span>' + esc(e.what) + '</span></li>'; }).join('');
   }).catch(function(){});
-  Promise.all([fetch('script_map.json').then(function(r){ return r.json(); }).catch(function(){ return null; }), fetch('cards.json').then(function(r){ return r.json(); }).catch(function(){ return []; })])
-    .then(function(x){ script = x[0]; cards = x[1] || []; if (KEY) load(); else gate(); });
+  var J = function(u, d){ return fetch(u + '?x=' + Date.now()).then(function(r){ return r.json(); }).catch(function(){ return d; }); };
+  Promise.all([J('script_map.json', null), J('cards.json', []), J('videos.json', {videos: []})]).then(function(x){
+    script = x[0]; cards = x[1] || []; VIDS = (x[2] && x[2].videos) || [];
+    return Promise.all(VIDS.map(function(v){ return v.script ? J(v.script, null) : null; })).then(function(S){ VIDS.forEach(function(v, i){ SCR[v.id] = S[i]; }); });
+  }).then(function(){ renderVsel(); if (KEY) load(); else gate(); });
   setInterval(function(){ if (data && !document.hidden) load(); }, 120000);
 })();
 </script>
