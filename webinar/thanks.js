@@ -9,7 +9,7 @@
   /* ====== settings ====== */
   var MAKE_WEBHOOK = 'https://hook.eu2.make.com/nltpw48e2sf4of2g8ijohahvrat6angt';
   var WA_GROUP = 'https://chat.whatsapp.com/L5KcKJxT7ov9DUmxNJE2KP';
-  var WEBINAR_DAY = 2, WEBINAR_HOUR = 18; // Tuesday 18:00 Israel time
+  var WEBINAR_HOUR = 20; // daily 20:00 Israel time (no Friday) since 26.11.2026
 
   /* ====== video (Vidalytics, same as before) ====== */
 
@@ -19,18 +19,27 @@
   var $ = function(id){ return document.getElementById(id); };
   var hasContact = !!(lead.name && lead.phone);
   var first = (lead.name || '').trim().split(/\s+/)[0];
-  if (first) $('almHello').textContent = 'היי ' + first + ', לקראת השידור בשלישי הייתי רוצה להכיר אותך יותר';
   
 
-  /* ====== next webinar date + calendar link ====== */
-  var now = new Date();
-  var il = new Date(now.toLocaleString('en-US', {timeZone:'Asia/Jerusalem'}));
-  var add = (WEBINAR_DAY - il.getDay() + 7) % 7;
-  if (add === 0 && (il.getHours() * 60 + il.getMinutes()) >= WEBINAR_HOUR * 60 + 1) add = 7; // rolls to next Tuesday at 18:01
-  var d = new Date(il); d.setDate(il.getDate() + add);
+  /* ====== next webinar date + calendar link ======
+     26.11.2026: daily broadcast 20:00 Israel, Sun–Thu + Saturday night (no Friday), rolls at 20:00.
+     Same rule as Make scenario 3630866 and webinar-live (webinar/live.js). */
   var pad = function(n){ return (n<10?'0':'')+n; };
+  var DAYS = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  var il = new Date(new Date().toLocaleString('en-US', {timeZone:'Asia/Jerusalem'}));
+  var d = new Date(il); d.setHours(WEBINAR_HOUR, 0, 0, 0);
+  if (il >= d) d.setDate(d.getDate() + 1);
+  if (d.getDay() === 5) d.setDate(d.getDate() + 1);
+  var t0 = new Date(il); t0.setHours(0,0,0,0); var t1 = new Date(d); t1.setHours(0,0,0,0);
+  var dd = Math.round((t1 - t0) / 864e5), dow = d.getDay();
+  var REL = dd === 0 ? (dow === 6 ? 'הערב, במוצאי שבת' : 'היום') : dd === 1 ? (dow === 6 ? 'מחר, במוצאי שבת' : 'מחר') : (dow === 6 ? 'במוצאי שבת' : 'ביום ' + DAYS[dow]);
+  var REL_IN = dd === 0 ? (dow === 6 ? 'הערב' : 'היום') : dd === 1 ? 'מחר' : (dow === 6 ? 'במוצאי שבת' : 'ביום ' + DAYS[dow]);
   var ymd = d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate());
-  $('almWhen').textContent = 'יום שלישי ' + d.getDate() + '.' + (d.getMonth()+1) + ' · 18:00 · בזום';
+  $('almWhen').textContent = (dow === 6 ? REL : REL + ', יום ' + DAYS[dow]) + ' ' + d.getDate() + '.' + (d.getMonth()+1) + ' · 20:00 · בזום';
+  if (first) $('almHello').textContent = 'היי ' + first + ', לקראת השידור ' + REL_IN + ' הייתי רוצה להכיר אותך יותר';
+  else $('almHello').textContent = 'היי, לקראת השידור ' + REL_IN + ' הייתי רוצה להכיר אותך יותר';
+  (function(){ var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n;
+    while ((n = w.nextNode())) if (/כבר בשלישי/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/כבר בשלישי/g, 'כבר ' + REL_IN); })();
   $('almCal').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('שידור חי עם אביב מלכה: איקומרס עם AI') +
     '&dates=' + ymd + 'T' + pad(WEBINAR_HOUR) + '0000/' + ymd + 'T' + pad(WEBINAR_HOUR+1) + '3000&ctz=Asia/Jerusalem&details=' +
     encodeURIComponent('הקישור לזום יישלח בקבוצת הוואטסאפ ובמייל לפני השידור.');
@@ -60,7 +69,7 @@
     if (id === 'end') {
       $('almCount').textContent = 'שליחה'; $('almFill').style.width = '100%';
       stage.innerHTML = '<div class="alm-q show"><p class="alm-qt">' + 'מעולה, נשאר רק לשלוח' + '</p>' +
-        '<label class="alm-commit"><input type="checkbox" id="almCommit" checked><span>אני מגיע לשידור ביום שלישי ב-18:00</span></label>' +
+        '<label class="alm-commit"><input type="checkbox" id="almCommit" checked><span>אני מגיע לשידור ' + REL_IN + ' ב-20:00</span></label>' +
         '<button class="alm-cta" id="almSend">שליחה וכניסה לקבוצת הוואטסאפ</button></div>';
       $('almSend').addEventListener('click', send);
       return;
