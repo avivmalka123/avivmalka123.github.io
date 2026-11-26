@@ -84,7 +84,8 @@ rep('<!-- CONFIRM: בדף הקיים כתוב 20.6M. בקופי כתוב 19 מי
 # ---- main video: Vidalytics embed slot ----
 i0 = s.index('      <button class="vph" type="button" data-video="VSL_EMBED"')
 i1 = s.index('</button>', i0) + len('</button>')
-s = s[:i0] + ('      <div class="vph vreal" id="cvVsl"><span class="vsl-over"><b>תן לי 17 דקות.</b><span>בלי סיסמאות. ככה זה נראה מבפנים.</span></span>'
+s = s[:i0] + ('      <p class="vwarn">שימו לב: הסרטון יוסר ברגע שכל המקומות יתמלאו</p>'   # Aviv 26.11: more Play clicks, red, right above the video
+              '<div class="vph vreal" id="cvVsl"><span class="vsl-over"><b>תן לי 17 דקות.</b><span>בלי סיסמאות. ככה זה נראה מבפנים.</span></span>'
               '<div id="cvPlayer" class="vplayer"></div></div>') + s[i1:]
 
 # ---- reels: posters ----
@@ -238,6 +239,7 @@ extra = '\n'.join(keep) + '''
 .qinline .ls-q{margin:0 auto !important}
 '''
 import quiz_tiers as _qt; extra += _qt.CSS
+extra += '\n.vwarn{color:#FF5A4A;font-family:var(--he);font-weight:900;font-size:clamp(17px,2vw,21px);text-align:center;margin:0 0 12px;letter-spacing:-.01em}\n'
 s = s.replace('</style>', extra + '</style>', 1)
 rep('<div class="toast" id="toast" role="status"></div>', '<div class="toast" id="toast" role="status"></div>\n<div class="lbx" id="lbx" role="dialog" aria-label="צילום מסך מוגדל"><img alt=""></div>\n<div class="qm" id="qm" role="dialog" aria-modal="true" aria-label="שאלון ההתאמה"><div class="qmi"><button class="qx" id="qmX" type="button" aria-label="סגירה">×</button><div class="ls"><div class="ls-q" id="lsQ"></div></div></div></div>')
 # every CTA opens the quiz popup (no long scroll through the reveal animations)
