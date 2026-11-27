@@ -149,16 +149,47 @@ def img_card(src, big, who):
 imgs = [img_card(*x) for x in IMGS]
 CTA = ('<article class="vt-card vt-cta"><p>הם היו בדיוק איפה שאתה עכשיו.</p><b>אתה יכול להיות הסיפור הבא.</b>'
        '<a class="cta" href="#cvQuiz" data-cta="feed">לשאלון ההתאמה<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.800" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a><small>2 דקות · בלי התחייבות</small></article>')
-feed, vi, ii = [], 0, 0
-while vi < len(vids) or ii < len(imgs):          # 1 video, 2 screenshots, …; a sign-up card after every 9
-    if vi < len(vids): feed.append(vids[vi]); vi += 1
+# ---- card ids + order (Aviv 27.11) ----
+# Every card has a stable id (data-ci) so the heatmap keeps counting the same card after a reorder: card:<ci>:… and c<ci>.
+# ci = the card's position in the 20–27.11 layout (frozen in card_ids.json); a new card gets the next free number.
+vkeys = [v[0] for v in VOICES]
+ident = [('v:' + k, h) for k, h in zip(vkeys, vids)] + [('i:' + x[0], h) for x, h in zip(IMGS, imgs)]
+CI = json.load(open(R + 'clubvsl/src/card_ids.json', encoding='utf-8'))
+for kid, _ in ident:
+    if kid not in CI: CI[kid] = max(list(CI.values()) + [32]) + 1   # 9/19/32 are the sign-up cards
+json.dump(CI, open(R + 'clubvsl/src/card_ids.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+REMOVED = {'v:diff'}            # Aviv 27.11: the 4:53 "מה עשה את ההבדל" video (Roi, second time on the page) is off the wall
+# Aviv 27.11: the most-clicked cards first, from our heatmap 20–27.11 (card clicks per visitor who reached the card); the rest keep their order
+TOP = ['v:sooner', 'v:nivin', 'v:home', 'v:gennady', 'v:maayan', 'i:' + CFGJ['more_imgs'][2][0], 'v:roy', 'v:dina']
+vq = [x for x in ident[:len(vids)] if x[0] not in REMOVED]; iq = [x for x in ident[len(vids):] if x[0] not in REMOVED]
+base = []                                         # the old rhythm: 1 video, 2 screenshots, …
+while vq or iq:
+    if vq: base.append(vq.pop(0))
     for _ in range(2):
-        if ii < len(imgs): feed.append(imgs[ii]); ii += 1
-    if len(feed) % 10 == 9: feed.append(CTA)
-if not feed[-1].startswith('<article class="vt-card vt-cta"'): feed.append(CTA)
+        if iq: base.append(iq.pop(0))
+byid = dict(base); assert all(t in byid for t in TOP), [t for t in TOP if t not in byid]
+order = [(t, byid[t]) for t in TOP] + [x for x in base if x[0] not in TOP]
+CTA_CI = [9, 19, 32]                              # the sign-up cards keep their old ids by order of appearance
+feed, cards_meta, nc = [], [], 0
+def add_cta():
+    global nc
+    ci = CTA_CI[nc] if nc < len(CTA_CI) else 100 + nc; nc += 1
+    feed.append(CTA.replace('<article class="vt-card', '<article data-ci="%d" class="vt-card' % ci, 1)); cards_meta.append({'i': ci, 't': 'cta', 'label': 'כרטיס הרשמה'})
+for j, (kid, h) in enumerate(order):              # a sign-up card after every 9 (none when only 1–2 cards are left: the last one closes the wall)
+    feed.append(h.replace('<article class="vt-card"', '<article data-ci="%d" class="vt-card"' % CI[kid], 1))
+    if kid.startswith('v:'):
+        k = kid[2:]; v = next(x for x in VOICES if x[0] == k)
+        cards_meta.append({'i': CI[kid], 't': 'v', 'label': v[1], 'who': v[3].split('·')[0].strip(), 'img': '' if k == 'diff' else CFGJ['reels'][k]['poster']})
+    else:
+        x = next(x for x in IMGS if 'i:' + x[0] == kid)
+        cards_meta.append({'i': CI[kid], 't': 'i', 'label': x[1], 'who': x[2].split('·')[0].strip(), 'img': x[0] if x[0].startswith('http') else GH + x[0]})
+    if len(feed) % 10 == 9 and len(order) - j - 1 >= 3: add_cta()
+if cards_meta[-1]['t'] != 'cta': add_cta()
+for pos, m in enumerate(cards_meta): m['pos'] = pos
+json.dump(cards_meta, open(R + 'clubvsl/cards.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=0)   # board + daily.py read this
 f0 = s.index('<div class="vt-feed" id="vtFeed">') + len('<div class="vt-feed" id="vtFeed">'); f1 = s.index('</div><div id="vtMore"', f0)
 s = s[:f0] + ''.join(feed) + s[f1:]
-print('feed items', len(feed), 'videos', len(vids), 'images', len(imgs))
+print('feed items', len(feed), 'videos', len(vids) - 1, 'images', len(imgs), 'order', [m['i'] for m in cards_meta])
 # agency script: the removed sections are no longer on the page
 rep("var dots=$('#dots'),", "var dots=$('#dots')||document.createElement('div'),")
 rep("var ph=$('#phone'),cap=$('#phCap'),", "var ph=$('#phone')||document.createElement('div'),cap=$('#phCap')||document.createElement('p'),")
@@ -325,7 +356,7 @@ our = r'''
       if (el.closest('#qm')) return 'quiz';
       if ((c = el.closest('[data-cta]'))) return 'cta:' + c.getAttribute('data-cta');
       if (el.closest('#cvVsl')) return 'vsl';
-      if ((c = el.closest('.vt-card'))){ var i = cards().indexOf(c), sp = c.querySelector('.vt-top span'), b = c.querySelector('.vt-top b');
+      if ((c = el.closest('.vt-card'))){ var i = c.getAttribute('data-ci') || cards().indexOf(c), sp = c.querySelector('.vt-top span'), b = c.querySelector('.vt-top b');
         return 'card:' + i + ':' + (c.querySelector('[data-video]') ? 'v' : 'i') + ':' + (((sp && sp.textContent.split('·')[0]) || (b && b.textContent) || '').trim().slice(0, 24)); }
       if ((c = el.closest('a,button'))) return 'btn:' + (c.getAttribute('aria-label') || c.textContent || '').trim().slice(0, 30);
       if ((c = el.closest('[id]'))) return 'area:' + c.id;
@@ -338,7 +369,7 @@ our = r'''
       if (p > H.sc){ H.sc = p; dirty = true; }
       var seen = function(el, k){ if (!el || H.se[k] || !el.offsetParent) return; var r = el.getBoundingClientRect(); if (r.top < innerHeight * .8 && r.bottom > 0){ H.se[k] = 1; dirty = true; } };
       seen(document.querySelector('#cvVsl'), 'vsl'); seen(document.querySelector('#voices'), 'voices'); seen(document.querySelector('#cvQuiz'), 'quiz');
-      cards().forEach(function(c, i){ seen(c, 'c' + i); });
+      cards().forEach(function(c, i){ seen(c, 'c' + (c.getAttribute('data-ci') || i)); });
     }
     addEventListener('scroll', function(){ if (!tk) tk = setTimeout(scan, 300); }, {passive: true});
     setTimeout(scan, 1500);
